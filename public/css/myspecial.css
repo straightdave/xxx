@@ -1,0 +1,38 @@
+/* for the site specials */
+/* 2015-10-30 */
+
+.listed-question {
+  height: 70px;
+  border-bottom: solid 1px lightgray;
+  padding: 10px 0px;
+  display: block;
+}
+
+.listed-question .rank {
+  float: left;
+  text-align: center;
+  line-height: 1.2;
+  font-size: 16px;
+  margin-right: 5px;
+}
+
+.listed-question .rank div {
+  display: inline-block;
+  padding-top: 3px;
+  width: 40px;
+  height: 40px;
+}
+
+.listed-question .rank div small {
+  display: block;
+  font-size: 12px;
+}
+
+.listed-question .title {
+  float: left;
+  font-size: x-large;
+}
+
+.listed-question .clear {
+  float: none;
+}

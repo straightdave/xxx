@@ -1,0 +1,44 @@
+<!--
+ * homepage
+-->
+
+<div class="jumbotron">
+  今天遇到棘手的法律问题了么？<a class="btn btn-primary btn-lg" href="#" role="button">我要提问</a>
+</div>
+
+<div class="row">
+
+  <div class="col-md-7">
+    <ul class="nav nav-tabs">
+      <li role="presentation" class="<%= 'active' if @sort_by == 'default' %>"><a href="/">最新</a></li>
+      <li role="presentation" class="<%= 'active' if @sort_by == 'score' %>"><a href="/?sort=score">最热</a></li>
+      <li role="presentation" class="<%= 'active' if @sort_by == 'views' %>"><a href="/?sort=views">未回答</a></li>
+    </ul>
+
+    <% @qs.each do |q| %>
+      <div class="listed-question">
+
+        <div class="rank">
+          <div class="scores">
+            0<small>投票</small>
+          </div>
+          <div class="answers">
+            4<small>解决</small>
+          </div>
+          <div class="views">
+            67<small>浏览</small>
+          </div>
+        </div>
+
+        <div class="title">
+          <a href="#"><%= q.title %></a>
+        </div>
+
+      </div>
+    <% end %>
+  </div>
+
+  <div class="col-md-4">
+    adsf asdf a
+  </div>
+</div>

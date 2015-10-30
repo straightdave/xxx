@@ -1,2 +1,3 @@
 #load files
-require_relative 'question'
+require_relative 'about'
+require_relative 'home'

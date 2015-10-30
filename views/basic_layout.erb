@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>韩非子说 - 专业人士的法律问答网站</title>
+    <link rel="icon" href="/favicon.ico">
+    <link href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//cdn.bootcss.com/flat-ui/2.2.2/css/flat-ui.min.css" rel="stylesheet">
+    <link href="/css/myspecial.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <nav class="navbar navbar-default">
+      <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/">
+            <img alt="韩非子说" src="">
+          </a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <!-- search-->
+          <form class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="法律问题？">
+            </div>
+            <button type="submit" class="btn btn-default">搜索</button>
+          </form>
+
+          <!-- after search at navi -->
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;首页<span class="sr-only">(current)</span></a></li>
+            <li><a href="#">工作笔记</span></a></li>
+          </ul>
+
+          <!-- items on the right side -->
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="<%= url('/about') %>">关于</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">古美门研介 &nbsp;<span class="badge">24</span><span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;用户档案</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;我的消息&nbsp;<span class="badge">24</span></a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;选项</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp;退出登录</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+
+    <!-- main content -->
+    <div class="container">
+      <%= yield %>
+    </div>
+
+    <!--
+    footer : static
+    don't inherit parent's font color
+    -->
+    <footer style="color: #0a0a0a;margin-top: 50px">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <h4>韩非子说<h4>
+            <p>本网站所遵循 <a href="http://creativecommons.org/licenses/by/3.0/" target="_blank">CC BY 3.0</a>协议发布</p>
+          </div>
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-3">
+                <h6>关于</h6>
+                <ul class="list-unstyled">
+                  <li><a href="/about">关于我们</a></li>
+                  <li><a href="/ad">广告合作</a></li>
+                  <li><a href="/links">友情链接</a></li>
+                  <li><a href="/hr">招聘</a></li>
+                </ul>
+              </div>
+              <div class="col-md-3">
+                <h6>联系方式</h6>
+                <ul class="list-unstyled">
+                  <li><a href="http://weibo.com/eyaswoo" title="官方微博" target="_blank">新浪微博</a></li>
+                  <li><a href="mailto:eyaswoo@163.com">电子邮件</a></li>
+                </ul>
+              </div>
+              <div class="col-md-3">
+                <h6>合作单位</h6>
+                <ul class="list-unstyled">
+                  <li><a href="#" target="_blank">ABC律师事务所</a></li>
+                  <li><a href="#" target="_blank">X国律师协会</a></li>
+                </ul>
+              </div>
+              <div class="col-md-3">
+                <h6>赞助商</h6>
+                <ul class="list-unstyled">
+                  <li><a href="#" target="_blank"></a>暂时还没有</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- beian -->
+    <ul class="list-inline text-center" style="margin-bottom:0px;">
+      <li><a href="http://www.miibeian.gov.cn/" target="_blank">京ICP备xxx号</a></li><li>京公网安备xxx</li>
+    </ul>
+
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/flat-ui/2.2.2/js/flat-ui.min.js"></script>
+  </body>
+</html>

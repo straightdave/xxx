@@ -38,12 +38,53 @@
           <!-- after search at navi -->
           <ul class="nav navbar-nav">
             <li class="active"><a href="/"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;首页<span class="sr-only">(current)</span></a></li>
-            <li><a href="#">工作笔记</span></a></li>
+            <li><a href="#">新闻</a></li>
           </ul>
 
           <!-- items on the right side -->
           <ul class="nav navbar-nav navbar-right">
             <li><a href="<%= url('/about') %>">关于</a></li>
+
+            <% if not @loggedin %>
+
+            <li><a href="#" data-toggle="modal" data-target="#myModal">用户登录</a></li>
+            <!-- modal login window -->
+            <div class="modal" id="myModal" tabindex="-1" role="dialog"
+               aria-labelledby="myModalLabel" aria-hidden="true">
+               <div class="modal-dialog" style="margin-top:100px;">
+                 <div class="modal-content">
+                   <div class="modal-header">
+                     <button type="button" class="close"
+                       data-dismiss="modal" aria-hidden="true">
+                          &times;
+                     </button>
+                     <h4 class="modal-title" id="myModalLabel">
+                         登录
+                     </h4>
+                   </div> <!-- end of modal header -->
+                   <div class="modal-body">
+                     <p><input type="text" name="username" /></p>
+                     <p><input type="text" name="password" /></p>
+                     <label><input type="checkbox" name="rememberme" />下次自动登录</label>
+                     <input type="button" value=" 登录 " class="btn btn-primary" style="margin-left: 10px;" onclick="javascript:login();" />
+
+                     <h6>没有帐户？</h6>
+                     <p><input type="button" value=" 注册 " class="btn" onclick="javascript:register();"></p>
+                   </div> <!-- /modal-body -->
+                 </div><!-- /.modal-content -->
+               </div> <!-- modal dialog -->
+            </div><!-- /.modal -->
+
+            <script>
+              function login() {
+                var data = {"u":"user1","p":"passwd1"};
+                $.post('/userlogin',data,function() {location.replace(location.href);});
+              }
+            </script>
+
+            <% else %>
+
+            <!-- for logged on user -->
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">古美门研介 &nbsp;<span class="badge">24</span><span class="caret"></span></a>
               <ul class="dropdown-menu">
@@ -51,9 +92,17 @@
                 <li><a href="#"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;我的消息&nbsp;<span class="badge">24</span></a></li>
                 <li><a href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;选项</a></li>
                 <li role="separator" class="divider"></li>
-                <li><a href="#"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp;退出登录</a></li>
+                <li><a href="#" onclick="javascript:logout();"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp;退出登录</a></li>
               </ul>
             </li>
+
+            <script>
+              function logout() {
+                $.post('/userlogout',function(){location.replace('/')});
+              }
+            </script>
+            <% end %>
+
           </ul>
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->

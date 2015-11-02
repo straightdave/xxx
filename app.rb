@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'sinatra/json'
 require 'json'
+require 'tilt/erb'
 require 'active_record'
 require_relative 'models/init'
 require_relative 'controllers/init'
@@ -14,7 +15,7 @@ ActiveRecord::Base.establish_connection(
 )
 
 # let sinatra use correct timezone to save data
-ActiveRecord::Base.default_timezone = 'Beijing'
+ActiveRecord::Base.default_timezone = :local
 
 # avoid db connection deadlock issue
 after do
@@ -23,6 +24,8 @@ end
 
 # set public folder
 set :public_folder, File.dirname(__FILE__) + '/public'
+
+enable :sessions
 
 #set :show_exceptions, false
 error do

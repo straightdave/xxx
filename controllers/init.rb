@@ -2,3 +2,4 @@
 require_relative 'about'
 require_relative 'user'
 require_relative 'home'
+require_relative 'question'

@@ -45,7 +45,7 @@
           <ul class="nav navbar-nav navbar-right">
             <li><a href="<%= url('/about') %>">关于</a></li>
 
-            <% if not @loggedin %>
+            <% unless login? %>
 
             <li><a href="#" data-toggle="modal" data-target="#myModal">用户登录</a></li>
             <!-- modal login window -->
@@ -63,13 +63,13 @@
                      </h4>
                    </div> <!-- end of modal header -->
                    <div class="modal-body">
-                     <p><input type="text" name="username" /></p>
-                     <p><input type="text" name="password" /></p>
+                     <p><input type="text" name="username" placeholder="用户名" /></p>
+                     <p><input type="text" name="password" placeholder="密码" /></p>
                      <label><input type="checkbox" name="rememberme" />下次自动登录</label>
                      <input type="button" value=" 登录 " class="btn btn-primary" style="margin-left: 10px;" onclick="javascript:login();" />
 
                      <h6>没有帐户？</h6>
-                     <p><input type="button" value=" 注册 " class="btn" onclick="javascript:register();"></p>
+                     <p><a href="<%= url('/userreg') %>" class="btn btn-default">注册</a></p>
                    </div> <!-- /modal-body -->
                  </div><!-- /.modal-content -->
                </div> <!-- modal dialog -->
@@ -77,8 +77,11 @@
 
             <script>
               function login() {
-                var data = {"u":"user1","p":"passwd1"};
+                var u = $("input[name='username']").val();
+                var p = $("input[name='password']").val();
+                var data = {"u":u, "p":p};
                 $.post('/userlogin',data,function() {location.replace(location.href);});
+                $("div#myModal").hide();
               }
             </script>
 
@@ -86,7 +89,7 @@
 
             <!-- for logged on user -->
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">古美门研介 &nbsp;<span class="badge">24</span><span class="caret"></span></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= session[:user] %> &nbsp;<span class="badge">24</span><span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;用户档案</a></li>
                 <li><a href="#"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;我的消息&nbsp;<span class="badge">24</span></a></li>
@@ -109,9 +112,7 @@
     </nav>
 
     <!-- main content -->
-    <div class="container">
-      <%= yield %>
-    </div>
+    <%= yield %>
 
     <!--
     footer : static

@@ -5,6 +5,7 @@ require 'tilt/erb'
 require 'active_record'
 require_relative 'models/init'
 require_relative 'controllers/init'
+require_relative 'helpers/view_helper'
 
 ActiveRecord::Base.establish_connection(
   :adapter  => "mysql2",
@@ -25,13 +26,9 @@ end
 # set public folder
 set :public_folder, File.dirname(__FILE__) + '/public'
 
-enable :sessions
+use Rack::Session::Pool, expire_after: 2592000
 
 #set :show_exceptions, false
 error do
   "just got fucked!"
-end
-
-get "/404" do
-  "This is homepage"
 end

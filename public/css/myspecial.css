@@ -8,10 +8,6 @@
   display: block;
 }
 
-#.listed-question div {
-#  border: dashed 1px gray;
-#}
-
 .listed-question .rank {
   float: left;
   text-align: center;

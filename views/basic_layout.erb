@@ -27,7 +27,7 @@
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <!-- search-->
+          <!-- search -->
           <form class="navbar-form navbar-left" role="search">
             <div class="form-group">
               <input type="text" class="form-control" placeholder="法律问题？">
@@ -37,7 +37,12 @@
 
           <!-- after search at navi -->
           <ul class="nav navbar-nav">
-            <li class="active"><a href="/"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;首页<span class="sr-only">(current)</span></a></li>
+            <li class="active">
+              <a href="/">
+                <span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;首页
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
             <li><a href="#">新闻</a></li>
           </ul>
 
@@ -55,7 +60,7 @@
                  <div class="modal-content">
                    <div class="modal-header">
                      <button type="button" class="close"
-                       data-dismiss="modal" aria-hidden="true">
+                             data-dismiss="modal" aria-hidden="true">
                           &times;
                      </button>
                      <h4 class="modal-title" id="myModalLabel">
@@ -63,25 +68,62 @@
                      </h4>
                    </div> <!-- end of modal header -->
                    <div class="modal-body">
-                     <p><input type="text" name="username" placeholder="用户名" /></p>
-                     <p><input type="text" name="password" placeholder="密码" /></p>
+                     <p>
+                       <div class="form-group">
+                         <input class="form-control" type="text" name="username" placeholder="用户名" />
+                       </div>
+                     </p>
+                     <p>
+                       <div class="form-group">
+                         <input class="form-control" type="password" name="password" placeholder="密码" />
+                       </div>
+                     </p>
                      <label><input type="checkbox" name="rememberme" />下次自动登录</label>
-                     <input type="button" value=" 登录 " class="btn btn-primary" style="margin-left: 10px;" onclick="javascript:login();" />
-
+                     <input type="button" value=" 登录 " class="btn btn-primary"
+                            style="margin-left: 10px;" onclick="javascript:login();" />
                      <h6>没有帐户？</h6>
-                     <p><a href="<%= url('/userreg') %>" class="btn btn-default">注册</a></p>
+                     <p><a href="<%= url('/register') %>" class="btn btn-default">注册</a></p>
                    </div> <!-- /modal-body -->
-                 </div><!-- /.modal-content -->
+                 </div> <!-- /.modal-content -->
                </div> <!-- modal dialog -->
-            </div><!-- /.modal -->
+            </div> <!-- /.modal -->
 
             <script>
+              function set_error(item, msg = '') {
+                item.parent().addClass("has-error");
+                if (msg != '') {
+                  item.attr('placeholder', msg);
+                }
+              }
+
               function login() {
-                var u = $("input[name='username']").val();
-                var p = $("input[name='password']").val();
-                var data = {"u":u, "p":p};
-                $.post('/userlogin',data,function() {location.replace(location.href);});
-                $("div#myModal").hide();
+                is_valid = true;
+                var u = $("input[name='username']");
+                var uv = u.val().trim();
+                if (uv == '') {
+                  set_error(u, "请输入用户名")
+                  is_valid = false;
+                }
+                var p = $("input[name='password']");
+                var pv = p.val().trim();
+                if (pv == '') {
+                  set_error(p, "请输入密码");
+                  is_valid = false;
+                }
+                if (is_valid) {
+                  var data = { "login_email" : uv, "password" : pv };
+                  $.post('/login', data, function(data_back, status) {
+                    if (data_back == '0') {
+                      // refresh current page
+                      location.replace(location.href);
+                      $("div#myModal").hide();
+                    }
+                    else {
+                      set_error(u);
+                      set_error(p);
+                    }
+                  });
+                }
               }
             </script>
 
@@ -89,7 +131,11 @@
 
             <!-- for logged on user -->
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= session[:user] %> &nbsp;<span class="badge">24</span><span class="caret"></span></a>
+              <a href="#" class="dropdown-toggle"
+                          data-toggle="dropdown" role="button" aria-haspopup="true"
+                          aria-expanded="false">
+                <%= session[:login_email] %> &nbsp;<span class="badge">24</span><span class="caret"></span>
+              </a>
               <ul class="dropdown-menu">
                 <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;用户档案</a></li>
                 <li><a href="#"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;我的消息&nbsp;<span class="badge">24</span></a></li>
@@ -101,14 +147,14 @@
 
             <script>
               function logout() {
-                $.post('/userlogout',function(){location.replace('/')});
+                $.post('/logout',function() { location.replace('/') });
               }
             </script>
             <% end %>
 
           </ul>
-        </div><!-- /.navbar-collapse -->
-      </div><!-- /.container-fluid -->
+        </div> <!-- /.navbar-collapse -->
+      </div> <!-- /.container-fluid -->
     </nav>
 
     <!-- main content -->
@@ -164,7 +210,8 @@
 
     <!-- beian -->
     <ul class="list-inline text-center" style="margin-bottom:0px;">
-      <li><a href="http://www.miibeian.gov.cn/" target="_blank">京ICP备xxx号</a></li><li>京公网安备xxx</li>
+      <li><a href="http://www.miibeian.gov.cn/" target="_blank">京ICP备xxx号</a></li>
+      <li>京公网安备xxx</li>
     </ul>
 
     <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>

@@ -1,11 +1,9 @@
 require 'sinatra'
-require 'sinatra/json'
-require 'json'
 require 'tilt/erb'
 require 'active_record'
 require_relative 'models/init'
 require_relative 'controllers/init'
-require_relative 'helpers/view_helper'
+require_relative 'helpers/init'
 
 ActiveRecord::Base.establish_connection(
   :adapter  => "mysql2",
@@ -23,12 +21,23 @@ after do
   ActiveRecord::Base.connection.close
 end
 
-# set public folder
-set :public_folder, File.dirname(__FILE__) + '/public'
-
+# set session
 use Rack::Session::Pool, expire_after: 2592000
 
-#set :show_exceptions, false
+# other config
+configure do
+
+  # enable_mailing_activate
+  # when enabled, will send activating mail to registering user
+  # when disabled, will automatically activate user after registering
+  set :enable_mailing_activate, false
+
+  # set public folder
+  set :public_folder, File.dirname(__FILE__) + '/public'
+
+end
+
+# set :show_exceptions, false
 error do
   "just got fucked!"
 end

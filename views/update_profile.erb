@@ -1,0 +1,15 @@
+<h1>
+  Update profile
+</h1>
+<form action="<%= url("/user/#{@id}/update") %>" method="post">
+  <p>
+    nickname: <input type="text" name="nickname" />
+  </p>
+  <p>
+    email: <input type="text" name="email" />
+  </p>
+  <p>
+    intro: <textarea name="intro"></textarea>
+  </p>
+  <input type="submit" value="Submit" />
+</form>

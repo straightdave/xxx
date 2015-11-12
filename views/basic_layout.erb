@@ -9,8 +9,6 @@
     <link href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
     <link href="//cdn.bootcss.com/flat-ui/2.2.2/css/flat-ui.min.css" rel="stylesheet">
     <link href="/css/myspecial.css" rel="stylesheet">
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
       <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
@@ -55,7 +53,7 @@
             <li><a href="#" data-toggle="modal" data-target="#myModal">用户登录</a></li>
             <!-- modal login window -->
             <div class="modal" id="myModal" tabindex="-1" role="dialog"
-               aria-labelledby="myModalLabel" aria-hidden="true">
+                 aria-labelledby="myModalLabel" aria-hidden="true">
                <div class="modal-dialog" style="margin-top:100px;">
                  <div class="modal-content">
                    <div class="modal-header">
@@ -113,7 +111,8 @@
                 if (is_valid) {
                   var data = { "login_email" : uv, "password" : pv };
                   $.post('/login', data, function(data_back, status) {
-                    if (data_back == '0') {
+                    var d = JSON.parse(data_back);
+                    if (d.result == 'success') {
                       // refresh current page
                       location.replace(location.href);
                       $("div#myModal").hide();
@@ -137,7 +136,7 @@
                 <%= session[:login_email] %> &nbsp;<span class="badge">24</span><span class="caret"></span>
               </a>
               <ul class="dropdown-menu">
-                <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;用户档案</a></li>
+                <li><a href='<%= url("/user/#{ session[:user_id] }") %>'><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;用户档案</a></li>
                 <li><a href="#"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;我的消息&nbsp;<span class="badge">24</span></a></li>
                 <li><a href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;选项</a></li>
                 <li role="separator" class="divider"></li>
@@ -164,7 +163,7 @@
     footer : static
     don't inherit parent's font color
     -->
-    <footer style="color: #0a0a0a;margin-top: 50px;padding-bottom:80px;">
+    <footer style="color:#0a0a0a;margin-top:50px;padding-bottom:80px;">
       <div class="container">
         <div class="row">
           <div class="col-md-6">

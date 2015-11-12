@@ -22,6 +22,7 @@ post '/register' do
 
   if new_login.valid?
     new_login.save
+
     if settings.enable_mailing_activate?
       send_activate_mail(login_email)
       redirect to("/after_register?id=#{new_login.id}")
@@ -34,6 +35,9 @@ post '/register' do
       new_login.save
       redirect to("/after_activate?id=#{new_login.id}")
     end
+
+    session[:login_email] = login_email
+    session[:user_id] = new_login.user_id
   else
     # TODO
     "register failed!"
@@ -67,34 +71,25 @@ post '/login' do
   if user and user.passwd == add_salt(passwd, user.salt)
     user.last_login_at = Time.now
     user.last_login_ip = request.ip
+    user.save!
+
     session[:login_email] = login_email
-    "0"
+    session[:user_id] = user.user_id
+    '{"result":"success"}'
   else
-    "1"
+    '{"result":"fail"}'
   end
 end
 
 # simple logout action
 post '/logout' do
   session[:login_email] = nil
+  session[:user_id] = nil
 end
 
 # ====== user profile actions ======
 
 # update user profile
-get '/user/:id/update' do |id|
-  user = UserLogin.find_by(user_id: id)
-  is_oneself = user && session[:login_email] == user.login_email
-
-  if is_oneself
-    @user_info = user.userinfo
-    erb :update_profile, layout: :basic_layout
-  else
-    # TODO
-    "you need to login as this user."
-  end
-end
-
 post '/user/:id/update' do |id|
   user = UserLogin.find_by(user_id: id)
   is_oneself = user && session[:login_email] == user.login_email
@@ -105,7 +100,7 @@ post '/user/:id/update' do |id|
     user_info.email = params['email']
     user_info.intro = params['intro']
 
-    if user_info.valiid?
+    if user_info.valid?
       user_info.save
       redirect to("/user/#{id}")
     else
@@ -122,6 +117,7 @@ end
 get '/user/:id' do |id|
   user = UserLogin.find_by(user_id: id)
   if user
+    @id = id
     @user_info = user.userinfo
     @is_oneself = session[:login_email] == user.login_email
     erb :user_profile, layout: :basic_layout

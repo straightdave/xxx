@@ -71,7 +71,7 @@ post '/login' do
   if user and user.passwd == add_salt(passwd, user.salt)
     user.last_login_at = Time.now
     user.last_login_ip = request.ip
-    user.save!
+    user.save
 
     session[:login_email] = login_email
     session[:user_id] = user.user_id

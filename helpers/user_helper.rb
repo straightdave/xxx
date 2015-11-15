@@ -12,9 +12,5 @@ helpers do
   def send_activate_mail(login_email)
     # add into mailing queue
   end
-
-  def should_login_as(who)
-    
-  end
-
+  
 end

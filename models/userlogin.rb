@@ -1,8 +1,8 @@
 class UserLogin < ActiveRecord::Base
-  self.table_name = 'user_login'
-  self.primary_key = 'user_id'
+  self.table_name = "user_login"
+  self.primary_key = "user_id"
 
-  has_one :userinfo, class_name: 'UserInfo', foreign_key: 'user_id'
+  has_one :userinfo, class_name: "UserInfo", foreign_key: "user_id"
 
   email_regex = %r{
     ^ # Start of string

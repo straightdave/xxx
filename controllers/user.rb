@@ -69,12 +69,7 @@ post '/login' do
 
   user = UserLogin.find_by(login_email: login_email)
   if user and user.passwd == add_salt(passwd, user.salt)
-    user.last_login_at = Time.now
-    user.last_login_ip = request.ip
-    user.save
-
-    session[:login_email] = login_email
-    session[:user_id] = user.user_id
+    login_user user
     '{"result":"success"}'
   else
     '{"result":"fail"}'
@@ -83,8 +78,8 @@ end
 
 # simple logout action
 post '/logout' do
-  session[:login_email] = nil
-  session[:user_id] = nil
+  logout_user
+  redirect to("/")
 end
 
 # ====== user profile actions ======

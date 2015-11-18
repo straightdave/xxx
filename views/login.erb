@@ -1,0 +1,52 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-4 col-md-offset-4">
+      <p>
+        <div class="form-group has-feedback">
+          <input class="form-control" type="text" name="login_email" id="u"
+                 value="<%= URI.decode(params['u']) if params['u'] %>" placeholder="电子邮箱" />
+          <span class="form-control-feedback fui-user"></span>
+        </div>
+      </p>
+      <p>
+        <div class="form-group has-feedback">
+          <input class="form-control" type="password" name="password" id="p" placeholder="密码" />
+          <span class="form-control-feedback fui-lock"></span>
+        </div>
+      </p>
+      <p>
+        <div class="form-group">
+          <label>
+            <input type="checkbox" name="rememberme" id="r2" /> &nbsp;
+            记住我
+          </label>
+        </div>
+      </p>
+      <div id="err-msg2" class="text-danger"></div>
+      <button class="btn btn-primary btn-lg" onclick="javascript:login2();">登录</a>
+    </div>
+  </div>
+</div>
+<script>
+  function login2() {
+    var is_valid = true;
+    var u = $("input[id='u']");
+    var uu = u.val().trim();
+    var reg=/^\s*(([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})[\s\/,;]*)+$/i;
+    if (uu == "" || !reg.test(uu)) { set_error(u,"请填写合法邮箱"); is_valid = false; } else { set_ok(u); }
+    var p = $("input[id='p']");
+    var pp = p.val().trim();
+    if (pp == "") { set_error(p,"请填写密码"); is_valid = false; } else { set_ok(p); }
+    var rm = $("input[id='r2']").prop("checked");
+    if (is_valid) {
+      var data = { "login_email" : uu, "password" : pp, "rememberme" : rm };
+      $.post("/login", data, function (data, status) {
+        if(data.ret == "error"){
+          $("#err-msg2").text("注册邮箱或密码错误");
+        } else if(data.ret == "success") {
+          location.href = "/";
+        }
+      });
+    }
+  }
+</script>

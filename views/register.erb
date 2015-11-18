@@ -1,7 +1,78 @@
 <div class="container">
-  <form method="post">
-    <p><input type="text" name="username" /></p>
-    <p><input type="text" name="password" /></p>
-    <input type="submit" value=" 注册 " class="btn btn-primary" />
-  </form>
+  <div class="row">
+    <div class="col-md-4 col-md-offset-4">
+      <p>
+        <div class="form-group has-feedback">
+          <input class="form-control" type="text" name="login_email" id="lu" placeholder="电子邮箱" />
+          <span class="form-control-feedback fui-user"></span>
+        </div>
+      </p>
+      <p>
+        <div class="form-group has-feedback">
+          <input class="form-control" type="password" name="password" id="p1" placeholder="密码" />
+          <span class="form-control-feedback fui-lock"></span>
+        </div>
+      </p>
+      <p>
+        <div class="form-group has-feedback">
+          <input class="form-control" type="password" name="password_again" id="p2" placeholder="再输一次密码 : )" />
+          <span class="form-control-feedback fui-lock"></span>
+        </div>
+      </p>
+      <p>
+        <div class="form-group">
+          <label>
+            <input type="checkbox" name="confirmed" checked /> &nbsp;
+            同意并遵守网站<a href="/terms">服务和隐私条款</a>
+          </label>
+        </div>
+      </p>
+      <div id="err-msg2" class="text-danger"></div>
+      <button class="btn btn-primary btn-lg" onclick="javascript:register();">注册</a>
+    </div>
+  </div>
 </div>
+<script>
+  function register() {
+    var is_valid = true;
+    var u = $("input[id='lu']");
+    var uu = u.val().trim();
+    var reg=/^\s*(([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})[\s\/,;]*)+$/i;
+    if (uu == "" || !reg.test(uu)) { set_error(u,"请填写合法邮箱"); is_valid=false; } else { set_ok(u); }
+    var p1 = $("input[id='p1']");
+    var pp1 = p1.val().trim();
+    if (pp1 == "" || pp1.length < 6) { set_error(p1,"请填写6位或以上字符密码"); is_valid=false; } else { set_ok(p1); }
+    var p2 = $("input[id='p2']");
+    var pp2 = p2.val().trim();
+    if (pp2 != pp1) { set_error(p2,"密码不一致"); is_valid=false; } else { set_ok(p2); }
+    var is_confirmed = $("input[name='confirmed']").prop("checked");
+    if (!is_confirmed) { $("#err-msg2").text("请阅读并同意我们的条款 :-)"); }
+    if (is_valid && is_confirmed) {
+      var data = { "u" : uu, "p1" : pp1, "p2" : pp2, "c" : is_confirmed };
+      $.post("/register", data, function (data, status) {
+        if(data.ret == "error"){
+          switch(data.msg) {
+            case "login_info_err":
+              $("#err-msg2").text("注册信息有误"); break;
+            case "email_exist":
+              var um = encodeURIComponent(uu);
+              $("#err-msg2").text("");
+              $("#err-msg2").append("该邮箱已被注册，可尝试 <a href='/login?u="+ um +"'>登录</a>");
+              break;
+            default:
+              $("#err-msg2").text("其它注册信息有误，请仔细检查 :-(");
+          }
+        } else if(data.ret == "success") {
+          switch(data.msg) {
+            case "done":
+              location.replace("/");break;
+            case "mail_confirm":
+              location.replace("/mail_confirm");break;
+            default:
+              location.replace("/");
+          }
+        }
+      });
+    }
+  }
+</script>

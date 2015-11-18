@@ -1,14 +1,21 @@
-# user register action call (get), render register page
+# ===== register related actions =====
 get '/register' do
-  erb :register, layout: :basic_layout unless login?
+  erb :register unless login?
 end
 
-# post action for register user
-# after valid info saved, redirect to post-register page which shows
-# email-validation links
 post '/register' do
-  login_email = params['login_email']
-  passwd_before_salt = params['password']
+  login_email = params['u']
+  passwd_before_salt = params['p1']
+  passwd_again = params['p2']
+  is_confirmed = params['c']
+
+  if UserLogin.find_by(login_email: login_email)
+    return (json ret: "error", msg: "email_exist")
+  end
+
+  if passwd_again != passwd_before_salt || !is_confirmed
+    return (json ret: "error", msg: "login_info_err")
+  end
 
   salt = "StUpIdAsS" # here goes a random salt
   salty_passwd = add_salt(passwd_before_salt, salt)
@@ -17,74 +24,70 @@ post '/register' do
   new_login.login_email = login_email
   new_login.passwd = salty_passwd
   new_login.salt = salt
-  new_login.last_login_at = Time.now
-  new_login.last_login_ip = request.ip
 
   if new_login.valid?
     new_login.save
 
     if settings.enable_mailing_activate?
       send_activate_mail(login_email)
-      redirect to("/after_register?id=#{new_login.id}")
+      return (json ret: "success", msg: "mail_confirm")
     else
       # 0 - just registered; - default
       # 1 - activated; normal;
       # 2 - disabled; banned;
       # 3 - removed;
       new_login.status = 1
-      new_login.save
-      redirect to("/after_activate?id=#{new_login.id}")
     end
 
-    session[:login_email] = login_email
-    session[:user_id] = new_login.user_id
+    login_user new_login
+    json ret: "success", msg: "done"
   else
-    # TODO
-    "register failed!"
+    json ret: "error", msg: "login_info_err"
   end
 end
 
-# after_*** action, rendering post-*** page
-# mainly they are showing messages to users
-get %r{/after_([\w]+)} do |c|
-  @id = params['id']
-
-  if c == 'register'
-    erb :after_register, layout: :basic_layout
-  elsif c == 'activate'
-    erb :after_activate, layout: :basic_layout
-  end
+get '/after_register' do
+  erb :msg_page, locals: {}
 end
 
-# get action for activate user
-# mostly it is called from mail links
-get '/activate' do
-  "activated! (a lie)"
+get '/mail_confirm' do
+  erb :msg_page, locals: {}
 end
 
-# action for authentication, u&p passed backward by js
+
+# ===== login & logout actions =====
+get '/login' do
+  erb :login
+end
+
 post '/login' do
   login_email = params['login_email']
   passwd = params['password']
 
   user = UserLogin.find_by(login_email: login_email)
-  if user and user.passwd == add_salt(passwd, user.salt)
+  if user && user.passwd == add_salt(passwd, user.salt)
     login_user user
-    '{"result":"success"}'
+    json ret: "success"
   else
-    '{"result":"fail"}'
+    json ret: "error", msg: "user_not_found|passwd_error"
   end
 end
 
-# simple logout action
 post '/logout' do
   logout_user
-  redirect to("/")
+  json ret: "success"
 end
 
-# ====== user profile actions ======
+get '/check_login' do
+  if login?
+    json ret: true
+  else
+    json ret: false
+  end
+end
 
-# update user profile
+
+# ====== user profile actions ======
 post '/user/:id/update' do |id|
   user = UserLogin.find_by(user_id: id)
   is_oneself = user && session[:login_email] == user.login_email
@@ -97,27 +100,40 @@ post '/user/:id/update' do |id|
 
     if user_info.valid?
       user_info.save
-      redirect to("/user/#{id}")
+      json ret: "success"
     else
-      # TODO
-      "update failed"
+      json ret: "error", msg: "invalid_user_info"
     end
   else
-    # TODO
-    "you need to login as this user."
+    json ret: "error", msg: "authentication_error"
   end
 end
 
-# view user profile
-get '/user/:id' do |id|
-  user = UserLogin.find_by(user_id: id)
-  if user
-    @id = id
-    @user_info = user.userinfo
-    @is_oneself = session[:login_email] == user.login_email
-    erb :user_profile, layout: :basic_layout
+get '/user/:id/update' do | id|
+  if id == session[:user_id].to_s
+    erb :user_profile_new
   else
-    # TODO
-    "User not found"
+    erb :msg_page, locals: { title: "无效的请求", body: "您无法修改该用户的信息，这可能是由于您未登录引起的。" }
+  end
+end
+
+get '/user/:id' do |id|
+  if user = UserLogin.find_by(user_id: id)
+    if session[:login_email] == user.login_email
+      if @user_info = user.userinfo
+        erb :user_profile
+      else
+        quick_url = "/user/#{id}/update"
+        erb :msg_page,
+            locals: {
+              title: "请完善您的信息",
+              body: "<a href='#{ url(quick_url) }'>传送门</a>"
+            }
+      end
+    else
+      erb :msg_page, locals: { title: "该用户还没有输入用户信息", body: "lead to new page..." }
+    end
+  else
+    erb :msg_page, locals: { title: "用户未找到", body: "Please check user..." }
   end
 end

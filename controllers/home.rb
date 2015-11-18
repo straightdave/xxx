@@ -12,5 +12,5 @@ get '/' do
     else
       @qs = Question.order(created_at: :desc).take(number)
   end
-  erb :home, layout: :basic_layout
+  erb :home
 end

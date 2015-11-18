@@ -1,8 +1,7 @@
-# actions for questions
 get '/ask' do
   if login?
-    erb :ask, layout: :basic_layout
+    erb :ask
   else
-    "Not login yet"
+    json ret: "error", msg: "need_login"    
   end
 end

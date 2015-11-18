@@ -1,9 +1,8 @@
-<!--
- * homepage
--->
+<!-- homepage -->
 <div class="container">
   <div class="jumbotron">
-    今天，又遇到棘手的法律问题啦？ &nbsp; <a class="btn btn-primary btn-lg" href="<%= url('/ask') %>" role="button">我要提问</a>
+    又遇到棘手的法律问题啦？:-(  &nbsp;
+    <a class="btn btn-primary btn-lg" onclick="javascript:ask();" role="button">我要提问</a>
   </div>
 
   <div class="row">
@@ -60,3 +59,14 @@
     </div>
   </div>
 </div> <!-- end of container -->
+<script>
+  function ask() {
+    $.get("/check_login", function (data,s) {
+      if(data.ret){
+        location.href = "/ask"
+      } else {
+        $("div#myModal").show();
+      }
+    });
+  }
+</script>

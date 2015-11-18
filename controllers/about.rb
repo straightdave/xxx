@@ -1,4 +1,7 @@
-# for /about
 get '/about' do
-  erb :about, layout: :basic_layout
+  erb :about
+end
+
+get '/terms' do
+  erb :terms
 end

@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'tilt/erb'
+require 'sinatra/json'
 require 'active_record'
 require_relative 'models/init'
 require_relative 'controllers/init'
@@ -21,12 +22,12 @@ after do
   ActiveRecord::Base.connection.close
 end
 
-# set session
-use Rack::Session::Pool, expire_after: 2592000
+# set session, 10 hours for default
+# remember me => store login in db, 1 week
+use Rack::Session::Pool, expire_after: 36000, http_only: true
 
 # other config
 configure do
-
   # enable_mailing_activate
   # when enabled, will send activating mail to registering user
   # when disabled, will automatically activate user after registering
@@ -34,10 +35,4 @@ configure do
 
   # set public folder
   set :public_folder, File.dirname(__FILE__) + '/public'
-
-end
-
-# set :show_exceptions, false
-error do
-  "just got fucked!"
 end

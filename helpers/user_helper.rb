@@ -6,7 +6,7 @@ helpers do
   end
 
   def login?
-    session[:login_email] != nil
+    session[:login_email] != nil && session[:user_id] != nil
   end
 
   def login_user(user)

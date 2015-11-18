@@ -61,67 +61,78 @@
                              data-dismiss="modal" aria-hidden="true">
                           &times;
                      </button>
-                     <h4 class="modal-title" id="myModalLabel">
-                         登录
-                     </h4>
+                     <h5 class="modal-title" id="myModalLabel">登录</h5>
                    </div> <!-- end of modal header -->
                    <div class="modal-body">
                      <p>
                        <div class="form-group has-feedback">
-                         <input class="form-control" type="text" name="username" placeholder="用户名" />
+                         <input class="form-control"
+                                type="email" name="login_email" placeholder="用户邮箱" />
                          <span class="form-control-feedback fui-user"></span>
                        </div>
                      </p>
                      <p>
                        <div class="form-group has-feedback">
-                         <input class="form-control" type="password" name="password" placeholder="密码" />
+                         <input class="form-control"
+                                type="password" name="password" placeholder="密码" />
                          <span class="form-control-feedback fui-lock"></span>
                        </div>
                      </p>
-                     <label><input type="checkbox" name="rememberme" />下次自动登录</label>
+                     <div id="err-msg" class="text-danger"></div>
+                     <label>
+                       <input type="checkbox" name="rememberme" />
+                       &nbsp;下次自动登录
+                     </label>
                      <input type="button" value=" 登录 " class="btn btn-primary"
-                            style="margin-left: 10px;" onclick="javascript:login();" />
+                            style="margin-left: 10px;"
+                            onclick="javascript:login();" />
                      <h6>没有帐户？</h6>
-                     <p><a href="<%= url('/register') %>" class="btn btn-default">注册</a></p>
+                     <p>
+                       <a href="<%= url('/register') %>"
+                         class="btn btn-default">注册</a>
+                     </p>
                    </div> <!-- /modal-body -->
                  </div> <!-- /.modal-content -->
                </div> <!-- modal dialog -->
             </div> <!-- /.modal -->
 
             <script>
-              function set_error(item, msg = '') {
+              function set_error(item, msg) {
                 item.parent().addClass("has-error");
-                if (msg != '') {
-                  item.attr('placeholder', msg);
-                }
+                item.val("");
+                item.attr('placeholder', msg);
+              }
+
+              function set_ok(item) {
+                item.parent().removeClass("has-error");
               }
 
               function login() {
-                is_valid = true;
-                var u = $("input[name='username']");
+                var is_valid = true;
+                var u = $("input[name='login_email']");
                 var uv = u.val().trim();
-                if (uv == '') {
-                  set_error(u, "请输入用户名")
+                if (uv == "") {
+                  set_error(u, "请输入用户名");
                   is_valid = false;
-                }
+                } else { set_ok(u); }
                 var p = $("input[name='password']");
                 var pv = p.val().trim();
-                if (pv == '') {
+                if (pv == "") {
                   set_error(p, "请输入密码");
                   is_valid = false;
-                }
+                } else { set_ok(p); }
                 if (is_valid) {
-                  var data = { "login_email" : uv, "password" : pv };
-                  $.post('/login', data, function(data_back, status) {
-                    var d = JSON.parse(data_back);
-                    if (d.result == 'success') {
-                      // refresh current page
+                  var rm = $("input[name='rememberme']").prop("checked");
+                  var data = {"login_email" : uv, "password" : pv, "rememberme" : rm};
+                  $.post("/login", data, function(d, status) {
+                    if (d.ret == "success") {
                       location.replace(location.href);
                       $("div#myModal").hide();
                     }
                     else {
                       set_error(u);
                       set_error(p);
+                      $("#err-msg").text("用户名密码不正确");
                     }
                   });
                 }
@@ -133,24 +144,48 @@
             <!-- for logged on user -->
             <li class="dropdown">
               <a href="#" class="dropdown-toggle"
-                          data-toggle="dropdown" role="button" aria-haspopup="true"
+                          data-toggle="dropdown"
+                          role="button"
+                          aria-haspopup="true"
                           aria-expanded="false">
-                <%= session[:login_email] %> &nbsp;<span class="badge">24</span><span class="caret"></span>
+                <%= session[:login_email] %> &nbsp;
+                <span class="badge">24</span>
+                <span class="caret"></span>
               </a>
               <ul class="dropdown-menu">
-                <li><a href='<%= url("/user/#{ session[:user_id] }") %>'><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;用户档案</a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;我的消息&nbsp;<span class="badge">24</span></a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;选项</a></li>
+                <li>
+                  <a href="/user/<%= session['user_id'] %>">
+                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                    &nbsp;用户档案
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+                    &nbsp;我的消息&nbsp;
+                    <span class="badge">24</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;选项
+                  </a>
+                </li>
                 <li role="separator" class="divider"></li>
-                <li><a href="#" onclick="javascript:logout();"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp;退出登录</a></li>
+                <li>
+                  <a href="#" onclick="javascript:logout();">
+                    <span class="glyphicon glyphicon-log-out" aria-hidden="true">
+                    </span>&nbsp;退出登录
+                  </a>
+                </li>
               </ul>
             </li>
-
             <script>
               function logout() {
-                $.post('/logout',function() { location.replace('/') });
+                $.post('/logout', function() {location.replace('/')});
               }
             </script>
+
             <% end %>
 
           </ul>
@@ -170,7 +205,10 @@
         <div class="row">
           <div class="col-md-6">
             <h4>韩非子说<h4>
-            <p>本网站所遵循 <a href="http://creativecommons.org/licenses/by/3.0/" target="_blank">CC BY 3.0</a>协议发布</p>
+            <p>本网站所遵循
+              <a href="http://creativecommons.org/licenses/by/3.0/" target="_blank">CC BY 3.0</a>
+              协议发布
+            </p>
           </div>
           <div class="col-md-6">
             <div class="row">
@@ -186,7 +224,9 @@
               <div class="col-md-3">
                 <h6>联系方式</h6>
                 <ul class="list-unstyled">
-                  <li><a href="http://weibo.com/eyaswoo" title="官方微博" target="_blank">新浪微博</a></li>
+                  <li>
+                    <a href="http://weibo.com/eyaswoo" title="官方微博" target="_blank">新浪微博</a>
+                  </li>
                   <li><a href="mailto:eyaswoo@163.com">电子邮件</a></li>
                 </ul>
               </div>

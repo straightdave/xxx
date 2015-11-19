@@ -29,6 +29,10 @@
   color: white;
 }
 
+.listed-question .rank div.answers {
+  color: green;
+}
+
 .listed-question .rank div small {
   display: block;
   font-size: 12px;

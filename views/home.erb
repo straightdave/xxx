@@ -20,8 +20,12 @@
             <div class="scores">
               <%= q.score %><small>投票</small>
             </div>
-            <div class="answered">
-              60<small>解决</small>
+            <div <% if q.accepted_answer_id != 0 %>
+                      class="answered"
+                 <% elsif q.answers.length > 0 %>
+                      class="answers"
+                 <% end %> >
+              <%= q.answers.length %><small>回答</small>
             </div>
             <div class="views">
               <%= q.views %><small>浏览</small>
@@ -29,11 +33,18 @@
           </div>
 
           <div class="question">
-            <div class="user"><a href="#">亚里士多德 在6分钟前回答</a></div>
+            <div class="user">
+              <a href="/user/<%= q.userlogin.user_id %>">
+                <%= q.last_doer.login_email %>
+                在<%= q.last_do_at.to_s %>
+                <% if q.last_doer_id == q.user_id %>提问<% else %>回答<% end %>
+              </a>
+            </div>
             <div class="title">
-              <a href="#"><%= q.title %></a> &nbsp;
-              <span class="label label-primary">哲学问题</span>
-              <span class="label label-primary">难题</span>
+              <a href="/q/<%= q.id %>"><%= q.title %></a> &nbsp;
+              <% q.tags.each do |t| %>
+                <span class="label label-primary"><%= t.name %></span>
+              <% end %>
             </div>
           </div>
 
@@ -47,14 +58,9 @@
     <div class="col-md-3">
       <div class="tags">
           <h6>热门标签</h6>
-          <span class="label label-primary">aaa</span>
-          <span class="label label-primary">ab</span>
-          <span class="label label-primary">aaddd</span>
-          <span class="label label-primary">aasssdfs</span>
-          <span class="label label-primary">axxx</span>
-          <span class="label label-primary">hh</span>
-          <span class="label label-primary">aaa</span>
-          <span class="label label-primary">aaa11</span>
+          <% Tag.all.each do |t| %>
+            <span class="label label-primary"><%= t.name %></span>
+          <% end %>
       </div>
     </div>
   </div>
@@ -63,9 +69,9 @@
   function ask() {
     $.get("/check_login", function (data,s) {
       if(data.ret){
-        location.href = "/ask"
+        location.href = "/ask";
       } else {
-        $("div#myModal").show();
+        location.href = "/login";
       }
     });
   }

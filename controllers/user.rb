@@ -57,7 +57,11 @@ end
 
 # ===== login & logout actions =====
 get '/login' do
-  erb :login
+  if login?
+    redirect to("/")
+  else
+    erb :login
+  end
 end
 
 post '/login' do

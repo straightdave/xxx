@@ -9,7 +9,7 @@ post '/register' do
   passwd_again = params['p2']
   is_confirmed = params['c']
 
-  if UserLogin.find_by(login_email: login_email)
+  if User.find_by(login_email: login_email)
     return (json ret: "error", msg: "email_exist")
   end
 
@@ -20,7 +20,7 @@ post '/register' do
   salt = "StUpIdAsS" # here goes a random salt
   salty_passwd = add_salt(passwd_before_salt, salt)
 
-  new_login = UserLogin.new
+  new_login = User.new
   new_login.login_email = login_email
   new_login.passwd = salty_passwd
   new_login.salt = salt
@@ -68,7 +68,7 @@ post '/login' do
   login_email = params['login_email']
   passwd = params['password']
 
-  user = UserLogin.find_by(login_email: login_email)
+  user = User.find_by(login_email: login_email)
   if user && user.passwd == add_salt(passwd, user.salt)
     login_user user
     json ret: "success"
@@ -93,7 +93,7 @@ end
 
 # ====== user profile actions ======
 post '/user/:id/update' do |id|
-  user = UserLogin.find_by(user_id: id)
+  user = User.find_by(user_id: id)
   is_oneself = user && session[:login_email] == user.login_email
 
   if is_oneself
@@ -122,7 +122,7 @@ get '/user/:id/update' do | id|
 end
 
 get '/user/:id' do |id|
-  if user = UserLogin.find_by(user_id: id)
+  if user = User.find_by(user_id: id)
     if session[:login_email] == user.login_email
       if @user_info = user.userinfo
         erb :user_profile

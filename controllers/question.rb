@@ -43,3 +43,15 @@ get '/q/:qid' do |qid|
     halt 404, (erb :msg_page, locals: { title: "404 Not Found", body: "找不到您请求的资源" })
   end
 end
+
+
+# == answering ==
+post '/answering' do
+  content = params['content']
+  u_id = session[:user_id]
+  q_id = params['qid']
+
+  
+
+
+end

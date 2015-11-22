@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  self.table_name = "users"
+  self.primary_key = "user_id"
 
   # === associations ===
   # detailed info of user
@@ -22,7 +24,7 @@ class User < ActiveRecord::Base
   validates :login_email, :passwd, :salt, presence: true
 
   # virtual field: terms should be accepted
-  validates :terms_of_service, acceptance: true
+  # validates :terms_of_service, acceptance: true
 
   # login with an email
   email_regex = /\A\s*(([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})[\s\/,;]*)+\Z/i

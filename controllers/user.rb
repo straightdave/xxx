@@ -124,7 +124,7 @@ end
 get '/user/:id' do |id|
   if user = User.find_by(user_id: id)
     if session[:login_email] == user.login_email
-      if @user_info = user.userinfo
+      if @user_info = user.info
         erb :user_profile
       else
         quick_url = "/user/#{id}/update"

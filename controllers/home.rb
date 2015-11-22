@@ -7,8 +7,8 @@ get '/' do
   case @sort_by
     when 'views' then
       @qs = Question.order(views: :desc, created_at: :desc).take(number)
-    when 'score' then
-      @qs = Question.order(score: :desc, created_at: :desc).take(number)
+    when 'votes' then
+      @qs = Question.order(votes: :desc, created_at: :desc).take(number)
     else
       @qs = Question.order(created_at: :desc).take(number)
   end

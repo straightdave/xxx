@@ -29,10 +29,14 @@ class Question < ActiveRecord::Base
                           join_table: "watching_list",
                           class_name: "User",
                           foreign_key: "question_id",
-                          association_foreign_key: "user_id"
+                          association_foreign_key: "user_id",
+                          readonly: true,
+                          autosave: false,
+                          validate: false
 
   # == validates ==
   # some other restrictions wrote in controller
   validates :title, :content, presence: true
+  validates :title, length: { maximum: 300, too_long: "标题请勿超过300字符" }
 
 end

@@ -32,8 +32,6 @@ configure do
   # when disabled, will automatically activate user after registering
   set :enable_mailing_activate, false
 
-  set :session_secure, "StUpIdAsS"
-
   # set public folder
   set :public_folder, File.dirname(__FILE__) + '/public'
 end

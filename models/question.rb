@@ -10,6 +10,7 @@ class Question < ActiveRecord::Base
   belongs_to :last_doer, class_name: "User", foreign_key: "last_doer_id"
 
   has_many :comments, as: :commentable
+  has_many :votes, as: :votable
   has_many :answers
 
   # user who asked this question
@@ -38,5 +39,10 @@ class Question < ActiveRecord::Base
   # some other restrictions wrote in controller
   validates :title, :content, presence: true
   validates :title, length: { maximum: 300, too_long: "标题请勿超过300字符" }
+
+  # == helpers ==
+  def scores
+    (votes && !votes.empty?) ? (votes.inject {|sum, v| sum += v.point}) : 0
+  end
 
 end

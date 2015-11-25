@@ -1,32 +1,125 @@
+<script src="/vendors/ckeditor/ckeditor.js"></script>
 <div class="container">
   <div class="row">
-    <div class="col-md-8">
+
+    <!-- left main pad: question, comments, answers and answering input -->
+    <div class="col-md-9">
       <h5><%= @q.title %></h5>
+
+      <div class="row">
+        <div class="col-md-1">
+          <div class="votingbox">
+            <a href="#" onclick="javascript:vote();"
+               title="这个问题是个好问题，赞！">
+              <span class="glyphicon glyphicon-triangle-top"
+                    aria-hidden="true"></span>
+            </a>
+            <br>
+            <span id = "scores"><%= @q.scores %></span>
+            <br>
+
+            <a href="#" onclick="javascript:vote(1);"
+               title="这问题太逊了，埋了它！">
+              <span class="glyphicon glyphicon-triangle-bottom"
+                    aria-hidden="true"></span>
+            </a>
+            <br>
+            <a href="#" onclick="javascript:watch();"
+               title="收藏"
+               class="<% if @watched %>watched<% else %>watching<% end %>">
+              <span class="glyphicon glyphicon-star" aria-hidden="true">
+              </span>
+            </a>
+          </div>
+        </div>  <!-- end of voting box -->
+
+        <div class="col-md-11">
+          <div class="context">
+            <%= @q.content %>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="tags">
+                  <% @q.tags.each do |t| %>
+                    <span class="label label-primary"><%= t.name %></span>
+                  <% end %>
+              </div>
+            </div>
+
+            <div class="col-sm-4 col-sm-offset-4 text-right">
+              <div class="authorbox">
+                author here...
+              </div>
+            </div>
+          </div>
+          <br>
+
+          <div class="row">
+            <div class="col-sm-4">
+              <a href="#">评论</a> &nbsp;
+            </div>
+            <div class="col-sm-4 col-sm-offset-4 text-right
+                        <% if @hidden_edit %>hidden<% end %>">
+              <a href="#">修改</a>
+            </div>
+          </div>
+          <hr>
+
+          <!-- comments go here -->
+          <div class="comments">
+            <% if !@q.comments.empty? %>
+              <% @q.comments.each do |c| %>
+                <p>
+                  <%= c.content %>
+                </p>
+              <% end %>
+            <% end %>
+          </div>
+
+          <!-- hidden comment input div here -->
+          <!--  TODO -->
+
+        </div> <!-- end of col-md-8 content column -->
+      </div> <!-- end of the first row: col-9, with title, votingbox, etc. -->
+
+      <!-- answers listed here : all col-9 width -->
+      <div class="answers">
+        <% if @q.answers.empty? %>
+          尚无作答
+        <% else %>
+          <% @q.answers.each do |a| %>
+            <p>
+              <%= a.content %>
+            </p>
+          <% end %>
+        <% end %>
+
+      </div>
+
       <hr>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-1">
-      <div class="votingbox">
-        <a href="#" onclick="javascript:vote();" title="这个问题是个好问题，赞！">
-          <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
-        </a>
-        <br>
-        <span id = "scores"><%= @q.scores %></span> <br>
-
-        <a href="#" onclick="javascript:vote(1);" title="这问题太逊了，埋了它！">
-          <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
-        </a>
+      你的回答
+      <!-- answer input box here : all col-9 width -->
+      <div class="form-group">
+        <textarea id="editor1" name="editor1"></textarea>
+        <script>
+          CKEDITOR.replace('editor1'); CKEDITOR.instances.editor1.setData("");
+        </script>
       </div>
-    </div>
-    <div class="col-md-5">
-      <div class="context">
-        <%= @q.content %>
-      </div>
-    </div>
-  </div>
+      <a class="btn btn-primary" href="#" onclick="javascript:do_answer();">
+         提交
+      </a>
+      <div id="err_msg_ask" class="text-danger"></div>
 
-</div>
+    </div> <!-- end of col-9 -->
+
+    <!-- right side ad or something others -->
+    <div class="col-md-3">
+      ads...
+    </div>
+
+  </div><!-- end of top row -->
+</div><!-- end of container -->
 <script>
   function vote(op) {
     var data = { "op" : (op == 1 ? "d" : "u") }

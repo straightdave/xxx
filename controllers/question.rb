@@ -44,6 +44,8 @@ get '/q/:qid' do |qid|
       @q.save
       set_just_viewed(qid)
     end
+    @hidden_edit = false # @q.author.user_id != session[:user_id]
+    @watched = @q.watchers.find_by(user_id: session[:user_id]) ? true : false
     erb :question
   else
     halt 404, (erb :msg_page, locals: { title: "404 Not Found", body: "找不到您请求的资源" })

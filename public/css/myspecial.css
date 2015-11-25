@@ -61,3 +61,11 @@
 div.votingbox {
   text-align: center;
 }
+
+a.watching {
+  color: gray;
+}
+
+a.watched, a.watching:hover {
+  color: gold;
+}

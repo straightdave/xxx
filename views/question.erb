@@ -2,12 +2,42 @@
   <div class="row">
     <div class="col-md-8">
       <h5><%= @q.title %></h5>
-      <p>
+      <hr>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-1">
+      <div class="votingbox">
+        <a href="#" onclick="javascript:vote();" title="这个问题是个好问题，赞！">
+          <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
+        </a>
+        <br>
+        <span id = "scores"><%= @q.scores %></span> <br>
+
+        <a href="#" onclick="javascript:vote(1);" title="这问题太逊了，埋了它！">
+          <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+        </a>
+      </div>
+    </div>
+    <div class="col-md-5">
+      <div class="context">
         <%= @q.content %>
-      </p>
+      </div>
     </div>
-    <div class="col-md-4">
-      hahahaha
-    </div>
-  </div>"
+  </div>
+
 </div>
+<script>
+  function vote(op) {
+    var data = { "op" : (op == 1 ? "d" : "u") }
+    $.post("/q/<%= @q.id %>/vote", data, function (data, status) {
+      if(data.ret == "success") {
+        var s = <%= @q.scores %>;
+        var ss = (op == 1 ? s - 1 : s + 1);
+        $("span#scores").text(ss);
+      } else {
+          alert(data.msg);
+      }
+    });
+  }
+</script>

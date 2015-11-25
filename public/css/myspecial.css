@@ -1,6 +1,7 @@
 /* for the site specials */
 /* 2015-10-30 */
 
+/* listing questions on homepage */
 .listed-question {
   height: auto;
   border-bottom: solid 1px lightgray;
@@ -38,8 +39,6 @@
   font-size: 12px;
 }
 
-# =======================
-
 .listed-question .question div {
   display: inline-block;
 }
@@ -57,33 +56,8 @@
   font-size: large;
 }
 
-# === user profile ===
-header.profile-header-all {
-  background-color: #F3F3F3;
-  padding-top: 30px;
-  display: block;
-}
 
-.profile-header {
-    padding: 10px;
-    border: 1px solid #DDD;
-    background-color: #FFF;
-    border-radius: 3px 3px 0px 0px;
-}
-
-.profile-header > .pull-left {
-    margin-right: 20px;
-}
-
-.pull-left {
-  float: left !important;
-}
-
-.media-obj {
-  display: block;
-}
-
-.avatar-128 {
-  height: 128px;
-  width: 128px;
+/* voting box */
+div.votingbox {
+  text-align: center;
 }

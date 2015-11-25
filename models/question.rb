@@ -42,7 +42,13 @@ class Question < ActiveRecord::Base
 
   # == helpers ==
   def scores
-    (votes && !votes.empty?) ? (votes.inject {|sum, v| sum += v.point}) : 0
+    @scores = 0
+    votes.each {|v| @scores += v.points} if votes && !votes.empty?
+    @scores
+  end
+
+  def scores=(new_val)
+    @score = new_val
   end
 
 end

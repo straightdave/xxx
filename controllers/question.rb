@@ -64,16 +64,17 @@ post '/q/:qid/vote' do |qid|
         vote = Vote.new
         vote.voter = u
 
-        op = params['op'] || "add"
-        if op == "add"
-          vote.point = 1
-        elsif op == "reduce"
-          vote.point = -1
+        op = params['op'] || "u"
+        if op == "u"
+          vote.points = 1
+        elsif op == "d"
+          vote.points = -1
         end
 
         q.votes << vote
 
         if vote.valid? && q.valid?
+          vote.save
           q.save # vote will be autosaved?
           json ret: "success"
         else
@@ -103,12 +104,15 @@ post '/q/:qid/answer' do |qid|
         answer.author = author
         answer.question = q
         answer.content = content
+        q.watchers << author if !q.warchers.find_by(user_id: author.user_id)
 
-        if answer.valid?
+        if answer.valid? & q.valid?
           answer.save
+          q.save
           json ret: "success", msg: answer.id
         else
-          json ret: "error", msg: answer.errors.messages.inspect
+          json ret: "error", msg: "a:" + answer.errors.messages.inspect +
+                                  ";q:" + q.errors.messages.inspect
         end
       else
         json ret: "error", msg: "user_not_found"
@@ -133,12 +137,14 @@ post '/q/:qid/comment' do |qid|
       c.author = author
       c.content = content
       q.comments << c
+      q.watchers << author if !q.warchers.find_by(user_id: author.user_id)
 
       if c.valid? && q.valid?
-        q.save    # c will be autosaved?
+        c.save    # c will be autosaved?
+        q.save
         json ret: "success", msg: c.id
       else
-        json ret: "error", msg: c.errors.messages.inspect
+        json ret: "error", msg: q.errors.messages.inspect
       end
     else
       json ret: "error", msg: "user_not_found"

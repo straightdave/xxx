@@ -27,9 +27,9 @@ post '/ask' do
   end
 
   if new_q.valid?
-    qid = new_q.save
+    new_q.save
     set_just_viewed(qid)
-    json ret: "success", msg: qid
+    json ret: "success", msg: new_q.id
   else
     json ret: "error", msg: new_q.errors.messages.inspect
   end
@@ -48,9 +48,13 @@ get '/q/:qid' do |qid|
     @watched = @q.watchers.find_by(user_id: session[:user_id]) ? true : false
     erb :question
   else
-    halt 404, (erb :msg_page, locals: { title: "404 Not Found", body: "找不到您请求的资源" })
+    halt 404, (erb :msg_page, locals: {
+                title: "404 Not Found",
+                body: "找不到您请求的资源"
+              })
   end
 end
+
 
 
 # == voting ==
@@ -94,6 +98,29 @@ post '/q/:qid/vote' do |qid|
 end
 
 
+# == watching ==
+post '/q/:qid/watch' do |qid|
+  return (json ret: "error", msg: "need_login") unless login?
+
+  if q = Question.find_by(id: qid)
+    if author = User.find_by(user_id: session[:user_id])
+      q.watchers << author if !q.watchers.find_by(user_id: author.user_id)
+
+      if q.valid?
+        q.save
+        json ret: "success"
+      else
+        json ret: "error", msg: q.errors.messages
+      end
+    else
+      json ret: "error", msg: "user_not_found"
+    end
+  else
+    json ret: "error", msg: "question_not_found"
+  end
+end
+
+
 # == answering ==
 post '/q/:qid/answer' do |qid|
   return (json ret: "error", msg: "need_login") unless login?
@@ -106,7 +133,7 @@ post '/q/:qid/answer' do |qid|
         answer.author = author
         answer.question = q
         answer.content = content
-        q.watchers << author if !q.warchers.find_by(user_id: author.user_id)
+        q.watchers << author if !q.watchers.find_by(user_id: author.user_id)
 
         if answer.valid? & q.valid?
           answer.save
@@ -139,7 +166,7 @@ post '/q/:qid/comment' do |qid|
       c.author = author
       c.content = content
       q.comments << c
-      q.watchers << author if !q.warchers.find_by(user_id: author.user_id)
+      q.watchers << author if !q.watchers.find_by(user_id: author.user_id)
 
       if c.valid? && q.valid?
         c.save    # c will be autosaved?

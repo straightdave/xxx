@@ -24,9 +24,9 @@
                     aria-hidden="true"></span>
             </a>
             <br>
-            <a href="#" onclick="javascript:watch();"
-               title="收藏"
-               class="<% if @watched %>watched<% else %>watching<% end %>">
+            <a id="watchicon" href="#" onclick="javascript:watch1();"
+               title="<% if @watched %>已<% end %>收藏"
+               class="<% if @watched %>watched<% else %>watching<% end %>" >
               <span class="glyphicon glyphicon-star" aria-hidden="true">
               </span>
             </a>
@@ -129,7 +129,18 @@
         var ss = (op == 1 ? s - 1 : s + 1);
         $("span#scores").text(ss);
       } else {
-          alert(data.msg);
+        alert(data.msg);
+      }
+    });
+  }
+
+  function watch1() {
+    $.post("/q/<%= @q.id %>/watch", function (data, status) {
+      if(data.ret == "success") {
+        $("a#watchicon").attr("class", "watched");
+        $("a#watchicon").attr("title", "已收藏");
+      } else {
+        alert(data.msg);
       }
     });
   }

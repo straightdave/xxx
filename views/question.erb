@@ -10,7 +10,7 @@
         <div class="col-md-1">
           <div class="votingbox">
             <a href="#" onclick="javascript:vote();"
-               title="这个问题是个好问题，赞！">
+               title="好问题，赞！">
               <span class="glyphicon glyphicon-triangle-top"
                     aria-hidden="true"></span>
             </a>
@@ -57,32 +57,54 @@
 
           <div class="row">
             <div class="col-sm-4">
-              <a href="#">评论</a> &nbsp;
+              <a href="#" onclick="javascript:show_comment();">评论</a>
             </div>
             <div class="col-sm-4 col-sm-offset-4 text-right
                         <% if @hidden_edit %>hidden<% end %>">
               <a href="#">修改</a>
             </div>
           </div>
-          <hr>
+
+          <!-- hidden comment input div here -->
+          <div class="form-group commenting" style="display: none;">
+            <textarea id="comment_area" class="commentbox" rows="2" cols="70">
+            </textarea>
+            <a class="btn btn-primary btn-xs" href="#"
+               onclick="javascript:do_comment();"> 确认 </a>
+            <a class="btn btn-default btn-xs" href="#"
+               onclick="javascript:cancel_comment();"> 取消 </a>
+          </div>
 
           <!-- comments go here -->
           <div class="comments">
             <% if !@q.comments.empty? %>
               <% @q.comments.each do |c| %>
-                <p>
+                <div class="single-comment">
+                  <div class="">
+                    <a href="#" onclick=""
+                       title="这个问题是个好问题，赞！">
+                      <span class="glyphicon glyphicon-triangle-top"
+                            aria-hidden="true"></span>
+                    </a>
+                    <span id = "comment-scores"><%= c.scores %></span>
+                    <a href="#" onclick=""
+                       title="这问题太逊了，埋了它！">
+                      <span class="glyphicon glyphicon-triangle-bottom"
+                            aria-hidden="true"></span>
+                    </a>
+                  </div>
+
+
                   <%= c.content %>
-                </p>
+                </div>
               <% end %>
             <% end %>
           </div>
 
-          <!-- hidden comment input div here -->
-          <!--  TODO -->
-
         </div> <!-- end of col-md-8 content column -->
       </div> <!-- end of the first row: col-9, with title, votingbox, etc. -->
 
+      <hr>
       <!-- answers listed here : all col-9 width -->
       <div class="answers">
         <% if @q.answers.empty? %>
@@ -121,6 +143,32 @@
   </div><!-- end of top row -->
 </div><!-- end of container -->
 <script>
+  function show_comment() {
+    $("div.commenting").slideDown();
+  }
+
+  function cancel_comment() {
+    $("textarea#comment_area").val("");
+    $("div.commenting").slideUp();
+  }
+
+  function do_comment() {
+    var text = $("textarea#comment_area").val();
+    if(text.length < 10) {
+      alert("no less than 10 char");
+    }
+    else {
+      var data = { "content" : text };
+      $.post("/q/<%= @q.id %>/comment", data, function (data, status) {
+        if(data.ret == "success") {
+          location.replace("/q/<%= @q.id %>");
+        } else {
+          alert(data.msg);
+        }
+      });
+    }
+  }
+
   function vote(op) {
     var data = { "op" : (op == 1 ? "d" : "u") }
     $.post("/q/<%= @q.id %>/vote", data, function (data, status) {

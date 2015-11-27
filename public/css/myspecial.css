@@ -69,3 +69,11 @@ a.watching {
 a.watched, a.watching:hover {
   color: gold;
 }
+
+/* comment box */
+div.commenting a {
+  margin-bottom: 5px;
+}
+textarea.commentbox {
+  font-size: 0.8em;
+}

@@ -1,19 +1,9 @@
 class Comment < ActiveRecord::Base
-
   # == associations ==
   has_many :votes, as: :votable
   belongs_to :commentable, polymorphic: true
   belongs_to :author, class_name: "User", foreign_key: "user_id"
 
   # == helpers ==
-  def scores
-    @scores = 0
-    votes.each {|v| @scores += v.points} if votes && !votes.empty?
-    @scores
-  end
-
-  def scores=(new_val)
-    @score = new_val
-  end
-
+  include Scoring
 end

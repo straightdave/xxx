@@ -1,5 +1,4 @@
 helpers do
-
   def just_viewed_this?(qid)
     return false unless cookies[:just_viewed]
     !cookies[:just_viewed].split(':')
@@ -17,8 +16,6 @@ helpers do
 
   def already_voted?(obj)
     user_id = session[:user_id]
-    obj.votes.any? {|v| v.user_id == user_id}
+    obj.votes.any? { |v| v.user_id == user_id }
   end
-
-
 end

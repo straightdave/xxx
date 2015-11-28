@@ -25,5 +25,4 @@ helpers do
   def send_activate_mail(login_email)
     # add into mailing queue
   end
-
 end

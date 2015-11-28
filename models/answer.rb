@@ -1,5 +1,4 @@
 class Answer < ActiveRecord::Base
-
   # == associations ==
   has_many :comments, as: :commentable
   has_many :votes, as: :votable
@@ -7,14 +6,5 @@ class Answer < ActiveRecord::Base
   belongs_to :question
 
   # == helpers ==
-  def scores
-    @scores = 0
-    votes.each {|v| @scores += v.points} if votes && !votes.empty?
-    @scores
-  end
-
-  def scores=(new_val)
-    @score = new_val
-  end
-
+  include Scoring
 end

@@ -1,4 +1,5 @@
 # "load "files
+require_relative "scoring"
 require_relative "question"
 require_relative "user"
 require_relative "userinfo"

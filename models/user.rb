@@ -27,5 +27,5 @@ class User < ActiveRecord::Base
   email_regex = /\A\s*(([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})[\s\/,;]*)+\Z/i
   validates :login_email, format: { with: email_regex }, uniqueness: true
 
-  validates :passwd, length: { in: 6..20 }
+  validates :passwd, length: { in: 6..20 }  
 end

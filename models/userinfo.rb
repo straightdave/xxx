@@ -4,5 +4,4 @@ class UserInfo < ActiveRecord::Base
 
   # == validations ==
   validates :nickname, presence: true
-
 end

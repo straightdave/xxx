@@ -1,5 +1,4 @@
 class Question < ActiveRecord::Base
-
   # == associations ==
   # the accepted_answer foreign key is in question mod, so use 'belongs_to'
   belongs_to :accepted_answer, class_name: "Answer",
@@ -41,14 +40,5 @@ class Question < ActiveRecord::Base
   validates :title, length: { maximum: 300, too_long: "标题请勿超过300字符" }
 
   # == helpers ==
-  def scores
-    @scores = 0
-    votes.each {|v| @scores += v.points} if votes && !votes.empty?
-    @scores
-  end
-
-  def scores=(new_val)
-    @score = new_val
-  end
-
+  include Scoring
 end

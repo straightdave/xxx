@@ -199,7 +199,8 @@
       $.post("/q/" + qid +"/comment", data, function (data, status) {
         if(data.ret == "success") {
           location.replace("/q/" + qid);
-        } else {
+        }
+        else {
           alert(data.msg);
         }
       });
@@ -211,9 +212,9 @@
     var url = "/" + tar + "/" + id + "/vote";
     $.post(url, data, function (data, status) {
       if(data.ret == "success") {
-        var s = data.msg; // return new scores (numeric)
-        $("span[id='"+ tar +"-scores-" + id + "']").text(s);
-      } else {
+        $("span[id='"+ tar +"-scores-" + id + "']").text(data.msg);
+      }
+      else {
         alert(data.msg);
       }
     });
@@ -224,7 +225,8 @@
       if(data.ret == "success") {
         $("a#watchicon").attr("class", "watched");
         $("a#watchicon").attr("title", "已收藏");
-      } else {
+      }
+      else {
         alert(data.msg);
       }
     });
@@ -233,17 +235,19 @@
   function do_answer(qid) {
     var text = CKEDITOR.instances.editor1.getData();
     if(text.length < 10) {
-      alert(text + " >>no less than 10 char");
+      alert(text + " >> no less than 10 char");
     }
     else {
       var data = { "content" : text };
-      $.post("/q/" + qid +"/answer", data, function (data, status) {
+      $.post("/q/" + qid + "/answer", data, function (data, status) {
         if(data.ret == "success") {
           location.replace("/q/" + qid);
-        } else {
+        }
+        else {
           alert(data.msg);
         }
       });
     }
   }
+
 </script>

@@ -19,6 +19,12 @@ class User < ActiveRecord::Base
                           foreign_key: "user_id",
                           association_foreign_key: "question_id"
 
+  # user has fav tags
+  has_and_belongs_to_many :fav_tags, -> { uniq },
+                          class_name: "Tag",
+                          join_table: "user_tag",
+                          foreign_key: "user_id",
+                          association_foreign_key: "tag_id"
 
   # === validations ===
   # some should be provided

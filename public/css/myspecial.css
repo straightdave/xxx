@@ -1,6 +1,10 @@
 /* for the site specials */
 /* 2015-10-30 */
 
+div.clear {
+  clear: both;
+}
+
 /* listing questions on homepage */
 .listed-question {
   height: auto;
@@ -71,9 +75,24 @@ a.watched, a.watching:hover {
 }
 
 /* comment box */
-div.commenting a {
-  margin-bottom: 5px;
+div.comments {
+  margin-top: 15px;
 }
-textarea.commentbox {
-  font-size: 0.8em;
+
+div.single-comment {
+  padding: 5px 0;
+  border-bottom: solid 1px gray;
+}
+
+div.comment-vote, div.comment-text {
+  float: left;
+  margin-right: 10px;
+}
+
+div.comment-vote a {
+  color: gray;
+}
+
+div.comment-author {
+  float: right;
 }

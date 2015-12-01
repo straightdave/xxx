@@ -18,14 +18,15 @@ class Question < ActiveRecord::Base
 
   # one question can have multiple tags
   # one tag can appach to multiple questions
-  has_and_belongs_to_many :tags,
+  has_and_belongs_to_many :tags, -> { uniq },
                           join_table: "question_tag",
                           class_name: "Tag",
                           foreign_key: "question_id",
                           association_foreign_key: "tag_id"
 
+
   # questions can be watched by users, n:n
-  has_and_belongs_to_many :watchers,
+  has_and_belongs_to_many :watchers, -> { uniq },
                           join_table: "watching_list",
                           class_name: "User",
                           foreign_key: "question_id",

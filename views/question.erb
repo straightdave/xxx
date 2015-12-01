@@ -9,32 +9,39 @@
       <div class="row">
         <div class="col-md-1">
           <div class="votingbox">
-            <a href="#" onclick="javascript:vote();"
+            <a href="#" onclick="javascript:vote(0,'q',<%= @q.id %>);"
                title="好问题，赞！">
               <span class="glyphicon glyphicon-triangle-top"
                     aria-hidden="true"></span>
             </a>
             <br>
-            <span id = "scores"><%= @q.scores %></span>
+            <span id="q-scores-<%= @q.id %>"><%= @q.scores %></span>
             <br>
 
-            <a href="#" onclick="javascript:vote(1);"
+            <a href="#" onclick="javascript:vote(1,'q',<%= @q.id %>);"
                title="这问题太逊了，埋了它！">
               <span class="glyphicon glyphicon-triangle-bottom"
                     aria-hidden="true"></span>
             </a>
             <br>
+
             <a id="watchicon" href="#" onclick="javascript:watch1();"
                title="<% if @watched %>已<% end %>收藏"
                class="<% if @watched %>watched<% else %>watching<% end %>" >
               <span class="glyphicon glyphicon-star" aria-hidden="true">
               </span>
             </a>
+            <br>
+
+            <a id="answeredicon" href="#answer" title="跳到被标记的答案">
+              <span class="glyphicon glyphicon-ok" aria-hidden="true">
+              </span>
+            </a>
           </div>
         </div>  <!-- end of voting box -->
 
         <div class="col-md-11">
-          <div class="context">
+          <div class="question-scontent">
             <%= @q.content %>
           </div>
 
@@ -68,9 +75,9 @@
           <!-- hidden comment input div here -->
           <div class="form-group commenting" style="display: none;">
             <textarea id="comment_area" class="commentbox" rows="2" cols="70">
-            </textarea>
+            </textarea><br>
             <a class="btn btn-primary btn-xs" href="#"
-               onclick="javascript:do_comment();"> 确认 </a>
+               onclick="javascript:do_comment(<%= @q.id %>);"> 确认 </a>
             <a class="btn btn-default btn-xs" href="#"
                onclick="javascript:cancel_comment();"> 取消 </a>
           </div>
@@ -80,22 +87,29 @@
             <% if !@q.comments.empty? %>
               <% @q.comments.each do |c| %>
                 <div class="single-comment">
-                  <div class="">
-                    <a href="#" onclick=""
-                       title="这个问题是个好问题，赞！">
+                  <div class="comment-vote"> <!-- voting box -->
+                    <a href="#" onclick="javascript:vote(0,'c',<%= c.id %>)"
+                       title="这条评论很有帮助，赞！">
                       <span class="glyphicon glyphicon-triangle-top"
                             aria-hidden="true"></span>
                     </a>
-                    <span id = "comment-scores"><%= c.scores %></span>
-                    <a href="#" onclick=""
-                       title="这问题太逊了，埋了它！">
+                    <span id = "c-scores-<%= c.id %>"><%= c.scores %></span>
+                    <a href="#" onclick="javscript:vote(1,'c',<%= c.id %>)"
+                       title="这条评论不正确或者误导人，差评！">
                       <span class="glyphicon glyphicon-triangle-bottom"
                             aria-hidden="true"></span>
                     </a>
+                  </div> <!-- end of voting box -->
+
+                  <div class="comment-text">
+                    <%= c.content %>
                   </div>
 
+                  <div class="comment-author">
+                    <%= c.author.login_email %>
+                  </div>
 
-                  <%= c.content %>
+                  <div class="clear"></div>
                 </div>
               <% end %>
             <% end %>
@@ -105,19 +119,42 @@
       </div> <!-- end of the first row: col-9, with title, votingbox, etc. -->
 
       <hr>
+
       <!-- answers listed here : all col-9 width -->
       <div class="answers">
         <% if @q.answers.empty? %>
           尚无作答
         <% else %>
           <% @q.answers.each do |a| %>
-            <p>
-              <%= a.content %>
-            </p>
+            <div class="single-answer">
+              <div class="answer-vote"> <!-- voting box -->
+                <a href="#" onclick="javascript:vote(0,'a',<%= a.id %>)"
+                   title="这条回答很有帮助，赞！">
+                  <span class="glyphicon glyphicon-triangle-top"
+                        aria-hidden="true"></span>
+                </a>
+                <span id = "a-scores=<%= a.id %>"><%= a.scores %></span>
+                <a href="#" onclick="javscript:vote(1,'a',<%= a.id %>)"
+                   title="这答案不正确或者误导人，差评！">
+                  <span class="glyphicon glyphicon-triangle-bottom"
+                        aria-hidden="true"></span>
+                </a>
+              </div> <!-- end of voting box -->
+
+              <div class="answer-text">
+                <%= a.content %>
+              </div>
+
+              <div class="answer-author">
+                <%= a.author.login_email %>
+              </div>
+
+              <div class="clear"></div>
+            </div>
           <% end %>
         <% end %>
 
-      </div>
+      </div> <!-- end of listed answers -->
 
       <hr>
       你的回答
@@ -128,7 +165,7 @@
           CKEDITOR.replace('editor1'); CKEDITOR.instances.editor1.setData("");
         </script>
       </div>
-      <a class="btn btn-primary" href="#" onclick="javascript:do_answer();">
+      <a class="btn btn-primary" href="#" onclick="javascript:do_answer(<%= @q.id %>);">
          提交
       </a>
       <div id="err_msg_ask" class="text-danger"></div>
@@ -152,16 +189,16 @@
     $("div.commenting").slideUp();
   }
 
-  function do_comment() {
+  function do_comment(qid) {
     var text = $("textarea#comment_area").val();
     if(text.length < 10) {
       alert("no less than 10 char");
     }
     else {
       var data = { "content" : text };
-      $.post("/q/<%= @q.id %>/comment", data, function (data, status) {
+      $.post("/q/" + qid +"/comment", data, function (data, status) {
         if(data.ret == "success") {
-          location.replace("/q/<%= @q.id %>");
+          location.replace("/q/" + qid);
         } else {
           alert(data.msg);
         }
@@ -169,13 +206,13 @@
     }
   }
 
-  function vote(op) {
-    var data = { "op" : (op == 1 ? "d" : "u") }
-    $.post("/q/<%= @q.id %>/vote", data, function (data, status) {
+  function vote(op,tar,id) {
+    var data = { "op" : (op == 1 ? "d" : "u") };  // d for downer, u for upper
+    var url = "/" + tar + "/" + id + "/vote";
+    $.post(url, data, function (data, status) {
       if(data.ret == "success") {
-        var s = <%= @q.scores %>;
-        var ss = (op == 1 ? s - 1 : s + 1);
-        $("span#scores").text(ss);
+        var s = data.msg; // return new scores (numeric)
+        $("span[id='"+ tar +"-scores-" + id + "']").text(s);
       } else {
         alert(data.msg);
       }
@@ -191,5 +228,22 @@
         alert(data.msg);
       }
     });
+  }
+
+  function do_answer(qid) {
+    var text = CKEDITOR.instances.editor1.getData();
+    if(text.length < 10) {
+      alert(text + " >>no less than 10 char");
+    }
+    else {
+      var data = { "content" : text };
+      $.post("/q/" + qid +"/answer", data, function (data, status) {
+        if(data.ret == "success") {
+          location.replace("/q/" + qid);
+        } else {
+          alert(data.msg);
+        }
+      });
+    }
   }
 </script>

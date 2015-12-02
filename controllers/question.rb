@@ -6,7 +6,7 @@ end
 post '/ask' do
   return (json ret: "error", msg: "need_login") unless login?
 
-  author = User.find_by(user_id: session[:user_id])
+  author = User.find_by(id: session[:user_id])
 
   new_q = Question.new
   new_q.title = params['title']
@@ -40,8 +40,8 @@ get '/q/:qid' do |qid|
       @q.save
       set_just_viewed(qid)
     end
-    @hidden_edit = @q.asker.user_id != session[:user_id]
-    @watched = @q.watchers.find_by(user_id: session[:user_id]) ? true : false
+    @hidden_edit = @q.asker.id != session[:user_id]
+    @watched = @q.watchers.exists?(id: session[:user_id])
     erb :question
   else
     halt 404, (erb :msg_page, locals: {
@@ -57,7 +57,7 @@ post '/q/:qid/watch' do |qid|
   return (json ret: "error", msg: "need_login") unless login?
 
   if q = Question.find_by(id: qid)
-    if author = User.find_by(user_id: session[:user_id])
+    if author = User.find_by(id: session[:user_id])
       q.watchers << author
 
       if q.valid?
@@ -80,8 +80,8 @@ post '/q/:qid/answer' do |qid|
   return (json ret: "error", msg: "need_login") unless login?
 
   if q = Question.find_by(id: qid)
-    if q.asker.user_id != session[:user_id]
-      if author = User.find_by(user_id: session[:user_id])
+    if q.asker.id != session[:user_id]
+      if author = User.find_by(id: session[:user_id])
         content = params['content']
         answer = Answer.new
         answer.author = author

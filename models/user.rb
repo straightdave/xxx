@@ -1,12 +1,10 @@
 class User < ActiveRecord::Base
-  self.table_name = "users"
-  self.primary_key = "user_id"
-
   # === associations ===
   # detailed info of user
-  has_one :info, class_name: "UserInfo", foreign_key: "user_id"
+  has_one :info, class_name: "UserInfo"
 
-  # all answers gived by user
+  # all answers gived by this user
+  # for the sake of listing high praised answers
   has_many :answers
 
   # user asks, answers and watchs questions
@@ -27,12 +25,12 @@ class User < ActiveRecord::Base
                           association_foreign_key: "tag_id"
 
   # === validations ===
-  # some should be provided
-  validates :login_email, :passwd, :salt, presence: true
+  # login name contains only underscore, numbers and letters, no more than 50
+  validates :login_name,
+            format: { with: /\A[a-zA-Z_]+\z/ },
+            presence: true,
+            length: { in: 1..50 },
+            uniqueness: true
 
-  # login with an email
-  email_regex = /\A\s*(([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})[\s\/,;]*)+\Z/i
-  validates :login_email, format: { with: email_regex }, uniqueness: true
-
-  validates :passwd, length: { in: 6..20 }
+  validates :password, presence: true
 end

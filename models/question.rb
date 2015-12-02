@@ -40,6 +40,6 @@ class Question < ActiveRecord::Base
   validates :title, :content, presence: true
   validates :title, length: { maximum: 300, too_long: "标题请勿超过300字符" }
 
-  # == helpers ==
-  include Scoring
+  # == add mixins as a votable obj ==
+  include Votability
 end

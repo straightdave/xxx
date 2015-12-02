@@ -12,7 +12,7 @@ post %r{/([q|a|c])/(\d+)/vote} do |target, id|
 
   return (json ret: "error", msg: "target_not_found") unless obj
 
-  unless user = User.find_by(user_id: session[:user_id])
+  unless user = User.find_by(id: session[:user_id])
     return json ret: "error", msg: "user_not_found"
   end
 

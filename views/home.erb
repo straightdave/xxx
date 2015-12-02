@@ -8,14 +8,19 @@
   <div class="row">
     <div class="col-md-9">
       <ul class="nav nav-tabs">
-        <li role="presentation" class="<%= 'active' if @sort_by == 'default' %>"><a href="/">最新</a></li>
-        <li role="presentation" class="<%= 'active' if @sort_by == 'votes' %>"><a href="/?sort=votes">最热</a></li>
-        <li role="presentation" class="<%= 'active' if @sort_by == 'views' %>"><a href="/?sort=views">未回答</a></li>
+        <li role="presentation" class="<%= 'active' if @sort_by == 'default' %>">
+          <a href="/">最新</a>
+        </li>
+        <li role="presentation" class="<%= 'active' if @sort_by == 'votes' %>">
+          <a href="/?sort=votes">最热</a>
+        </li>
+        <li role="presentation" class="<%= 'active' if @sort_by == 'views' %>">
+          <a href="/?sort=views">未回答</a>
+        </li>
       </ul>
 
       <% @qs.each do |q| %>
         <div class="listed-question">
-
           <div class="rank">
             <div class="votes">
               <%= q.scores %><small>投票</small>
@@ -34,10 +39,14 @@
 
           <div class="question">
             <div class="user">
-              <a href="/user/<%= q.last_doer.user_id %>">
-                <%= q.last_doer.login_email %>
+              <a href="/user/<%= q.last_doer.id %>">
+                <%= q.last_doer.login_name %>
                 在<%= q.last_do_at.to_s %>
-                <% if q.last_do_type == 0 %>提问<% elsif q.last_do_type == 1 %>回答<% end %>
+                <% if q.last_do_type == 0 %>
+                提问
+                <% elsif q.last_do_type == 1 %>
+                回答
+                <% end %>
               </a>
             </div>
             <div class="title">

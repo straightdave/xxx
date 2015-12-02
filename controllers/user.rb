@@ -1,75 +1,53 @@
-# ===== register related actions =====
-get '/register' do
-  erb :register unless login?
+# ===== user registering actions =====
+get '/user/register' do
+  erb :user_register unless login?
 end
 
-post '/register' do
-  login_email = params['u']
-  passwd_before_salt = params['p1']
-  passwd_again = params['p2']
-  is_confirmed = params['c']
+post '/user/register' do
+  login_name = params['login_name']
+  password = params['password']
+  password_again = params['password_again']
+  is_confirmed = params['confirmed']
 
-  if User.find_by(login_email: login_email)
-    return (json ret: "error", msg: "email_exist")
+  if User.exists?(login_name: login_name)
+    return (json ret: "error", msg: "name_exist")
   end
 
-  if passwd_again != passwd_before_salt || !is_confirmed
+  if password_again != password || !is_confirmed
     return (json ret: "error", msg: "login_info_err")
   end
 
-  salt = "StUpIdAsS" # here goes a random salt
-  salty_passwd = add_salt(passwd_before_salt, salt)
+  salt = Time.now.hash.to_s[-5..-1] # here generating a random salt
+  salty_password = add_salt(password, salt)
 
   new_login = User.new
-  new_login.login_email = login_email
-  new_login.passwd = salty_passwd
+  new_login.login_name = login_name
+  new_login.password = salty_password
   new_login.salt = salt
+
+  new_login.build_info(nickname: login_name)
 
   if new_login.valid?
     new_login.save
-
-    if settings.enable_mailing_activate?
-      send_activate_mail(login_email)
-      return (json ret: "success", msg: "mail_confirm")
-    else
-      # 0 - just registered; - default
-      # 1 - activated; normal;
-      # 2 - disabled; banned;
-      # 3 - removed;
-      new_login.status = 1
-    end
-
     login_user new_login
-    json ret: "success", msg: "done"
+    json ret: "success", msg: new_login.id
   else
-    json ret: "error", msg: "login_info_err"
+    json ret: "error", msg: new_login.errors.messages.inspect
   end
-end
-
-get '/after_register' do
-  erb :msg_page, locals: {}
-end
-
-get '/mail_confirm' do
-  erb :msg_page, locals: {}
 end
 
 
 # ===== login & logout actions =====
 get '/login' do
-  if login?
-    redirect to("/")
-  else
-    erb :login
-  end
+  erb :login unless login?
 end
 
 post '/login' do
-  login_email = params['login_email']
-  passwd = params['password']
+  login_name = params['login_name']
+  password = params['password']
 
-  user = User.find_by(login_email: login_email)
-  if user && user.passwd == add_salt(passwd, user.salt)
+  user = User.find_by(login_name: login_name)
+  if user && user.password == add_salt(password, user.salt)
     login_user user
     json ret: "success"
   else
@@ -83,61 +61,45 @@ post '/logout' do
 end
 
 get '/check_login' do
-  if login?
-    json ret: true
-  else
-    json ret: false
-  end
+  (login?) ? (json ret: true) : (json ret: false)
 end
 
 
 # ====== user profile actions ======
-post '/user/:id/update' do |id|
-  user = User.find_by(user_id: id)
-  is_oneself = user && session[:login_email] == user.login_email
+# update own profile
+post '/user/profile' do
+  unless user = User.find_by(id: session[:user_id])
+    return (json ret: "error", msg: "need_login|account_error")
+  end
 
-  if is_oneself
-    user_info = user.userinfo
-    user_info.nickname = params['nickname']
-    user_info.email = params['email']
-    user_info.intro = params['intro']
+  user.info.nickname = params['nickname']
+  user.info.email = params['email']
+  user.info.intro = params['intro']
 
-    if user_info.valid?
-      user_info.save
-      json ret: "success"
-    else
-      json ret: "error", msg: "invalid_user_info"
-    end
+  if user.info.valid?
+    user.info.save
+    json ret: "success"
   else
-    json ret: "error", msg: "authentication_error"
+    json ret: "error", msg: user.info.errors.messages.inspect
   end
 end
 
-get '/user/:id/update' do | id|
-  if id == session[:user_id].to_s
-    erb :user_profile_new
-  else
-    erb :msg_page, locals: { title: "无效的请求", body: "您无法修改该用户的信息，这可能是由于您未登录引起的。" }
+# view one's own profile
+get '/user/profile' do
+  redirect to("/login?returnurl=#{request.url}") unless login?
+
+  unless @user = User.find_by(id: session[:user_id])
+    return (json ret: "error", msg: "account_error")
   end
+  erb :own_profile
 end
 
-get '/user/:id' do |id|
-  if user = User.find_by(user_id: id)
-    if session[:login_email] == user.login_email
-      if @user_info = user.info
-        erb :user_profile
-      else
-        quick_url = "/user/#{id}/update"
-        erb :msg_page,
-            locals: {
-              title: "请完善您的信息",
-              body: "<a href='#{ url(quick_url) }'>传送门</a>"
-            }
-      end
-    else
-      erb :msg_page, locals: { title: "该用户还没有输入用户信息", body: "lead to new page..." }
-    end
-  else
-    erb :msg_page, locals: { title: "用户未找到", body: "Please check user..." }
+# view other's profile
+get '/u/:name' do |name|
+  unless user = User.find_by(login_name: name)
+    return (erb :page_404, layout: false)
   end
+
+  @user_info = user.info
+  erb :user_profile
 end

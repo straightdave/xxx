@@ -106,7 +106,7 @@
                   </div>
 
                   <div class="comment-author">
-                    <%= c.author.login_email %>
+                    <%= c.author.login_name %>
                   </div>
 
                   <div class="clear"></div>
@@ -146,7 +146,7 @@
               </div>
 
               <div class="answer-author">
-                <%= a.author.login_email %>
+                <%= a.author.login_name %>
               </div>
 
               <div class="clear"></div>
@@ -165,7 +165,8 @@
           CKEDITOR.replace('editor1'); CKEDITOR.instances.editor1.setData("");
         </script>
       </div>
-      <a class="btn btn-primary" href="#" onclick="javascript:do_answer(<%= @q.id %>);">
+      <a class="btn btn-primary" href="#"
+         onclick="javascript:do_answer(<%= @q.id %>);">
          提交
       </a>
       <div id="err_msg_ask" class="text-danger"></div>

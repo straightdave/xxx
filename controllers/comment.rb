@@ -10,7 +10,7 @@ post %r{/([q|a])/(\d+)/comment} do |target, id|
 
   return (json ret: "error", msg: "target_not_found") unless obj
 
-  unless author = User.find_by(user_id: session[:user_id])
+  unless author = User.find_by(id: session[:user_id])
     return json ret: "error", msg: "user_not_found"
   end
 

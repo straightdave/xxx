@@ -67,7 +67,7 @@
                      <p>
                        <div class="form-group has-feedback">
                          <input class="form-control"
-                                type="email" name="login_email" placeholder="用户邮箱" />
+                                name="login_name" placeholder="登录名" />
                          <span class="form-control-feedback fui-user"></span>
                        </div>
                      </p>
@@ -88,7 +88,7 @@
                             onclick="javascript:login();" />
                      <h6>没有帐户？</h6>
                      <p>
-                       <a href="<%= url('/register') %>"
+                       <a href="<%= url('/user/register') %>"
                          class="btn btn-default">注册</a>
                      </p>
                    </div> <!-- /modal-body -->
@@ -109,7 +109,7 @@
 
               function login() {
                 var is_valid = true;
-                var u = $("input[name='login_email']");
+                var u = $("input[name='login_name']");
                 var uv = u.val().trim();
                 if (uv == "") {
                   set_error(u, "请输入用户名");
@@ -123,7 +123,7 @@
                 } else { set_ok(p); }
                 if (is_valid) {
                   var rm = $("input[name='rememberme']").prop("checked");
-                  var data = {"login_email" : uv, "password" : pv, "rememberme" : rm};
+                  var data = {"login_name" : uv, "password" : pv, "rememberme" : rm};
                   $.post("/login", data, function(d, status) {
                     if (d.ret == "success") {
                       location.replace(location.href);
@@ -148,13 +148,13 @@
                           role="button"
                           aria-haspopup="true"
                           aria-expanded="false">
-                <%= session[:login_email] %> &nbsp;
+                <%= session[:login_name] %> &nbsp;
                 <span class="badge">24</span>
                 <span class="caret"></span>
               </a>
               <ul class="dropdown-menu">
                 <li>
-                  <a href="/user/<%= session['user_id'] %>">
+                  <a href="/user/profile">
                     <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                     &nbsp;用户档案
                   </a>

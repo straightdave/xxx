@@ -1,5 +1,7 @@
 get '/ask' do
   return (json ret: "error", msg: "need_login") unless login?
+
+  @title = "提问"
   erb :ask
 end
 
@@ -42,6 +44,7 @@ get '/q/:qid' do |qid|
     end
     @hidden_edit = @q.asker.id != session[:user_id]
     @watched = @q.watchers.exists?(id: session[:user_id])
+    @title = @q.title[0..10] + "..."
     erb :question
   else
     halt 404, (erb :msg_page, locals: {

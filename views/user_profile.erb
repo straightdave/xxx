@@ -1,10 +1,35 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-8">
-      <h6>HAHa</h6>
+    <div class="col-md-3">
+      <div class="profile-page left-pane">
+        <div class="avatar">
+          <img alt="<%= @user_info.nickname %>"
+               src="<%= @user_info.avatar || "/avatar.jpg"%>">
+        </div>
+
+        <div class="namebox">
+
+          <h4><%= @user_info.nickname %></h4>
+          <blockquote>
+            <%= @user_info.intro || "暂时没有简介哦~" %>
+          </blockquote>
+
+          <%= @user_info.city %>
+          <%= @user_info.email %>
+
+
+        </div>
+      </div>
     </div>
-    <div class="col-md-4">
-      ...
+    <div class="col-md-6">
+      <div class="profile-page mid-pane">
+        other info
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="profile-page ads-pane">
+        ads here...
+      </div>
     </div>
   </div>
 </div>

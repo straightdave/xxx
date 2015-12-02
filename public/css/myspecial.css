@@ -90,9 +90,33 @@ div.comment-vote, div.comment-text {
 }
 
 div.comment-vote a {
-  color: gray;
+  color: lightgray;
 }
 
 div.comment-author {
   float: right;
+}
+
+
+/* user profile */
+div.profile-page {
+  border: solid 1px lightgray;
+}
+
+div.left-pane {
+  padding: 10px 20px;
+  border: solid 1px lightgray;
+  border-radius: 5px;
+}
+
+div.profile-page div.avatar {
+  margin: 0 auto;
+  width: 150px;
+  overflow: hidden;
+}
+
+div.profile-page div.avatar img {
+  margin: 0 auto;
+  width: 150px;
+  height: 150px;
 }

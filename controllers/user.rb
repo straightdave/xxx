@@ -1,5 +1,6 @@
 # ===== user registering actions =====
 get '/user/register' do
+  @title = "用户注册"
   erb :user_register unless login?
 end
 
@@ -39,6 +40,7 @@ end
 
 # ===== login & logout actions =====
 get '/login' do
+  @title = "登录"
   erb :login unless login?
 end
 
@@ -91,6 +93,8 @@ get '/user/profile' do
   unless @user = User.find_by(id: session[:user_id])
     return (json ret: "error", msg: "account_error")
   end
+
+  @title = "你的资料"
   erb :own_profile
 end
 
@@ -101,5 +105,6 @@ get '/u/:name' do |name|
   end
 
   @user_info = user.info
+  @title = user.info.nickname
   erb :user_profile
 end

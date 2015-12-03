@@ -29,7 +29,7 @@ post '/ask' do
   end
 
   new_q.save
-  set_just_viewed(qid)
+  set_just_viewed(new_q.id)
   json ret: "success", msg: new_q.id
 end
 
@@ -37,7 +37,7 @@ end
 # == display a question ==
 get '/q/:qid' do |qid|
   if @q = Question.find_by(id: qid)
-    if login? && !just_viewed_this?(qid)
+    unless just_viewed_this?(qid)
       @q.views += 1
       @q.save
       set_just_viewed(qid)

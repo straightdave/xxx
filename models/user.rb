@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
   # === validations ===
   # login name contains only underscore, numbers and letters, no more than 50
   validates :login_name,
-            format: { with: /\A[a-zA-Z_]+\z/ },
+            format: { with: /\A[0-9a-zA-Z_]+\z/ },
             presence: true,
             length: { in: 1..50 },
             uniqueness: true

@@ -22,8 +22,10 @@
           </label>
         </div>
       </p>
-      <div id="err-msg2" class="text-danger"></div>
-      <button class="btn btn-primary btn-lg" onclick="javascript:login2();">登录</a>
+      <button class="btn btn-primary btn-lg" onclick="javascript:login2();">
+        登录
+      </button>
+      <div id="err-msg2" style="margin-top:10px;" class="text-danger"></div>
     </div>
   </div>
 </div>
@@ -64,7 +66,9 @@
       };
       $.post("/login", data, function (data, status) {
         if(data.ret == "error"){
-          $("#err-msg2").text("登录名或密码错误");
+          $("#err-msg2").text("");
+          $("#err-msg2").append("登录名或密码错误。" +
+            "忘记密码？<a href='/user/iforgot?u=" + name + "'>找回密码</a>");
         } else if(data.ret == "success") {
           var return_url = GetUrlParam("returnurl") || "/";
           location.replace(return_url);

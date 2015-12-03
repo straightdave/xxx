@@ -39,7 +39,7 @@
 
           <div class="question">
             <div class="user">
-              <a href="/user/<%= q.last_doer.id %>">
+              <a href="/u/<%= q.last_doer.login_name %>">
                 <%= q.last_doer.login_name %>
                 在<%= q.last_do_at.to_s %>
                 <% if q.last_do_type == 0 %>

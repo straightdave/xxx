@@ -30,9 +30,10 @@
           </label>
         </div>
       </p>
-      <div id="err-msg2" class="text-danger"></div>
       <button class="btn btn-primary btn-lg"
-              onclick="javascript:do_register();">注册</a>
+              onclick="javascript:do_register();">注册
+      </button>
+      <div id="err-msg2" style="margin-top:10px;" class="text-danger"></div>
     </div>
   </div>
 </div>
@@ -48,7 +49,8 @@
     var name = name_input.val().trim();
     var reg=/^[a-zA-Z0-9_]{1,50}$/i;
     if (name == "" || !reg.test(name)) {
-      set_error(name_input, "请填写英文字母与数字、下划线的组合，不超过50个字符");
+      set_error(name_input, name);
+      $("#err-msg2").text("英文字母，数字和下划线的组合，不超过50个字符");
       is_valid = false;
     }
     else {
@@ -57,7 +59,8 @@
     var pass_input = $("input[id='p1']");
     var pass = pass_input.val().trim();
     if (pass == "" || pass.length < 6) {
-      set_error(pass_input, "请填写6位或以上字符密码");
+      set_error(pass_input);
+      $("#err-msg2").text("请填写6位或以上字符密码");
       is_valid = false;
     }
     else {
@@ -67,7 +70,7 @@
     var pass_again = pass_again_input.val().trim();
     if (pass_again != pass) {
       set_error(pass_again_input, "密码不一致");
-      is_valid = alse;
+      is_valid = false;
     }
     else {
       set_ok(pass_again_input);

@@ -67,6 +67,18 @@ get '/check_login' do
 end
 
 
+# === user forgot password ===
+get '/user/iforgot' do
+  @name = params["u"]
+  @title = "找回密码"
+  erb :iforgot
+end
+
+post '/user/iforgot' do
+  json ret: "success"
+end
+
+
 # ====== user profile actions ======
 # update own profile
 post '/user/profile' do

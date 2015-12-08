@@ -24,6 +24,7 @@ post %r{/([q|a])/(\d+)/comment} do |target, id|
   if c.valid? && obj.valid?
     c.save    # c will be autosaved?
     obj.save
+    send_commented_message(author, obj)
     json ret: "success", msg: c.id
   else
     json ret: "error", msg: obj.errors.messages.inspect

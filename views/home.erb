@@ -72,14 +72,3 @@
     </div>
   </div>
 </div> <!-- end of container -->
-<script>
-  function ask() {
-    $.get("/check_login", function (data,s) {
-      if(data.ret){
-        location.href = "/ask";
-      } else {
-        location.href = "/login";
-      }
-    });
-  }
-</script>

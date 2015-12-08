@@ -14,9 +14,21 @@
             <%= @user_info.intro || "暂时没有简介哦~" %>
           </blockquote>
 
-          <%= @user_info.city %>
-          <%= @user_info.email %>
+          <p>
+            <span class="glyphicon glyphicon-globe"></span>
+            &nbsp; <%= @user_info.city %>
+          </p>
 
+          <p>
+            <span class="glyphicon glyphicon-envelope"></span>
+            &nbsp; <%= @user_info.email %>
+          </p>
+
+          <p>
+            <span class="glyphicon glyphicon-earphone"></span>
+            &nbsp; <%= @user_info.contact %>
+          </p>
+          
         </div>
       </div>
     </div>

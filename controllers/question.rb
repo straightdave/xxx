@@ -1,6 +1,5 @@
 get '/ask' do
   return (json ret: "error", msg: "need_login") unless login?
-
   @title = "提问"
   erb :ask
 end
@@ -13,9 +12,8 @@ post '/ask' do
   new_q = Question.new
   new_q.title = params['title']
   new_q.content = params['content']
-  new_q.asker = author
-  new_q.watchers << author # add to asker's watching list by default
-
+  new_q.author = author
+  new_q.watchers << author # add to author's watching list by default
   new_q.last_doer = author
   new_q.last_do_type = 0 # 0 means asking
   new_q.last_do_at = Time.now
@@ -42,7 +40,7 @@ get '/q/:qid' do |qid|
       @q.save
       set_just_viewed(qid)
     end
-    @hidden_edit = @q.asker.id != session[:user_id]
+    @hidden_edit = @q.author.id != session[:user_id]
     @watched = @q.watchers.exists?(id: session[:user_id])
     @title = @q.title[0..10] + "..."
     erb :question
@@ -83,7 +81,7 @@ post '/q/:qid/answer' do |qid|
   return (json ret: "error", msg: "need_login") unless login?
 
   if q = Question.find_by(id: qid)
-    if q.asker.id != session[:user_id]
+    if q.author.id != session[:user_id]
       if author = User.find_by(id: session[:user_id])
         content = params['content']
         answer = Answer.new

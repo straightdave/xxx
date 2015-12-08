@@ -120,3 +120,18 @@ div.profile-page div.avatar img {
   width: 150px;
   height: 150px;
 }
+
+
+/* message page */
+div.msg-list-head {
+  padding-bottom: 10px;
+  border-bottom: solid 1px lightgray;
+}
+
+div.msg-list-head span {
+  margin-right: 10px;
+}
+
+div.msg-list-body div.unread {
+  background-color: lightyellow;
+}

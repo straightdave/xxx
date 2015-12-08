@@ -1,6 +1,8 @@
-require_relative 'about'
-require_relative 'user'
-require_relative 'home'
-require_relative 'question'
-require_relative 'vote'
-require_relative 'comment'
+require_relative "about"
+require_relative "user"
+require_relative "home"
+require_relative "question"
+require_relative "vote"
+require_relative "comment"
+require_relative "profile"
+require_relative "message"

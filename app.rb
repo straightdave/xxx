@@ -32,6 +32,11 @@ configure do
   # when disabled, will automatically activate user after registering
   set :enable_mailing_activate, false
 
+  # set default admin id
+  # it depends on your db restoring script
+  # check this carefully
+  set :admin_uid, 6
+
   # set public folder
   set :public_folder, File.dirname(__FILE__) + '/public'
 end

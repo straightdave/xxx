@@ -56,7 +56,7 @@
 
             <div class="col-sm-4 col-sm-offset-4 text-right">
               <div class="authorbox">
-                <%= @q.asker.info.nickname %> <br>
+                <%= @q.author.info.nickname %> <br>
                 <%= @q.created_at %>
               </div>
             </div>
@@ -181,75 +181,3 @@
 
   </div><!-- end of top row -->
 </div><!-- end of container -->
-<script>
-  function show_comment() {
-    $("div.commenting").slideDown();
-  }
-
-  function cancel_comment() {
-    $("textarea#comment_area").val("");
-    $("div.commenting").slideUp();
-  }
-
-  function do_comment(qid) {
-    var text = $("textarea#comment_area").val();
-    if(text.length < 10) {
-      alert("no less than 10 char");
-    }
-    else {
-      var data = { "content" : text };
-      $.post("/q/" + qid +"/comment", data, function (data, status) {
-        if(data.ret == "success") {
-          location.replace("/q/" + qid);
-        }
-        else {
-          alert(data.msg);
-        }
-      });
-    }
-  }
-
-  function vote(op,tar,id) {
-    var data = { "op" : (op == 1 ? "d" : "u") };  // d for downer, u for upper
-    var url = "/" + tar + "/" + id + "/vote";
-    $.post(url, data, function (data, status) {
-      if(data.ret == "success") {
-        $("span[id='"+ tar +"-scores-" + id + "']").text(data.msg);
-      }
-      else {
-        alert(data.msg);
-      }
-    });
-  }
-
-  function watch1() {
-    $.post("/q/<%= @q.id %>/watch", function (data, status) {
-      if(data.ret == "success") {
-        $("a#watchicon").attr("class", "watched");
-        $("a#watchicon").attr("title", "已收藏");
-      }
-      else {
-        alert(data.msg);
-      }
-    });
-  }
-
-  function do_answer(qid) {
-    var text = CKEDITOR.instances.editor1.getData();
-    if(text.length < 10) {
-      alert(text + " >> no less than 10 char");
-    }
-    else {
-      var data = { "content" : text };
-      $.post("/q/" + qid + "/answer", data, function (data, status) {
-        if(data.ret == "success") {
-          location.replace("/q/" + qid);
-        }
-        else {
-          alert(data.msg);
-        }
-      });
-    }
-  }
-
-</script>

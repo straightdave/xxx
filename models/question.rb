@@ -14,7 +14,7 @@ class Question < ActiveRecord::Base
 
   # user who asked this question
   # fk 'user_id' is in this model,so use 'belongs_to'
-  belongs_to :asker, class_name: "User", foreign_key: "user_id"
+  belongs_to :author, class_name: "User", foreign_key: "user_id"
 
   # one question can have multiple tags
   # one tag can appach to multiple questions

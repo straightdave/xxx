@@ -3,6 +3,9 @@ class User < ActiveRecord::Base
   # detailed info of user
   has_one :info, class_name: "UserInfo"
 
+  # inbox messages inside the site
+  has_many :inbox_messages, class_name: "Message", foreign_key: "to_uid"
+
   # all answers gived by this user
   # for the sake of listing high praised answers
   has_many :answers

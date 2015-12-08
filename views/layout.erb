@@ -8,7 +8,7 @@
     <link rel="icon" href="/favicon.ico">
     <link href="/css/bootstrap-3.3.5.min.css" rel="stylesheet">
     <link href="/vendors/flat-ui/css/flat-ui.min.css" rel="stylesheet">
-    <link href="/css/myspecial.css" rel="stylesheet">
+    <link href="/css/my.css" rel="stylesheet">
     <!--[if lt IE 9]>
       <script src="/js/html5shiv.min.js"></script>
       <script src="/js/respond.min.js"></script>
@@ -38,8 +38,8 @@
             <li class="active">
               <a href="/">
                 <span class="glyphicon glyphicon-home" aria-hidden="true">
-                </span>&nbsp;
-                  问答
+                </span>
+                &nbsp;问答
                 <span class="sr-only">(current)</span>
               </a>
             </li>
@@ -52,7 +52,9 @@
 
             <% unless login? %>
 
-            <li><a href="#" data-toggle="modal" data-target="#myModal">用户登录</a></li>
+            <li>
+              <a href="#" data-toggle="modal" data-target="#myModal">用户登录</a>
+            </li>
             <!-- modal login window -->
             <div class="modal" id="myModal" tabindex="-1" role="dialog"
                  aria-labelledby="myModalLabel" aria-hidden="true">
@@ -76,7 +78,8 @@
                      <p>
                        <div class="form-group has-feedback">
                          <input class="form-control"
-                                type="password" name="password" placeholder="密码" />
+                                type="password" name="password"
+                                placeholder="密码" />
                          <span class="form-control-feedback fui-lock"></span>
                        </div>
                      </p>
@@ -98,49 +101,6 @@
                </div> <!-- modal dialog -->
             </div> <!-- /.modal -->
 
-            <script>
-              function set_error(item, msg) {
-                item.parent().addClass("has-error");
-                item.val("");
-                item.attr('placeholder', msg);
-              }
-
-              function set_ok(item) {
-                item.parent().removeClass("has-error");
-              }
-
-              function login() {
-                var is_valid = true;
-                var u = $("input[name='login_name']");
-                var uv = u.val().trim();
-                if (uv == "") {
-                  set_error(u, "请输入用户名");
-                  is_valid = false;
-                } else { set_ok(u); }
-                var p = $("input[name='password']");
-                var pv = p.val().trim();
-                if (pv == "") {
-                  set_error(p, "请输入密码");
-                  is_valid = false;
-                } else { set_ok(p); }
-                if (is_valid) {
-                  var rm = $("input[name='rememberme']").prop("checked");
-                  var data = {"login_name" : uv, "password" : pv, "rememberme" : rm};
-                  $.post("/login", data, function(d, status) {
-                    if (d.ret == "success") {
-                      location.replace(location.href);
-                      $("div#myModal").hide();
-                    }
-                    else {
-                      set_error(u);
-                      set_error(p);
-                      $("#err-msg").text("用户名密码不正确");
-                    }
-                  });
-                }
-              }
-            </script>
-
             <% else %>
 
             <!-- for logged on user -->
@@ -151,43 +111,47 @@
                           aria-haspopup="true"
                           aria-expanded="false">
                 <%= session[:login_name] %> &nbsp;
-                <span class="badge">24</span>
+                <% if session[:message_amount] > 0 %>
+                <span class="badge"><%= session[:message_amount] %></span>
+                <% end %>
                 <span class="caret"></span>
               </a>
               <ul class="dropdown-menu">
                 <li>
                   <a href="/user/profile">
-                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-user" aria-hidden="true">
+                    </span>
                     &nbsp;用户档案
                   </a>
                 </li>
                 <li>
-                  <a href="#">
-                    <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+                  <a href="/user/messages">
+                    <span class="glyphicon glyphicon-envelope"
+                          aria-hidden="true">
+                    </span>
                     &nbsp;我的消息&nbsp;
-                    <span class="badge">24</span>
+                    <% if session[:message_amount] > 0 %>
+                    <span class="badge"><%= session[:message_amount] %></span>
+                    <% end %>
                   </a>
                 </li>
                 <li>
                   <a href="#">
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-star" aria-hidden="true">
+                    </span>
                     &nbsp;我关注的
                   </a>
                 </li>
                 <li role="separator" class="divider"></li>
                 <li>
                   <a href="#" onclick="javascript:logout();">
-                    <span class="glyphicon glyphicon-log-out" aria-hidden="true">
+                    <span class="glyphicon glyphicon-log-out"
+                          aria-hidden="true">
                     </span>&nbsp;退出登录
                   </a>
                 </li>
               </ul>
             </li>
-            <script>
-              function logout() {
-                $.post('/logout', function() {location.replace('/')});
-              }
-            </script>
 
             <% end %>
 
@@ -209,7 +173,10 @@
           <div class="col-md-6">
             <h4>韩非子说<h4>
             <p>本网站所遵循
-              <a href="http://creativecommons.org/licenses/by/3.0/" target="_blank">CC BY 3.0</a>
+              <a href="http://creativecommons.org/licenses/by/3.0/"
+                 target="_blank">
+                 CC BY 3.0
+              </a>
               协议发布
             </p>
           </div>
@@ -228,7 +195,8 @@
                 <h6>联系方式</h6>
                 <ul class="list-unstyled">
                   <li>
-                    <a href="http://weibo.com/eyaswoo" title="官方微博" target="_blank">新浪微博</a>
+                    <a href="http://weibo.com/eyaswoo"
+                       title="官方微博" target="_blank">新浪微博</a>
                   </li>
                   <li><a href="mailto:eyaswoo@163.com">电子邮件</a></li>
                 </ul>
@@ -254,11 +222,14 @@
 
     <!-- beian -->
     <ul class="list-inline text-center" style="margin-bottom:0px;">
-      <li><a href="http://www.miibeian.gov.cn/" target="_blank">京ICP备xxx号</a></li>
+      <li>
+        <a href="http://www.miibeian.gov.cn/" target="_blank">京ICP备xxx号</a>
+      </li>
       <li>京公网安备xxx</li>
     </ul>
 
     <script src="/js/jquery.min.js"></script>
     <script src="/vendors/flat-ui/js/flat-ui.min.js"></script>
+    <script src="/js/my.js"></script>
   </body>
 </html>

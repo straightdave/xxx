@@ -1,0 +1,11 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-9">
+      <% @tag.questions.each do |q| %>
+      <p>
+        <h6><%= q.title %></h6>
+      </p>
+      <% end %>
+    </div>
+  </div>
+</div>

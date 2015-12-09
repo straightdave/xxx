@@ -1,5 +1,5 @@
 # controller for homepage
-get '/' do  
+get '/' do
   @sort_by = params['sort'] || 'default'
   number = params['num'] if params['num'].to_i > 0
   number ||= 20

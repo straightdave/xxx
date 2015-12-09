@@ -1,8 +1,20 @@
 /* for the site specials */
 /* 2015-10-30 */
 
+ol.breadcrumb {
+  font-size: small;
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+}
+
 div.clear {
   clear: both;
+}
+
+/* home page tags */
+div.tags {
+  overflow: auto;
 }
 
 /* listing questions on homepage */

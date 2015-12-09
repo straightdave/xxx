@@ -1,6 +1,10 @@
 get '/ask' do
   return (json ret: "error", msg: "need_login") unless login?
   @title = "提问"
+  @breadcrumb = [
+    {name: "首页", url: '/'},
+    {name: "提问", url: '/ask', active: true}
+  ]
   erb :ask
 end
 
@@ -43,6 +47,10 @@ get '/q/:qid' do |qid|
     @hidden_edit = @q.author.id != session[:user_id]
     @watched = @q.watchers.exists?(id: session[:user_id])
     @title = @q.title[0..10] + "..."
+    @breadcrumb = [
+      {name: "问答", url: '/'},
+      {name: "问题详情", active: true}
+    ]
     erb :question
   else
     halt 404, (erb :msg_page, locals: {

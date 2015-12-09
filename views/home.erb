@@ -56,7 +56,6 @@
               <% end %>
             </div>
           </div>
-
         </div>
       <% end %>
 
@@ -66,7 +65,11 @@
       <div class="tags">
           <h6>热门标签</h6>
           <% Tag.all.each do |t| %>
-            <span class="label label-primary"><%= t.name %></span>
+            <span class="label label-primary"
+                  style="cursor:pointer;margin-right:2px;"
+                  onclick="javascript:go_tag(<%= t.id %>);">
+              <%= t.name %>
+            </span>
           <% end %>
       </div>
     </div>

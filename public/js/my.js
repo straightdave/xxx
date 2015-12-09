@@ -287,3 +287,8 @@ function do_answer(qid) {
     });
   }
 }
+
+/* tag links on homepage */
+function go_tag(id) {
+  location.replace("/t/" + id);
+}

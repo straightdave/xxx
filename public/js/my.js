@@ -28,9 +28,23 @@ function login() {
         location.replace(location.href);
       }
       else {
-        set_error(u);
-        set_error(p);
-        $("#err-msg").text("用户名密码不正确");
+        if(d.msg == "login_fail") {
+          set_error(u);
+          set_error(p);
+          $("#err-msg").text("用户名密码不正确");
+        }
+        else if(d.msg == "waiting") {
+          $("#err-msg").text("由于错误次数过多，请等待一会儿再试");
+        }
+        else if(d.msg == "fail_5") {
+          $("#err-msg").text("由于错误超过5次，请等待15秒再试");
+        }
+        else if(d.msg == "fail_10") {
+          $("#err-msg").text("由于错误超过10次，请等待30秒再试");
+        }
+        else {
+          $("#err-msg").text("未知错误");
+        }
       }
     });
   }
@@ -67,13 +81,28 @@ function login2() {
       "rememberme" : remember
     };
     $.post("/login", data, function (data, status) {
-      if(data.ret == "error"){
-        $("#err-msg2").text("");
-        $("#err-msg2").append("登录名或密码错误。" +
-          "忘记密码？<a href='/user/iforgot?u=" + name + "'>找回密码</a>");
-      } else if(data.ret == "success") {
+      if(data.ret == "success") {
         var return_url = GetUrlParam("returnurl") || "/";
         location.replace(return_url);
+      }
+      else {
+        if(data.msg == "login_fail") {
+          $("#err-msg2").text("");
+          $("#err-msg2").append("登录名或密码错误。" +
+            "忘记密码？<a href='/user/iforgot?u=" + name + "'>找回密码</a>");
+        }
+        else if(data.msg == "waiting") {
+          $("#err-msg2").text("由于错误次数过多，请等待一会儿再试");
+        }
+        else if(data.msg == "fail_5") {
+          $("#err-msg2").text("由于错误超过5次，请等待15秒再试");
+        }
+        else if(data.msg == "fail_10") {
+          $("#err-msg2").text("由于错误超过10次，请等待30秒再试");
+        }
+        else {
+          $("#err-msg2").text("未知错误");
+        }
       }
     });
   }

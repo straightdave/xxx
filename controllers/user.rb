@@ -26,6 +26,7 @@ post '/user/register' do
   new_login.password = salty_password
   new_login.salt = salt
 
+  # build user info with default nickname => login name
   new_login.build_info(nickname: login_name)
 
   if new_login.valid?
@@ -40,23 +41,54 @@ post '/user/register' do
   end
 end
 
-
 # ===== login & logout actions =====
 get '/login' do
   @title = "登录"
   erb :login unless login?
 end
 
+# login with delay logic
 post '/login' do
+  if session[:delay_start] && session[:delay_duration]
+    start_delay_sec = session[:delay_start].to_i
+    delay_duration = session[:delay_duration].to_i
+    now_sec = Time.now.to_i
+    if now_sec - start_delay_sec > delay_duration
+      # goto normal process
+      session[:delay_start] = nil
+      session[:delay_duration] = nil
+    else
+      return (json ret: "error", msg: "waiting")
+    end
+  end
+
+  try_count = session[:try_count] || 0
+  if try_count > 5 && try_count <= 10
+    session[:delay_start] = Time.now.to_i
+    session[:delay_duration] = 15
+    session[:try_count] = try_count + 1
+    return (json ret: "error", msg: "fail_5")
+  elsif try_count > 10
+    session[:delay_start] = Time.now.to_i
+    session[:delay_duration] = 30
+    session[:try_count] = nil
+    return (json ret: "error", msg: "fail_10")
+  else
+    session[:try_count] = try_count + 1
+  end
+
   login_name = params['login_name']
   password = params['password']
 
   user = User.find_by(login_name: login_name)
   if user && user.authenticate(password)
     login_user user
+    session[:try_count] = nil
+    session[:delay_start] = nil
+    session[:delay_duration] = nil
     json ret: "success"
   else
-    json ret: "error", msg: "user_not_found|passwd_error"
+    json ret: "error", msg: "login_fail"
   end
 end
 

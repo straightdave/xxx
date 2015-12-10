@@ -13,8 +13,9 @@ div.clear {
 }
 
 /* home page tags */
-div.tags {
-  overflow: auto;
+div.tags span{
+  padding: 6px;
+  display: inline-block;
 }
 
 /* listing questions on homepage */
@@ -132,7 +133,6 @@ div.profile-page div.avatar img {
   width: 150px;
   height: 150px;
 }
-
 
 /* message page */
 div.msg-list-head {

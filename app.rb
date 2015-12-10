@@ -23,8 +23,6 @@ after do
   ActiveRecord::Base.connection.close
 end
 
-use Rack::Session::Pool, expire_after: 36000, http_only: true
-
 # other config
 configure do
   # enable_mailing_activate
@@ -33,10 +31,14 @@ configure do
   set :enable_mailing_activate, false
 
   # set default admin id
-  # it depends on your db restoring script
+  # it depends on the db restoring script
   # check this carefully
   set :admin_uid, 6
 
+  # === system config begins ===
   # set public folder
   set :public_folder, File.dirname(__FILE__) + '/public'
+
+  # set rack session
+  use Rack::Session::Pool, expire_after: 60 * 60 * 24, http_only: true
 end

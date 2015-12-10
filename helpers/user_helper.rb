@@ -1,10 +1,4 @@
-require 'digest'
-
 helpers do
-  def add_salt(passwd, salt)
-    Digest::MD5.hexdigest(passwd << salt)
-  end
-
   def login?
     session[:login_name] != nil && session[:user_id] != nil
   end
@@ -19,8 +13,6 @@ helpers do
   end
 
   def logout_user
-    session[:login_name] = nil
-    session[:user_id] = nil
-    session[:message_amount] = nil
+    session.destroy
   end
 end

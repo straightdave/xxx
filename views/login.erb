@@ -4,24 +4,19 @@
       <p>
         <div class="form-group has-feedback">
           <input class="form-control" type="text" name="login_name" id="u"
-                 value="<%= URI.decode(params['u']) if params['u'] %>" placeholder="登录名" />
+                 value="<%= URI.decode(params['u']) if params['u'] %>"
+                 placeholder="登录名" />
           <span class="form-control-feedback fui-user"></span>
         </div>
       </p>
       <p>
         <div class="form-group has-feedback">
-          <input class="form-control" type="password" name="password" id="p" placeholder="密码" />
+          <input class="form-control" type="password" name="password" id="p"
+                 placeholder="密码" />
           <span class="form-control-feedback fui-lock"></span>
         </div>
       </p>
-      <p>
-        <div class="form-group">
-          <label>
-            <input type="checkbox" name="rememberme" id="r2" /> &nbsp;
-            记住我
-          </label>
-        </div>
-      </p>
+      
       <button class="btn btn-primary btn-lg" onclick="javascript:login2();">
         登录
       </button>

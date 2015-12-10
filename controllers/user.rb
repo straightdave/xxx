@@ -52,7 +52,7 @@ post '/login' do
   password = params['password']
 
   user = User.find_by(login_name: login_name)
-  if user && user.password == add_salt(password, user.salt)
+  if user && user.authenticate(password)
     login_user user
     json ret: "success"
   else

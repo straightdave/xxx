@@ -1,3 +1,5 @@
+require 'digest'
+
 class User < ActiveRecord::Base
   # === associations ===
   # detailed info of user
@@ -36,4 +38,14 @@ class User < ActiveRecord::Base
             uniqueness: true
 
   validates :password, presence: true
+
+  # === helpers ===
+  def authenticate(input_password)
+    password == add_salt(input_password, salt)
+  end
+
+  private
+  def add_salt(passwd, salt)
+    Digest::MD5.hexdigest(passwd << salt)
+  end
 end

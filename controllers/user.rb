@@ -1,7 +1,8 @@
 # ===== user registering actions =====
 get '/user/register' do
   @title = "用户注册"
-  erb :user_register unless login?
+  return erb :user_register unless login?
+  redirect to("/")
 end
 
 post '/user/register' do
@@ -42,7 +43,8 @@ end
 # ===== login & logout actions =====
 get '/login' do
   @title = "登录"
-  erb :login unless login?
+  return erb :login unless login?
+  redirect to("/")
 end
 
 # login with delay logic

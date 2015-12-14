@@ -147,3 +147,26 @@ div.msg-list-head span {
 div.msg-list-body div.unread {
   background-color: lightyellow;
 }
+
+/* user profile page */
+div.profile-main {
+  border: solid 1px lightgray;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+div.avatar-zone {
+  margin-bottom: 10px;
+}
+
+div.avatar-img, div.avatar-controls {
+  float: left;
+  margin-right: 10px;
+}
+
+div.avatar-img img {
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  align-self: stretch;
+}

@@ -332,3 +332,29 @@ function do_answer(qid) {
 function go_tag(id) {
   location.replace("/t/" + id);
 }
+
+/* update own profile page */
+function do_avatar_change() {
+  // validate input file
+
+  $("form#avatar-form").submit();
+}
+
+function do_update() {
+  var nickname = $("input[name='nickname']").val();
+  var intro = $("input[name='intro']").val();
+  var email = $("input[name='email']").val();
+  // validate things ...
+
+  var data = {
+    "nickname" : nickname,
+    "intro" : intro,
+    "email" : email
+  };
+
+  $.post("/user/profile", data, function (data, status) {
+    if(data.ret == "success") {
+      location.replace(location.href);
+    }
+  });
+}

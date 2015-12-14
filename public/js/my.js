@@ -1,5 +1,15 @@
 /* xxx project copyrights 2015-10 Dave */
 
+// for all pages' onReady actions
+$().ready(function () {
+  switch(location.pathname) {
+    case "/ask": {
+      $("input[name='title']").focus();
+      break;
+    }
+  }
+});
+
 /* login methods */
 /* login method 1: used in home page, prompt window */
 function login() {
@@ -182,6 +192,7 @@ function GetUrlParam(name) {
   var r = window.location.search.substr(1).match(reg);
   if (r!=null) return (r[2]); return null;
 }
+
 function do_register() {
   var is_valid = true;
   var name_input = $("input[id='lu']");

@@ -40,8 +40,13 @@ class User < ActiveRecord::Base
   validates :password, presence: true
 
   # === helpers ===
+  def set_password_and_salt(input_password, salt)
+    self.salt = salt
+    self.password = add_salt(input_password, salt)
+  end
+
   def authenticate(input_password)
-    password == add_salt(input_password, salt)
+    self.password == add_salt(input_password, salt)
   end
 
   private

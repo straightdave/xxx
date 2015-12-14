@@ -19,12 +19,10 @@ post '/user/register' do
   end
 
   salt = Time.now.hash.to_s[-5..-1] # here generating a random salt
-  salty_password = add_salt(password, salt)
 
   new_login = User.new
   new_login.login_name = login_name
-  new_login.password = salty_password
-  new_login.salt = salt
+  new_login.set_password_and_salt(password, salt)
 
   # build user info with default nickname => login name
   new_login.build_info(nickname: login_name)

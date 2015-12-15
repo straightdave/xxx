@@ -61,7 +61,7 @@ get '/q/:qid' do |qid|
 end
 
 
-# == watching a question ==
+# == watching or unwatching a question ==
 post '/q/:qid/watch' do |qid|
   return (json ret: "error", msg: "need_login") unless login?
 
@@ -83,6 +83,27 @@ post '/q/:qid/watch' do |qid|
   end
 end
 
+
+post '/q/:qid/unwatch' do |qid|
+  return (json ret: "error", msg: "need_login") unless login?
+
+  if q = Question.find_by(id: qid)
+    if author = User.find_by(id: session[:user_id])
+      q.watchers.delete(author)
+
+      if q.valid?
+        q.save
+        json ret: "success"
+      else
+        json ret: "error", msg: q.errors.messages
+      end
+    else
+      json ret: "error", msg: "user_not_found"
+    end
+  else
+    json ret: "error", msg: "question_not_found"
+  end
+end
 
 # == answering ==
 post '/q/:qid/answer' do |qid|

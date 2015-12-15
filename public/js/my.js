@@ -298,11 +298,41 @@ function vote(op,tar,id) {
   });
 }
 
-function watch1() {
-  $.post("/q/<%= @q.id %>/watch", function (data, status) {
+// watch and unwatch are reserved words in js. so use append "1" here
+// for watch1, it is a toggle action of the 'star' sign on the question page,
+// which is both 'to watch' or 'unwatch'
+function watch1(qid) {
+  var icon = $("a#watchicon");
+
+  if(icon.hasClass("watched")) {
+    $.post("/q/" + qid + "/unwatch", function (data, status) {
+      if(data.ret == "success") {
+        icon.removeClass("watched");
+        icon.attr("class", "watching");
+        icon.attr("title", "点击收藏");
+      }
+      else {
+        alert(data.msg);
+      }
+    });
+  }
+  else {
+    $.post("/q/" + qid + "/watch", function (data, status) {
+      if(data.ret == "success") {
+        icon.attr("class", "watched");
+        icon.attr("title", "已收藏");
+      }
+      else {
+        alert(data.msg);
+      }
+    });
+  }
+}
+
+function unwatch1(qid) {
+  $.post("/q/" + qid + "/unwatch", function (data, status) {
     if(data.ret == "success") {
-      $("a#watchicon").attr("class", "watched");
-      $("a#watchicon").attr("title", "已收藏");
+      location.replace(location.href);
     }
     else {
       alert(data.msg);

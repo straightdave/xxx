@@ -285,7 +285,12 @@ function do_comment(qid) {
   }
 }
 
-function vote(op,tar,id) {
+function vote(op, tar, id) {
+  // params:
+  // op - 0 means +1 (vote one point); 1 means -1 (devote)
+  // tar - target, 'q' for question, 'a' for answer, 'c' for comment
+  // id - target id
+  
   var data = { "op" : (op == 1 ? "d" : "u") };  // d for downer, u for upper
   var url = "/" + tar + "/" + id + "/vote";
   $.post(url, data, function (data, status) {

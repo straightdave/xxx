@@ -9,7 +9,8 @@
       <div class="row">
         <div class="col-md-1">
           <div class="votingbox">
-            <a href="#" onclick="javascript:vote(0,'q',<%= @q.id %>);"
+            <a href="javascript:void(0);"
+               onclick="javascript:vote(0,'q',<%= @q.id %>);"
                title="好问题，赞！">
               <span class="glyphicon glyphicon-triangle-top"
                     aria-hidden="true"></span>
@@ -18,14 +19,17 @@
             <span id="q-scores-<%= @q.id %>"><%= @q.scores %></span>
             <br>
 
-            <a href="#" onclick="javascript:vote(1,'q',<%= @q.id %>);"
+            <a href="javascript:void(0);"
+               onclick="javascript:vote(1,'q',<%= @q.id %>);"
                title="这问题太逊了，埋了它！">
               <span class="glyphicon glyphicon-triangle-bottom"
                     aria-hidden="true"></span>
             </a>
             <br>
 
-            <a id="watchicon" href="#" onclick="javascript:watch1(<%= @q.id %>);"
+            <a id="watchicon"
+               href="javascript:void(0);"
+               onclick="javascript:watch1(<%= @q.id %>);"
                title="<% if @watched %>已<% end %>收藏"
                class="<% if @watched %>watched<% else %>watching<% end %>" >
               <span class="glyphicon glyphicon-star" aria-hidden="true">
@@ -33,10 +37,12 @@
             </a>
             <br>
 
-            <a id="answeredicon" href="#answer" title="跳到被标记的答案">
-              <span class="glyphicon glyphicon-ok" aria-hidden="true">
-              </span>
-            </a>
+            <% if @answered %>
+              <a id="answeredicon" href="#answer" title="跳到被标记的答案">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true">
+                </span>
+              </a>
+            <% end %>
           </div>
         </div>  <!-- end of voting box -->
 
@@ -56,20 +62,26 @@
 
             <div class="col-sm-4 col-sm-offset-4 text-right">
               <div class="authorbox">
-                <%= @q.author.info.nickname %> <br>
-                <%= time_ago_in_words_zh(@q.created_at) %>
+                <img class="avatar-sm"
+                     src="<%= @q.author.info.avatar || '/avatar.jpg' %>">
+                <a href="/u/<%= @q.author.login_name %>">
+                  <%= @q.author.info.nickname %>(<%= @q.author.info.reputation %>)
+                </a>
+                <%= time_ago_in_words_zh(@q.created_at) %>提问
               </div>
             </div>
           </div>
-          <br>
+
+          <hr>
 
           <div class="row">
             <div class="col-sm-4">
-              <a href="#" onclick="javascript:show_comment();">评论</a>
+              <a href="javascript:void(0);"
+                 onclick="javascript:show_comment();">评论</a>
             </div>
             <div class="col-sm-4 col-sm-offset-4 text-right
                         <% if @hidden_edit %>hidden<% end %>">
-              <a href="#">修改</a>
+              <a href="javascript:void(0);">修改</a>
             </div>
           </div>
 
@@ -78,9 +90,11 @@
             <textarea id="comment_area"
                       class="commentbox"
                       rows="4" cols="73"></textarea><br>
-            <a class="btn btn-primary btn-xs" href="#"
+            <a class="btn btn-primary btn-xs"
+               href="javascript:void(0);"
                onclick="javascript:do_comment(<%= @q.id %>);"> 确认 </a>
-            <a class="btn btn-default btn-xs" href="#"
+            <a class="btn btn-default btn-xs"
+               href="javascript:void(0);"
                onclick="javascript:cancel_comment();"> 取消 </a>
           </div>
 
@@ -90,13 +104,15 @@
               <% @q.comments.each do |c| %>
                 <div class="single-comment">
                   <div class="comment-vote"> <!-- voting box -->
-                    <a href="#" onclick="javascript:vote(0,'c',<%= c.id %>)"
+                    <a href="javascript:void(0);"
+                       onclick="javascript:vote(0,'c',<%= c.id %>)"
                        title="这条评论很有帮助，赞！">
                       <span class="glyphicon glyphicon-triangle-top"
                             aria-hidden="true"></span>
                     </a>
                     <span id = "c-scores-<%= c.id %>"><%= c.scores %></span>
-                    <a href="#" onclick="javscript:vote(1,'c',<%= c.id %>)"
+                    <a href="javascript:void(0);"
+                       onclick="javscript:vote(1,'c',<%= c.id %>)"
                        title="这条评论不正确或者误导人，差评！">
                       <span class="glyphicon glyphicon-triangle-bottom"
                             aria-hidden="true"></span>
@@ -108,7 +124,10 @@
                   </div>
 
                   <div class="comment-author">
-                    <%= c.author.login_name %>
+                    <a href="/u/<%= c.author.login_name %>">
+                      <%= c.author.info.nickname %>(<%= c.author.info.reputation %>)
+                    </a>
+                    <%= time_ago_in_words_zh(c.created_at) %>
                   </div>
 
                   <div class="clear"></div>
@@ -127,31 +146,45 @@
         <% if @q.answers.empty? %>
           尚无作答
         <% else %>
+          <%= @q.answers.size %>个回答
+
           <% @q.answers.each do |a| %>
             <div class="single-answer">
-              <div class="answer-vote"> <!-- voting box -->
-                <a href="#" onclick="javascript:vote(0,'a',<%= a.id %>)"
-                   title="这条回答很有帮助，赞！">
-                  <span class="glyphicon glyphicon-triangle-top"
-                        aria-hidden="true"></span>
-                </a>
-                <span id = "a-scores=<%= a.id %>"><%= a.scores %></span>
-                <a href="#" onclick="javscript:vote(1,'a',<%= a.id %>)"
-                   title="这答案不正确或者误导人，差评！">
-                  <span class="glyphicon glyphicon-triangle-bottom"
-                        aria-hidden="true"></span>
-                </a>
-              </div> <!-- end of voting box -->
+              <div class="row">
+                <div class="col-md-1">
+                  <div class="votingbox"> <!-- voting box -->
+                    <a href="javascript:void(0);"
+                       onclick="javascript:vote(0,'a',<%= a.id %>);"
+                       title="这条回答很有帮助，赞！">
+                      <span class="glyphicon glyphicon-triangle-top"
+                            aria-hidden="true"></span>
+                    </a>
+                    <br>
+                    <span id = "a-scores-<%= a.id %>"><%= a.scores %></span>
+                    <br>
+                    <a href="javascript:void(0);"
+                       onclick="javscript:vote(1,'a',<%= a.id %>);"
+                       title="这答案不正确或者误导人，差评！">
+                      <span class="glyphicon glyphicon-triangle-bottom"
+                            aria-hidden="true"></span>
+                    </a>
+                  </div> <!-- end of voting box -->
+                </div>
+                <div class="col-md-11">
+                  <div class="answer-text">
+                    <%= a.content %>
+                  </div>
 
-              <div class="answer-text">
-                <%= a.content %>
+                  <div class="authorbox">
+                    <img class="avatar-sm"
+                         src="<%= a.author.info.avatar || '/avatar.jpg' %>">
+                    <a href="/u/<%= a.author.login_name %>">
+                      <%= a.author.info.nickname %>(<%= a.author.info.reputation %>)
+                    </a>
+                    <%= time_ago_in_words_zh(a.created_at) %>回答
+                  </div>
+                </div>
               </div>
-
-              <div class="answer-author">
-                <%= a.author.login_name %>
-              </div>
-
-              <div class="clear"></div>
             </div>
           <% end %>
         <% end %>
@@ -167,7 +200,8 @@
           CKEDITOR.replace('editor1'); CKEDITOR.instances.editor1.setData("");
         </script>
       </div>
-      <a class="btn btn-primary" href="#"
+      <a class="btn btn-primary"
+         href="javascript:void(0);"
          onclick="javascript:do_answer(<%= @q.id %>);">
          提交
       </a>

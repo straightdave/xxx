@@ -92,12 +92,13 @@ a.watched, a.watching:hover {
 
 /* comment box */
 div.comments {
+  font-size: 15px;
   margin-top: 15px;
 }
 
 div.single-comment {
   padding: 5px 0;
-  border-bottom: solid 1px gray;
+  margin-bottom: 10px;
 }
 
 div.comment-vote, div.comment-text {
@@ -111,6 +112,26 @@ div.comment-vote a {
 
 div.comment-author {
   float: right;
+}
+
+/* style for answers on question page */
+div.single-answer {
+  margin: 10px 0 15px 0;
+}
+
+/* user styles on question page */
+div.authorbox {
+  overflow: hidden;
+  font-size: 15px;
+}
+
+img.avatar-sm {
+  width: 50px;
+  height: 50px;
+}
+img.avatar-xs {
+  width: 20px;
+  height: 20px;
 }
 
 

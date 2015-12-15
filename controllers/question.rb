@@ -46,6 +46,7 @@ get '/q/:qid' do |qid|
     end
     @hidden_edit = @q.author.id != session[:user_id]
     @watched = @q.watchers.exists?(id: session[:user_id])
+    @answered = !@q.accepted_answer.nil?
     @title = @q.title[0..10] + "..."
     @breadcrumb = [
       {name: "问答", url: '/'},

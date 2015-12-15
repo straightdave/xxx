@@ -5,6 +5,10 @@ get '/user/messages' do
   end
   @title = "收件箱"
   @messages = user.inbox_messages
+  @breadcrumb = [
+    {name: "首页", url: '/'},
+    {name: "收件箱", active: true}
+  ]
   erb :my_messages
 end
 

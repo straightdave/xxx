@@ -1,13 +1,26 @@
 <div class="container">
   <div class="row">
     <div class="col-md-9">
-      <% @watchlist.each do |q| %>
-      <p>
-        <h6><%= q.title %></h6>
-        
-      </p>
+      <span class="watchlist-head">我关注的问题</span>
 
-      <% end %>
+      <table class="table">
+        <% @watchlist.order(created_at: :desc).each do |q| %>
+        <tr>
+          <td>
+            <a class="btn btn-default btn-sm">移除关注</a>
+          </td>
+          <td>
+            <a href="/q/<%= q.id %>">
+              <%= q.title %>
+            </a>
+          </td>
+          <td>
+            <%= q.created_at %>
+          </td>
+        </tr>
+        <% end %>
+      </table>
+
     </div>
     <div class="col-md-3">
       ads here ...

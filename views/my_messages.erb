@@ -8,29 +8,36 @@
                 onclick="javascript:mark_all_as_read();"
                 <% if session[:message_amount] == 0 %>
                   disabled="disabled"
-                <% end %>
-        >
+                <% end %> >
           将所有消息标记为已读
         </button>
       </div>
 
-      <div class="msg-list-body">
-        <% @messages.each do |m| %>
-        <div class="message <% if !m.isread then %>unread<% end %>">
-          <div class="sender">
-            <%= m.sender.nil? ? "unknown" : m.sender.info.nickname %>
-            @
-            <%= m.sent_at %>
-          </div>
-          <div class="subject">
-            <%= m.subject %>
-          </div>
-          <div class="content">
-            <%= m.content %>
-          </div>
-        </div>
+      <table class="table table-condensed">
+        <% @messages.order(sent_at: :desc).each do |m| %>
+        <tr>
+          <td>
+
+            <div class="message <% if !m.isread then %>unread<% end %>">
+              <div class="sender">
+                发件人: &nbsp;
+                <%= m.sender.nil? ? "unknown" : m.sender.info.nickname %>
+                @
+                <%= time_ago_in_words_zh(m.sent_at) %>
+              </div>
+              <div class="subject">
+                标题: &nbsp;
+                <%= m.subject %>
+              </div>
+              <div class="content">
+                <%= m.content %>
+              </div>
+            </div>
+
+          </td>
+        </tr>
         <% end %>
-      </div>
+      </table>
 
     </div>
     <div class="col-md-3">

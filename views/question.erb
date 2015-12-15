@@ -57,7 +57,7 @@
             <div class="col-sm-4 col-sm-offset-4 text-right">
               <div class="authorbox">
                 <%= @q.author.info.nickname %> <br>
-                <%= @q.created_at %>
+                <%= time_ago_in_words_zh(@q.created_at) %>
               </div>
             </div>
           </div>

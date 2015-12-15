@@ -4,7 +4,10 @@
 ol.breadcrumb {
   font-size: small;
   background-color: transparent;
-  margin: 0;
+}
+
+div.bread-pane {
+  margin-left: -10px;
   padding: 0;
 }
 
@@ -145,7 +148,7 @@ div.msg-list-head span {
 }
 
 div.msg-list-body div.unread {
-  background-color: lightyellow;
+  background-color: lightgreen;
 }
 
 /* user profile page */
@@ -169,4 +172,9 @@ div.avatar-img img {
   height: 200px;
   overflow: hidden;
   align-self: stretch;
+}
+
+/* watchlist page */
+span.watchlist-head {
+  margin-bottom: 10px;
 }

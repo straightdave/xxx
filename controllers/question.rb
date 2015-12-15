@@ -3,7 +3,7 @@ get '/ask' do
   @title = "提问"
   @breadcrumb = [
     {name: "首页", url: '/'},
-    {name: "提问", url: '/ask', active: true}
+    {name: "提问", active: true}
   ]
   erb :ask
 end

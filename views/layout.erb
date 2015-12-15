@@ -89,7 +89,7 @@
                        </div>
                      </p>
                      <div id="err-msg" class="text-danger"></div>
-                     
+
                      <input type="button" value=" 登录 " class="btn btn-primary"
                             style="margin-left: 10px;"
                             onclick="javascript:login();" />
@@ -164,13 +164,19 @@
     <!-- breadcumb -->
     <% if @breadcrumb %>
     <div class="container">
-      <ol class="breadcrumb">
-        <% @breadcrumb.each do |b| %>
-        <li <% if b[:active] %>class="active"<% end %> >
-          <a href="<%= b[:url] %>"><%= b[:name] %></a>
-        </li>
-        <% end %>
-      </ol>
+      <div class="bread-pane">
+        <ol class="breadcrumb">
+          <% @breadcrumb.each do |b| %>
+          <li <% if b[:active] %>class="active"<% end %> >
+            <% if b[:url].nil? %>
+              <%= b[:name] %>
+            <% else %>
+              <a href="<%= b[:url] %>"><%= b[:name] %></a>
+            <% end %>
+          </li>
+          <% end %>
+        </ol>
+      </div>    
     </div>
     <% end %>
 

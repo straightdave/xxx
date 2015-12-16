@@ -136,10 +136,6 @@ img.avatar-xs {
 
 
 /* user profile */
-div.profile-page {
-  border: solid 1px lightgray;
-}
-
 div.left-pane {
   padding: 10px 20px;
   border: solid 1px lightgray;
@@ -194,6 +190,12 @@ div.avatar-img img {
   overflow: hidden;
   align-self: stretch;
 }
+
+/* user sns */
+div.sns-table th, div.sns-table td {
+  text-align: center;
+}
+
 
 /* watchlist page */
 span.watchlist-head {

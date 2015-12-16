@@ -12,6 +12,19 @@ class User < ActiveRecord::Base
   # for the sake of listing high praised answers
   has_many :answers
 
+  # users that follow such users, and users whom such user follows
+  has_and_belongs_to_many :followers, -> { uniq },
+                          class_name: "User",
+                          join_table: "followinfo",
+                          foreign_key: "followee_id",
+                          association_foreign_key: "follower_id"
+
+  has_and_belongs_to_many :followees, -> { uniq },
+                          class_name: "User",
+                          join_table: "followinfo",
+                          foreign_key: "follower_id",
+                          association_foreign_key: "followee_id"
+
   # user asks, answers and watchs questions
   # user also can comment, but no need to refer to comments from users
   has_many :asked_questions, class_name: "Question"
@@ -47,6 +60,14 @@ class User < ActiveRecord::Base
 
   def authenticate(input_password)
     self.password == add_salt(input_password, salt)
+  end
+
+  def follower_size
+    followers.nil? ? 0 : followers.size
+  end
+
+  def followee_size
+    followees.nil? ? 0 : followees.size
   end
 
   private

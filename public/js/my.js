@@ -290,7 +290,7 @@ function vote(op, tar, id) {
   // op - 0 means +1 (vote one point); 1 means -1 (devote)
   // tar - target, 'q' for question, 'a' for answer, 'c' for comment
   // id - target id
-  
+
   var data = { "op" : (op == 1 ? "d" : "u") };  // d for downer, u for upper
   var url = "/" + tar + "/" + id + "/vote";
   $.post(url, data, function (data, status) {
@@ -390,6 +390,29 @@ function do_update() {
   $.post("/user/profile", data, function (data, status) {
     if(data.ret == "success") {
       location.replace(location.href);
+    }
+  });
+}
+
+/* sns */
+function do_follow(user) {
+  $.post("/u/" + user + "/follow", function (data, status) {
+    if(data.ret == "success") {
+      location.replace(location.href);
+    }
+    else {
+      alert(data.msg);
+    }
+  });
+}
+
+function cancel_follow(user) {
+  $.post("/u/" + user + "/unfollow", function (data, status) {
+    if(data.ret == "success") {
+      location.replace(location.href);
+    }
+    else {
+      alert(data.msg);
     }
   });
 }

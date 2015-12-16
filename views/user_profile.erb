@@ -28,13 +28,53 @@
             <span class="glyphicon glyphicon-earphone"></span>
             &nbsp; <%= @user_info.contact %>
           </p>
-          
+
+          <!-- SNS info -->
+          <div class="sns-pane">
+            <div class="sns-table">
+              <table class="table">
+                <tr>
+                  <th>following</th>
+                  <th>followers</th>
+                </tr>
+                <tr>
+                  <td><%= @user.followee_size %></td>
+                  <td><%= @user.follower_size %></td>
+                </tr>
+              </table>
+            </div>
+
+            <% if @followed %>
+              <a href="javascript:void(0);"
+                 class="btn btn-default btn-sm"
+                 title="unfollow"
+                 onclick="javascript:cancel_follow('<%= @user.login_name %>');">
+                取消跟随
+              </a>
+            <% else %>
+              <a href="javascript:void(0);"
+                 class="btn btn-primary btn-sm"
+                 title="follow"
+                 onclick="javascript:do_follow('<%= @user.login_name %>');">
+                跟随
+              </a>
+            <% end %>
+          </div>
+
         </div>
       </div>
     </div>
     <div class="col-md-6">
-      <div class="profile-page mid-pane">
-        other info
+      <div class="mid-pane">
+        <div class="user-info-pane" style="height: 100px;">
+          avatar
+        </div>
+        <div class="latest" style="height: 300px;">
+          ddd
+        </div>
+        <div class="latest">
+          my top 20 followers ... ordered by reputation
+        </div>
       </div>
     </div>
     <div class="col-md-3">

@@ -44,20 +44,22 @@
               </table>
             </div>
 
-            <% if @followed %>
-              <a href="javascript:void(0);"
-                 class="btn btn-default btn-sm"
-                 title="unfollow"
-                 onclick="javascript:cancel_follow('<%= @user.login_name %>');">
-                取消跟随
-              </a>
-            <% else %>
-              <a href="javascript:void(0);"
-                 class="btn btn-primary btn-sm"
-                 title="follow"
-                 onclick="javascript:do_follow('<%= @user.login_name %>');">
-                跟随
-              </a>
+            <% if @user.id != session[:user_id] %>
+              <% if @followed %>
+                <a href="javascript:void(0);"
+                   class="btn btn-default btn-sm"
+                   title="unfollow"
+                   onclick="javascript:cancel_follow('<%= @user.login_name %>');">
+                  取消跟随
+                </a>
+              <% else %>
+                <a href="javascript:void(0);"
+                   class="btn btn-primary btn-sm"
+                   title="follow"
+                   onclick="javascript:do_follow('<%= @user.login_name %>');">
+                  跟随
+                </a>
+              <% end %>
             <% end %>
           </div>
 
@@ -70,7 +72,9 @@
         <div class="user-info-pane">
           <div>
             <span>声望: <%= @user.info.reputation %></span>
-            <span id="signup"><%= time_ago_in_words_zh(@user.created_at) %>加入</span>
+            <span id="signup">
+              <%= time_ago_in_words_zh(@user.created_at) %>加入
+            </span>
           </div>
           <div>
             <span>提问: <%= @user.asked_questions.size || 0 %></span>

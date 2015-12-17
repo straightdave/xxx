@@ -379,12 +379,16 @@ function do_update() {
   var nickname = $("input[name='nickname']").val();
   var intro = $("input[name='intro']").val();
   var email = $("input[name='email']").val();
+  var contact = $("input[name='contact']").val();
+  var city = $("input[name='city']").val();
   // validate things ...
 
   var data = {
     "nickname" : nickname,
     "intro" : intro,
-    "email" : email
+    "email" : email,
+    "contact" : contact,
+    "city" : city
   };
 
   $.post("/user/profile", data, function (data, status) {

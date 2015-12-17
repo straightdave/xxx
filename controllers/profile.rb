@@ -8,6 +8,8 @@ post '/user/profile' do
   user.info.nickname = params['nickname']
   user.info.email = params['email']
   user.info.intro = params['intro']
+  user.info.contact = params['contact']
+  user.info.city = params['city']
 
   if user.info.valid?
     user.info.save

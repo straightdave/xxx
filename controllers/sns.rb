@@ -7,7 +7,7 @@ post '/u/:name/follow' do |name|
     return (json ret: "error", msg: "user_not_found")
   end
 
-  target.followers << user
+  target.followers << user unless target.followers.exists?(session[:user_id])
   if target.valid?
     target.save
     json ret: "success"

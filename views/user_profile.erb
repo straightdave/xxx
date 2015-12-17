@@ -64,22 +64,64 @@
         </div>
       </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-9">
       <div class="mid-pane">
-        <div class="user-info-pane" style="height: 100px;">
-          avatar
+
+        <div class="user-info-pane">
+          <div>
+            <span>声望: <%= @user.info.reputation %></span>
+            <span id="signup"><%= time_ago_in_words_zh(@user.created_at) %>加入</span>
+          </div>
+          <div>
+            <span>提问: <%= @user.asked_questions.size || 0 %></span>
+            <span>回答: <%= @user.answers.size || 0 %></span>
+            <span>文章: <%= @user.articles.size || 0 %></span>
+          </div>
         </div>
-        <div class="latest" style="height: 300px;">
-          ddd
-        </div>
+
+        <hr>
+
+        <!-- lastest actions -->
         <div class="latest">
-          my top 20 followers ... ordered by reputation
+          <% if @lastest_actions.size > 0 %>
+          <table>
+            <% @lastest_actions.each do |act| %>
+            <tr>
+              <td style="width:10%;">
+                <%= time_ago_in_words_zh(act.created_at) %>
+              </td>
+              <td style="width:7%;">
+                <%= act.action_type_zh %>
+              </td>
+              <td style="width:7%;">
+                <%= act.target_type_zh %>
+              </td>
+              <td>
+                <a href="<%= act.target_url %>">
+                  <%= act.target_title %>
+                </a>
+              </td>
+            </tr>
+            <% end %>
+          </table>
+          <% else %>
+            暂无动态
+          <% end %>
         </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="profile-page ads-pane">
-        ads here...
+        <hr>
+
+        <!-- fav tags -->
+        <div class="my-fav">
+          擅长标签
+          <% @user.fav_tags.each do |t| %>
+            <span class="label label-primary"
+                  style="cursor:pointer;margin-right:2px;"
+                  onclick="javascript:go_tag(<%= t.id %>);">
+              <%= t.name %>
+            </span>
+          <% end %>
+        </div>
+
       </div>
     </div>
   </div>

@@ -38,10 +38,9 @@ get '/u/:name' do |name|
 
   @user_info = @user.info
   @title = @user_info.nickname
+  @followed = @user.followers.exists?(session[:user_id]) if login?
 
-  if login? && me = User.find_by(id: session[:user_id])
-    @followed = @user.followers.exists?(me)
-  end
+  @lastest_actions = @user.lastest_actions(10)
   erb :user_profile
 end
 

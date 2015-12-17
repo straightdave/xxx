@@ -7,3 +7,7 @@ get '/articles' do
   ]
   erb :article_home
 end
+
+get '/a/:aid' do |aid|
+  "article: #{aid}"
+end

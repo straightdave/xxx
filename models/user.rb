@@ -12,6 +12,9 @@ class User < ActiveRecord::Base
   # for the sake of listing high praised answers
   has_many :answers
 
+  # articles
+  has_many :articles
+
   # users that follow such users, and users whom such user follows
   has_and_belongs_to_many :followers, -> { uniq },
                           class_name: "User",
@@ -42,6 +45,9 @@ class User < ActiveRecord::Base
                           foreign_key: "user_id",
                           association_foreign_key: "tag_id"
 
+  # user action history; this is to get all
+  has_many :historical_actions, class_name: "HistoricalAction"
+
   # === validations ===
   # login name contains only underscore, numbers and letters, no more than 50
   validates :login_name,
@@ -68,6 +74,10 @@ class User < ActiveRecord::Base
 
   def followee_size
     followees.nil? ? 0 : followees.size
+  end
+
+  def lastest_actions(num)
+    self.historical_actions.order(created_at: :desc).take(num)
   end
 
   private

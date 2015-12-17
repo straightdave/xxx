@@ -164,8 +164,12 @@ div.msg-list-head span {
   margin-right: 10px;
 }
 
-div.msg-list-body div.unread {
-  background-color: lightgreen;
+div.unread {
+  background-color: lightyellow;
+}
+
+div.message {
+  font-size: 15px;
 }
 
 /* user profile page */
@@ -189,6 +193,23 @@ div.avatar-img img {
   height: 200px;
   overflow: hidden;
   align-self: stretch;
+}
+
+div.latest table td {
+  font-size: 15px;
+  vertical-align: sub;
+}
+
+div.user-info-pane {
+  font-size: 15px;
+}
+
+div.user-info-pane span#signup {
+  color: gray;
+}
+
+div.user-info-pane span {
+  margin-right: 10px;
 }
 
 /* user sns */

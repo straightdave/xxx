@@ -29,9 +29,18 @@ post '/ask' do
   unless new_q.valid?
     return (json ret: "error", msg: new_q.errors.messages.inspect)
   end
-
   new_q.save
   set_just_viewed(new_q.id)
+  send_msg_after_ask(author, new_q)
+
+  HistoricalAction.create(
+    user_id: session[:user_id],
+    action_type: 'q',
+    target_type: 'q',
+    target_id: new_q.id,
+    created_at: Time.now
+  )
+
   json ret: "success", msg: new_q.id
 end
 
@@ -55,9 +64,9 @@ get '/q/:qid' do |qid|
     erb :question
   else
     halt 404, (erb :msg_page, locals: {
-                title: "404 Not Found",
-                body: "找不到您请求的资源"
-              })
+                              title: "404 Not Found",
+                              body: "找不到您请求的资源"
+                              })
   end
 end
 
@@ -69,7 +78,6 @@ post '/q/:qid/watch' do |qid|
   if q = Question.find_by(id: qid)
     if author = User.find_by(id: session[:user_id])
       q.watchers << author
-
       if q.valid?
         q.save
         json ret: "success"
@@ -91,7 +99,6 @@ post '/q/:qid/unwatch' do |qid|
   if q = Question.find_by(id: qid)
     if author = User.find_by(id: session[:user_id])
       q.watchers.delete(author)
-
       if q.valid?
         q.save
         json ret: "success"
@@ -123,6 +130,16 @@ post '/q/:qid/answer' do |qid|
         if answer.valid? && q.valid?
           answer.save
           q.save
+          send_msg_after_answer(q, author)
+
+          HistoricalAction.create(
+            user_id: session[:user_id],
+            action_type: 'a',
+            target_type: 'q',
+            target_id: q.id,
+            created_at: Time.now
+          )
+
           json ret: "success", msg: answer.id
         else
           json ret: "error", msg: "a:" + answer.errors.messages.inspect +

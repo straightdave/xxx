@@ -6,6 +6,8 @@ post %r{/([q|a])/(\d+)/comment} do |target, id|
     Question.find_by(id: id)
   when "a"
     Answer.find_by(id: id)
+  else
+    nil  # TODO: other commentable here, maybe articles, news ...
   end
 
   return (json ret: "error", msg: "target_not_found") unless obj
@@ -24,7 +26,16 @@ post %r{/([q|a])/(\d+)/comment} do |target, id|
   if c.valid? && obj.valid?
     c.save    # c will be autosaved?
     obj.save
-    send_commented_message(author, obj)
+    send_msg_after_comment(author, obj)
+
+    HistoricalAction.create(
+      user_id: session[:user_id],
+      action_type: 'c',
+      target_type: target,
+      target_id: id,
+      created_at: Time.now
+    )
+
     json ret: "success", msg: c.id
   else
     json ret: "error", msg: obj.errors.messages.inspect

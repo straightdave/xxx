@@ -32,7 +32,7 @@ post '/user/register' do
     new_login.save
     # login_user should invoke after message-sent
     # to store msg amount in session
-    send_welcome_message new_login.id
+    send_welcome_message new_login
     login_user new_login
     json ret: "success", msg: new_login.id
   else

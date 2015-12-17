@@ -25,9 +25,9 @@ helpers do
                               </a>"
   end
 
-  def send_welcome_message(user_id)
+  def send_welcome_message(user)
     create_inbox_msg from_uid: settings.admin_uid,
-                     to_uid: user_id,
+                     to_uid: user.id,
                      subject: "#{user.info.nickname},感谢您的加入",
                      content: "欢迎，您可以在<a href='/user/profile'>
                               这里</a>补充个人信息"

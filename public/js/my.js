@@ -262,8 +262,8 @@ function show_comment() {
   $("div.commenting").slideDown();
 }
 
-function show_comment_answer() {
-  $("div.commenting-answer").slideDown();
+function show_comment_answer(answer_id) {
+  $("div.commenting-answer-" + answer_id).slideDown();
 }
 
 function cancel_comment() {
@@ -271,9 +271,9 @@ function cancel_comment() {
   $("div.commenting").slideUp();
 }
 
-function cancel_comment_answer() {
-  $("textarea#comment_area_answer").val("");
-  $("div.commenting-answer").slideUp();
+function cancel_comment_answer(answer_id) {
+  $("textarea#comment_area_answer_" + answer_id).val("");
+  $("div.commenting-answer-" + answer_id).slideUp();
 }
 
 function do_comment(qid) {
@@ -295,7 +295,7 @@ function do_comment(qid) {
 }
 
 function do_comment_answer(aid) {
-  var text = $("textarea#comment_area_answer").val();
+  var text = $("textarea#comment_area_answer_" + aid).val();
   if(text.length < 10) {
     alert("no less than 10 char");
   }

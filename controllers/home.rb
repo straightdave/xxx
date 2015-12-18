@@ -5,17 +5,17 @@ get '/' do
   number ||= 20
 
   case @sort_by
-    when 'views'
-      @qs = Question.order(views: :desc, created_at: :desc)
-                    .take(number)
-    when 'noanswer'
-      @qs = Question.joins("LEFT OUTER JOIN answers ON questions.id = answers.question_id")
-                    .where("answers.question_id IS NULL")
-                    .order("questions.created_at desc")
-                    .take(number)
-    else
-      @qs = Question.order(created_at: :desc)
-                    .take(number)
+  when 'views'
+    @qs = Question.order(views: :desc, created_at: :desc)
+                  .take(number)
+  when 'noanswer'
+    @qs = Question.joins("LEFT OUTER JOIN answers ON questions.id = answers.question_id")
+                  .where("answers.question_id IS NULL")
+                  .order("questions.created_at desc")
+                  .take(number)
+  else
+    @qs = Question.order(created_at: :desc)
+                  .take(number)
   end
 
   # calculate hot tags

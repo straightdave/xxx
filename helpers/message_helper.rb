@@ -1,9 +1,21 @@
 helpers do
   def send_msg_after_comment(commentor, item)
+    case
+    when item.is_a?(Question)
+      subject = "#{commentor.info.nickname}给您的问题加了条注释"
+      content = "<a href='/q/#{item.id}'>点击查看</a>"
+    when item.is_a?(Answer)
+      subject = "#{commentor.info.nickname}给您的回答加了条注释"
+      content = "<a href='/q/#{item.question.id}'>点击查看</a>"
+    else
+      subject = "你某个东西被评论了"
+      content = "也不知道啥被评论了，那玩意id=#{item.id}"
+    end
+
     create_inbox_msg from_uid: settings.admin_uid,
                      to_uid: item.author.id,
-                     subject: "#{commentor.info.nickname}给您的问题加了条注释",
-                     content: "<a href='/q/#{item.id}'>点击查看</a>"
+                     subject: subject,
+                     content: content
   end
 
   def send_msg_after_ask(author, question)

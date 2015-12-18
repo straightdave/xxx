@@ -51,28 +51,22 @@
             <%= @q.content %>
           </div>
 
-          <div class="row">
-            <div class="col-sm-4">
-              <div class="tags">
-                  <% @q.tags.each do |t| %>
-                    <span class="label label-primary"><%= t.name %></span>
-                  <% end %>
-              </div>
+          <div class="tag-authorbox">
+            <div class="tags">
+                <% @q.tags.each do |t| %>
+                  <span class="label label-primary"><%= t.name %></span>
+                <% end %>
             </div>
 
-            <div class="col-sm-4 col-sm-offset-4 text-right">
-              <div class="authorbox">
-                <img class="avatar-sm"
-                     src="<%= @q.author.info.avatar || '/avatar.jpg' %>">
-                <a href="/u/<%= @q.author.login_name %>">
-                  <%= @q.author.info.nickname %>(<%= @q.author.info.reputation %>)
-                </a>
-                提问于<%= time_ago_in_words_zh(@q.created_at) %>
-              </div>
+            <div class="authorbox text-right">
+              <img class="avatar-sm"
+                   src="<%= @q.author.info.avatar || '/avatar.jpg' %>">
+              <a href="/u/<%= @q.author.login_name %>">
+                <%= @q.author.info.nickname %>(<%= @q.author.info.reputation %>)
+              </a>
+              提问于<%= time_ago_in_words_zh(@q.created_at) %>
             </div>
           </div>
-
-          <hr>
 
           <div class="row">
             <div class="col-sm-4">
@@ -139,7 +133,6 @@
         </div> <!-- end of col-md-8 content column -->
       </div> <!-- end of the first row: col-9, with title, votingbox, etc. -->
 
-      <hr>
 
       <!-- answers listed here : all col-9 width -->
       <div class="answers">
@@ -149,6 +142,7 @@
           <%= @q.answers.size %>个回答
 
           <% @q.answers.each do |a| %>
+            <hr>
             <div class="single-answer" id="a<%= a.id %>">
               <div class="row">
                 <div class="col-md-1">
@@ -184,19 +178,17 @@
                     回答于<%= time_ago_in_words_zh(a.created_at) %>
                   </div> <!-- end of author box of answer -->
 
-                  <hr>
-
                   <!-- comment func for answer -->
                   <div class="row">
                     <div class="col-sm-4">
                       <a href="javascript:void(0);"
-                         onclick="javascript:show_comment_answer();">评论</a>
+                         onclick="javascript:show_comment_answer(<%= a.id %>);">评论</a>
                     </div>
                   </div>
 
                   <!-- hidden comment input div here -->
-                  <div class="form-group commenting-answer" style="display: none;">
-                    <textarea id="comment_area_answer"
+                  <div class="form-group commenting-answer-<%= a.id %>" style="display: none;">
+                    <textarea id="comment_area_answer_<%= a.id %>"
                               class="commentbox"
                               rows="4" cols="73"></textarea><br>
                     <a class="btn btn-primary btn-xs"
@@ -245,12 +237,11 @@
                     <% end %>
                   </div>
 
-
-
                 </div>
 
               </div> <!-- end of div.row -->
             </div> <!-- end of div.single-answer -->
+
           <% end %>
         <% end %>
 

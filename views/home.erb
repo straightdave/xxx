@@ -11,11 +11,11 @@
         <li role="presentation" class="<%= 'active' if @sort_by == 'default' %>">
           <a href="/">最新</a>
         </li>
-        <li role="presentation" class="<%= 'active' if @sort_by == 'votes' %>">
-          <a href="/?sort=votes">最热</a>
-        </li>
         <li role="presentation" class="<%= 'active' if @sort_by == 'views' %>">
-          <a href="/?sort=views">未回答</a>
+          <a href="/?sort=views">最热</a>
+        </li>
+        <li role="presentation" class="<%= 'active' if @sort_by == 'noanswer' %>">
+          <a href="/?sort=noanswer">未回答</a>
         </li>
       </ul>
 
@@ -64,7 +64,7 @@
     <div class="col-md-3">
       <div class="tags">
           <h6>热门标签</h6>
-          <% Tag.all.each do |t| %>
+          <% @hot_tags.each do |t| %>
             <span class="label label-primary"
                   style="cursor:pointer;margin-right:2px;"
                   onclick="javascript:go_tag(<%= t.id %>);">

@@ -1,4 +1,7 @@
-require_relative "votability"  # mixins
+# mixins should go first
+require_relative "votability"
+
+# normal models
 require_relative "question"
 require_relative "user"
 require_relative "userinfo"

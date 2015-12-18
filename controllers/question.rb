@@ -23,7 +23,10 @@ post '/ask' do
   new_q.last_do_at = Time.now
 
   params['tags'].split(',').each do |t|
-    new_q.tags << (Tag.find_by(name: t) || Tag.create(name: t))
+    tag = Tag.find_or_create_by(name: t)
+    tag.used += 1
+    new_q.tags << tag
+    tag.save if tag.valid?
   end
 
   unless new_q.valid?
@@ -126,6 +129,9 @@ post '/q/:qid/answer' do |qid|
         answer.question = q
         answer.content = content
         q.watchers << author
+        q.last_doer = author
+        q.last_do_type = 1 # 0 means answering
+        q.last_do_at = Time.now
 
         if answer.valid? && q.valid?
           answer.save

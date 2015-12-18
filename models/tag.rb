@@ -11,4 +11,9 @@ class Tag < ActiveRecord::Base
                                      class_name: "Article",
                                      foreign_key: "tag_id",
                                      association_foreign_key: "article_id"
+
+  # == helpers ==
+  def self.top(number)
+    Tag.order(used: :desc).take(number)
+  end
 end

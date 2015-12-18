@@ -1,11 +1,13 @@
-post %r{/([q|a])/(\d+)/comment} do |target, id|
+post %r{/([q|a|w])/(\d+)/comment} do |target, id|
   return (json ret: "error", msg: "need_login") unless login?
 
   obj = case target
-  when "q"
+  when 'q'
     Question.find_by(id: id)
-  when "a"
+  when 'a'
     Answer.find_by(id: id)
+  when 'w'
+    Article.find_by(id: id)
   else
     nil  # TODO: other commentable here, maybe articles, news ...
   end

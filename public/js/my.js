@@ -262,9 +262,18 @@ function show_comment() {
   $("div.commenting").slideDown();
 }
 
+function show_comment_answer() {
+  $("div.commenting-answer").slideDown();
+}
+
 function cancel_comment() {
   $("textarea#comment_area").val("");
   $("div.commenting").slideUp();
+}
+
+function cancel_comment_answer() {
+  $("textarea#comment_area_answer").val("");
+  $("div.commenting-answer").slideUp();
 }
 
 function do_comment(qid) {
@@ -276,7 +285,25 @@ function do_comment(qid) {
     var data = { "content" : text };
     $.post("/q/" + qid +"/comment", data, function (data, status) {
       if(data.ret == "success") {
-        location.replace("/q/" + qid);
+        location.replace(location.href);
+      }
+      else {
+        alert(data.msg);
+      }
+    });
+  }
+}
+
+function do_comment_answer(aid) {
+  var text = $("textarea#comment_area_answer").val();
+  if(text.length < 10) {
+    alert("no less than 10 char");
+  }
+  else {
+    var data = { "content" : text };
+    $.post("/a/" + aid +"/comment", data, function (data, status) {
+      if(data.ret == "success") {
+        location.replace(location.href);
       }
       else {
         alert(data.msg);

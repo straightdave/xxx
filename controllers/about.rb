@@ -17,3 +17,7 @@ get '/show_session' do
   session.methods.sort.inspect + "<br>" +
   data
 end
+
+get '/404' do
+  erb :page_404, layout: false
+end

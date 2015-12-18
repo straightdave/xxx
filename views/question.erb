@@ -67,7 +67,7 @@
                 <a href="/u/<%= @q.author.login_name %>">
                   <%= @q.author.info.nickname %>(<%= @q.author.info.reputation %>)
                 </a>
-                <%= time_ago_in_words_zh(@q.created_at) %>提问
+                提问于<%= time_ago_in_words_zh(@q.created_at) %>
               </div>
             </div>
           </div>
@@ -149,7 +149,7 @@
           <%= @q.answers.size %>个回答
 
           <% @q.answers.each do |a| %>
-            <div class="single-answer">
+            <div class="single-answer" id="a<%= a.id %>">
               <div class="row">
                 <div class="col-md-1">
                   <div class="votingbox"> <!-- voting box -->
@@ -175,17 +175,82 @@
                     <%= a.content %>
                   </div>
 
-                  <div class="authorbox">
+                  <div class="authorbox text-right">
                     <img class="avatar-sm"
                          src="<%= a.author.info.avatar || '/avatar.jpg' %>">
                     <a href="/u/<%= a.author.login_name %>">
                       <%= a.author.info.nickname %>(<%= a.author.info.reputation %>)
                     </a>
-                    <%= time_ago_in_words_zh(a.created_at) %>回答
+                    回答于<%= time_ago_in_words_zh(a.created_at) %>
+                  </div> <!-- end of author box of answer -->
+
+                  <hr>
+
+                  <!-- comment func for answer -->
+                  <div class="row">
+                    <div class="col-sm-4">
+                      <a href="javascript:void(0);"
+                         onclick="javascript:show_comment_answer();">评论</a>
+                    </div>
                   </div>
+
+                  <!-- hidden comment input div here -->
+                  <div class="form-group commenting-answer" style="display: none;">
+                    <textarea id="comment_area_answer"
+                              class="commentbox"
+                              rows="4" cols="73"></textarea><br>
+                    <a class="btn btn-primary btn-xs"
+                       href="javascript:void(0);"
+                       onclick="javascript:do_comment_answer(<%= a.id %>);"> 确认 </a>
+                    <a class="btn btn-default btn-xs"
+                       href="javascript:void(0);"
+                       onclick="javascript:cancel_comment_answer();"> 取消 </a>
+                  </div>
+
+                  <!-- comments for answer -->
+                  <div class="comments">
+                    <% if !a.comments.empty? %>
+                      <% a.comments.each do |c| %>
+                        <div class="single-comment">
+                          <div class="comment-vote"> <!-- voting box -->
+                            <a href="javascript:void(0);"
+                               onclick="javascript:vote(0,'c',<%= c.id %>)"
+                               title="这条评论很有帮助，赞！">
+                              <span class="glyphicon glyphicon-triangle-top"
+                                    aria-hidden="true"></span>
+                            </a>
+                            <span id = "c-scores-<%= c.id %>"><%= c.scores %></span>
+                            <a href="javascript:void(0);"
+                               onclick="javscript:vote(1,'c',<%= c.id %>)"
+                               title="这条评论不正确或者误导人，差评！">
+                              <span class="glyphicon glyphicon-triangle-bottom"
+                                    aria-hidden="true"></span>
+                            </a>
+                          </div> <!-- end of voting box -->
+
+                          <div class="comment-text">
+                            <%= c.content %>
+                          </div>
+
+                          <div class="comment-author">
+                            <a href="/u/<%= c.author.login_name %>">
+                              <%= c.author.info.nickname %>(<%= c.author.info.reputation %>)
+                            </a>
+                            <%= time_ago_in_words_zh(c.created_at) %>
+                          </div>
+
+                          <div class="clear"></div>
+                        </div>
+                      <% end %>
+                    <% end %>
+                  </div>
+
+
+
                 </div>
-              </div>
-            </div>
+
+              </div> <!-- end of div.row -->
+            </div> <!-- end of div.single-answer -->
           <% end %>
         <% end %>
 

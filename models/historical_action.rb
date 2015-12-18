@@ -23,6 +23,8 @@ class HistoricalAction < ActiveRecord::Base
     when 'q'
       "问题"
     when 'a'
+      "问题"
+    when 'w'
       "文章"
     else
       "某种东西"
@@ -34,9 +36,15 @@ class HistoricalAction < ActiveRecord::Base
     when 'q'
       "/q/#{target_id}"
     when 'a'
-      "/a/#{target_id}"
+      if answer = Answer.find_by(id: target_id)
+        "/q/#{answer.question.id}#a#{target_id}"
+      else
+        "/404"
+      end
+    when 'w'
+      "/a/#{target_id}"    # article url
     else
-      "/"
+      "/404"
     end
   end
 
@@ -49,8 +57,14 @@ class HistoricalAction < ActiveRecord::Base
         "没找到id=#{target_id}的问题"
       end
     when 'a'
-      if a = Article.find_by(id: target_id)
-        a.title
+      if a = Answer.find_by(id: target_id)
+        "#{a.question.title}的某条回答"
+      else
+        "没找到id=#{target_id}的答案"
+      end
+    when 'w'
+      if w = Article.find_by(id: target_id)
+        w.title
       else
         "没找到id=#{target_id}的文章"
       end

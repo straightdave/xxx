@@ -15,4 +15,14 @@ helpers do
   def logout_user
     session.destroy
   end
+
+  def add_repu(user, points)
+    user.info.reputation += points
+    user.info.save if user.info.valid?
+  end
+
+  def minus_repu(user, points)
+    user.info.reputation -= points
+    user.info.save if user.info.valid?
+  end
 end

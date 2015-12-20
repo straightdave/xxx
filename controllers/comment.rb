@@ -26,9 +26,10 @@ post %r{/([q|a|w])/(\d+)/comment} do |target, id|
   obj.watchers << author if target == "q"
 
   if c.valid? && obj.valid?
-    c.save    # c will be autosaved?
+    c.save
     obj.save
     send_msg_after_comment(author, obj)
+    add_repu(author, 1)
 
     HistoricalAction.create(
       user_id: session[:user_id],

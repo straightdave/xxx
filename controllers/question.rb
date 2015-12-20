@@ -35,6 +35,7 @@ post '/ask' do
   new_q.save
   set_just_viewed(new_q.id)
   send_msg_after_ask(author, new_q)
+  add_repu(author, 2)
 
   HistoricalAction.create(
     user_id: session[:user_id],
@@ -130,13 +131,14 @@ post '/q/:qid/answer' do |qid|
         answer.content = content
         q.watchers << author
         q.last_doer = author
-        q.last_do_type = 1 # 0 means answering
+        q.last_do_type = 1    # 0 means answering
         q.last_do_at = Time.now
 
         if answer.valid? && q.valid?
           answer.save
           q.save
           send_msg_after_answer(q, author)
+          add_repu(author, 2)
 
           HistoricalAction.create(
             user_id: session[:user_id],

@@ -447,3 +447,13 @@ function cancel_follow(user) {
     }
   });
 }
+
+/* accept answer */
+function mark_as_accepted(qid, aid) {
+  var data = { "aid" : aid };
+  $.post("/q/" + qid + "/accept", data, function (data, status) {
+    if(data.ret == "success") {
+      location.replace(location.href);
+    }
+  });
+}

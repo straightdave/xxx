@@ -57,14 +57,31 @@ get '/q/:qid' do |qid|
       @q.save
       set_just_viewed(qid)
     end
-    @hidden_edit = @q.author.id != session[:user_id]
+
     @watched = @q.watchers.exists?(id: session[:user_id])
     @answered = !@q.accepted_answer.nil?
+    @hidden_mark = @q.author.id != session[:user_id] || @answered
     @title = @q.title[0..10] + "..."
     @breadcrumb = [
       {name: "问答", url: '/'},
       {name: "问题详情", active: true}
     ]
+
+    # answers order by score desc, and score must >= -2
+    # MENTION! this is how to order/query a virtual attribute of activerecord
+    # collection ( use `to_a` )
+    @answers = @q.answers
+    @answers.select { |answer| answer.scores >= -2 }
+    @answers = @answers.to_a.sort do |x, y|
+      case x.scores <=> y.scores
+      when -1
+        1
+      when 1
+        -1
+      else
+        0
+      end
+    end
     erb :question
   else
     halt 404, (erb :msg_page, locals: {
@@ -161,5 +178,32 @@ post '/q/:qid/answer' do |qid|
     end
   else
     json ret: "error", msg: "question_not_found"
+  end
+end
+
+# == mark as accepted ==
+post '/q/:qid/accept' do |qid|
+  return (json ret: "error", msg: "need_login") unless login?
+  return (json ret: "error", msg: "no_aid") unless aid = params['aid']
+
+  unless question = Question.find_by(id: qid)
+    return json ret: "error", msg: "question_not_found"
+  end
+
+  unless answer = question.answers.where(id: aid).take
+    return json ret: "error", msg: "answer_not_found"
+  end
+
+  unless question.accepted_answer.nil?
+    return json ret: "error", msg: "duplicate_mark"
+  end
+
+  question.accepted_answer = answer
+  add_repu(answer.author, 5)
+  if question.valid?
+    question.save
+    json ret: "success"
+  else
+    json ret: "error", msg: "accept_failed"
   end
 end

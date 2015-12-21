@@ -20,16 +20,16 @@ post %r{/([q|a|c])/(\d+)/vote} do |target, id|
 
   vote = Vote.new
   vote.voter = user
-
   op = params['op'] || "u"
   if op == "u"
     vote.points = 1
+    add_repu(obj.author, 1)
   elsif op == "d"
     vote.points = -1
+    minus_repu(obj.author, 2)
   end
 
   obj.votes << vote
-
   if vote.valid? && obj.valid?
     vote.save
     obj.save # vote will be autosaved?

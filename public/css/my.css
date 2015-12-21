@@ -119,6 +119,11 @@ div.single-answer {
   margin: 10px 0 15px 0;
 }
 
+span.i-am-answer {
+  font-size: 30px;
+  color: #16A085;
+}
+
 /* user styles on question page */
 div.authorbox {
   overflow: hidden;

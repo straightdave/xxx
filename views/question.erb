@@ -37,6 +37,7 @@
             </a>
             <br>
 
+            <!-- has_accepted_answer mark -->
             <% if @answered %>
               <a id="answeredicon" href="#answer" title="跳到被标记的答案">
                 <span class="glyphicon glyphicon-ok" aria-hidden="true">
@@ -73,10 +74,11 @@
               <a href="javascript:void(0);"
                  onclick="javascript:show_comment();">评论</a>
             </div>
+            <!-- TODO: for now, no modify question
             <div class="col-sm-4 col-sm-offset-4 text-right
                         <% if @hidden_edit %>hidden<% end %>">
               <a href="javascript:void(0);">修改</a>
-            </div>
+            </div> -->
           </div>
 
           <!-- hidden comment input div here -->
@@ -136,15 +138,18 @@
 
       <!-- answers listed here : all col-9 width -->
       <div class="answers">
-        <% if @q.answers.empty? %>
+        <% if @answers.empty? %>
           尚无作答
         <% else %>
-          <%= @q.answers.size %>个回答
+          <%= @answers.size %>个回答
 
-          <% @q.answers.each do |a| %>
+          <% @answers.each do |a| %>
             <hr>
             <div class="single-answer" id="a<%= a.id %>">
-              <div class="row">
+              <div class="row"
+                <% if @q.accepted_answer == a %>
+                id="answer"
+                <% end %> >
                 <div class="col-md-1">
                   <div class="votingbox"> <!-- voting box -->
                     <a href="javascript:void(0);"
@@ -162,6 +167,14 @@
                       <span class="glyphicon glyphicon-triangle-bottom"
                             aria-hidden="true"></span>
                     </a>
+
+                    <br>
+                    <!-- possible marked-as-answer sign -->
+                    <% if @q.accepted_answer == a %>
+                    <span class="glyphicon glyphicon-ok-sign i-am-answer"
+                          aria-hidden="true"></span>
+                    <% end %>
+
                   </div> <!-- end of voting box -->
                 </div>
                 <div class="col-md-11">
@@ -183,6 +196,13 @@
                     <div class="col-sm-4">
                       <a href="javascript:void(0);"
                          onclick="javascript:show_comment_answer(<%= a.id %>);">评论</a>
+                    </div>
+                    <div class="col-sm-4 col-sm-offset-4 text-right
+                                <% if @hidden_mark %>hidden<% end %>">
+                      <a href="javascript:void(0);"
+                         onclick="javascript:mark_as_accepted(<%= @q.id %>, <%= a.id %>);">
+                         标记为答案
+                      </a>
                     </div>
                   </div>
 

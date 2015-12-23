@@ -161,7 +161,6 @@ function do_ask() {
   //var div_pos = content.lastIndexOf('<div');
   //content = content.substring(0, div_pos);
   if(content.length < 10) {
-    alert(content);
     set_error($("textarea#editor1"));
     err_msg += "字数太少了吧 &nbsp; ";
     is_valid = false;

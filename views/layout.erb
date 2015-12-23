@@ -13,6 +13,7 @@
       <script src="/js/html5shiv.min.js"></script>
       <script src="/js/respond.min.js"></script>
     <![endif]-->
+    <%= yield_content :extra_css_tags %>
   </head>
   <body>
     <nav class="navbar navbar-default">
@@ -257,5 +258,6 @@
     <script src="/js/jquery.min.js"></script>
     <script src="/vendors/flat-ui/js/flat-ui.min.js"></script>
     <script src="/js/my.js"></script>
+    <%= yield_content :extra_js_tags %>
   </body>
 </html>

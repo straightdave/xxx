@@ -2,7 +2,9 @@ require 'sinatra'
 require 'tilt/erb'
 require 'sinatra/json'
 require 'sinatra/cookies'
+require 'sinatra/content_for'
 require 'active_record'
+require 'visual_captcha_cn'
 require_relative 'models/init'
 require_relative 'controllers/init'
 require_relative 'helpers/init'
@@ -18,9 +20,15 @@ ActiveRecord::Base.establish_connection(
 # let sinatra use correct timezone to save data
 ActiveRecord::Base.default_timezone = :local
 
+before do
+  @session = VisualCaptchaCN::Session.new session
+  @headers = { 'Access-Control-Allow-Origin' => '*' }
+end
+
 # avoid db connection deadlock issue
 after do
   ActiveRecord::Base.connection.close
+  headers @headers
 end
 
 # other config

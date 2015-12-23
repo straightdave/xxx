@@ -1,3 +1,7 @@
+<% content_for :extra_css_tags do %>
+<link href="/css/visualcaptcha.src.css" rel="stylesheet">
+<% end %>
+
 <div class="container">
   <div class="row">
     <div class="col-md-4 col-md-offset-4">
@@ -22,18 +26,25 @@
           <span class="form-control-feedback fui-lock"></span>
         </div>
       </p>
-      <p>
-        <div class="form-group">
-          <label>
-            <input type="checkbox" name="confirmed" checked /> &nbsp;
-            同意并遵守网站<a href="/terms">服务和隐私条款</a>
-          </label>
-        </div>
-      </p>
-      <button class="btn btn-primary btn-lg"
-              onclick="javascript:do_register();">注册
+
+      <!-- place for visual captcha -->
+      <div id="sample-captcha"></div>
+
+      <div class="form-group">
+        <label>
+          <input type="checkbox" name="confirmed" checked /> &nbsp;
+          同意并遵守网站<a href="/terms">服务和隐私条款</a>
+        </label>
+      </div>
+      <button class="btn btn-primary btn-lg" id="check-is-filled">
+        注册
       </button>
       <div id="err-msg2" style="margin-top:10px;" class="text-danger"></div>
     </div>
   </div>
 </div>
+
+<% content_for :extra_js_tags do %>
+<script src="/js/visualcaptcha.jquery.src.js"></script>
+<script src="/js/use_visualcaptcha.js"></script>
+<% end %>

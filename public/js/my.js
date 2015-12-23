@@ -149,7 +149,10 @@ function do_ask() {
   var err_msg = "";
   var t = $("input[name='title']");
   var tt = t.val().trim();
-  if(tt == "") { set_error(t); err_msg += "请输入标题 &nbsp; "; is_valid = false; }
+  if(tt == "") {
+    set_error(t); err_msg += "请输入标题 &nbsp; ";
+    is_valid = false;
+  }
   var tags = $("input[name='tagsinput']");
   var tag_v = tags.val();
   var content = CKEDITOR.instances.editor1.getData();
@@ -188,12 +191,14 @@ function set_error(item, msg) {
 
 /* register */
 function GetUrlParam(name) {
+  /* helper function for do_register */
   var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)","i");
   var r = window.location.search.substr(1).match(reg);
   if (r!=null) return (r[2]); return null;
 }
 
 function do_register() {
+  /* clicked on /user/register page */
   var is_valid = true;
   var name_input = $("input[id='lu']");
   var name = name_input.val().trim();
@@ -243,7 +248,14 @@ function do_register() {
           case "name_exist":
             // walk around to put html element in text
             $("#err-msg2").text("");
-            $("#err-msg2").append("该登录名已被使用，可尝试 <a href='/login?u="+ name +"'>登录</a>");
+            $("#err-msg2").append("该登录名已被使用，可尝试 <a href='/login?u=" +
+                                  name + "'>登录</a>");
+            break;
+          case "fail_captcha":
+            $("#err-msg2").text("图片识别有误");
+            break;
+          case "no_captcha":
+            $("#err-msg2").text("未选择图片");
             break;
           default:
             $("#err-msg2").text(data.msg);
@@ -317,7 +329,6 @@ function vote(op, tar, id) {
   // op - 0 means +1 (vote one point); 1 means -1 (devote)
   // tar - target, 'q' for question, 'a' for answer, 'c' for comment
   // id - target id
-
   var data = { "op" : (op == 1 ? "d" : "u") };  // d for downer, u for upper
   var url = "/" + tar + "/" + id + "/vote";
   $.post(url, data, function (data, status) {
@@ -397,8 +408,6 @@ function go_tag(id) {
 
 /* update own profile page */
 function do_avatar_change() {
-  // validate input file
-
   $("form#avatar-form").submit();
 }
 
@@ -408,7 +417,7 @@ function do_update() {
   var email = $("input[name='email']").val();
   var contact = $("input[name='contact']").val();
   var city = $("input[name='city']").val();
-  // validate things ...
+  // TODO: validate things ...
 
   var data = {
     "nickname" : nickname,

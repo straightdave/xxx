@@ -1,6 +1,12 @@
 <div class="container">
   <div class="row">
     <div class="col-md-9">
+      <h6>标签名称：<%= @tag.name %></h6>
+      <p>
+        标签描述：<%= @tag.desc %>
+      </p>
+      <hr>
+      该标签下的问题：
       <% @tag.questions.each do |q| %>
       <p>
         <h6><%= q.title %></h6>

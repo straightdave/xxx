@@ -121,7 +121,8 @@
 
                   <div class="comment-author">
                     <a href="/u/<%= c.author.login_name %>">
-                      <%= c.author.info.nickname %>(<%= c.author.info.reputation %>)
+                      <%= c.author.info.nickname %>(<%=
+                          c.author.info.reputation %>)
                     </a>
                     <%= time_ago_in_words_zh(c.created_at) %>
                   </div>
@@ -186,7 +187,8 @@
                     <img class="avatar-sm"
                          src="<%= a.author.info.avatar || '/avatar.jpg' %>">
                     <a href="/u/<%= a.author.login_name %>">
-                      <%= a.author.info.nickname %>(<%= a.author.info.reputation %>)
+                      <%= a.author.info.nickname %>(<%=
+                          a.author.info.reputation %>)
                     </a>
                     回答于<%= time_ago_in_words_zh(a.created_at) %>
                   </div> <!-- end of author box of answer -->
@@ -195,10 +197,12 @@
                   <div class="row">
                     <div class="col-sm-4">
                       <a href="javascript:void(0);"
-                         onclick="javascript:show_comment_answer(<%= a.id %>);">评论</a>
+                         onclick="javascript:show_comment_answer(<%= a.id %>);">
+                         评论
+                       </a>
                     </div>
                     <div class="col-sm-4 col-sm-offset-4 text-right
-                                <% if @hidden_mark %>hidden<% end %>">
+                         <% if @hidden_mark %>hidden<% end %>">
                       <a href="javascript:void(0);"
                          onclick="javascript:mark_as_accepted(<%= @q.id %>, <%= a.id %>);">
                          标记为答案
@@ -207,16 +211,21 @@
                   </div>
 
                   <!-- hidden comment input div here -->
-                  <div class="form-group commenting-answer-<%= a.id %>" style="display: none;">
+                  <div class="form-group commenting-answer-<%= a.id %>"
+                       style="display: none;">
                     <textarea id="comment_area_answer_<%= a.id %>"
                               class="commentbox"
                               rows="4" cols="73"></textarea><br>
                     <a class="btn btn-primary btn-xs"
                        href="javascript:void(0);"
-                       onclick="javascript:do_comment_answer(<%= a.id %>);"> 确认 </a>
+                       onclick="javascript:do_comment_answer(<%= a.id %>);">
+                      确认
+                    </a>
                     <a class="btn btn-default btn-xs"
                        href="javascript:void(0);"
-                       onclick="javascript:cancel_comment_answer(<%= a.id %>);"> 取消 </a>
+                       onclick="javascript:cancel_comment_answer(<%= a.id %>);">
+                      取消
+                    </a>
                   </div>
 
                   <!-- comments for answer -->
@@ -231,7 +240,9 @@
                               <span class="glyphicon glyphicon-triangle-top"
                                     aria-hidden="true"></span>
                             </a>
-                            <span id = "c-scores-<%= c.id %>"><%= c.scores %></span>
+                            <span id = "c-scores-<%= c.id %>">
+                              <%= c.scores %>
+                            </span>
                             <a href="javascript:void(0);"
                                onclick="javscript:vote(1,'c',<%= c.id %>)"
                                title="这条评论不正确或者误导人，差评！">
@@ -246,7 +257,8 @@
 
                           <div class="comment-author">
                             <a href="/u/<%= c.author.login_name %>">
-                              <%= c.author.info.nickname %>(<%= c.author.info.reputation %>)
+                              <%= c.author.info.nickname %>(<%=
+                                  c.author.info.reputation %>)
                             </a>
                             <%= time_ago_in_words_zh(c.created_at) %>
                           </div>

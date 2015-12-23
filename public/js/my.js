@@ -172,7 +172,12 @@ function do_ask() {
         location.href = "/q/" + data.msg;
       }
       else {
-        alert(data.msg);
+        if(data.msg == "need_login") {
+          alert("请先登录");
+        }
+        else {
+          alert(data.msg);
+        }
       }
     });
   } else { $("#err_msg_ask").html(err_msg); }
@@ -299,7 +304,12 @@ function do_comment(qid) {
         location.replace(location.href);
       }
       else {
-        alert(data.msg);
+        if(data.msg == "need_login") {
+          alert("请先登录");
+        }
+        else {
+          alert(data.msg);
+        }
       }
     });
   }
@@ -317,7 +327,12 @@ function do_comment_answer(aid) {
         location.replace(location.href);
       }
       else {
-        alert(data.msg);
+        if(data.msg == "need_login") {
+          alert("请先登录");
+        }
+        else {
+          alert(data.msg);
+        }
       }
     });
   }
@@ -335,7 +350,12 @@ function vote(op, tar, id) {
       $("span[id='"+ tar +"-scores-" + id + "']").text(data.msg);
     }
     else {
-      alert(data.msg);
+      if(data.msg == "need_login") {
+        alert("请先登录");
+      }
+      else {
+        alert(data.msg);
+      }
     }
   });
 }
@@ -354,7 +374,12 @@ function watch1(qid) {
         icon.attr("title", "点击收藏");
       }
       else {
-        alert(data.msg);
+        if(data.msg == "need_login") {
+          alert("请先登录");
+        }
+        else {
+          alert(data.msg);
+        }
       }
     });
   }
@@ -365,7 +390,12 @@ function watch1(qid) {
         icon.attr("title", "已收藏");
       }
       else {
-        alert(data.msg);
+        if(data.msg == "need_login") {
+          alert("请先登录");
+        }
+        else {
+          alert(data.msg);
+        }
       }
     });
   }
@@ -377,7 +407,12 @@ function unwatch1(qid) {
       location.replace(location.href);
     }
     else {
-      alert(data.msg);
+      if(data.msg == "need_login") {
+        alert("请先登录");
+      }
+      else {
+        alert(data.msg);
+      }
     }
   });
 }
@@ -394,7 +429,18 @@ function do_answer(qid) {
         location.replace("/q/" + qid);
       }
       else {
-        alert(data.msg);
+        if(data.msg == "self_answer") {
+          alert("自己不可以回答自己提出的问题哟~");
+        }
+        else if(data.msg == "need_login") {
+          alert("请先登录。");
+        }
+        else if(data.msg == "answer_twice") {
+          alert("同一问题不可以回答两次哟~您可以对之前的回答写些评论。");
+        }
+        else {
+          alert(data.msg);
+        }
       }
     });
   }
@@ -440,7 +486,12 @@ function do_follow(user) {
       location.replace(location.href);
     }
     else {
-      alert(data.msg);
+      if(data.msg == "need_login") {
+        alert("请先登录");
+      }
+      else {
+        alert(data.msg);
+      }
     }
   });
 }

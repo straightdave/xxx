@@ -141,6 +141,12 @@ post '/q/:qid/answer' do |qid|
   if q = Question.find_by(id: qid)
     if q.author.id != session[:user_id]
       if author = User.find_by(id: session[:user_id])
+
+        # same question answers once per user
+        unless q.answers.where(author: author).empty?
+          return json ret: "error", msg: "answer_twice"
+        end
+
         content = params['content']
         answer = Answer.new
         answer.author = author
@@ -148,7 +154,7 @@ post '/q/:qid/answer' do |qid|
         answer.content = content
         q.watchers << author
         q.last_doer = author
-        q.last_do_type = 1    # 0 means answering
+        q.last_do_type = 1    # 1 means answering
         q.last_do_at = Time.now
 
         if answer.valid? && q.valid?

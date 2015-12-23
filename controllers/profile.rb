@@ -2,7 +2,7 @@
 # update own profile
 post '/user/profile' do
   unless user = User.find_by(id: session[:user_id])
-    return (json ret: "error", msg: "need_login|account_error")
+    return json ret: "error", msg: "need_login"
   end
 
   user.info.nickname = params['nickname']

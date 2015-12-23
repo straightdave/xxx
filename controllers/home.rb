@@ -19,6 +19,8 @@ get '/' do
   end
 
   # calculate hot tags
+  # top is using tag's attribute 'used' which is not so accurate
+  # TODO: later we could find better way to count how hot tags are
   @hot_tags = Tag.top(20)
 
   @title = "首页"

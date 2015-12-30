@@ -1,8 +1,11 @@
+<% content_for :extra_css_tags do %>
+<link href="/css/bootstrap-tagsinput.css" rel="stylesheet">
+<% end %>
+
 <script src="/vendors/ckeditor/ckeditor.js"></script>
-<div class="container">
+<div class="container-fluid">
   <div class="row">
     <div class="col-md-8">
-      <h6>提问题</h6>
       <p>
         提问前好好想想，是不是真的不会？得到满意回答后也别忘记积累知识。
       </p>
@@ -10,18 +13,23 @@
         <input type="text" class="form-control" name="title"
                placeholder="言简意赅的标题" />
       </div>
-      <div class="form-group tagsinput-primary">
-        <input name="tagsinput" class="tagsinput"
-               data-role="tagsinput"
-               placeholder="输入标签" />
+      <div class="form-group">
+        <input name="tagsinput" class="bootstrap-tagsinput"
+               data-role="tagsinput" placeholder="输入标签"/>
       </div>
       <div class="form-group">
         <textarea id="editor1" name="editor1"></textarea>
-        <script>CKEDITOR.replace('editor1'); CKEDITOR.instances.editor1.setData("");</script>
+        <script>
+          CKEDITOR.replace('editor1'); CKEDITOR.instances.editor1.setData("");
+        </script>
       </div>
-      <a class="btn btn-primary btn-lg" href="#" onclick="javascript:do_ask();" > 提交 </a>
-
+      <a class="btn btn-primary" href="javascript:void(0);"
+         onclick="javascript:do_ask();">提交</a>
       <div id="err_msg_ask" class="text-danger"></div>
     </div>
   </div>
 </div>
+
+<% content_for :extra_js_tags do %>
+<script src="/js/bootstrap-tagsinput.js"></script>
+<% end %>

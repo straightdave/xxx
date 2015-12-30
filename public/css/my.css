@@ -1,17 +1,17 @@
 /* dave wu (eyaswoo@163.com) @ Dec, 2015 */
-
 body {
   /* always show the y-scrollbar, this is a walkaround
   to stop scrollbar affecting page width */
   overflow-y: scroll;
 
-  /* for navbar fixed-on-top */
+  /* for navbar fixed-on-top
   padding-top: 70px;
-
-  height: 100%;
+  */
 }
 
 ol.breadcrumb {
+  margin: 0 0 20px;
+  padding: 0;
   background-color: transparent;
 }
 
@@ -97,10 +97,13 @@ div.tags a.tag{
 span.q_tag {
   background-color: #DAE7F1;
   color: #39739D;
-  font-size: 0.8em;
   padding: 0px 4px;
   margin: 2px;
   display: inline-block;
+}
+
+.listed-question span.q_tag {
+  font-size: 0.8em;
 }
 
 a.more {
@@ -112,23 +115,33 @@ a.more {
 /* voting box */
 div.votingbox {
   text-align: center;
+  font-size: 1.1em;
 }
-
 a.watching {
   color: gray;
 }
-
 a.watched, a.watching:hover {
   color: gold;
 }
 
+/* question zone */
+h3.question-title {
+  margin-top: 0px;
+  margin-bottom: 20px;
+}
+div#question-content {
+  padding-left: 0px;
+  font-size: 1.1em;
+  margin-bottom: 20px;
+}
+
 /* comment box */
 div.comments {
-  margin-top: 15px;
+  margin-top: 10px;
+  margin-bottom: 15px;
 }
 
 div.single-comment {
-  padding: 5px 0;
   margin-bottom: 10px;
 }
 
@@ -146,6 +159,12 @@ div.comment-author {
 }
 
 /* style for answers on question page */
+div#answer-content {
+  padding-left: 0px;
+  margin-bottom: 20px;
+}
+
+
 div.single-answer {
   margin: 10px 0 15px 0;
 }

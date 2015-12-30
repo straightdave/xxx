@@ -10,7 +10,6 @@ end
 
 post '/ask' do
   return (json ret: "error", msg: "need_login") unless login?
-
   author = User.find_by(id: session[:user_id])
 
   new_q = Question.new
@@ -27,7 +26,7 @@ post '/ask' do
     tag.used += 1
     new_q.tags << tag
     tag.save if tag.valid?
-  end
+  end unless params['tags'].nil?
 
   unless new_q.valid?
     return (json ret: "error", msg: new_q.errors.messages.inspect)
@@ -74,12 +73,9 @@ get '/q/:qid' do |qid|
     @answers.select { |answer| answer.scores >= -2 }
     @answers = @answers.to_a.sort do |x, y|
       case x.scores <=> y.scores
-      when -1
-        1
-      when 1
-        -1
-      else
-        0
+      when -1 then 1
+      when 1 then -1
+      else 0
       end
     end
     erb :question

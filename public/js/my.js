@@ -4,7 +4,6 @@
   for each page's on-ready event
 */
 $().ready(function () {
-
   var current_path = location.pathname;
 
   // focus title input on asking page
@@ -130,7 +129,7 @@ function login2() {
 }
 
 function logout() {
-  $.post('/logout', function() {location.replace('/')});
+  $.post('/logout', function() { location.replace('/'); });
 }
 
 /* for messages page */
@@ -146,7 +145,7 @@ function mark_all_as_read() {
 
 /* ask on homepage */
 function ask() {
-  $.get("/check_login", function (data,s) {
+  $.get("/check_login", function (data, status) {
     if(data.ret){
       location.href = "/ask";
     } else {
@@ -164,8 +163,7 @@ function do_ask() {
     set_error(t); err_msg += "请输入标题 &nbsp; ";
     is_valid = false;
   }
-  var tags = $("input[name='tagsinput']");
-  var tag_v = tags.val();
+  var tag_v = $("input[name='tagsinput']").val();
   var content = CKEDITOR.instances.editor1.getData();
   // remove the last div of the content
   // which could be added by any browser plugin
@@ -198,7 +196,6 @@ function do_ask() {
 function set_ok(item) {
   item.parent().removeClass("has-error");
 }
-
 function set_error(item, msg) {
   item.parent().addClass("has-error");
   item.attr('placeholder', msg);
@@ -209,7 +206,7 @@ function GetUrlParam(name) {
   /* helper function for do_register */
   var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)","i");
   var r = window.location.search.substr(1).match(reg);
-  if (r!=null) return (r[2]); return null;
+  if (r != null) return (r[2]); return null;
 }
 
 function do_register() {
@@ -288,21 +285,17 @@ function do_register() {
 function show_comment() {
   $("div.commenting").slideDown();
 }
-
 function show_comment_answer(answer_id) {
   $("div.commenting-answer-" + answer_id).slideDown();
 }
-
 function cancel_comment() {
   $("textarea#comment_area").val("");
   $("div.commenting").slideUp();
 }
-
 function cancel_comment_answer(answer_id) {
   $("textarea#comment_area_answer_" + answer_id).val("");
   $("div.commenting-answer-" + answer_id).slideUp();
 }
-
 function do_comment(qid) {
   var text = $("textarea#comment_area").val();
   if(text.length < 10) {

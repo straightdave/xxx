@@ -17,7 +17,7 @@
     <![endif]-->
   </head>
   <body>
-    <nav class="navbar navbar-default navbar-fixed-top">
+    <nav class="navbar navbar-default">
       <div class="container-fluid">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed"
@@ -40,7 +40,7 @@
             <li <% if @navbar_active.nil? %>class="active"<% end %>>
               <a href="/">
                 <span class="glyphicon glyphicon-home" aria-hidden="true">
-                </span>问答
+                </span>&nbsp;问答
               </a>
             </li>
             <li <% if @navbar_active == "articles" %>class="active"<% end %>>

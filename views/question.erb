@@ -1,17 +1,15 @@
 <script src="/vendors/ckeditor/ckeditor.js"></script>
-<div class="container">
+<div class="container-fluid">
   <div class="row">
 
-    <!-- left main pad: question, comments, answers and answering input -->
     <div class="col-md-9">
-      <h5><%= @q.title %></h5>
+      <h3 class="question-title"><%= @q.title %></h3>
 
       <div class="row">
         <div class="col-md-1">
           <div class="votingbox">
-            <a href="javascript:void(0);"
-               onclick="javascript:vote(0,'q',<%= @q.id %>);"
-               title="好问题，赞！">
+            <a href="javascript:void(0);" title="好问题，赞！"
+               onclick="javascript:vote(0,'q',<%= @q.id %>);">
               <span class="glyphicon glyphicon-triangle-top"
                     aria-hidden="true"></span>
             </a>
@@ -19,16 +17,14 @@
             <span id="q-scores-<%= @q.id %>"><%= @q.scores %></span>
             <br>
 
-            <a href="javascript:void(0);"
-               onclick="javascript:vote(1,'q',<%= @q.id %>);"
-               title="这问题太逊了，埋了它！">
+            <a href="javascript:void(0);" title="这问题太逊了，埋了它！"
+               onclick="javascript:vote(1,'q',<%= @q.id %>);">
               <span class="glyphicon glyphicon-triangle-bottom"
                     aria-hidden="true"></span>
             </a>
             <br>
 
-            <a id="watchicon"
-               href="javascript:void(0);"
+            <a id="watchicon" href="javascript:void(0);"
                onclick="javascript:watch1(<%= @q.id %>);"
                title="<% if @watched %>已<% end %>收藏"
                class="<% if @watched %>watched<% else %>watching<% end %>" >
@@ -47,15 +43,15 @@
           </div>
         </div>  <!-- end of voting box -->
 
-        <div class="col-md-11">
-          <div class="question-scontent">
+        <div class="col-md-11" id="question-content">
+          <div>
             <%= @q.content %>
           </div>
 
           <div class="tag-authorbox">
             <div class="tags">
                 <% @q.tags.each do |t| %>
-                  <span class="label label-primary"><%= t.name %></span>
+                  <span class="q_tag"><%= t.name %></span>
                 <% end %>
             </div>
 
@@ -67,31 +63,6 @@
               </a>
               提问于<%= time_ago_in_words_zh(@q.created_at) %>
             </div>
-          </div>
-
-          <div class="row">
-            <div class="col-sm-4">
-              <a href="javascript:void(0);"
-                 onclick="javascript:show_comment();">评论</a>
-            </div>
-            <!-- TODO: for now, no modify question
-            <div class="col-sm-4 col-sm-offset-4 text-right
-                        <% if @hidden_edit %>hidden<% end %>">
-              <a href="javascript:void(0);">修改</a>
-            </div> -->
-          </div>
-
-          <!-- hidden comment input div here -->
-          <div class="form-group commenting" style="display: none;">
-            <textarea id="comment_area"
-                      class="commentbox"
-                      rows="4" cols="73"></textarea><br>
-            <a class="btn btn-primary btn-xs"
-               href="javascript:void(0);"
-               onclick="javascript:do_comment(<%= @q.id %>);"> 确认 </a>
-            <a class="btn btn-default btn-xs"
-               href="javascript:void(0);"
-               onclick="javascript:cancel_comment();"> 取消 </a>
           </div>
 
           <!-- comments go here -->
@@ -133,24 +104,34 @@
             <% end %>
           </div>
 
-        </div> <!-- end of col-md-8 content column -->
-      </div> <!-- end of the first row: col-9, with title, votingbox, etc. -->
+          <div class="row">
+            <div class="col-sm-12">
+              <a href="javascript:void(0);" role="button"
+                 onclick="javascript:show_comment();">发表评论</a>
 
+              <!-- hidden comment input div here -->
+              <div class="form-group commenting" style="display:none;">
+                <textarea id="comment_area" class="commentbox"
+                          rows="4" cols="100"></textarea><br>
+                <a class="btn btn-primary btn-xs" href="javascript:void(0);"
+                   onclick="javascript:do_comment(<%= @q.id %>);">确认</a>
+                <a class="btn btn-default btn-xs" href="javascript:void(0);"
+                   onclick="javascript:cancel_comment();">取消</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div> <!-- end of #question-content -->
 
       <!-- answers listed here : all col-9 width -->
       <div class="answers">
-        <% if @answers.empty? %>
-          尚无作答
-        <% else %>
+        <% if @answers.empty? %>尚无作答<% else %>
           <%= @answers.size %>个回答
-
           <% @answers.each do |a| %>
-            <hr>
             <div class="single-answer" id="a<%= a.id %>">
               <div class="row"
-                <% if @q.accepted_answer == a %>
-                id="answer"
-                <% end %> >
+                <% if @q.accepted_answer == a %>id="answer"<% end %> >
                 <div class="col-md-1">
                   <div class="votingbox"> <!-- voting box -->
                     <a href="javascript:void(0);"
@@ -178,7 +159,7 @@
 
                   </div> <!-- end of voting box -->
                 </div>
-                <div class="col-md-11">
+                <div class="col-md-11" id="answer-content">
                   <div class="answer-text">
                     <%= a.content %>
                   </div>
@@ -193,40 +174,21 @@
                     回答于<%= time_ago_in_words_zh(a.created_at) %>
                   </div> <!-- end of author box of answer -->
 
-                  <!-- comment func for answer -->
+                  <!-- marking func for answer -->
                   <div class="row">
-                    <div class="col-sm-4">
-                      <a href="javascript:void(0);"
-                         onclick="javascript:show_comment_answer(<%= a.id %>);">
-                         评论
-                       </a>
-                    </div>
-                    <div class="col-sm-4 col-sm-offset-4 text-right
+                    <div class="col-sm-4 col-sm-offset-8 text-right
                          <% if @hidden_mark %>hidden<% end %>">
-                      <a href="javascript:void(0);"
-                         onclick="javascript:mark_as_accepted(<%= @q.id %>, <%= a.id %>);">
+                      <a href="javascript:void(0);" role="button"
+                         class="btn btn-primary btn-sm" onclick="javascript:
+                           mark_as_accepted(<%= @q.id %>, <%= a.id %>);">
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true">
+                        </span>
                          标记为答案
                       </a>
                     </div>
                   </div>
 
-                  <!-- hidden comment input div here -->
-                  <div class="form-group commenting-answer-<%= a.id %>"
-                       style="display: none;">
-                    <textarea id="comment_area_answer_<%= a.id %>"
-                              class="commentbox"
-                              rows="4" cols="73"></textarea><br>
-                    <a class="btn btn-primary btn-xs"
-                       href="javascript:void(0);"
-                       onclick="javascript:do_comment_answer(<%= a.id %>);">
-                      确认
-                    </a>
-                    <a class="btn btn-default btn-xs"
-                       href="javascript:void(0);"
-                       onclick="javascript:cancel_comment_answer(<%= a.id %>);">
-                      取消
-                    </a>
-                  </div>
+
 
                   <!-- comments for answer -->
                   <div class="comments">
@@ -267,6 +229,32 @@
                         </div>
                       <% end %>
                     <% end %>
+                  </div>
+
+
+
+                  <a href="javascript:void(0);"
+                     onclick="javascript:show_comment_answer(<%= a.id %>);">
+                    发表评论
+                  </a>
+
+
+                  <!-- hidden comment input div here -->
+                  <div class="form-group commenting-answer-<%= a.id %>"
+                       style="display: none;">
+                    <textarea id="comment_area_answer_<%= a.id %>"
+                              class="commentbox"
+                              rows="4" cols="100"></textarea><br>
+                    <a class="btn btn-primary btn-xs"
+                       href="javascript:void(0);"
+                       onclick="javascript:do_comment_answer(<%= a.id %>);">
+                      确认
+                    </a>
+                    <a class="btn btn-default btn-xs"
+                       href="javascript:void(0);"
+                       onclick="javascript:cancel_comment_answer(<%= a.id %>);">
+                      取消
+                    </a>
                   </div>
 
                 </div>

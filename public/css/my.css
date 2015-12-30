@@ -1,31 +1,47 @@
-/* for the site specials */
-/* 2015-10-30 */
+/* dave wu (eyaswoo@163.com) @ Dec, 2015 */
+
+body {
+  /* always show the y-scrollbar, this is a walkaround
+  to stop scrollbar affecting page width */
+  overflow-y: scroll;
+
+  /* for navbar fixed-on-top */
+  padding-top: 70px;
+
+  height: 100%;
+}
 
 ol.breadcrumb {
-  font-size: small;
   background-color: transparent;
 }
 
-div.bread-pane {
-  margin-left: -10px;
-  padding: 0;
+footer {
+  margin-top: 20px;
+  padding-top: 10px;
+  background-color: #E7E7E7;
+  border-top: 1px solid lightgray;
 }
 
 div.clear {
   clear: both;
 }
 
-/* home page tags */
-div.tags span{
-  padding: 6px;
+/* home page hot tags */
+div.tags a.tag{
+  font-size: 1.1em;
+  text-decoration: none;
+  cursor:pointer;
+  background-color: #DAE7F1;
+  color: #39739D;
+  padding: 1px 5px;
+  margin: 2px;
   display: inline-block;
 }
 
 /* listing questions on homepage */
 .listed-question {
-  height: auto;
   border-bottom: solid 1px lightgray;
-  padding: 5px 0px;
+  padding: 10px;
   display: block;
 }
 
@@ -33,20 +49,17 @@ div.tags span{
   float: left;
   text-align: center;
   line-height: 1.2;
-  font-size: 16px;
-  margin-top: 3px;
   margin-right: 15px;
 }
 
 .listed-question .rank div {
   display: inline-block;
-  padding: 5px;
+  padding: 7px;
   width: 50px;
-  height: 50px;
 }
 
 .listed-question .rank div.answered {
-  background-color: #1ABC9C;
+  background-color: green;
   color: white;
 }
 
@@ -56,7 +69,6 @@ div.tags span{
 
 .listed-question .rank div small {
   display: block;
-  font-size: 12px;
 }
 
 .listed-question .question div {
@@ -67,16 +79,36 @@ div.tags span{
   color: black;
 }
 
-.listed-question .question .user {
-  font-size: 12px;
-}
-
 .listed-question .question .title {
+  font-size: 1.3em;
   display: block;
-  font-size: large;
 }
 
+.question .user a {
+  text-decoration: none;
+  display: inline-block;
+  padding: 0px 5px;
+}
 
+.question .user a:hover {
+  background-color: #DAE7F1;
+}
+
+span.q_tag {
+  background-color: #DAE7F1;
+  color: #39739D;
+  font-size: 0.8em;
+  padding: 0px 4px;
+  margin: 2px;
+  display: inline-block;
+}
+
+a.more {
+  margin: 20px 0px;
+  display: block;
+}
+
+/* question detail page */
 /* voting box */
 div.votingbox {
   text-align: center;
@@ -92,7 +124,6 @@ a.watched, a.watching:hover {
 
 /* comment box */
 div.comments {
-  font-size: 15px;
   margin-top: 15px;
 }
 
@@ -120,14 +151,12 @@ div.single-answer {
 }
 
 span.i-am-answer {
-  font-size: 30px;
   color: #16A085;
 }
 
 /* user styles on question page */
 div.authorbox {
   overflow: hidden;
-  font-size: 15px;
 }
 
 img.avatar-sm {
@@ -174,7 +203,6 @@ div.unread {
 }
 
 div.message {
-  font-size: 15px;
 }
 
 /* user profile page */
@@ -201,12 +229,10 @@ div.avatar-img img {
 }
 
 div.latest table td {
-  font-size: 15px;
   vertical-align: sub;
 }
 
 div.user-info-pane {
-  font-size: 15px;
 }
 
 div.user-info-pane span#signup {

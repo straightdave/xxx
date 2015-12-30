@@ -4,114 +4,65 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><%= @title || "真" %> | 韩非子说</title>
+    <meta name="keywords" content="<%= @keywords_list %>" />
+    <meta name="description" content="<%= @description %>" />
+    <title><% @title.nil? ? "韩非子说" : "#{@title} | 韩非子说" %></title>
     <link rel="icon" href="/favicon.ico">
     <link href="/css/bootstrap-3.3.5.min.css" rel="stylesheet">
-    <link href="/vendors/flat-ui/css/flat-ui.min.css" rel="stylesheet">
     <link href="/css/my.css" rel="stylesheet">
+    <%= yield_content :extra_css_tags %>
     <!--[if lt IE 9]>
       <script src="/js/html5shiv.min.js"></script>
       <script src="/js/respond.min.js"></script>
     <![endif]-->
-    <%= yield_content :extra_css_tags %>
   </head>
   <body>
-    <nav class="navbar navbar-default">
-      <div class="container">
-        <!-- Brand and toggle get grouped for better mobile display -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
         <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed"
+                  data-toggle="collapse"
+                  data-target="#navbar-collapse-1"
+                  aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
           <a class="navbar-brand" href="/">
             <img alt="韩非子说" src="">
           </a>
         </div>
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <!-- search -->
-          <form class="navbar-form navbar-left" role="search">
-            <div class="form-group">
-              <input type="text" class="form-control" placeholder="法律问题？">
-            </div>
-            <button type="submit" class="btn btn-default">搜索</button>
-          </form>
 
-          <!-- after search at navi -->
+        <div class="collapse navbar-collapse" id="navbar-collapse-1">
+
           <ul class="nav navbar-nav">
-            <li <% if @navbar_active.nil? %>
-                  class="active"
-                <% end %>>
+            <li <% if @navbar_active.nil? %>class="active"<% end %>>
               <a href="/">
                 <span class="glyphicon glyphicon-home" aria-hidden="true">
-                </span>
-                &nbsp;问答
-                <span class="sr-only">(current)</span>
+                </span>问答
               </a>
             </li>
-            <li <% if @navbar_active == 'news' %>
-                  class="active"
-                <% end %>>
-              <a href="/news">新闻</a>
-            </li>
-            <li <% if @navbar_active == 'articles' %>
-                  class="active"
-                <% end %>>
+            <li <% if @navbar_active == "articles" %>class="active"<% end %>>
               <a href="/articles">文章</a>
             </li>
           </ul>
 
-          <!-- items on the right side -->
+          <form class="navbar-form navbar-right" role="search"
+                action="/search">
+            <div class="form-group">
+              <input type="text" class="form-control"
+                     name="s" placeholder="快速搜索">
+            </div>
+          </form>
+
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="<%= url('/about') %>">关于</a></li>
-
             <% unless login? %>
-
             <li>
-              <a href="#" data-toggle="modal" data-target="#myModal">用户登录</a>
+              <a href="javascript:void(0);" data-toggle="modal"
+                 data-target="#login-modal">登录</a>
             </li>
-            <!-- modal login window -->
-            <div class="modal" id="myModal" tabindex="-1" role="dialog"
-                 aria-labelledby="myModalLabel" aria-hidden="true">
-               <div class="modal-dialog" style="margin-top:100px;">
-                 <div class="modal-content">
-                   <div class="modal-header">
-                     <button type="button" class="close"
-                             data-dismiss="modal" aria-hidden="true">
-                          &times;
-                     </button>
-                     <h5 class="modal-title" id="myModalLabel">登录</h5>
-                   </div> <!-- end of modal header -->
-                   <div class="modal-body">
-                     <p>
-                       <div class="form-group has-feedback">
-                         <input class="form-control"
-                                name="login_name" placeholder="登录名" />
-                         <span class="form-control-feedback fui-user"></span>
-                       </div>
-                     </p>
-                     <p>
-                       <div class="form-group has-feedback">
-                         <input class="form-control"
-                                type="password" name="password"
-                                placeholder="密码" />
-                         <span class="form-control-feedback fui-lock"></span>
-                       </div>
-                     </p>
-                     <div id="err-msg" class="text-danger"></div>
-
-                     <input type="button" value=" 登录 " class="btn btn-primary"
-                            style="margin-left: 10px;"
-                            onclick="javascript:login();" />
-                     <h6>没有帐户？</h6>
-                     <p>
-                       <a href="<%= url('/user/register') %>"
-                         class="btn btn-default">注册</a>
-                     </p>
-                   </div> <!-- /modal-body -->
-                 </div> <!-- /.modal-content -->
-               </div> <!-- modal dialog -->
-            </div> <!-- /.modal -->
-
             <% else %>
-
             <!-- for logged on user -->
             <li class="dropdown">
               <a href="#" class="dropdown-toggle"
@@ -168,9 +119,39 @@
       </div> <!-- /.container-fluid -->
     </nav>
 
+    <!-- modal login window -->
+    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"
+                   aria-hidden="true" aria-label="Close">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">登录</h4>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <input type="text" class="form-control" name="modal-loginname"
+                     placeholder="用户名">
+            </div>
+            <div class="form-group">
+              <input type="password" class="form-control" name="modal-password"
+                     placeholder="密码">
+            </div>
+            <div id="err-msg" class="text-danger"></div>
+          </div>
+          <div class="modal-footer">
+            <input type="button" value="登录" class="btn btn-primary"
+                    onclick="javascript:login();" />
+            &nbsp;没有帐户？<a href="/user/register">注册</a>
+          </div> <!-- /modal-body -->
+        </div> <!-- /.modal-content -->
+      </div> <!-- modal dialog -->
+    </div> <!-- /.modal -->
+
     <!-- breadcumb -->
     <% if @breadcrumb %>
-    <div class="container">
+    <div class="container-fluid">
       <div class="bread-pane">
         <ol class="breadcrumb">
           <% @breadcrumb.each do |b| %>
@@ -190,73 +171,49 @@
     <!-- main content -->
     <%= yield %>
 
-    <!--
-    footer : static
-    don't inherit parent's font color
-    -->
-    <footer style="color:#0a0a0a;margin-top:50px;padding-bottom:80px;">
-      <div class="container">
+    <footer>
+      <div class="container-fluid">
+        <h3>韩非子说 <small>法律专业知识交流平台</small></h3>
         <div class="row">
-          <div class="col-md-6">
-            <h4>韩非子说<h4>
-            <p>本网站所遵循
-              <a href="http://creativecommons.org/licenses/by/3.0/"
-                 target="_blank">
-                 CC BY 3.0
-              </a>
-              协议发布
+
+          <div class="col-md-1">
+            <p>
+              <a href="/about">关于</a>
+            </p>
+            <p>
+              <a href="/about">规则</a>
             </p>
           </div>
-          <div class="col-md-6">
-            <div class="row">
-              <div class="col-md-3">
-                <h6>关于</h6>
-                <ul class="list-unstyled">
-                  <li><a href="/about">关于我们</a></li>
-                  <li><a href="/ad">广告合作</a></li>
-                  <li><a href="/links">友情链接</a></li>
-                  <li><a href="/hr">招聘</a></li>
-                </ul>
-              </div>
-              <div class="col-md-3">
-                <h6>联系方式</h6>
-                <ul class="list-unstyled">
-                  <li>
-                    <a href="http://weibo.com/eyaswoo"
-                       title="官方微博" target="_blank">新浪微博</a>
-                  </li>
-                  <li><a href="mailto:eyaswoo@163.com">电子邮件</a></li>
-                </ul>
-              </div>
-              <div class="col-md-3">
-                <h6>合作单位</h6>
-                <ul class="list-unstyled">
-                  <li><a href="#" target="_blank">ABC律师事务所</a></li>
-                  <li><a href="#" target="_blank">X国律师协会</a></li>
-                </ul>
-              </div>
-              <div class="col-md-3">
-                <h6>赞助商</h6>
-                <ul class="list-unstyled">
-                  <li><a href="#" target="_blank"></a>暂时还没有</li>
-                </ul>
-              </div>
-            </div>
+
+          <div class="col-md-1">
+            <p>
+              <a href="/about">赞助</a>
+            </p>
+            <p>
+              <a href="/about">鸣谢</a>
+            </p>
           </div>
+
+          <div class="col-md-6 col-md-offset-4">
+            some logo, or words description...
+          </div>
+        </div>
+
+        <div class="row">
+          <p class="text-center">
+            --- 备案号相关文字 ---
+          </p>
+          <p class="text-center">
+            韩非子说 版本2015.12.30b1 &copy;
+            <a href="http://straightdave.github.io">Dave Wu</a>
+            All Rights Reserved
+          </p>
         </div>
       </div>
     </footer>
 
-    <!-- beian -->
-    <ul class="list-inline text-center" style="margin-bottom:0px;">
-      <li>
-        <a href="http://www.miibeian.gov.cn/" target="_blank">京ICP备xxx号</a>
-      </li>
-      <li>京公网安备xxx</li>
-    </ul>
-
     <script src="/js/jquery.min.js"></script>
-    <script src="/vendors/flat-ui/js/flat-ui.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="/js/my.js"></script>
     <%= yield_content :extra_js_tags %>
   </body>

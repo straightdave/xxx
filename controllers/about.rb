@@ -1,5 +1,6 @@
 get '/about' do
   @title = "关于"
+  @navbar_active = "about"
   erb :about
 end
 

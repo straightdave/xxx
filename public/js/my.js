@@ -1,26 +1,37 @@
 /* xxx project copyrights 2015-10 Dave */
 
-// for all pages' onReady actions
+/*
+  for each page's on-ready event
+*/
 $().ready(function () {
-  switch(location.pathname) {
+
+  var current_path = location.pathname;
+
+  // focus title input on asking page
+  switch(current_path) {
     case "/ask": {
       $("input[name='title']").focus();
       break;
+    }
+    case "/login": {
+      var footer_h = $("footer").height();
+      var body_h = $(window).height();
+      $("footer").offset({top:(body_h - footer_h - 12)});
     }
   }
 });
 
 /* login methods */
-/* login method 1: used in home page, prompt window */
+/* login method 1: used in home page, modal window */
 function login() {
   var is_valid = true;
-  var u = $("input[name='login_name']");
+  var u = $("input[name='modal-loginname']");
   var uv = u.val().trim();
   if (uv == "") {
     set_error(u, "请输入用户名");
     is_valid = false;
   } else { set_ok(u); }
-  var p = $("input[name='password']");
+  var p = $("input[name='modal-password']");
   var pv = p.val().trim();
   if (pv == "") {
     set_error(p, "请输入密码");

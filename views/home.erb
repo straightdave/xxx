@@ -2,7 +2,9 @@
 <div class="container">
   <div class="jumbotron">
     又遇到棘手的法律问题啦？:-(  &nbsp;
-    <a class="btn btn-primary btn-lg" onclick="javascript:ask();" role="button">我要提问</a>
+    <a class="btn btn-primary btn-lg"
+       onclick="javascript:ask();"
+       role="button">我要提问</a>
   </div>
 
   <div class="row">
@@ -41,37 +43,37 @@
             <div class="user">
               <a href="/u/<%= q.last_doer.login_name %>">
                 <%= q.last_doer.login_name %>
-                在<%= time_ago_in_words_zh(q.last_do_at) %>
-                <% if q.last_do_type == 0 %>
-                提问
-                <% elsif q.last_do_type == 1 %>
-                回答
-                <% end %>
               </a>
+              在<%= time_ago_in_words_zh(q.last_do_at) %>
+              <% if q.last_do_type == 0 %>
+              提问
+              <% elsif q.last_do_type == 1 %>
+              回答
+              <% end %>
             </div>
             <div class="title">
-              <a href="/q/<%= q.id %>"><%= q.title %></a> &nbsp;
+              <a href="/q/<%= q.id %>"><%= q.title %></a>
               <% q.tags.each do |t| %>
-                <span class="label label-primary"><%= t.name %></span>
+                <span class="q_tag"><%= t.name %></span>
               <% end %>
             </div>
           </div>
         </div>
       <% end %>
 
+    <a href="#" class="more">更多问题 ...</a>
     </div>
 
     <div class="col-md-3">
       <div class="tags">
           <h6>热门标签</h6>
           <% @hot_tags.each do |t| %>
-            <span class="label label-primary"
-                  style="cursor:pointer;margin-right:2px;"
-                  onclick="javascript:go_tag(<%= t.id %>);">
+            <a href="javascript:void(0);" class="tag"
+               onclick="javascript:go_tag(<%= t.id %>);">
               <%= t.name %>
-            </span>
+            </a>
           <% end %>
       </div>
     </div>
   </div>
-</div> <!-- end of container -->
+</div>

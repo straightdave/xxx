@@ -1,29 +1,36 @@
-<div class="container">
+<div class="container-fluid">
+  <div class="alert alert-info alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <p>
+      请先登录
+    </p>
+  </div>
+
   <div class="row">
     <div class="col-md-4 col-md-offset-4">
-      <p>
-        <div class="form-group has-feedback">
-          <input class="form-control" type="text" name="login_name" id="u"
-                 value="<%= URI.decode(params['u']) if params['u'] %>"
-                 placeholder="登录名" />
-          <span class="form-control-feedback fui-user"></span>
-        </div>
-      </p>
-      <p>
-        <div class="form-group has-feedback">
-          <input class="form-control" type="password" name="password" id="p"
-                 placeholder="密码" />
-          <span class="form-control-feedback fui-lock"></span>
-        </div>
-      </p>
 
-      <button class="btn btn-primary btn-lg" onclick="javascript:login2();">
+      <div class="form-group has-feedback">
+        <input class="form-control" type="text" name="login_name" id="u"
+               value="<%= URI.decode(params['u']) if params['u'] %>"
+               placeholder="登录名" />
+        <span class="form-control-feedback fui-user"></span>
+      </div>
+
+      <div class="form-group has-feedback">
+        <input class="form-control" type="password" name="password" id="p"
+               placeholder="密码" />
+        <span class="form-control-feedback fui-lock"></span>
+      </div>
+
+      <button class="btn btn-primary" onclick="javascript:login2();">
         登录
       </button>
-      <span style="margin-left: 10px;">
-        没有用户？ <a href='/user/register'>注册</a>
-      </span>
-      <div id="err-msg2" style="margin-top:10px;" class="text-danger"></div>
+
+      &nbsp; 没有用户？ <a href='/user/register'>注册</a>
+
+      <div id="err-msg2" class="text-danger"></div>
     </div>
   </div>
 </div>

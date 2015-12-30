@@ -60,7 +60,9 @@ get '/q/:qid' do |qid|
     @watched = @q.watchers.exists?(id: session[:user_id])
     @answered = !@q.accepted_answer.nil?
     @hidden_mark = @q.author.id != session[:user_id] || @answered
-    @title = @q.title[0..10] + "..."
+    @title = @q.title[0..6] + "..."
+    @page_keywords_list = @q.tags.inject("") {|sum, tag| sum << "#{tag.name}," }
+    @page_description = @q.title
     @breadcrumb = [
       {name: "问答", url: '/'},
       {name: "问题详情", active: true}

@@ -4,9 +4,13 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="keywords" content="<%= @keywords_list %>" />
-    <meta name="description" content="<%= @description %>" />
-    <title><% @title.nil? ? "韩非子说" : "#{@title} | 韩非子说" %></title>
+    <meta name="keywords"
+          content="<%= @page_keywords_list %>法律,法务,问答,社区" />
+    <meta name="description"
+          content="<%= @page_description %>法律,法务,问答,社区" />
+    <title>
+      <% if @title %><%= @title %> | 韩非子说<% else %>韩非子说"<% end %>
+    </title>
     <link rel="icon" href="/favicon.ico">
     <link href="/css/bootstrap-3.3.5.min.css" rel="stylesheet">
     <link href="/css/my.css" rel="stylesheet">

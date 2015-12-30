@@ -8,8 +8,7 @@
         </div>
 
         <div class="namebox">
-
-          <h4><%= @user_info.nickname %></h4>
+          <h4 class="nickname"><%= @user_info.nickname %></h4>
           <blockquote>
             <%= @user_info.intro || "暂时没有简介哦~" %>
           </blockquote>
@@ -18,12 +17,10 @@
             <span class="glyphicon glyphicon-globe"></span>
             &nbsp; <%= @user_info.city %>
           </p>
-
           <p>
             <span class="glyphicon glyphicon-envelope"></span>
             &nbsp; <%= @user_info.email %>
           </p>
-
           <p>
             <span class="glyphicon glyphicon-earphone"></span>
             &nbsp; <%= @user_info.contact %>

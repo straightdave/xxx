@@ -189,6 +189,10 @@ img.avatar-xs {
 
 
 /* user profile */
+h4.nickname {
+  word-break: break-all;
+}
+
 div.left-pane {
   padding: 10px 20px;
   border: solid 1px lightgray;

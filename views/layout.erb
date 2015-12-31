@@ -5,9 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="keywords"
-          content="<%= @page_keywords_list %>法律,法务,问答,社区" />
+          content="<%= @page_keywords_list %>法律 法务 问答 社区" />
     <meta name="description"
-          content="<%= @page_description %>法律,法务,问答,社区" />
+          content="<%= @page_description %>法律 法务 问答 社区" />
     <title>
       <% if @title %><%= @title %> | 韩非子说<% else %>韩非子说"<% end %>
     </title>
@@ -21,6 +21,7 @@
     <![endif]-->
   </head>
   <body>
+    <!-- navbar -->
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -56,7 +57,7 @@
                 action="/search">
             <div class="form-group">
               <input type="text" class="form-control"
-                     name="s" placeholder="快速搜索">
+                     name="q" placeholder="快速搜索">
             </div>
           </form>
 
@@ -175,6 +176,7 @@
     <!-- main content -->
     <%= yield %>
 
+    <!-- footer -->
     <footer>
       <div class="container-fluid">
         <h3>韩非子说 <small>法律专业知识交流平台</small></h3>

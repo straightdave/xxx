@@ -276,3 +276,33 @@ div.sns-table th, div.sns-table td {
 span.watchlist-head {
   margin-bottom: 10px;
 }
+
+/* search page */
+div.mid-pane {
+  vertical-align: middle;
+  text-align: center;
+  height: 200px;
+  margin-top: 200px;
+}
+
+form.input-group {
+  margin-top:30px;
+}
+form.input-group input {
+  height: 50px;
+  font-size: 1.4em;
+}
+form.input-group button {
+  height: 50px;
+  width: 100px;
+  font-size: 18px;
+}
+
+/* search results page */
+div.search-results .question {
+  padding: 10px;
+}
+
+div.search-results .q-title {
+  font-size: 1.5em;
+}

@@ -1,0 +1,38 @@
+<!-- search results -->
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-9">
+      <h2><%= " “#{@search_str}” " %><small>的搜索结果</small></h2>
+      <hr>
+      <div class="search-results">
+        <% @results.each do |q| %>
+          <div class="question">
+            <div class="q-title">
+              <a href="/q/<%= q.id %>"><%= q.title %></a>
+            </div>
+            <div class="q-authorinfo">
+              <a href="/u/<%= q.last_doer.login_name %>">
+                <%= q.last_doer.login_name %>
+              </a>
+              在<%= time_ago_in_words_zh(q.last_do_at) %>
+              <% if q.last_do_type == 0 %>
+              提问
+              <% elsif q.last_do_type == 1 %>
+              回答
+              <% end %>
+            </div>
+            <div class="q-content">
+              <p>
+                <%= q.content[ 0..50 ] %>
+              </p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      ads...
+    </div>
+  </div>
+</div>

@@ -42,4 +42,14 @@ class Question < ActiveRecord::Base
 
   # == add mixins as a votable obj ==
   include Votability
+
+  # == helpers ==
+  def self.ft_search(keys)
+    # do full-text search with MySQL NGRAM ft engine
+    search_str = keys.join(" ")
+    Question.find_by_sql("SELECT * FROM questions
+                          WHERE MATCH (title,content)
+                          AGAINST ('#{search_str}'
+                          IN NATURAL LANGUAGE MODE);")
+  end
 end

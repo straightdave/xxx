@@ -21,160 +21,178 @@
     <![endif]-->
   </head>
   <body>
-    <!-- navbar -->
-    <nav class="navbar navbar-default">
+    <div class="wrapper"><!-- wrapper is to make footer sticky to bottom -->
+
+      <!-- navbar -->
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse"
+                    data-target="#navbar-collapse-1"
+                    aria-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">
+              <img alt="韩非子说" src="">
+            </a>
+          </div>
+
+          <div class="collapse navbar-collapse" id="navbar-collapse-1">
+
+            <ul class="nav navbar-nav">
+              <li <% if @navbar_active == "qna" %>class="active"<% end %>>
+                <a href="/">
+                  <span class="glyphicon glyphicon-home" aria-hidden="true">
+                  </span>&nbsp;问答
+                </a>
+              </li>
+              <li <% if @navbar_active == "articles" %>class="active"<% end %>>
+                <a href="/articles">文章</a>
+              </li>
+            </ul>
+
+            <form class="navbar-form navbar-right" role="search"
+                  action="/search">
+              <div class="form-group">
+                <input type="text" class="form-control"
+                       name="q" placeholder="快速搜索">
+              </div>
+            </form>
+
+            <ul class="nav navbar-nav navbar-right">
+              <% unless login? %>
+              <li>
+                <a href="javascript:void(0);" data-toggle="modal"
+                   data-target="#login-modal">
+                  <span class="glyphicon glyphicon-log-in" aria-hidden="true">
+                  </span>
+                  &nbsp;登录
+                </a>
+              </li>
+              <% else %>
+              <!-- for logged on user -->
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle"
+                            data-toggle="dropdown"
+                            role="button"
+                            aria-haspopup="true"
+                            aria-expanded="false">
+                  <%= session[:login_name] %>
+                  <% if session[:message_amount] > 0 %>
+                  &nbsp; <span class="badge"><%= session[:message_amount] %></span>
+                  <% end %>
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a href="/user/home">
+                      <span class="glyphicon glyphicon-user" aria-hidden="true">
+                      </span>
+                      &nbsp;我的首页
+                    </a>
+                  </li>
+                  <li role="separator" class="divider"></li>
+                  <li>
+                    <a href="/user/profile">
+                      <span class="glyphicon glyphicon-edit"
+                            aria-hidden="true">
+                      </span>
+                      &nbsp;更新资料
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/user/messages">
+                      <span class="glyphicon glyphicon-envelope"
+                            aria-hidden="true">
+                      </span>
+                      &nbsp;我的消息&nbsp;
+                      <% if session[:message_amount] > 0 %>
+                      <span class="badge"><%= session[:message_amount] %></span>
+                      <% end %>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/user/watchlist">
+                      <span class="glyphicon glyphicon-star" aria-hidden="true">
+                      </span>
+                      &nbsp;我关注的
+                    </a>
+                  </li>
+                  <li role="separator" class="divider"></li>
+                  <li>
+                    <a href="#" onclick="javascript:logout();">
+                      <span class="glyphicon glyphicon-log-out"
+                            aria-hidden="true">
+                      </span>&nbsp;退出登录
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <% end %>
+
+            </ul>
+          </div> <!-- /.navbar-collapse -->
+        </div> <!-- /.container-fluid -->
+      </nav>
+
+      <!-- modal login window -->
+      <div class="modal fade" id="login-modal" tabindex="-1" role="dialog"
+           aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal"
+                     aria-hidden="true" aria-label="Close">&times;</button>
+              <h4 class="modal-title" id="myModalLabel">登录</h4>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <input type="text" class="form-control" name="modal-loginname"
+                       placeholder="用户名">
+              </div>
+              <div class="form-group">
+                <input type="password" class="form-control" name="modal-password"
+                       placeholder="密码">
+              </div>
+              <div id="err-msg" class="text-danger"></div>
+            </div>
+            <div class="modal-footer">
+              <input type="button" value="登录" class="btn btn-primary"
+                      onclick="javascript:login();" />
+              &nbsp;没有帐户？<a href="/user/register">注册</a>
+            </div> <!-- /modal-body -->
+          </div> <!-- /.modal-content -->
+        </div> <!-- modal dialog -->
+      </div> <!-- /.modal -->
+
+      <!-- breadcumb -->
+      <% if @breadcrumb %>
       <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed"
-                  data-toggle="collapse"
-                  data-target="#navbar-collapse-1"
-                  aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">
-            <img alt="韩非子说" src="">
-          </a>
+        <div class="bread-pane">
+          <ol class="breadcrumb">
+            <% @breadcrumb.each do |b| %>
+            <li <% if b[:active] %>class="active"<% end %> >
+              <% if b[:url].nil? %>
+                <%= b[:name] %>
+              <% else %>
+                <a href="<%= b[:url] %>"><%= b[:name] %></a>
+              <% end %>
+            </li>
+            <% end %>
+          </ol>
         </div>
-
-        <div class="collapse navbar-collapse" id="navbar-collapse-1">
-
-          <ul class="nav navbar-nav">
-            <li <% if @navbar_active.nil? %>class="active"<% end %>>
-              <a href="/">
-                <span class="glyphicon glyphicon-home" aria-hidden="true">
-                </span>&nbsp;问答
-              </a>
-            </li>
-            <li <% if @navbar_active == "articles" %>class="active"<% end %>>
-              <a href="/articles">文章</a>
-            </li>
-          </ul>
-
-          <form class="navbar-form navbar-right" role="search"
-                action="/search">
-            <div class="form-group">
-              <input type="text" class="form-control"
-                     name="q" placeholder="快速搜索">
-            </div>
-          </form>
-
-          <ul class="nav navbar-nav navbar-right">
-            <% unless login? %>
-            <li>
-              <a href="javascript:void(0);" data-toggle="modal"
-                 data-target="#login-modal">登录</a>
-            </li>
-            <% else %>
-            <!-- for logged on user -->
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle"
-                          data-toggle="dropdown"
-                          role="button"
-                          aria-haspopup="true"
-                          aria-expanded="false">
-                <%= session[:login_name] %> &nbsp;
-                <% if session[:message_amount] > 0 %>
-                <span class="badge"><%= session[:message_amount] %></span>
-                <% end %>
-                <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu">
-                <li>
-                  <a href="/user/profile">
-                    <span class="glyphicon glyphicon-user" aria-hidden="true">
-                    </span>
-                    &nbsp;用户档案
-                  </a>
-                </li>
-                <li>
-                  <a href="/user/messages">
-                    <span class="glyphicon glyphicon-envelope"
-                          aria-hidden="true">
-                    </span>
-                    &nbsp;我的消息&nbsp;
-                    <% if session[:message_amount] > 0 %>
-                    <span class="badge"><%= session[:message_amount] %></span>
-                    <% end %>
-                  </a>
-                </li>
-                <li>
-                  <a href="/user/watchlist">
-                    <span class="glyphicon glyphicon-star" aria-hidden="true">
-                    </span>
-                    &nbsp;我关注的
-                  </a>
-                </li>
-                <li role="separator" class="divider"></li>
-                <li>
-                  <a href="#" onclick="javascript:logout();">
-                    <span class="glyphicon glyphicon-log-out"
-                          aria-hidden="true">
-                    </span>&nbsp;退出登录
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <% end %>
-
-          </ul>
-        </div> <!-- /.navbar-collapse -->
-      </div> <!-- /.container-fluid -->
-    </nav>
-
-    <!-- modal login window -->
-    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog"
-         aria-labelledby="myModalLabel">
-      <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal"
-                   aria-hidden="true" aria-label="Close">&times;</button>
-            <h4 class="modal-title" id="myModalLabel">登录</h4>
-          </div>
-          <div class="modal-body">
-            <div class="form-group">
-              <input type="text" class="form-control" name="modal-loginname"
-                     placeholder="用户名">
-            </div>
-            <div class="form-group">
-              <input type="password" class="form-control" name="modal-password"
-                     placeholder="密码">
-            </div>
-            <div id="err-msg" class="text-danger"></div>
-          </div>
-          <div class="modal-footer">
-            <input type="button" value="登录" class="btn btn-primary"
-                    onclick="javascript:login();" />
-            &nbsp;没有帐户？<a href="/user/register">注册</a>
-          </div> <!-- /modal-body -->
-        </div> <!-- /.modal-content -->
-      </div> <!-- modal dialog -->
-    </div> <!-- /.modal -->
-
-    <!-- breadcumb -->
-    <% if @breadcrumb %>
-    <div class="container-fluid">
-      <div class="bread-pane">
-        <ol class="breadcrumb">
-          <% @breadcrumb.each do |b| %>
-          <li <% if b[:active] %>class="active"<% end %> >
-            <% if b[:url].nil? %>
-              <%= b[:name] %>
-            <% else %>
-              <a href="<%= b[:url] %>"><%= b[:name] %></a>
-            <% end %>
-          </li>
-          <% end %>
-        </ol>
       </div>
-    </div>
-    <% end %>
+      <% end %>
 
-    <!-- main content -->
-    <%= yield %>
+      <!-- main content -->
+      <%= yield %>
+
+    </div><!-- end of wrapper -->
+
 
     <!-- footer -->
     <footer>

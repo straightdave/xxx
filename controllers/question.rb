@@ -1,6 +1,7 @@
 get '/ask' do
   return (json ret: "error", msg: "need_login") unless login?
   @title = "提问"
+  @navbar_active = "qna"
   @breadcrumb = [
     {name: "首页", url: '/'},
     {name: "提问", active: true}
@@ -61,6 +62,7 @@ get '/q/:qid' do |qid|
     @answered = !@q.accepted_answer.nil?
     @hidden_mark = @q.author.id != session[:user_id] || @answered
     @title = @q.title[0..6] + "..."
+    @navbar_active = "qna"
     @page_keywords_list = @q.tags.inject("") {|sum, tag| sum << "#{tag.name} " }
     @page_description = @q.title
     @breadcrumb = [

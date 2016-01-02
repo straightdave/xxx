@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
   <div class="row">
     <div class="col-md-9">
       <span class="watchlist-head">我关注的问题</span>
@@ -19,7 +19,7 @@
             </a>
           </td>
           <td>
-            <%= q.created_at %>
+            <%= time_ago_in_words_zh(q.created_at) %>
           </td>
         </tr>
         <% end %>

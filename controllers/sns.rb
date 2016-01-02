@@ -33,3 +33,13 @@ post '/u/:name/unfollow' do |name|
     json ret: "error", msg: target.errors.messages
   end
 end
+
+get '/user/home' do
+  unless @user = User.find_by(id: session[:user_id])
+    return json ret: "error", msg: "need_login"
+  end
+
+  @title = "用户首页"
+  @user_info = @user.info
+  erb :user_home
+end

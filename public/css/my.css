@@ -1,5 +1,12 @@
 /* dave wu (eyaswoo@163.com) @ Dec, 2015 */
+html {
+  position: relative;
+  min-height: 100%;
+}
 body {
+  /* Margin bottom by footer height */
+  margin-bottom: 240px;
+
   /* always show the y-scrollbar, this is a walkaround
   to stop scrollbar affecting page width */
   overflow-y: scroll;
@@ -9,17 +16,24 @@ body {
   */
 }
 
-ol.breadcrumb {
-  margin: 0 0 20px;
-  padding: 0;
-  background-color: transparent;
-}
-
 footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
   margin-top: 20px;
   padding-top: 10px;
   background-color: #E7E7E7;
   border-top: 1px solid lightgray;
+}
+
+.navbar, .btn {
+  border-radius: 0;
+}
+
+ol.breadcrumb {
+  margin: 0 0 20px;
+  padding: 0;
+  background-color: transparent;
 }
 
 div.clear {
@@ -299,7 +313,7 @@ form.input-group button {
 }
 
 /* search results page */
-div.search-results .question {
+div.search-results .search-item {
   padding: 10px;
 }
 

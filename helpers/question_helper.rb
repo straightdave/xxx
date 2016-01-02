@@ -18,4 +18,13 @@ helpers do
     user_id = session[:user_id]
     obj.votes.any? { |v| v.user_id == user_id }
   end
+
+  def get_abstract(content, num_of_char)
+    res = content.gsub(%r{</?[^>]+?>}, '')
+    if res.size <= num_of_char
+      res
+    else
+      res[0 .. num_of_char]
+    end
+  end
 end

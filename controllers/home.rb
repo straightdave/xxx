@@ -22,7 +22,7 @@ get '/' do
   # top is using tag's attribute 'used' which is not so accurate
   # TODO: later we could find better way to count how hot tags are
   @hot_tags = Tag.top(20)
-
+  @navbar_active = "qna"
   @title = "首页"
   erb :home
 end

@@ -21,3 +21,11 @@ end
 get '/404' do
   erb :page_404, layout: false
 end
+
+get '/err' do
+  1/0
+end
+
+error do
+  erb :page_error, layout: false
+end

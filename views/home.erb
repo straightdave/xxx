@@ -42,7 +42,7 @@
           <div class="question">
             <div class="user">
               <a href="/u/<%= q.last_doer.login_name %>">
-                <%= q.last_doer.login_name %>
+                <%= q.last_doer.info.nickname %>
               </a>
               在<%= time_ago_in_words_zh(q.last_do_at) %>
               <% if q.last_do_type == 0 %>

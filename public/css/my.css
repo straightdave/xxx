@@ -98,16 +98,6 @@ div.tags a.tag{
   display: block;
 }
 
-.question .user a {
-  text-decoration: none;
-  display: inline-block;
-  padding: 0px 5px;
-}
-
-.question .user a:hover {
-  background-color: #DAE7F1;
-}
-
 span.q_tag {
   background-color: #DAE7F1;
   color: #39739D;
@@ -178,7 +168,6 @@ div#answer-content {
   margin-bottom: 20px;
 }
 
-
 div.single-answer {
   margin: 10px 0 15px 0;
 }
@@ -210,7 +199,6 @@ h4.nickname {
 div.left-pane {
   padding: 10px 20px;
   border: solid 1px lightgray;
-  border-radius: 5px;
 }
 
 div.profile-page div.avatar {
@@ -239,14 +227,11 @@ div.unread {
   background-color: lightyellow;
 }
 
-div.message {
-}
 
 /* user profile page */
 div.profile-main {
   border: solid 1px lightgray;
   padding: 20px;
-  border-radius: 5px;
 }
 
 div.avatar-zone {
@@ -267,9 +252,6 @@ div.avatar-img img {
 
 div.latest table td {
   vertical-align: sub;
-}
-
-div.user-info-pane {
 }
 
 div.user-info-pane span#signup {

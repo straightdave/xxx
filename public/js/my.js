@@ -12,11 +12,6 @@ $().ready(function () {
       $("input[name='title']").focus();
       break;
     }
-    case "/login": {
-      var footer_h = $("footer").height();
-      var body_h = $(window).height();
-      $("footer").offset({top:(body_h - footer_h - 12)});
-    }
   }
 });
 

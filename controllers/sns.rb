@@ -34,6 +34,7 @@ post '/u/:name/unfollow' do |name|
   end
 end
 
+# not-in-use for now
 get '/user/home' do
   unless @user = User.find_by(id: session[:user_id])
     return json ret: "error", msg: "need_login"

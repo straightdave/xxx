@@ -65,7 +65,7 @@ post '/upload' do
   end
 
   login_name = session[:login_name]
-  avatar_file_name = "#{login_name}.#{ext}"
+  avatar_file_name = "#{login_name}"    # no ext for quick access
   full_name = "#{settings.public_folder}/uploads/avatars/#{avatar_file_name}"
 
   File.open(full_name, "w+") do |file|

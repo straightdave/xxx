@@ -1,5 +1,13 @@
 # == about tags ==
 get '/t/:tid' do |tid|
-  @title = "热门标签"
-  erb :question_of_tag if @tag = Tag.find_by(id: tid)
+  if @tag = Tag.find_by(id: tid)
+    @title = "标签：#{@tag.name}"
+    erb :question_of_tag
+  else
+    redirect to('/404')
+  end
+end
+
+get '/tags' do
+  "tags here"
 end

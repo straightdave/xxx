@@ -36,12 +36,25 @@ ol.breadcrumb {
   background-color: transparent;
 }
 
+.nav-tabs li a {
+  border-radius: 0;
+}
+
 div.clear {
   clear: both;
 }
 
+/* my common classes */
+.text-1_5times {
+  font-size: 1.5em;
+}
+
+.margin-top-10 {
+  margin-top: 10px;
+}
+
 /* home page hot tags */
-div.tags a.tag{
+a.tag{
   font-size: 1.1em;
   text-decoration: none;
   cursor:pointer;
@@ -301,4 +314,44 @@ div.search-results .search-item {
 
 div.search-results .q-title {
   font-size: 1.5em;
+}
+
+
+/* tags pages */
+div.tags-main-pane .nav-tabs li {
+  float: right;
+}
+
+div.tags-pane {
+  padding: 10px;
+}
+
+div.tags-pane div.tag-box {
+  margin: 10px;
+  padding: 10px;
+  float: left;
+  width: 200px;
+  height: 150px;
+  border: 1px solid lightgray;
+  word-wrap: break-word;
+  overflow: hidden;
+}
+
+div.tag-box p {
+  margin-top: 5px;
+}
+
+div.tags-main-pane div.pager {
+  font-size: 1.1em;
+}
+div.tags-main-pane div.pager span.active {
+  display: inline-block;
+  margin: 2px;
+  padding: 2px;
+  background-color: #DAE7F1;
+}
+
+/* tag page */
+div.intag-questions-pane .nav-tabs li {
+  float: right;
 }

@@ -1,0 +1,76 @@
+<div class="container-fluid">
+  <div class="row">
+
+    <div class="col-md-9">
+      <div class="tags-main-pane">
+        <ul class="nav nav-tabs">
+          <li role="presentation" class="<%= 'active' if @sort_by == 'new' %>">
+            <a href="/tags?sort=new">最新</a>
+          </li>
+          <li role="presentation" class="<%= 'active' if @sort_by == 'hot' %>">
+            <a href="/tags?sort=hot">最热</a>
+          </li>
+        </ul>
+
+        <div class="tags-pane">
+          <% @tags.each do |tag| %>
+            <div class="tag-box">
+              <a href="javascript:void(0);" class="tag"
+                 onclick="javascript:go_tag(<%= tag.id %>);">
+                <%= tag.name %>
+              </a> &times; <%= tag.used %>
+              <p>
+                <%= tag.desc || "暂无简介" %>
+              </p>
+            </div>
+          <% end %>
+          <div class="clear"></div>
+        </div>
+        <div class="pager">
+          <% if @page > 1 %>
+            <a href="/tags?page=<%= @page - 1 %>&sort=<%= @sort_by %>">上一页</a>
+          <% end %>
+
+          <% (1 .. @total_page).each do |pno| %>
+            <% if pno == @page %>
+              <span class="active"><%= pno %></span>
+            <% else %>
+              <span>
+                <a href="/tags?page=<%= pno %>&sort=<%= @sort_by %>">
+                  <%= pno %>
+                </a>
+              </span>
+            <% end %>
+          <% end %>
+
+          <% if @page < @total_page %>
+            <a href="/tags?page=<%= @page + 1 %>&sort=<%= @sort_by %>">下一页</a>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="tags-intro">
+        <h3>标签</h3>
+        <p>
+          <span class="q_tag">标签</span>
+          是一种关键字、一种标识，通常用以标记某些问题、文章等属于一个内容范畴。
+          它可以帮助其它用户快速准确地找到和回答你的问题。
+        </p>
+      </div>
+      <hr>
+
+      <div class="tags-search">
+        <input type="text" class="form-control"
+               name="tag-search" placeholder="标签搜索">
+      </div>
+      <hr>
+
+
+      ads here...
+
+    </div>
+
+  </div>
+</div>

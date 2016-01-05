@@ -12,10 +12,8 @@ end
 # TODO: delete this
 get '/show_session' do
   data = ""
-  session.each { |k, v| data += "#{k} => #{v}<br>"}
-  session.class.inspect + "<br>" +
-  session.methods.sort.inspect + "<br>" +
-  data
+  session.each { |k, v| data += "#{k} => #{v}<br>" }
+  session.class.inspect + "<br>" + session.methods.sort.inspect + "<br>" + data
 end
 
 get '/404' do
@@ -24,6 +22,10 @@ end
 
 get '/err' do
   1/0
+end
+
+not_found do
+  erb :page_404, layout: false
 end
 
 error do

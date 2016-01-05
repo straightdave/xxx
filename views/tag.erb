@@ -1,0 +1,85 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-9">
+      <span class="q_tag text-1_5times"><%= @tag.name %></span>
+      &times; <%= @tag.used %>
+      创建于<%= time_ago_in_words_zh(@tag.created_at) %>
+
+      <blockquote class="margin-top-10">
+        <p>
+          <%= @tag.desc || "暂无描述" %>
+        </p>
+      </blockquote>
+
+      <div class="intag-questions-pane">
+        <ul class="nav nav-tabs">
+          <li role="presentation" class="<%= 'active' if @sort_by == 'new' %>">
+            <a href="/t/<%= @tag.id %>?sort=new">最新</a>
+          </li>
+          <li role="presentation" class="<%= 'active' if @sort_by == 'hot' %>">
+            <a href="/t/<%= @tag.id %>?sort=hot">最热</a>
+          </li>
+        </ul>
+
+        <div class="intag-question-box">
+          <% @questions.each do |q| %>
+            <div class="q-title text-1_5times">
+              <a href="/q/<%= q.id %>"><%= q.title %></a>
+            </div>
+
+            <div class="q-authorinfo">
+              <a href="/u/<%= q.last_doer.login_name %>">
+                <%= q.last_doer.login_name %>
+              </a>
+              在<%= time_ago_in_words_zh(q.last_do_at) %>
+              <% if q.last_do_type == 0 %>
+              提问
+              <% elsif q.last_do_type == 1 %>
+              回答
+              <% end %>
+            </div>
+
+            <div class="q-content">
+              <p>
+                <%= get_abstract(q.content, 50) %>
+              </p>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="pager">
+          <% if @page > 1 %>
+            <a href="/t/<%= @tag.id %>?page=<%= @page - 1 %>&sort=<%= @sort_by %>">上一页</a>
+          <% end %>
+
+          <% (1 .. @total_page).each do |pno| %>
+            <% if pno == @page %>
+              <span class="active"><%= pno %></span>
+            <% else %>
+              <span>
+                <a href="/t/<%= @tag.id %>?page=<%= pno %>&sort=<%= @sort_by %>">
+                  <%= pno %>
+                </a>
+              </span>
+            <% end %>
+          <% end %>
+
+          <% if @page < @total_page %>
+            <a href="/t/<%= @tag.id %>?page=<%= @page + 1 %>&sort=<%= @sort_by %>">下一页</a>
+          <% end %>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-md-3">
+      <div class="intag-search">
+        <input type="text" class="form-control"
+               name="intag-search" placeholder="搜索该标签下内容">
+      </div>
+      <hr>
+
+      ads here...
+    </div>
+  </div>
+</div>

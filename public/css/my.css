@@ -341,10 +341,11 @@ div.tag-box p {
   margin-top: 5px;
 }
 
-div.tags-main-pane div.pager {
+div.pager {
   font-size: 1.1em;
+  margin-top: 30px;
 }
-div.tags-main-pane div.pager span.active {
+div.pager span.active {
   display: inline-block;
   margin: 2px;
   padding: 2px;
@@ -354,4 +355,7 @@ div.tags-main-pane div.pager span.active {
 /* tag page */
 div.intag-questions-pane .nav-tabs li {
   float: right;
+}
+div.intag-question-box {
+  padding-top: 20px;
 }

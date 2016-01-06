@@ -1,14 +1,15 @@
 <div class="container-fluid">
   <div class="row">
-
     <div class="col-md-9">
       <div class="tags-main-pane">
         <ul class="nav nav-tabs">
           <li role="presentation" class="<%= 'active' if @sort_by == 'new' %>">
-            <a href="/tags?sort=new">最新</a>
+            <a href="javascript:void(0);"
+               onclick="sort_by('new');">最新</a>
           </li>
           <li role="presentation" class="<%= 'active' if @sort_by == 'hot' %>">
-            <a href="/tags?sort=hot">最热</a>
+            <a href="javascript:void(0);"
+               onclick="sort_by('hot');">最热</a>
           </li>
         </ul>
 
@@ -28,7 +29,8 @@
         </div>
         <div class="pager">
           <% if @page > 1 %>
-            <a href="/tags?page=<%= @page - 1 %>&sort=<%= @sort_by %>">上一页</a>
+            <a href="javascript:void(0);"
+               onclick="javascript:pager_move(<%= @page - 1 %>);">上一页</a>
           <% end %>
 
           <% (1 .. @total_page).each do |pno| %>
@@ -36,7 +38,8 @@
               <span class="active"><%= pno %></span>
             <% else %>
               <span>
-                <a href="/tags?page=<%= pno %>&sort=<%= @sort_by %>">
+                <a href="javascript:void(0);"
+                   onclick="javascript:pager_move(<%= pno %>);">
                   <%= pno %>
                 </a>
               </span>
@@ -44,7 +47,8 @@
           <% end %>
 
           <% if @page < @total_page %>
-            <a href="/tags?page=<%= @page + 1 %>&sort=<%= @sort_by %>">下一页</a>
+          <a href="javascript:void(0);"
+             onclick="javascript:pager_move(<%= @page + 1 %>);">下一页</a>
           <% end %>
         </div>
       </div>
@@ -62,7 +66,7 @@
       <hr>
 
       <div class="tags-search">
-        <input type="text" class="form-control"
+        <input type="text" class="form-control searchbox"
                name="tag-search" placeholder="标签搜索">
       </div>
       <hr>

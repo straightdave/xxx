@@ -13,7 +13,65 @@ $().ready(function () {
       break;
     }
   }
+
+  // tags search and intag search
+  $("input.searchbox").keydown(function (event) {
+    var keycode = (event.keyCode ? event.keyCode : event.which);
+    if (keycode == '13') {
+      keywords = $(this).val();
+      target = $(this).attr("name");
+
+      if (myTrim(keywords) == "") {
+        location.replace(remove_param("q"));
+        return;
+      }
+
+      keywords = keywords.replace(' ', '+');
+      location.replace(add_only_param("q", keywords));
+    }
+  });
+
 });
+
+/* basic functions */
+function myTrim(x) {
+  return x.replace(/^\s+|\s+$/gm, '');
+}
+
+/* add/update param and value for current path */
+function add_param(key, value) {
+  var result = new RegExp(key + "=([^&]*)", "i").exec(location.search);
+  result = result && result[1] || "";
+
+  var url = location.pathname;
+  if (result == '') {
+    if (location.search == '') {
+      url += "?" + key + '=' + value;
+    }
+    else {
+      url += location.search + "&" + key + '=' + value;
+    }
+  } else {
+    url += location.search.replace(key + "=" + result, key + "=" + value);
+  }
+  return url;
+}
+
+function add_only_param(key, value) {
+  return location.pathname + "?" + key + '=' + value;
+}
+
+function remove_param(key) {
+  var result = new RegExp(key + "=([^&]*)", "i").exec(location.search);
+  result = result && result[1] || "";
+
+  if (result != '') {
+    var new_search = location.search.replace(key + "=" + result, '');
+    return location.pathname + new_search;
+  }
+  return location.pathname + location.search;
+}
+
 
 /* login methods */
 /* login method 1: used in home page, modal window */
@@ -514,4 +572,13 @@ function mark_as_accepted(qid, aid) {
       location.replace(location.href);
     }
   });
+}
+
+/* tags page, used for sort */
+function sort_by(key) {
+  location.replace(add_param('sort', key));
+}
+
+function pager_move(p) {
+  location.replace(add_param('page', p));
 }

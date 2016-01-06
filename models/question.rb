@@ -49,7 +49,15 @@ class Question < ActiveRecord::Base
     search_str = keys.join(" ")
     Question.find_by_sql("SELECT * FROM questions
                           WHERE MATCH (title,content)
-                          AGAINST ('#{search_str}'
+                          AGAINST ('#{search_str}' IN NATURAL LANGUAGE MODE);")
+  end
+
+  def self.ft_search_intag(keys, tag_id)
+    search_str = keys.join(" ")
+    Question.find_by_sql("SELECT q.* FROM questions q JOIN question_tag qt
+                          ON q.id = qt.question_id
+                          WHERE qt.tag_id = #{tag_id} AND
+                          MATCH (q.title, q.content) AGAINST ('#{search_str}'
                           IN NATURAL LANGUAGE MODE);")
   end
 end

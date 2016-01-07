@@ -52,6 +52,15 @@ class Question < ActiveRecord::Base
                           AGAINST ('#{search_str}' IN NATURAL LANGUAGE MODE);")
   end
 
+  def self.ft_search_title(keys, limit = 10)
+    # used in asking page
+    search_str = keys.join(" ")
+    Question.find_by_sql("SELECT * FROM questions
+                          WHERE MATCH (title)
+                          AGAINST ('#{search_str}' IN NATURAL LANGUAGE MODE)
+                          LIMIT #{limit};")
+  end
+
   def self.ft_search_intag(keys, tag_id)
     search_str = keys.join(" ")
     Question.find_by_sql("SELECT q.* FROM questions q JOIN question_tag qt

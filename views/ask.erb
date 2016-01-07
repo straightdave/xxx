@@ -9,6 +9,7 @@
       <p>
         提问前好好想想，是不是真的不会？得到满意回答后也别忘记积累知识。
       </p>
+
       <div class="form-group has-feedback">
         <input type="text" class="form-control" name="title"
                placeholder="言简意赅的标题" />
@@ -17,18 +18,22 @@
         <input name="tagsinput" class="bootstrap-tagsinput"
                data-role="tagsinput" placeholder="输入或选择标签"/>
       </div>
-      <div class="tag-select-pane" name="tag-select-pane">
-        There is so many tags listed here...
-      </div>
       <div class="form-group">
         <textarea id="editor1" name="editor1"></textarea>
         <script>
           CKEDITOR.replace('editor1'); CKEDITOR.instances.editor1.setData("");
         </script>
       </div>
+
       <a class="btn btn-primary" href="javascript:void(0);"
          onclick="javascript:do_ask();">提交</a>
       <div id="err_msg_ask" class="text-danger"></div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="similar-question-list">
+
+      </div>
     </div>
   </div>
 </div>

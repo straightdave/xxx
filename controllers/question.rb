@@ -1,5 +1,5 @@
 get '/ask' do
-  return (json ret: "error", msg: "need_login") unless login?
+  redirect to('/login?r=' + CGI.escape('/ask')) unless login?
   @title = "提问"
   @navbar_active = "qna"
   @breadcrumb = [

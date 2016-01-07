@@ -1,4 +1,3 @@
-# searching page (search box and results if any)
 get '/search' do
   if (search_str = params['q']) &&
      (keys = search_str.split '+') &&
@@ -12,5 +11,17 @@ get '/search' do
   else
     @title = "搜索"
     erb :search, layout: false
+  end
+end
+
+post '/search_title' do
+  if (search_str = params['q']) &&
+     (keys = search_str.split '+') &&
+     keys.size > 0
+
+    results = Question.ft_search_title keys
+    if results && results.size > 0
+      json num: results.size, data: results.to_json
+    end
   end
 end

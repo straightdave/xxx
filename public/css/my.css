@@ -361,3 +361,13 @@ div.intag-question-box {
 }
 
 /* ask page */
+div.linked-title {
+  margin-bottom: 10px;
+}
+div.linked-title span {
+  color: gray;
+  margin-right: 10px;
+}
+div.linked-title a {
+  text-decoration: none;
+}

@@ -1,4 +1,3 @@
-# actions for visual captcha
 get '/captcha/start/:how_many' do |how_many|
   captcha = VisualCaptchaCN::Captcha.new @session
   captcha.generate how_many

@@ -1,20 +1,8 @@
-/* xxx project copyrights 2015-10 Dave */
+/* xxx project copyrights 2015 Dave */
 
-/*
-  for each page's on-ready event
-*/
 $().ready(function () {
-  var current_path = location.pathname;
-
-  // focus title input on asking page
-  switch(current_path) {
-    case "/ask": {
-      $("input[name='title']").focus();
-      break;
-    }
-  }
-
-  // tags search and intag search
+  
+  // tags-search and intag-search boxes' actions
   $("input.searchbox").keydown(function (event) {
     var keycode = (event.keyCode ? event.keyCode : event.which);
     if (keycode == '13') {
@@ -25,7 +13,6 @@ $().ready(function () {
         location.replace(remove_param("q"));
         return;
       }
-
       keywords = keywords.replace(' ', '+');
       location.replace(add_only_param("q", keywords));
     }
@@ -34,12 +21,14 @@ $().ready(function () {
 });
 
 /* basic functions */
+
 function myTrim(x) {
   return x.replace(/^\s+|\s+$/gm, '');
 }
 
-/* add/update param and value for current path */
 function add_param(key, value) {
+  // add/update param and value for CURRENT URL
+
   var result = new RegExp(key + "=([^&]*)", "i").exec(location.search);
   result = result && result[1] || "";
 
@@ -51,13 +40,15 @@ function add_param(key, value) {
     else {
       url += location.search + "&" + key + '=' + value;
     }
-  } else {
+  }
+  else {
     url += location.search.replace(key + "=" + result, key + "=" + value);
   }
   return url;
 }
 
 function add_only_param(key, value) {
+  // set location.search only contains this param
   return location.pathname + "?" + key + '=' + value;
 }
 
@@ -72,10 +63,11 @@ function remove_param(key) {
   return location.pathname + location.search;
 }
 
+/* ===== functions used for login/logout ===== */
 
-/* login methods */
-/* login method 1: used in home page, modal window */
 function login() {
+  // login method 1: used in home page, modal window
+
   var is_valid = true;
   var u = $("input[name='modal-loginname']");
   var uv = u.val().trim();
@@ -123,9 +115,12 @@ function login() {
   }
 }
 
-/* login method 2: used in login page */
 function login2() {
+  //login method 2: used in login page
+
   var is_valid = true;
+  var ret_page = $("input[name='return_page']").val();
+  ret_page = decodeURIComponent(ret_page);
   var name_input = $("input[id='u']");
   var name = name_input.val().trim();
   var reg=/^[0-9a-zA-Z_]{1,50}$/i;
@@ -155,7 +150,7 @@ function login2() {
     };
     $.post("/login", data, function (data, status) {
       if(data.ret == "success") {
-        var return_url = GetUrlParam("returnurl") || "/";
+        var return_url = ret_page || "/";
         location.replace(return_url);
       }
       else {
@@ -185,7 +180,8 @@ function logout() {
   $.post('/logout', function() { location.replace('/'); });
 }
 
-/* for messages page */
+/* ===== my message page ===== */
+
 function mark_all_as_read() {
   $.post('/user/mark_messages', function (data, status) {
     if(data.ret == "success") {
@@ -196,16 +192,20 @@ function mark_all_as_read() {
   });
 }
 
-/* ask on homepage */
+/* ===== home page ===== */
+
 function ask() {
   $.get("/check_login", function (data, status) {
     if(data.ret){
       location.href = "/ask";
-    } else {
-      location.href = "/login";
+    }
+    else {
+      location.href = "/login?r=" + encodeURIComponent("/ask");
     }
   });
 }
+
+/* ===== ask page ===== */
 
 function do_ask() {
   var is_valid = true;
@@ -236,9 +236,6 @@ function do_ask() {
       else {
         if(data.msg == "need_login") {
           alert("请先登录");
-        }
-        else {
-          alert(data.msg);
         }
       }
     });
@@ -364,9 +361,6 @@ function do_comment(qid) {
         if(data.msg == "need_login") {
           alert("请先登录");
         }
-        else {
-          alert(data.msg);
-        }
       }
     });
   }
@@ -387,9 +381,6 @@ function do_comment_answer(aid) {
         if(data.msg == "need_login") {
           alert("请先登录");
         }
-        else {
-          alert(data.msg);
-        }
       }
     });
   }
@@ -409,9 +400,6 @@ function vote(op, tar, id) {
     else {
       if(data.msg == "need_login") {
         alert("请先登录");
-      }
-      else {
-        alert(data.msg);
       }
     }
   });
@@ -434,9 +422,6 @@ function watch1(qid) {
         if(data.msg == "need_login") {
           alert("请先登录");
         }
-        else {
-          alert(data.msg);
-        }
       }
     });
   }
@@ -449,9 +434,6 @@ function watch1(qid) {
       else {
         if(data.msg == "need_login") {
           alert("请先登录");
-        }
-        else {
-          alert(data.msg);
         }
       }
     });
@@ -466,9 +448,6 @@ function unwatch1(qid) {
     else {
       if(data.msg == "need_login") {
         alert("请先登录");
-      }
-      else {
-        alert(data.msg);
       }
     }
   });
@@ -546,9 +525,6 @@ function do_follow(user) {
       if(data.msg == "need_login") {
         alert("请先登录");
       }
-      else {
-        alert(data.msg);
-      }
     }
   });
 }
@@ -557,9 +533,6 @@ function cancel_follow(user) {
   $.post("/u/" + user + "/unfollow", function (data, status) {
     if(data.ret == "success") {
       location.replace(location.href);
-    }
-    else {
-      alert(data.msg);
     }
   });
 }

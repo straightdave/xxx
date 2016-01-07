@@ -181,7 +181,8 @@ CREATE TABLE `questions` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  FULLTEXT KEY `ft_index` (`title`,`content`) /*!50100 WITH PARSER `ngram` */ 
+  FULLTEXT KEY `ft_index` (`title`,`content`) /*!50100 WITH PARSER `ngram` */ ,
+  FULLTEXT KEY `ft_index_title` (`title`) /*!50100 WITH PARSER `ngram` */ 
 ) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -312,4 +313,4 @@ CREATE TABLE `watching_list` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-01-06 16:14:50
+-- Dump completed on 2016-01-08  0:37:07

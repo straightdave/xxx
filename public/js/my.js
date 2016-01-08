@@ -9,7 +9,7 @@ $().ready(function () {
       keywords = $(this).val();
       target = $(this).attr("name");
 
-      if (myTrim(keywords) == "") {
+      if (keywords.trim() == "") {
         location.replace(remove_param("q"));
         return;
       }
@@ -21,10 +21,6 @@ $().ready(function () {
 });
 
 /* basic functions */
-
-function myTrim(x) {
-  return x.replace(/^\s+|\s+$/gm, '');
-}
 
 function add_param(key, value) {
   // add/update param and value for CURRENT URL
@@ -82,11 +78,9 @@ function login() {
     is_valid = false;
   } else { set_ok(p); }
   if (is_valid) {
-    var rm = $("input[name='rememberme']").prop("checked");
     var data = {
       "login_name" : uv,
-      "password" : pv,
-      "rememberme" : rm
+      "password" : pv
     };
     $.post("/login", data, function(d, status) {
       if (d.ret == "success") {
@@ -141,12 +135,10 @@ function login2() {
   else {
     set_ok(pass_input);
   }
-  var rememberme = $("input[name='rememberme2']").prop("checked");
   if (is_valid) {
     var data = {
       "login_name" : name,
-      "password" : pass,
-      "rememberme" : (rememberme ? 1 : 0)
+      "password" : pass
     };
     $.post("/login", data, function (data, status) {
       if(data.ret == "success") {

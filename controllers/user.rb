@@ -43,7 +43,6 @@ get '/login' do
   logout_user if login?
   @return_page = params['r']
   @name        = params['u']
-  
   @title = "用户登录"
   erb :login
 end
@@ -78,10 +77,12 @@ post '/login' do
 
   login_name = params['login_name']
   password   = params['password']
+  rememberme = params['rememberme'] || 0
+  rememberme = rememberme.to_i
 
   user = User.find_by(login_name: login_name)
   if user && user.authenticate(password)
-    login_user user
+    login_user(user, rememberme)
     session[:try_count]      = nil
     session[:delay_start]    = nil
     session[:delay_duration] = nil

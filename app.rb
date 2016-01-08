@@ -49,5 +49,5 @@ configure do
   set :public_folder, File.dirname(__FILE__) + '/public'
 
   # set rack session
-  use Rack::Session::Pool, expire_after: 60 * 60 * 24, http_only: true
+  use Rack::Session::Pool, expire_after: 60 * 60 * 2, http_only: true
 end

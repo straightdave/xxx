@@ -18,6 +18,11 @@
         <input class="form-control" type="password" name="password" id="p"
                placeholder="密码" />
       </div>
+      <div class="form-group has-feedback">
+        <label>
+          <input type="checkbox" name="rememberme2"> 记住我
+        </label>
+      </div>
       <input type="hidden" name="return_page" value="<%= @return_page %>" />
       <button class="btn btn-primary" onclick="javascript:login2();">
         登录

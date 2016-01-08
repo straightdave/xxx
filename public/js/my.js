@@ -1,7 +1,7 @@
 /* xxx project copyrights 2015 Dave */
 
 $().ready(function () {
-  
+
   // tags-search and intag-search boxes' actions
   $("input.searchbox").keydown(function (event) {
     var keycode = (event.keyCode ? event.keyCode : event.which);
@@ -141,12 +141,12 @@ function login2() {
   else {
     set_ok(pass_input);
   }
-  var remember = $("input[id='r2']").prop("checked");
+  var rememberme = $("input[name='rememberme2']").prop("checked");
   if (is_valid) {
     var data = {
       "login_name" : name,
       "password" : pass,
-      "rememberme" : remember
+      "rememberme" : (rememberme ? 1 : 0)
     };
     $.post("/login", data, function (data, status) {
       if(data.ret == "success") {

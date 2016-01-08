@@ -5,7 +5,7 @@
         <span>我的消息</span>
         <button type="button" class="btn btn-default btn-xs" id="btn_mark"
                 onclick="javascript:mark_all_as_read();"
-                <% if session[:message_amount] == 0 %>
+                <% if get_message_amount == 0 %>
                   disabled="disabled"
                 <% end %> >将所有消息标记为已读</button>
       </div>

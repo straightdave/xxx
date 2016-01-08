@@ -47,26 +47,22 @@ class Question < ActiveRecord::Base
   def self.ft_search(keys)
     # do full-text search with MySQL NGRAM ft engine
     search_str = keys.join(" ")
-    Question.find_by_sql("SELECT * FROM questions
-                          WHERE MATCH (title,content)
-                          AGAINST ('#{search_str}' IN NATURAL LANGUAGE MODE);")
+    Question.where("MATCH (title,content)
+                    AGAINST ( ? IN NATURAL LANGUAGE MODE )", search_str)
   end
 
   def self.ft_search_title(keys, limit = 10)
     # used in asking page
     search_str = keys.join(" ")
-    Question.find_by_sql("SELECT * FROM questions
-                          WHERE MATCH (title)
-                          AGAINST ('#{search_str}' IN NATURAL LANGUAGE MODE)
-                          LIMIT #{limit};")
+    Question.where("MATCH (title) AGAINST ( ? IN NATURAL LANGUAGE MODE )",
+                    search_str).take(limit)
   end
 
   def self.ft_search_intag(keys, tag_id)
     search_str = keys.join(" ")
-    Question.find_by_sql("SELECT q.* FROM questions q JOIN question_tag qt
-                          ON q.id = qt.question_id
-                          WHERE qt.tag_id = #{tag_id} AND
-                          MATCH (q.title, q.content) AGAINST ('#{search_str}'
-                          IN NATURAL LANGUAGE MODE);")
+    Question.joins("JOIN question_tag ON question_tag.question_id = questions.id")
+            .where("question_tag.tag_id = ? AND
+                    MATCH (questions.title, questions.content)
+                    AGAINST ( ? IN NATURAL LANGUAGE MODE )", tag_id, search_str)
   end
 end

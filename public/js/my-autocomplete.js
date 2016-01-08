@@ -13,7 +13,7 @@ $().ready(function () {
   $("input[name='title']").keyup(function (event) {
     var f1 = function () {
       var keywords = event.target.value;
-      if ( (myTrim(keywords)).length < 2 ) return;
+      if ( keywords.trim().length < 2 ) return;
 
       // console.log("搜索类似题目：" + keywords);
       $.post('/search_title', { "q" : keywords }, function (data, status) {

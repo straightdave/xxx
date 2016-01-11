@@ -25,3 +25,15 @@ post '/search_title' do
     end
   end
 end
+
+post '/search_tag' do
+  if (search_str = params['q']) &&
+     (keys = search_str.split '+') &&
+     keys.size > 0
+
+    results = Tag.ft_search_name keys
+    if results && results.size > 0
+      json num: results.size, data: results.to_json
+    end
+  end
+end

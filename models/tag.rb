@@ -18,11 +18,14 @@ class Tag < ActiveRecord::Base
   end
 
   def self.ft_search(keys)
-    # do full-text search with MySQL NGRAM ft engine
     search_str = keys.join(" ")
-    Tag.find_by_sql("SELECT * FROM tags
-                    WHERE MATCH (name,`desc`)
-                    AGAINST ('#{search_str}'
-                    IN NATURAL LANGUAGE MODE);")
+    Tag.where("MATCH (name,`desc`)
+              AGAINST ( ? IN NATURAL LANGUAGE MODE )", search_str)
+  end
+
+  def self.ft_search_name(keys)
+    search_str = keys.join(" ")
+    Tag.where("MATCH (name)
+              AGAINST ( ? IN NATURAL LANGUAGE MODE )", search_str)
   end
 end

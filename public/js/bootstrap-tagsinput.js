@@ -15,7 +15,7 @@
       return null;
     },
     freeInput: true,
-    addOnBlur: true,
+    addOnBlur: false,  // dave: false. for tag-sug
     maxTags: 5,
     maxChars: 24,
     confirmKeys: [13, 44],
@@ -437,6 +437,8 @@
             if (text.length !== 0) {
                self.add(maxLengthReached ? text.substr(0, self.options.maxChars) : text);
                $input.val('');
+               // dave: cancel suggest menu if finishs input for a tag
+               $('#tag-suggest').hide();
             }
 
             // If the field is empty, let the event triggered fire as usual

@@ -6,9 +6,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-8">
-      <p>
-        提问前好好想想，是不是真的不会？得到满意回答后也别忘记积累知识。
-      </p>
+      <p>提问前好好想想，是不是真的不会？得到满意回答后也别忘记积累知识。</p>
 
       <div class="form-group has-feedback">
         <input type="text" class="form-control" name="title"
@@ -18,6 +16,11 @@
         <input name="tagsinput" class="bootstrap-tagsinput"
                data-role="tagsinput" placeholder="输入或选择标签"/>
       </div>
+
+      <!-- hidden suggest menu -->
+      <ul class="dropdown-menu" id="tag-suggest">
+      </ul>
+
       <div class="form-group">
         <textarea id="editor1" name="editor1"></textarea>
         <script>

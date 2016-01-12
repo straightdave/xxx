@@ -18,7 +18,7 @@
     addOnBlur: false,  // dave: false. for tag-sug
     maxTags: 5,
     maxChars: 24,
-    confirmKeys: [13, 44],
+    confirmKeys: [], //[13, 44],  // dave: only confirm by click dropdown item
     delimiter: ',',
     delimiterRegex: null,
     cancelConfirmKeysOnEmpty: true,
@@ -509,7 +509,7 @@
      */
     findInputWrapper: function() {
       var elt = this.$input[0],
-          container = this.$container[0];
+        container = this.$container[0];
       while(elt && elt.parentNode !== container)
         elt = elt.parentNode;
 
@@ -543,11 +543,11 @@
           results.push(tagsinput);
       } else if(tagsinput[arg1] !== undefined) {
           // Invoke function on existing tags input
-            if(tagsinput[arg1].length === 3 && arg3 !== undefined){
-               var retVal = tagsinput[arg1](arg2, null, arg3);
-            }else{
-               var retVal = tagsinput[arg1](arg2);
-            }
+          if(tagsinput[arg1].length === 3 && arg3 !== undefined){
+             var retVal = tagsinput[arg1](arg2, null, arg3);
+          }else{
+             var retVal = tagsinput[arg1](arg2);
+          }
           if (retVal !== undefined)
               results.push(retVal);
       }

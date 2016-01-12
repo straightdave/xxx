@@ -44,15 +44,20 @@ get '/t/:tid' do |tid|
   end
 end
 
-# ajax search, not-in-use now
-post '/tags/search' do
-  if (search_str = params['q']) &&
-     (keys = search_str.split '+') &&
-     keys.size > 0
-
-    # do some search work
-    results = Tag.ft_search keys
-    json ret: "success", msg: results.to_json
+# ajax call: create a tag
+post '/tags/new' do
+  if (name = params['name']) && (desc = params['desc'])
+    new_tag = Tag.new
+    new_tag.name = name
+    new_tag.desc = desc
+    if new_tag.valid?
+      new_tag.save
+      json ret: "success", msg: new_tag.id
+    else
+      json ret: "error", msg: "failed"
+    end
+  else
+    json ret: "error", msg: "lack_of_args"
   end
 end
 

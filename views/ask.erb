@@ -2,6 +2,33 @@
 <link href="/css/bootstrap-tagsinput.css" rel="stylesheet">
 <% end %>
 
+<div class="modal fade" id="new-tag-modal">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">新建标签</h4>
+      </div>
+      <div class="modal-body">
+        <p id="new-tag-name">
+          标签名称：<span class="q_tag"></span>
+        </p>
+        <hr>
+        <p id="new-tag-desc">
+          <textarea style="width: 100%;" placeholder="输入标签描述"></textarea>
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="javascript:new_tag();">保存</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
 <script src="/vendors/ckeditor/ckeditor.js"></script>
 <div class="container-fluid">
   <div class="row">
@@ -35,7 +62,6 @@
 
     <div class="col-md-4">
       <div class="similar-question-list">
-
       </div>
     </div>
   </div>
@@ -43,5 +69,5 @@
 
 <% content_for :extra_js_tags do %>
 <script src="/js/bootstrap-tagsinput.js"></script>
-<script src="/js/my-autocomplete.js"></script>
+<script src="/js/my-ask.js"></script>
 <% end %>

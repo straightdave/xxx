@@ -47,16 +47,30 @@ $().ready(function () {
       $.post('/search_tag', { "q" : keywords }, function (data, status) {
         if (data.num > 0) {
           var ts = JSON.parse(data.data);
-          var tagItems = "<li>\n";
+          var tagItems = "";
+          var all_diff = true;
           for(var i = 0; i < data.num; i++) {
-            tagItems += "<a href='#'>" + ts[i].name + "</a>\n";
-            tagItems += "</li>\n";
+            tagItems += "<li>\n<a href='javascript:void(0);' onclick='tag_sug_click(\""+ ts[i].name +"\");'><span class='q_tag'>";
+            tagItems += ts[i].name;
+            tagItems += "</span> &times; ";
+            tagItems += ts[i].used;
+            tagItems += "</a>\n</li>\n";
+            if (ts[i].name == keywords) {
+              all_diff = false;
+            }
           }
-          console.log(tagItems);
+          if (all_diff) {
+            tagItems += "<li role='separator' class='divider'></li>\n";
+            tagItems += "<li><a href='javascript:void(0);' onclick='tag_new_click(\"" + keywords + "\");'>创建标签<span class='q_tag'>";
+            tagItems += keywords;
+            tagItems += "</span></a></li>\n";
+          }
           $(pane).html(tagItems);
         }
         else {
-          var createNewTag = "<li><a href='#'>创建标签" + keywords + "</a></li>";
+          var createNewTag = "<li><a href='javascript:void(0);' onclick='tag_new_click(\"" + keywords + "\");'>创建标签<span class='q_tag'>";
+          createNewTag += keywords;
+          createNewTag += "</span></a></li>\n";
           $(pane).html(createNewTag);
         }
       });
@@ -69,8 +83,38 @@ $().ready(function () {
     }, 500);
   });
 
+  // close sug pane
   $("div[class='bootstrap-tagsinput'] > input").blur(function () {
-    console.log("leave tag input");
-    $(pane).hide();
+    delay(function () {
+      $(pane).hide();
+    }, 500);
   });
 });
+
+function tag_sug_click(name) {
+  $("div[class='bootstrap-tagsinput'] > input").val('');
+  $("input[name='tagsinput']").tagsinput('add', name);
+}
+
+function tag_new_click(name) {
+  $("#new-tag-name > span").text(name);
+  $("#new-tag-modal").modal('show');
+  $("#new-tag-desc > textarea").val('');
+}
+
+function new_tag() {
+  var name = $("#new-tag-name > span").text();
+  var desc = $("#new-tag-desc > textarea").val();
+  console.log("name=" + name + ", desc= " + desc);
+  if (name.trim() != '' && desc.trim() != '') {
+    $.post('/tags/new', { "name": name, "desc": desc }, function (data, status) {
+      if (data.ret == "success") {
+        tag_sug_click(name);
+        $("#new-tag-modal").modal('hide');
+      }
+      else {
+        alert("创建失败");
+      }
+    });
+  }
+}

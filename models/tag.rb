@@ -19,13 +19,13 @@ class Tag < ActiveRecord::Base
 
   def self.ft_search(keys)
     search_str = keys.join(" ")
-    Tag.where("MATCH (name,`desc`)
-              AGAINST ( ? IN NATURAL LANGUAGE MODE )", search_str)
+    Tag.where("MATCH (name,`desc`) AGAINST ( ? IN NATURAL LANGUAGE MODE )",
+              search_str)
   end
 
-  def self.ft_search_name(keys)
+  def self.ft_search_name(keys, limit = 10)
     search_str = keys.join(" ")
-    Tag.where("MATCH (name)
-              AGAINST ( ? IN NATURAL LANGUAGE MODE )", search_str)
+    Tag.where("MATCH (name) AGAINST ( ? IN NATURAL LANGUAGE MODE )",
+              search_str).take(limit)
   end
 end

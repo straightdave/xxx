@@ -214,9 +214,13 @@ function do_ask() {
   // which could be added by any browser plugin
   //var div_pos = content.lastIndexOf('<div');
   //content = content.substring(0, div_pos);
-  if(content.length < 10) {
+  if (content.length < 10) {
     set_error($("textarea#editor1"));
     err_msg += "字数太少了吧 &nbsp; ";
+    is_valid = false;
+  }
+  if (content.length > 500) {
+    err_msg += "字数太多了 &nbsp; ";
     is_valid = false;
   }
   if(is_valid) {

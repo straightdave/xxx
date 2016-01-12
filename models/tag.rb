@@ -12,6 +12,10 @@ class Tag < ActiveRecord::Base
                                      foreign_key: "tag_id",
                                      association_foreign_key: "article_id"
 
+  # == validations ==
+  validates :name, length: { maximum: 50, too_long: "名字请勿超过50字符" }
+  validates :desc, length: { maximum: 100, too_long: "描述请勿超过100字符" }
+
   # == helpers ==
   def self.top(number)
     Tag.order(used: :desc).take(number)

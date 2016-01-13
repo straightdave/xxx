@@ -1,3 +1,4 @@
+# ajax call for vote/devote one stuff
 post %r{/([q|a|c])/(\d+)/vote} do |target, id|
   return (json ret: "error", msg: "need_login") unless login?
 

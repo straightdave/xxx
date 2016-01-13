@@ -117,11 +117,10 @@
         <div class="my-fav">
           擅长标签
           <% @user.fav_tags.each do |t| %>
-            <span class="label label-primary"
-                  style="cursor:pointer;margin-right:2px;"
-                  onclick="javascript:go_tag(<%= t.id %>);">
+            <a href="javascript:void(0);" class="tag"
+               onclick="javascript:go_tag(<%= t.id %>);">
               <%= t.name %>
-            </span>
+            </a>
           <% end %>
         </div>
 

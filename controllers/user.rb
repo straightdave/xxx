@@ -1,4 +1,4 @@
-# ===== registering =====
+# ===== user registering =====
 get '/user/register' do
   @title = "用户注册"
   return erb :user_register unless login?

@@ -1,4 +1,4 @@
-# == about tags ==
+# page of one tag
 get '/t/:tid' do |tid|
   if @tag = Tag.find_by(id: tid)
     @sort_by = params['sort'] || 'hot'
@@ -61,6 +61,7 @@ post '/tags/new' do
   end
 end
 
+# page for all tags
 get '/tags' do
   @sort_by = params['sort'] || 'hot'
   @page = params['page'] || 1    # 20 tags per page

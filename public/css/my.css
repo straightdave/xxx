@@ -10,10 +10,6 @@ body {
   /* always show the y-scrollbar, this is a walkaround
   to stop scrollbar affecting page width */
   overflow-y: scroll;
-
-  /* for navbar fixed-on-top
-  padding-top: 70px;
-  */
 }
 
 footer {

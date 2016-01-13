@@ -1,8 +1,10 @@
 # === actions of insite messages ===
 get '/user/messages' do
+  redirect to('/login?r=' + CGI.escape('/user/messages')) unless login?
   unless user = User.find_by(id: session[:user_id])
-    return json ret: "error", msg: "need_login"
+    return json ret: "error", msg: "user_error"
   end
+
   @title = "收件箱"
   @messages = user.inbox_messages
   @breadcrumb = [

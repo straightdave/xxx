@@ -201,13 +201,16 @@ post '/q/:qid/accept' do |qid|
   end
 
   unless question.accepted_answer.nil?
-    return json ret: "error", msg: "duplicate_mark"
+    return json ret: "error", msg: "dup_accept"
   end
 
   question.accepted_answer = answer
-  add_repu(answer.author, 5)
-  if question.valid?
-    question.save
+  answerer = answer.author
+  add_repu(answerer, 5)
+  answerer.fav_tags << question.tags.all
+  
+  if question.valid? && answerer.valid?
+    question.save && answerer.save
     json ret: "success"
   else
     json ret: "error", msg: "accept_failed"

@@ -21,7 +21,7 @@ end
 
 # view one's own profile
 get '/user/profile' do
-  redirect to("/login?returnurl=#{request.url}") unless login?
+  redirect to('/login?r=' + CGI.escape('/user/profile')) unless login?
 
   unless @user = User.find_by(id: session[:user_id])
     return (json ret: "error", msg: "account_error")
@@ -35,7 +35,7 @@ end
 # view other's profile
 get '/u/:name' do |name|
   unless @user = User.find_by(login_name: name)
-    return (erb :page_404, layout: false)
+    raise not_found
   end
 
   @user_info = @user.info

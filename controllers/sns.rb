@@ -34,10 +34,10 @@ post '/u/:name/unfollow' do |name|
   end
 end
 
-# not-in-use for now
 get '/user/home' do
+  redirect to('/login?r=' + CGI.escape('/user/home')) unless login?
   unless @user = User.find_by(id: session[:user_id])
-    return json ret: "error", msg: "need_login"
+    return json ret: "error", msg: "user_error"
   end
 
   @title = "用户首页"

@@ -207,8 +207,7 @@ post '/q/:qid/accept' do |qid|
   question.accepted_answer = answer
   answerer = answer.author
   add_repu(answerer, 5)
-  answerer.fav_tags << question.tags.all
-  
+
   if question.valid? && answerer.valid?
     question.save && answerer.save
     json ret: "success"

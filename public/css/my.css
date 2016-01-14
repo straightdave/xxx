@@ -222,6 +222,11 @@ div.profile-page div.avatar img {
   height: 150px;
 }
 
+div.each-expert-tag {
+  float: left;
+  margin: 10px;
+}
+
 /* message page */
 div.msg-list-head {
   padding-bottom: 10px;
@@ -354,6 +359,27 @@ div.intag-questions-pane .nav-tabs li {
 }
 div.intag-question-box {
   padding-top: 20px;
+}
+
+/* for listed experts in tag page */
+div.listed-expert {
+  padding: 5px;
+  margin: 5px;
+}
+div.listed-info {
+  float: left;
+  padding-top: 5px;
+}
+div.listed-info span {
+  display: block;
+}
+span.listed-intro {
+  color: gray;
+}
+img.listed-avatar {
+  height: 50px;
+  float: left;
+  margin-right: 10px;
 }
 
 /* ask page */

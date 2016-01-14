@@ -17,8 +17,29 @@ class Tag < ActiveRecord::Base
   validates :desc, length: { maximum: 100, too_long: "描述请勿超过100字符" }
 
   # == helpers ==
-  def self.top(number)
+  # top used tags for all
+  def self.top_used(number)
     Tag.order(used: :desc).take(number)
+  end
+
+  # for one tag: top expert users
+  def top_experts(number)
+    temp_relations =
+      UserTag.joins("INNER JOIN users ON users.id = user_tag.user_id")
+             .where(tag_id: self.id)
+             .order(expert_score: :desc)
+
+    if number && number > 0
+      top_expert_relations = temp_relations.take(number)
+    else
+      top_expert_relations = temp_relations
+    end
+
+    expert_ids = []
+    top_expert_relations.each do |e|
+      expert_ids << e.user_id
+    end
+    User.find(expert_ids)
   end
 
   def self.ft_search(keys)

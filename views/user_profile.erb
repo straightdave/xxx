@@ -114,14 +114,19 @@
         <hr>
 
         <!-- fav tags -->
-        <div class="my-fav">
-          擅长标签
-          <% @user.fav_tags.each do |t| %>
-            <a href="javascript:void(0);" class="tag"
-               onclick="javascript:go_tag(<%= t.id %>);">
-              <%= t.name %>
-            </a>
+        <h5>擅长标签</h5>
+        <div class="my-expert-tags">      
+          <% @user.top_expert_tags(5).each do |rel| %>
+            <div class="each-expert-tag">
+              <a href="javascript:void(0);" class="tag"
+                 onclick="javascript:go_tag(<%= rel.tag_id %>);">
+                <%= rel.tag.name %>
+              </a>
+              标签分数
+              <%= rel.expert_score %>
+            </div>
           <% end %>
+          <div class="clear"></div>
         </div>
 
       </div>

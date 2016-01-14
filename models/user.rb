@@ -38,15 +38,11 @@ class User < ActiveRecord::Base
                           foreign_key: "user_id",
                           association_foreign_key: "question_id"
 
-  # user has fav tags
-  has_and_belongs_to_many :fav_tags, -> { uniq },
-                          class_name: "Tag",
-                          join_table: "user_tag",
-                          foreign_key: "user_id",
-                          association_foreign_key: "tag_id"
-
   # user action history; this is to get all
   has_many :historical_actions, class_name: "HistoricalAction"
+
+  # user-top association for top expert tags use
+  has_many :expert_tags, class_name: "UserTag"
 
   # === validations ===
   # login name contains only underscore, numbers and letters, no more than 50
@@ -76,8 +72,28 @@ class User < ActiveRecord::Base
     followees.nil? ? 0 : followees.size
   end
 
-  def lastest_actions(num)
-    self.historical_actions.order(created_at: :desc).take(num)
+  def lastest_actions(number)
+    ret = self.historical_actions.order(created_at: :desc)
+    return ret if number.nil? || number < 1
+    ret.take number
+  end
+
+  # get user-tag object
+  def get_expert_tag(tag_id)
+    expert_tags.where(tag_id: tag_id).first
+  end
+
+  def get_expert_score(tag_id)
+    expert_tags.where(tag_id: tag_id).first.expert_score
+  end
+
+  # returned object is user - tag relationship
+  # can get how many answered, accepted, voted and devoted other than score
+  # also can get tag model from it
+  def top_expert_tags(number)
+    ret = self.expert_tags.order(expert_score: :desc)
+    return ret if number.nil? || number < 1
+    ret.take number
   end
 
   private

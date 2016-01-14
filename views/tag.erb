@@ -84,6 +84,26 @@
       </div>
       <hr>
 
+      <div class="intag-topexpert">
+        <h5>热门砖家</h5>
+        <% @top_experts.each do |e| %>
+          <div class="listed-expert">
+            <img class="listed-avatar" src="<%= e.info.avatar %>"
+                 alt="<%= e.login_name %>" />
+            <div class="listed-info">
+              <span class="listed-name">
+                <%= e.info.nickname %> (标签得分 <%= e.get_expert_score(@tag.id) %>)
+              </span>
+              <a href="/u/<%= e.login_name %>">
+                <span class="listed-intro">@<%= e.login_name %></span>
+              </a>
+            </div>
+            <div class="clear"></div>
+          </div>
+        <% end %>
+      </div>
+      <hr>
+
       ads here...
     </div>
   </div>

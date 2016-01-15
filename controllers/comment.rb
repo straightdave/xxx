@@ -2,14 +2,10 @@ post %r{/([q|a|w])/(\d+)/comment} do |target, id|
   return (json ret: "error", msg: "need_login") unless login?
 
   obj = case target
-  when 'q'
-    Question.find_by(id: id)
-  when 'a'
-    Answer.find_by(id: id)
-  when 'w'
-    Article.find_by(id: id)
-  else
-    nil  # TODO: other commentable here, maybe articles, news ...
+  when 'q' then Question.find_by(id: id)
+  when 'a' then Answer.find_by(id: id)
+  when 'w' then Article.find_by(id: id)
+  else nil  # TODO: other commentable here, maybe articles, news ...
   end
 
   return (json ret: "error", msg: "target_not_found") unless obj
@@ -26,10 +22,9 @@ post %r{/([q|a|w])/(\d+)/comment} do |target, id|
   obj.watchers << author if target == "q"
 
   if c.valid? && obj.valid?
-    c.save
-    obj.save
+    c.save && obj.save
     send_msg_after_comment(author, obj)
-    add_repu(author, 1)
+    author.info.update_reputation(1)
 
     HistoricalAction.create(
       user_id: session[:user_id],

@@ -42,7 +42,8 @@ class User < ActiveRecord::Base
   has_many :historical_actions, class_name: "HistoricalAction"
 
   # user-top association for top expert tags use
-  has_many :expert_tags, class_name: "UserTag"
+  has_many :tags, through: :expertises
+  has_many :expertises
 
   # === validations ===
   # login name contains only underscore, numbers and letters, no more than 50
@@ -78,20 +79,34 @@ class User < ActiveRecord::Base
     ret.take number
   end
 
-  # get user-tag object
+  # add expertises (tags relationship), using meta-programming: send/1
+  # 2 things to notice:
+  # a) count add multiple tags
+  # b) duplicated tags will not be added
+  def add_expertise(tag_ids = [], reason)
+    tag_ids.each do |tid|
+      if self.expertises.exists?(tag_id: tid)
+        exp = self.expertises.where(tag_id: tid).first
+      else
+        exp = self.expertises.build(tag_id: tid)
+      end
+      exp.send(reason) # reason is atom of method names (voted_once, etc.)
+    end
+  end
+
   def get_expert_tag(tag_id)
-    expert_tags.where(tag_id: tag_id).first
+    self.expertises.where(tag_id: tag_id).first
   end
 
   def get_expert_score(tag_id)
-    expert_tags.where(tag_id: tag_id).first.expert_score
+    self.expertises.where(tag_id: tag_id).first.expert_score
   end
 
   # returned object is user - tag relationship
   # can get how many answered, accepted, voted and devoted other than score
   # also can get tag model from it
   def top_expert_tags(number)
-    ret = self.expert_tags.order(expert_score: :desc)
+    ret = self.expertises.order(expert_score: :desc)
     return ret if number.nil? || number < 1
     ret.take number
   end

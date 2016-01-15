@@ -17,31 +17,21 @@ helpers do
     session.destroy
   end
 
-  def add_repu(user, points)
-    user.info.reputation += points
-    user.info.save if user.info.valid?
-  end
-
-  def minus_repu(user, points)
-    user.info.reputation -= points
-    user.info.save if user.info.valid?
-  end
-
   # used for views
   def get_login_name
-    get :login_name
+    getss :login_name
   end
 
   def get_message_amount
-    get :message_amount
+    getss :message_amount
   end
 
   def get_user_id
-    get :user_id
+    getss :user_id
   end
 
   private
-  def get(attr)
+  def getss(attr)
     session[attr]
   end
 end

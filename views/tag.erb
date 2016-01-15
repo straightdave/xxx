@@ -88,7 +88,7 @@
         <h5>热门砖家</h5>
         <% @top_experts.each do |e| %>
           <div class="listed-expert">
-            <img class="listed-avatar" src="<%= e.info.avatar %>"
+            <img class="listed-avatar" src="<%= e.info.avatar || '/avatar.jpg'%>"
                  alt="<%= e.login_name %>" />
             <div class="listed-info">
               <span class="listed-name">

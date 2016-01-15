@@ -16,25 +16,25 @@ get '/t/:tid' do |tid|
     total_size = @questions.count
 
     @questions = case @sort_by
-                 when 'hot'
-                   @questions.sort { |a, b| b.views <=> a.views }
-                             .slice(20 * (@page - 1) .. 20 * @page)
-                 when 'new'
-                   @questions.sort { |a, b| b.created_at <=> a.created_at }
-                             .slice(20 * (@page - 1) .. 20 * @page)
-                 end
+    when 'hot'
+     @questions.sort { |a, b| b.views <=> a.views }
+               .slice(20 * (@page - 1) .. 20 * @page)
+    when 'new'
+     @questions.sort { |a, b| b.created_at <=> a.created_at }
+               .slice(20 * (@page - 1) .. 20 * @page)
+    end
   else
     # no search filtered but all questions with this tag
     # use methods for ActiveRecord::Relations
     total_size = @tag.questions.count
     @questions = case @sort_by
-                 when 'hot'
-                   @tag.questions.order(views: :desc)
-                       .limit(20).offset(20 * (@page - 1))
-                 when 'new'
-                   @tag.questions.order(created_at: :desc)
-                       .limit(20).offset(20 * (@page - 1))
-                 end
+    when 'hot'
+     @tag.questions.order(views: :desc)
+         .limit(20).offset(20 * (@page - 1))
+    when 'new'
+     @tag.questions.order(created_at: :desc)
+         .limit(20).offset(20 * (@page - 1))
+    end
   end
   @total_page = total_size / 20 + (total_size % 20 != 0 ? 1 : 0)
 
@@ -81,21 +81,21 @@ get '/tags' do
     total_size = @tags.count
 
     @tags = case @sort_by
-            when 'hot'
-              @tags.sort { |a, b| b.used <=> a.used }
-                   .slice(20 * (@page - 1) .. 20 * @page)
-            when 'new'
-              @tags.sort { |a, b| b.created_at <=> a.created_at }
-                   .slice(20 * (@page - 1) .. 20 * @page)
-            end
+    when 'hot'
+      @tags.sort { |a, b| b.used <=> a.used }
+           .slice(20 * (@page - 1) .. 20 * @page)
+    when 'new'
+      @tags.sort { |a, b| b.created_at <=> a.created_at }
+           .slice(20 * (@page - 1) .. 20 * @page)
+    end
   else
     total_size = Tag.count
     @tags = case @sort_by
-            when 'hot'
-              Tag.order(used: :desc).limit(20).offset(20 * (@page - 1))
-            when 'new'
-              Tag.order(created_at: :desc).limit(20).offset(20 * (@page - 1))
-            end
+    when 'hot'
+      Tag.order(used: :desc).limit(20).offset(20 * (@page - 1))
+    when 'new'
+      Tag.order(created_at: :desc).limit(20).offset(20 * (@page - 1))
+    end
   end
   @total_page = total_size / 20 + (total_size % 20 != 0 ? 1 : 0)
 

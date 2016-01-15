@@ -10,7 +10,7 @@
         <div class="col-md-1">
           <div class="votingbox">
             <a href="javascript:void(0);" title="好问题，赞！"
-               onclick="javascript:vote(0,'q',<%= @q.id %>);">
+               onclick="javascript:vote('vote','q',<%= @q.id %>);">
               <span class="glyphicon glyphicon-triangle-top"
                     aria-hidden="true"></span>
             </a>
@@ -19,7 +19,7 @@
             <br>
 
             <a href="javascript:void(0);" title="这问题太逊了，埋了它！"
-               onclick="javascript:vote(1,'q',<%= @q.id %>);">
+               onclick="javascript:vote('devote','q',<%= @q.id %>);">
               <span class="glyphicon glyphicon-triangle-bottom"
                     aria-hidden="true"></span>
             </a>
@@ -73,14 +73,14 @@
                 <div class="single-comment">
                   <div class="comment-vote"> <!-- voting box -->
                     <a href="javascript:void(0);"
-                       onclick="javascript:vote(0,'c',<%= c.id %>)"
+                       onclick="javascript:vote('vote','c',<%= c.id %>)"
                        title="这条评论很有帮助，赞！">
                       <span class="glyphicon glyphicon-triangle-top"
                             aria-hidden="true"></span>
                     </a>
                     <span id = "c-scores-<%= c.id %>"><%= c.scores %></span>
                     <a href="javascript:void(0);"
-                       onclick="javscript:vote(1,'c',<%= c.id %>)"
+                       onclick="javscript:vote('devote','c',<%= c.id %>)"
                        title="这条评论不正确或者误导人，差评！">
                       <span class="glyphicon glyphicon-triangle-bottom"
                             aria-hidden="true"></span>
@@ -136,7 +136,7 @@
                 <div class="col-md-1">
                   <div class="votingbox"> <!-- voting box -->
                     <a href="javascript:void(0);"
-                       onclick="javascript:vote(0,'a',<%= a.id %>);"
+                       onclick="javascript:vote('vote','a',<%= a.id %>);"
                        title="这条回答很有帮助，赞！">
                       <span class="glyphicon glyphicon-triangle-top"
                             aria-hidden="true"></span>
@@ -145,7 +145,7 @@
                     <span id = "a-scores-<%= a.id %>"><%= a.scores %></span>
                     <br>
                     <a href="javascript:void(0);"
-                       onclick="javscript:vote(1,'a',<%= a.id %>);"
+                       onclick="javscript:vote('devote','a',<%= a.id %>);"
                        title="这答案不正确或者误导人，差评！">
                       <span class="glyphicon glyphicon-triangle-bottom"
                             aria-hidden="true"></span>
@@ -196,7 +196,7 @@
                         <div class="single-comment">
                           <div class="comment-vote"> <!-- voting box -->
                             <a href="javascript:void(0);"
-                               onclick="javascript:vote(0,'c',<%= c.id %>)"
+                               onclick="javascript:vote('vote','c',<%= c.id %>)"
                                title="这条评论很有帮助，赞！">
                               <span class="glyphicon glyphicon-triangle-top"
                                     aria-hidden="true"></span>
@@ -205,7 +205,7 @@
                               <%= c.scores %>
                             </span>
                             <a href="javascript:void(0);"
-                               onclick="javscript:vote(1,'c',<%= c.id %>)"
+                               onclick="javscript:vote('devote','c',<%= c.id %>)"
                                title="这条评论不正确或者误导人，差评！">
                               <span class="glyphicon glyphicon-triangle-bottom"
                                     aria-hidden="true"></span>

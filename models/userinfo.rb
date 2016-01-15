@@ -4,4 +4,10 @@ class UserInfo < ActiveRecord::Base
 
   # == validations ==
   validates :nickname, presence: true
+
+  # == helpers ==
+  def update_reputation(delta)
+    self.reputation += delta
+    save if valid?
+  end
 end

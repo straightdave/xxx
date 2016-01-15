@@ -382,20 +382,21 @@ function do_comment_answer(aid) {
   }
 }
 
-function vote(op, tar, id) {
+function vote(op_type, target_type, id) {
   // params:
-  // op - 0 means +1 (vote one point); 1 means -1 (devote)
-  // tar - target, 'q' for question, 'a' for answer, 'c' for comment
+  // op_type: 'vote' or 'devote'
+  // target_type - target, 'q' for question, 'a' for answer, 'c' for comment
   // id - target id
-  var data = { "op" : (op == 1 ? "d" : "u") };  // d for downer, u for upper
-  var url = "/" + tar + "/" + id + "/vote";
-  $.post(url, data, function (data, status) {
+  var url = "/" + target_type + "/" + id + "/" + op_type;
+  $.post(url, function (data, status) {
     if(data.ret == "success") {
-      $("span[id='"+ tar +"-scores-" + id + "']").text(data.msg);
+      $("span[id='"+ target_type +"-scores-" + id + "']").text(data.msg);
     }
     else {
       if(data.msg == "need_login") {
         alert("请先登录");
+      } else {
+        alert(data.msg);
       }
     }
   });

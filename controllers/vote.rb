@@ -1,39 +1,32 @@
 # ajax call for vote/devote one stuff
-post %r{/([q|a|c])/(\d+)/vote} do |target, id|
+post %r{/([q|a|c])/(\d+)/(devote|vote)} do |target_type, id, behavior|
   return (json ret: "error", msg: "need_login") unless login?
 
-  obj = case target
-  when "q"
-    Question.find_by(id: id)
-  when "a"
-    Answer.find_by(id: id)
-  when "c"
-    Comment.find_by(id: id)
+  obj = case target_type
+  when "a" then Answer.find_by(id: id)
+  when "c" then Comment.find_by(id: id)
+  when "q" then Question.find_by(id: id)
   end
-
   return (json ret: "error", msg: "target_not_found") unless obj
 
   unless user = User.find_by(id: session[:user_id])
     return json ret: "error", msg: "user_not_found"
   end
 
-  return (json ret: "error", msg: "just_voted") if already_voted?(obj)
+  return (json ret: "error", msg: "already_voted") if already_voted?(obj)
 
-  vote = Vote.new
-  vote.voter = user
-  op = params['op'] || "u"
-  if op == "u"
+  vote = obj.votes.build(voter: user)
+
+  if behavior == "vote"
     vote.points = 1
-    add_repu(obj.author, 1)
-  elsif op == "d"
+    obj.get_voted
+  elsif behavior == "devote"
     vote.points = -1
-    minus_repu(obj.author, 2)
+    obj.get_devoted
   end
 
-  obj.votes << vote
   if vote.valid? && obj.valid?
-    vote.save
-    obj.save # vote will be autosaved?
+    vote.save && obj.save
     json ret: "success", msg: obj.scores
   else
     json ret: "error", msg: obj.errors.messages.inspect

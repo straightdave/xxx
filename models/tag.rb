@@ -12,6 +12,10 @@ class Tag < ActiveRecord::Base
                                      foreign_key: "tag_id",
                                      association_foreign_key: "article_id"
 
+  # users who had answered questions/wrote articles under this tag
+  has_many :users, through: :expertises
+  has_many :expertises
+
   # == validations ==
   validates :name, length: { maximum: 50, too_long: "名字请勿超过50字符" }
   validates :desc, length: { maximum: 100, too_long: "描述请勿超过100字符" }
@@ -24,10 +28,7 @@ class Tag < ActiveRecord::Base
 
   # for one tag: top expert users
   def top_experts(number)
-    temp_relations =
-      UserTag.joins("INNER JOIN users ON users.id = user_tag.user_id")
-             .where(tag_id: self.id)
-             .order(expert_score: :desc)
+    temp_relations = self.expertises.order(expert_score: :desc)
 
     if number && number > 0
       top_expert_relations = temp_relations.take(number)

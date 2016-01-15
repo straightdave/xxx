@@ -35,7 +35,7 @@ post '/ask' do
   new_q.save
   set_just_viewed(new_q.id)
   send_msg_after_ask(author, new_q)
-  add_repu(author, 2)
+  author.info.update_reputation(2)
 
   HistoricalAction.create(
     user_id: session[:user_id],
@@ -161,7 +161,8 @@ post '/q/:qid/answer' do |qid|
           answer.save
           q.save
           send_msg_after_answer(q, author)
-          add_repu(author, 2)
+          author.info.update_reputation(2)
+          author.add_expertise(q.tag_ids, :answered_once)
 
           HistoricalAction.create(
             user_id: session[:user_id],
@@ -206,7 +207,8 @@ post '/q/:qid/accept' do |qid|
 
   question.accepted_answer = answer
   answerer = answer.author
-  add_repu(answerer, 5)
+  answerer.info.update_reputation(5)
+  answerer.add_expertise(question.tag_ids, :accepted_once)
 
   if question.valid? && answerer.valid?
     question.save && answerer.save

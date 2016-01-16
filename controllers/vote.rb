@@ -13,6 +13,10 @@ post %r{/([q|a|c])/(\d+)/(devote|vote)} do |target_type, id, behavior|
     return json ret: "error", msg: "user_not_found"
   end
 
+  if obj.author.id == user.id
+    return json ret: "error", msg: "no_vote_self"
+  end
+
   return (json ret: "error", msg: "already_voted") if already_voted?(obj)
 
   vote = obj.votes.build(voter: user)

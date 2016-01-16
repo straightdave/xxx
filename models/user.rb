@@ -85,9 +85,7 @@ class User < ActiveRecord::Base
   # b) duplicated tags will not be added
   def add_expertise(tag_ids = [], reason)
     tag_ids.each do |tid|
-      if self.expertises.exists?(tag_id: tid)
-        exp = self.expertises.where(tag_id: tid).first
-      else
+      unless exp = self.expertises.find_by(tag_id: tid)
         exp = self.expertises.build(tag_id: tid)
       end
       exp.send(reason) # reason is atom of method names (voted_once, etc.)
@@ -106,7 +104,7 @@ class User < ActiveRecord::Base
   # can get how many answered, accepted, voted and devoted other than score
   # also can get tag model from it
   def top_expert_tags(number)
-    ret = self.expertises.order(expert_score: :desc)
+    ret = self.expertises.where("expert_score > 0").order(expert_score: :desc)
     return ret if number.nil? || number < 1
     ret.take number
   end

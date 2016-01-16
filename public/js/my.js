@@ -395,7 +395,14 @@ function vote(op_type, target_type, id) {
     else {
       if(data.msg == "need_login") {
         alert("请先登录");
-      } else {
+      }
+      else if(data.msg == "no_vote_self") {
+        alert("不能给自己投标哦");
+      }
+      else if(data.msg == "already_voted") {
+        alert("这个你已经投过票啦")
+      }
+      else {
         alert(data.msg);
       }
     }

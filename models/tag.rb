@@ -28,16 +28,17 @@ class Tag < ActiveRecord::Base
 
   # for one tag: top expert users
   def top_experts(number)
-    temp_relations = self.expertises.order(expert_score: :desc)
+    temp_relations = self.expertises.where("expert_score > 0")
+                                    .order(expert_score: :desc)
 
     if number && number > 0
-      top_expert_relations = temp_relations.take(number)
+      top_expert = temp_relations.take(number)
     else
-      top_expert_relations = temp_relations
+      top_expert = temp_relations.all
     end
 
     expert_ids = []
-    top_expert_relations.each do |e|
+    top_expert.each do |e|
       expert_ids << e.user_id
     end
     User.find(expert_ids)
@@ -45,7 +46,7 @@ class Tag < ActiveRecord::Base
 
   def self.ft_search(keys)
     search_str = keys.join(" ")
-    Tag.where("MATCH (name,`desc`) AGAINST ( ? IN NATURAL LANGUAGE MODE )",
+    Tag.where("MATCH (name, `desc`) AGAINST ( ? IN NATURAL LANGUAGE MODE )",
               search_str)
   end
 

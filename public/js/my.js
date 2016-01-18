@@ -21,12 +21,11 @@ $().ready(function () {
 });
 
 /* basic functions */
-
 function add_param(key, value) {
-  // add/update param and value for CURRENT URL
+  /* add/update param and value for CURRENT URL */
 
   var result = new RegExp(key + "=([^&]*)", "i").exec(location.search);
-  result = result && result[1] || "";
+  result = (result && result[1]) || "";
 
   var url = location.pathname;
   if (result == '') {
@@ -44,13 +43,13 @@ function add_param(key, value) {
 }
 
 function add_only_param(key, value) {
-  // set location.search only contains this param
+  // set this param the only one in url.search
   return location.pathname + "?" + key + '=' + value;
 }
 
 function remove_param(key) {
   var result = new RegExp(key + "=([^&]*)", "i").exec(location.search);
-  result = result && result[1] || "";
+  result = (result && result[1]) || "";
 
   if (result != '') {
     var new_search = location.search.replace(key + "=" + result, '');
@@ -60,7 +59,6 @@ function remove_param(key) {
 }
 
 /* ===== functions used for login/logout ===== */
-
 function login() {
   // login method 1: used in home page, modal window
 
@@ -496,6 +494,7 @@ function do_avatar_change() {
   $("form#avatar-form").submit();
 }
 
+/* update user's profile */
 function do_update() {
   var nickname = $("input[name='nickname']").val();
   var intro = $("input[name='intro']").val();
@@ -523,6 +522,8 @@ function do_update() {
 function do_follow(user) {
   $.post("/u/" + user + "/follow", function (data, status) {
     if(data.ret == "success") {
+      /* if it becomes slow in the future, we can change elements without
+      refreshing page */
       location.replace(location.href);
     }
     else {

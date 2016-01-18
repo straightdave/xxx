@@ -1,4 +1,7 @@
-/* only used in /ask page */
+/*
+  only used in /ask page
+  ajax for title input and tags input
+ */
 $().ready(function () {
   $("input[name='title']").focus();
 

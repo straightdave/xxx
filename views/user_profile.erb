@@ -35,23 +35,7 @@
             </span>
           </p>
 
-
-
-          <!-- SNS info
-          <div class="sns-pane">
-            <div class="sns-table">
-              <table class="table">
-                <tr>
-                  <th>following</th>
-                  <th>followers</th>
-                </tr>
-                <tr>
-                  <td><%= @user.followee_size %></td>
-                  <td><%= @user.follower_size %></td>
-                </tr>
-              </table>
-            </div>
-
+          <div class="sns-actions">
             <% if @user.id != get_user_id %>
               <% if @followed %>
                 <a href="javascript:void(0);"
@@ -70,7 +54,6 @@
               <% end %>
             <% end %>
           </div>
-        -->
 
         </div>
       </div> <!-- end of profile -->
@@ -84,31 +67,31 @@
             <li>
               <div class="each-stat">
                 <h5>声望</h5>
-                <span>10</span>
+                <span><%= @user_info.reputation %></span>
               </div>
             </li>
             <li>
               <div class="each-stat">
                 <h5>提问</h5>
-                <span>10</span>
+                <span><%= @user.asked_questions.count %></span>
               </div>
             </li>
             <li>
               <div class="each-stat">
                 <h5>回答</h5>
-                <span>10</span>
+                <span><%= @user.answers.count %></span>
               </div>
             </li>
             <li>
               <div class="each-stat">
                 <h5>关注</h5>
-                <span>10</span>
+                <span><%= @user.followee_size %></span>
               </div>
             </li>
             <li class="last">
               <div class="each-stat">
                 <h5>粉丝</h5>
-                <span>10</span>
+                <span><%= @user.follower_size %></span>
               </div>
             </li>
           </ul>
@@ -123,55 +106,65 @@
 
             <% @events.each do |event| %>
             <div class="eventbox">
-              <span style="width:10%;">
-                <%= time_ago_in_words_zh(event.created_at) %>
-              </span>
-              <span style="width:7%;">
-                <%= event.event_type_zh %>
-              </span>
+              <div class="event-avatar">
+                <img alt="<%= @user_info.nickname %>"
+                     src="<%= @user_info.avatar || "/avatar.jpg"%>">
+              </div>
+              <div class="event-content">
 
+                <h5>
+                  <%= @user_info.nickname %>
+                  <small>@<%= @user.login_name %></small>
+                </h5>
 
-              <h2>
-                <a href="<%= event.target_url %>">
-                  <%= event.target_title %>
-                </a>
-              </h2>
+                <p>
+                  在<%= time_ago_in_words_zh(event.created_at) %>
+                  <%= event.event_type_zh %>
+                  <%= event.target_type_zh %>
+                  <a href="<%= event.target_url %>" class="event-target-link">
+                    <%= event.target_title %>
+                  </a>
+                </p>
+                <% if event.target_quote %>
+                <blockquote>
+                  <%= event.target_quote %>
+                </blockquote>
+                <% end %>
+
+              </div>
+              <div class="clear"></div>
+
             </div>
-            <% end %>
 
+            <% end %>
           <% else %>
             暂无动态
           <% end %>
         </div>
-        <hr>
 
-        <!-- fav tags -->
-        <h5>擅长标签</h5>
-        <div class="my-expert-tags">
-          <% @user.top_expert_tags(5).each do |rel| %>
-            <div class="each-expert-tag">
-              <a href="javascript:void(0);" class="tag"
-                 onclick="javascript:go_tag(<%= rel.tag_id %>);">
-                <%= rel.tag.name %>
-              </a>
-              标签分数
-              <%= rel.expert_score %>
-            </div>
-          <% end %>
-          <div class="clear"></div>
-        </div>
+
 
       </div> <!-- end of profile-mid-pane -->
     </div> <!-- end of col-6 in the mid -->
 
     <div class="col-md-3">
-      <div class="profile-right-pane" style="height: 300px;">
-        Wahahahahaha, hahahaha
+      <!-- fav tags -->
+      <h5>擅长标签</h5>
+      <div class="my-expert-tags">
+        <% @user.top_expert_tags(5).each do |rel| %>
+          <div class="each-expert-tag">
+            <a href="javascript:void(0);" class="tag"
+               onclick="javascript:go_tag(<%= rel.tag_id %>);">
+              <%= rel.tag.name %>(<%= rel.expert_score %>)
+            </a>
+          </div>
+        <% end %>
+        <div class="clear"></div>
       </div>
-      <div class="profile-right-pane" style="height: 200px;">
-        Wahaha,hahahaha, hahahahah
-        hshsm hshshs shhsh hs h
-      </div>
+
+      <hr>
+
+
 
       <div class="ad-col-3">
         Ads here ...

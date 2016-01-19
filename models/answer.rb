@@ -10,7 +10,7 @@ class Answer < ActiveRecord::Base
 
   # == helpers ==
   def url
-    "/q/#{self.question.id}/a#{self.id}"
+    "/q/#{self.question.id}#a#{self.id}"
   end
 
   # == add mixins as a votable obj ==

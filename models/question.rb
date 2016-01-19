@@ -48,7 +48,7 @@ class Question < ActiveRecord::Base
   def url
     "/q/#{self.id}"
   end
-  
+
   def self.ft_search(keys)
     # do full-text search with MySQL NGRAM ft engine
     search_str = keys.join(" ")
@@ -60,7 +60,7 @@ class Question < ActiveRecord::Base
     # used in asking page
     search_str = keys.join(" ")
     Question.where("MATCH (title) AGAINST ( ? IN NATURAL LANGUAGE MODE )",
-                    search_str).take(limit)
+                    search_str).limit(limit)
   end
 
   def self.ft_search_intag(keys, tag_id)

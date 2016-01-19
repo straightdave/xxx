@@ -222,7 +222,7 @@ div.unread {
 div.profile-background {
    height: 300px;
    margin-top: -120px;
-   background-color: lightgray;
+   background-image: url('/backtest.jpg');
 }
 
 div.profile-pane {
@@ -273,22 +273,41 @@ div.each-stat {
 
 div.each-expert-tag {
   float: left;
-  margin: 10px;
 }
 
 span#whensignup {
   color: gray;
 }
 
-div.eventbox-list {
-  margin: 5px;
-}
-
 div.eventbox {
-
+  background-color: #E7E7E7;
+  min-height: 100px;
+  margin: 10px;
 }
 
+div.eventbox div {
+  margin: 5px;
+  padding: 5px;
+}
 
+div.event-avatar {
+  float: left;
+}
+
+div.event-avatar img {
+  width: 50px;
+}
+
+div.event-content {
+  float: left;
+}
+div.event-content h5 {
+  margin-top: 0;
+}
+div.event-content blockquote {
+  margin: 0;
+  border-color: #FFF;
+}
 
 
 /* watchlist page */

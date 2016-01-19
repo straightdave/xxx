@@ -31,7 +31,7 @@ class User < ActiveRecord::Base
   # user asks, answers and watchs questions
   # user also can comment, but no need to refer to comments from users
   has_many :asked_questions, class_name: "Question"
-  has_many :answered_questions, class_name: "Question", through: :answers
+  
   has_and_belongs_to_many :watching_questions, -> { uniq },
                           class_name: "Question",
                           join_table: "watching_list",
@@ -104,7 +104,7 @@ class User < ActiveRecord::Base
   def top_expert_tags(number)
     ret = self.expertises.where("expert_score > 0").order(expert_score: :desc)
     return ret if number.nil? || number < 1
-    ret.take number
+    ret.limit number
   end
 
   # user event recording

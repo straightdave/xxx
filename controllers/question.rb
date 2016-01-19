@@ -195,7 +195,7 @@ post '/q/:qid/accept' do |qid|
     question.save && answerer.save
     answerer.info.update_reputation(5)
     answerer.add_expertise(question.tag_ids, :accepted_once)
-    answerer.record_event(:accept, answer)
+    question.author.record_event(:accept, answer)
     json ret: "success"
   else
     json ret: "error", msg: "accept_failed"

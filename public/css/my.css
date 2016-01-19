@@ -36,7 +36,7 @@ ol.breadcrumb {
   border-radius: 0;
 }
 
-div.clear {
+.clear {
   clear: both;
 }
 
@@ -199,34 +199,6 @@ img.avatar-xs {
   height: 20px;
 }
 
-
-/* user profile */
-h4.nickname {
-  word-break: break-all;
-}
-
-div.left-pane {
-  padding: 10px 20px;
-  border: solid 1px lightgray;
-}
-
-div.profile-page div.avatar {
-  margin: 0 auto;
-  width: 150px;
-  overflow: hidden;
-}
-
-div.profile-page div.avatar img {
-  margin: 0 auto;
-  width: 150px;
-  height: 150px;
-}
-
-div.each-expert-tag {
-  float: left;
-  margin: 10px;
-}
-
 /* message page */
 div.msg-list-head {
   padding-bottom: 10px;
@@ -242,43 +214,99 @@ div.unread {
 }
 
 
-/* user profile page */
-div.profile-main {
-  border: solid 1px lightgray;
-  padding: 20px;
+/* user profile */
+.nickname {
+  word-break: break-all;
 }
 
-div.avatar-zone {
+div.profile-background {
+   height: 300px;
+   margin-top: -120px;
+   background-image: url('/backtest.jpg');
+}
+
+div.profile-pane {
+  margin-top: -120px;
+  padding: 5px;
+}
+
+div.profile-pane div.avatar {
+  margin: 0 auto;
+  padding: 10px;
+  background-color: #FFF;
+  width: 200px;
+  overflow: hidden;
+}
+
+div.profile-pane div.avatar img {
+  width: 100%;
+}
+
+div.profile-pane div.namebox {
+  padding-left: 50px;
+}
+
+div.profile-mid-pane, div.profile-right-pane {
+  margin: 5px;
+}
+
+div.user-stat-pane {
+  padding-bottom: 10px;
+  border-bottom: 1px solid lightgray;
   margin-bottom: 10px;
 }
+div.user-stat-pane ul {
+  margin: 0;
+  padding: 0;
+}
 
-div.avatar-img, div.avatar-controls {
+div.user-stat-pane ul li {
+  display: block;
   float: left;
-  margin-right: 10px;
+  width: 50px;
+  margin-left: 50px;
 }
 
-div.avatar-img img {
-  width: 200px;
-  height: 200px;
-  overflow: hidden;
-  align-self: stretch;
+div.each-stat {
+  text-align: center;
 }
 
-div.latest table td {
-  vertical-align: sub;
+div.each-expert-tag {
+  float: left;
 }
 
-div.user-info-pane span#signup {
+span#whensignup {
   color: gray;
 }
 
-div.user-info-pane span {
-  margin-right: 10px;
+div.eventbox {
+  background-color: #E7E7E7;
+  min-height: 100px;
+  margin: 10px;
 }
 
-/* user sns */
-div.sns-table th, div.sns-table td {
-  text-align: center;
+div.eventbox div {
+  margin: 5px;
+  padding: 5px;
+}
+
+div.event-avatar {
+  float: left;
+}
+
+div.event-avatar img {
+  width: 50px;
+}
+
+div.event-content {
+  float: left;
+}
+div.event-content h5 {
+  margin-top: 0;
+}
+div.event-content blockquote {
+  margin: 0;
+  border-color: #FFF;
 }
 
 
@@ -392,4 +420,27 @@ div.linked-title span {
 }
 div.linked-title a {
   text-decoration: none;
+}
+
+
+/* own profile page (update profile) */
+div.profile-main {
+  border: solid 1px lightgray;
+  padding: 20px;
+}
+
+div.avatar-zone {
+  margin-bottom: 10px;
+}
+
+div.avatar-img, div.avatar-controls {
+  float: left;
+  margin-right: 10px;
+}
+
+div.avatar-img img {
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  align-self: stretch;
 }

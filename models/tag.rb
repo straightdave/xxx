@@ -23,7 +23,7 @@ class Tag < ActiveRecord::Base
   # == helpers ==
   # top used tags for all
   def self.top_used(number)
-    Tag.order(used: :desc).take(number)
+    Tag.order(used: :desc).limit(number)
   end
 
   # for one tag: top expert users
@@ -32,16 +32,12 @@ class Tag < ActiveRecord::Base
                                     .order(expert_score: :desc)
 
     if number && number > 0
-      top_expert = temp_relations.take(number)
+      top_expert = temp_relations.limit(number)
     else
       top_expert = temp_relations.all
     end
 
-    expert_ids = []
-    top_expert.each do |e|
-      expert_ids << e.user_id
-    end
-    User.find(expert_ids)
+    top_expert.map { |e| e.user }
   end
 
   def self.ft_search(keys)
@@ -53,6 +49,6 @@ class Tag < ActiveRecord::Base
   def self.ft_search_name(keys, limit = 10)
     search_str = keys.join(" ")
     Tag.where("MATCH (name) AGAINST ( ? IN NATURAL LANGUAGE MODE )",
-              search_str).take(limit)
+              search_str).limit(limit)
   end
 end

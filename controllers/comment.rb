@@ -26,14 +26,9 @@ post %r{/([q|a|w])/(\d+)/comment} do |target, id|
     send_msg_after_comment(author, obj)
     author.info.update_reputation(1)
 
-    HistoricalAction.create(
-      user_id: session[:user_id],
-      action_type: 'c',
-      target_type: target,
-      target_id: id,
-      created_at: Time.now
-    )
-
+    # new event recording method,
+    # be aware of the target saved is the stuff which get commented
+    author.record_event(:comment, obj)
     json ret: "success", msg: c.id
   else
     json ret: "error", msg: obj.errors.messages.inspect

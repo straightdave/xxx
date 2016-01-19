@@ -108,7 +108,11 @@
           <div class="row">
             <div class="col-sm-12">
               <a href="javascript:void(0);" role="button"
-                 onclick="javascript:show_comment();">发表评论</a>
+                 onclick="javascript:show_comment();">
+                 <span class="glyphicon glyphicon-comment" aria-hidden="true">
+                 </span>
+                 &nbsp;发表评论
+              </a>
 
               <!-- hidden comment input div here -->
               <div class="form-group commenting" style="display:none;">
@@ -184,7 +188,7 @@
                            mark_as_accepted(<%= @q.id %>, <%= a.id %>);">
                         <span class="glyphicon glyphicon-ok" aria-hidden="true">
                         </span>
-                        标记为答案
+                        &nbsp;标记为答案
                       </a>
                     </div>
                   </div>
@@ -232,7 +236,9 @@
 
                   <a href="javascript:void(0);"
                      onclick="javascript:show_comment_answer(<%= a.id %>);">
-                    发表评论
+                    <span class="glyphicon glyphicon-comment" aria-hidden="true">
+                    </span>
+                    &nbsp;发表评论
                   </a>
 
                   <!-- hidden comment input div here -->

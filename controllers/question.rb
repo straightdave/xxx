@@ -36,15 +36,7 @@ post '/ask' do
   set_just_viewed(new_q.id)
   send_msg_after_ask(author, new_q)
   author.info.update_reputation(2)
-
-  HistoricalAction.create(
-    user_id: session[:user_id],
-    action_type: 'q',
-    target_type: 'q',
-    target_id: new_q.id,
-    created_at: Time.now
-  )
-
+  author.record_event(:ask, new_q)
   json ret: "success", msg: new_q.id
 end
 
@@ -84,10 +76,7 @@ get '/q/:qid' do |qid|
     end
     erb :question
   else
-    halt 404, (erb :msg_page, locals: {
-                              title: "404 Not Found",
-                              body: "找不到您请求的资源"
-                              })
+    raise not_found
   end
 end
 
@@ -101,6 +90,7 @@ post '/q/:qid/watch' do |qid|
       q.watchers << author
       if q.valid?
         q.save
+        author.record_event(:watch, q)
         json ret: "success"
       else
         json ret: "error", msg: q.errors.messages
@@ -122,6 +112,7 @@ post '/q/:qid/unwatch' do |qid|
       q.watchers.delete(author)
       if q.valid?
         q.save
+        author.record_event(:unwatch, q)
         json ret: "success"
       else
         json ret: "error", msg: q.errors.messages
@@ -163,15 +154,7 @@ post '/q/:qid/answer' do |qid|
           send_msg_after_answer(q, author)
           author.info.update_reputation(2)
           author.add_expertise(q.tag_ids, :answered_once)
-
-          HistoricalAction.create(
-            user_id: session[:user_id],
-            action_type: 'a',
-            target_type: 'q',
-            target_id: q.id,
-            created_at: Time.now
-          )
-
+          author.record_event(:answer, answer)
           json ret: "success", msg: answer.id
         else
           json ret: "error", msg: "a:" + answer.errors.messages.inspect +
@@ -207,11 +190,12 @@ post '/q/:qid/accept' do |qid|
 
   question.accepted_answer = answer
   answerer = answer.author
-  answerer.info.update_reputation(5)
-  answerer.add_expertise(question.tag_ids, :accepted_once)
 
   if question.valid? && answerer.valid?
     question.save && answerer.save
+    answerer.info.update_reputation(5)
+    answerer.add_expertise(question.tag_ids, :accepted_once)
+    answerer.record_event(:accept, answer)
     json ret: "success"
   else
     json ret: "error", msg: "accept_failed"

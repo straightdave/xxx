@@ -8,6 +8,11 @@ class Answer < ActiveRecord::Base
   # == validations ==
   validates :content, length: { maximum: 500, too_long: "回答请勿超过500字符" }
 
+  # == helpers ==
+  def url
+    "/q/#{self.question.id}/a#{self.id}"
+  end
+
   # == add mixins as a votable obj ==
   include Votability
 end

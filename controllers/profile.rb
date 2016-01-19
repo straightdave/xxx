@@ -13,6 +13,7 @@ post '/user/profile' do
 
   if user.info.valid?
     user.info.save
+    user.record_event(:update_profile, user)
     json ret: "success"
   else
     json ret: "error", msg: user.info.errors.messages.inspect
@@ -41,7 +42,7 @@ get '/u/:name' do |name|
   @user_info = @user.info
   @title     = @user_info.nickname
   @followed  = @user.followers.exists?(session[:user_id]) if login?
-  @lastest_actions = @user.lastest_actions(10)
+  @events    = @user.get_events  # top 20 by default
   erb :user_profile
 end
 

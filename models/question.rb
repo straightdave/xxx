@@ -45,6 +45,10 @@ class Question < ActiveRecord::Base
   include Votability
 
   # == helpers ==
+  def url
+    "/q/#{self.id}"
+  end
+  
   def self.ft_search(keys)
     # do full-text search with MySQL NGRAM ft engine
     search_str = keys.join(" ")

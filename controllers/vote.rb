@@ -31,6 +31,7 @@ post %r{/([q|a|c])/(\d+)/(devote|vote)} do |target_type, id, behavior|
 
   if vote.valid? && obj.valid?
     vote.save && obj.save
+    user.record_event(behavior.to_sym, obj)
     json ret: "success", msg: obj.scores
   else
     json ret: "error", msg: obj.errors.messages.inspect

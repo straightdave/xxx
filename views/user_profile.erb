@@ -1,7 +1,13 @@
-<div class="container">
+<div class="container-fluid">
+  <div class="row">
+    <div class="profile-background">
+    </div>
+  </div>
+
+
   <div class="row">
     <div class="col-md-3">
-      <div class="profile-page left-pane">
+      <div class="profile-pane">
         <div class="avatar">
           <img alt="<%= @user_info.nickname %>"
                src="<%= @user_info.avatar || "/avatar.jpg"%>">
@@ -16,7 +22,7 @@
           </blockquote>
 
           <p>
-            <span class="glyphicon glyphicon-globe"></span>
+            <span class="glyphicon glyphicon-map-marker"></span>
             &nbsp; <%= @user_info.city %>
           </p>
           <p>
@@ -24,11 +30,14 @@
             &nbsp; <%= @user_info.email %>
           </p>
           <p>
-            <span class="glyphicon glyphicon-earphone"></span>
-            &nbsp; <%= @user_info.contact %>
+            <span id="whensignup">
+              <%= time_ago_in_words_zh(@user.created_at) %>加入
+            </span>
           </p>
 
-          <!-- SNS info -->
+
+
+          <!-- SNS info
           <div class="sns-pane">
             <div class="sns-table">
               <table class="table">
@@ -61,52 +70,75 @@
               <% end %>
             <% end %>
           </div>
+        -->
 
         </div>
-      </div>
-    </div>
-    <div class="col-md-9">
-      <div class="mid-pane">
+      </div> <!-- end of profile -->
+    </div><!-- end of col-3 on the left -->
 
-        <div class="user-info-pane">
-          <div>
-            <span>声望: <%= @user.info.reputation %></span>
-            <span id="signup">
-              <%= time_ago_in_words_zh(@user.created_at) %>加入
-            </span>
-          </div>
-          <div>
-            <span>提问: <%= @user.asked_questions.size || 0 %></span>
-            <span>回答: <%= @user.answers.size || 0 %></span>
-            <span>文章: <%= @user.articles.size || 0 %></span>
+    <div class="col-md-6">
+      <div class="profile-mid-pane">
+
+        <div class="user-stat-pane">
+          <ul>
+            <li>
+              <div class="each-stat">
+                <h5>声望</h5>
+                <span>10</span>
+              </div>
+            </li>
+            <li>
+              <div class="each-stat">
+                <h5>提问</h5>
+                <span>10</span>
+              </div>
+            </li>
+            <li>
+              <div class="each-stat">
+                <h5>回答</h5>
+                <span>10</span>
+              </div>
+            </li>
+            <li>
+              <div class="each-stat">
+                <h5>关注</h5>
+                <span>10</span>
+              </div>
+            </li>
+            <li class="last">
+              <div class="each-stat">
+                <h5>粉丝</h5>
+                <span>10</span>
+              </div>
+            </li>
+          </ul>
+          <div class="clear">
           </div>
         </div>
 
-        <hr>
 
         <!-- lastest actions -->
-        <div class="latest">
-          <% if @lastest_actions.size > 0 %>
-          <table>
-            <% @lastest_actions.each do |act| %>
-            <tr>
-              <td style="width:10%;">
-                <%= time_ago_in_words_zh(act.created_at) %>
-              </td>
-              <td style="width:7%;">
-                <%= act.action_type_zh %>
-              </td>
-              <td style="width:7%;">
-                <%= act.target_type_zh %>
-              </td>
-              <td>
-                <a href="<%= act.target_url %>">
-                  <%= act.target_title %>
+        <div class="eventbox-list">
+          <% if @events.size > 0 %>
+
+            <% @events.each do |event| %>
+            <div class="eventbox">
+              <span style="width:10%;">
+                <%= time_ago_in_words_zh(event.created_at) %>
+              </span>
+              <span style="width:7%;">
+                <%= event.event_type_zh %>
+              </span>
+
+
+              <h2>
+                <a href="<%= event.target_url %>">
+                  <%= event.target_title %>
                 </a>
-              </td>
-            </tr>
+              </h2>
+            </div>
             <% end %>
-          </table>
+
           <% else %>
             暂无动态
           <% end %>
@@ -115,7 +147,7 @@
 
         <!-- fav tags -->
         <h5>擅长标签</h5>
-        <div class="my-expert-tags">      
+        <div class="my-expert-tags">
           <% @user.top_expert_tags(5).each do |rel| %>
             <div class="each-expert-tag">
               <a href="javascript:void(0);" class="tag"
@@ -129,7 +161,25 @@
           <div class="clear"></div>
         </div>
 
+      </div> <!-- end of profile-mid-pane -->
+    </div> <!-- end of col-6 in the mid -->
+
+    <div class="col-md-3">
+      <div class="profile-right-pane" style="height: 300px;">
+        Wahahahahaha, hahahaha
       </div>
+      <div class="profile-right-pane" style="height: 200px;">
+        Wahaha,hahahaha, hahahahah
+        hshsm hshshs shhsh hs h
+      </div>
+
+      <div class="ad-col-3">
+        Ads here ...
+      </div>
+
     </div>
-  </div>
+
+
+
+  </div> <!-- end of the second row: main content -->
 </div>

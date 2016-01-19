@@ -10,6 +10,7 @@ post '/u/:name/follow' do |name|
   target.followers << user unless target.followers.exists?(session[:user_id])
   if target.valid?
     target.save
+    user.record_event(:follow, target)
     json ret: "success"
   else
     json ret: "error", msg: target.errors.messages
@@ -28,6 +29,7 @@ post '/u/:name/unfollow' do |name|
   target.followers.delete user
   if target.valid?
     target.save
+    user.record_event(:unfollow, target)
     json ret: "success"
   else
     json ret: "error", msg: target.errors.messages

@@ -88,6 +88,14 @@ class Event < ActiveRecord::Base
     end
   end
 
+  # find events from several users
+  def self.event_of_users(user_ids = [], limit = 50, offset = 0)
+    Event.where(user_id: user_ids)
+         .order(created_at: :desc)
+         .limit(limit)
+         .offset(offset)
+  end
+
   private
   # this is duplicated with a helper method
   # should be a refactory

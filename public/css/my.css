@@ -300,6 +300,7 @@ div.event-avatar img {
 
 div.event-content {
   float: left;
+  width: 85%;
 }
 div.event-content h5 {
   margin-top: 0;

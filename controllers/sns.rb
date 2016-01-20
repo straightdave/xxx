@@ -39,10 +39,13 @@ end
 get '/user/home' do
   redirect to('/login?r=' + CGI.escape('/user/home')) unless login?
   unless @user = User.find_by(id: session[:user_id])
-    return json ret: "error", msg: "user_error"
+    raise not_found
   end
 
   @title = "用户首页"
   @user_info = @user.info
+
+  # events of all followed
+  @events = Event.event_of_users(@user.followee_ids)
   erb :user_home
 end

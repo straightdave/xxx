@@ -35,26 +35,6 @@
             </span>
           </p>
 
-          <div class="sns-actions">
-            <% if @user.id != get_user_id %>
-              <% if @followed %>
-                <a href="javascript:void(0);"
-                   class="btn btn-default btn-sm"
-                   title="unfollow"
-                   onclick="javascript:cancel_follow('<%= @user.login_name %>');">
-                  取消跟随
-                </a>
-              <% else %>
-                <a href="javascript:void(0);"
-                   class="btn btn-primary btn-sm"
-                   title="follow"
-                   onclick="javascript:do_follow('<%= @user.login_name %>');">
-                  跟随
-                </a>
-              <% end %>
-            <% end %>
-          </div>
-
         </div>
       </div> <!-- end of profile -->
     </div><!-- end of col-3 on the left -->
@@ -107,14 +87,16 @@
             <% @events.each do |event| %>
             <div class="eventbox">
               <div class="event-avatar">
-                <img alt="<%= @user_info.nickname %>"
-                     src="<%= @user_info.avatar || "/avatar.jpg"%>">
+                <a href="<%= event.user.url %>">
+                  <img alt="<%= event.user.info.nickname %>"
+                       src="<%= event.user.info.avatar || "/avatar.jpg"%>">
+                </a>
               </div>
               <div class="event-content">
 
                 <h5>
-                  <%= @user_info.nickname %>
-                  <small>@<%= @user.login_name %></small>
+                  <%= event.user.info.nickname %>
+                  <small>@<%= event.user.login_name %></small>
                 </h5>
 
                 <p>
@@ -163,7 +145,6 @@
       </div>
 
       <hr>
-
 
 
       <div class="ad-col-3">

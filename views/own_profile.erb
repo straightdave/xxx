@@ -56,14 +56,20 @@
 
           <div class="form-group">
             <label for="l_email">电子邮箱</label>
-            <input type="email"
-                   name="email"
-                   class="form-control"
+            <input type="email" name="email" class="form-control"
                    value="<%= @user_info.email %>"
                    aria-describedby="h_email">
             <span id="h_email" class="help-block">
               显示的用户电子邮箱
             </span>
+            <% if @is_newbie %>
+            没有收到验证邮件？
+            <button id="resend" onclick="javascript:resend_validation();"
+                    class="btn btn-sm">
+              <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+              &nbsp;重新发送验证邮件
+            </button>
+            <% end %>
           </div>
 
           <div class="form-group">

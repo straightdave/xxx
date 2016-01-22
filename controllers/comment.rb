@@ -23,7 +23,6 @@ post %r{/([q|a|w])/(\d+)/comment} do |target, id|
 
   if c.valid? && obj.valid?
     c.save && obj.save
-    send_msg_after_comment(author, obj)
     author.info.update_reputation(1)
 
     # new event recording method,

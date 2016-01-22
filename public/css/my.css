@@ -44,9 +44,17 @@ ol.breadcrumb {
 .text-1_5times {
   font-size: 1.5em;
 }
+.text-2times {
+  font-size: 2em;
+}
 
 .margin-top-10 {
   margin-top: 10px;
+}
+
+.err-msg {
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 /* home page hot tags */
@@ -444,4 +452,10 @@ div.avatar-img img {
   height: 200px;
   overflow: hidden;
   align-self: stretch;
+}
+
+/* user register page */
+div.tooltip-inner {
+  background-color: #DAE7F1;
+  color: #219589;
 }

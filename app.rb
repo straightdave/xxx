@@ -4,7 +4,9 @@ require 'sinatra/json'
 require 'sinatra/cookies'
 require 'sinatra/content_for'
 require 'active_record'
+require 'json'
 require 'cgi'
+require 'redis'
 require 'visual_captcha_cn'
 require_relative 'models/init'
 require_relative 'controllers/init'
@@ -34,20 +36,12 @@ end
 
 # other config
 configure do
-  # enable_mailing_activate
-  # when enabled, will send activating mail to registering user
-  # when disabled, will automatically activate user after registering
-  set :enable_mailing_activate, false
-
-  # set default admin id
-  # it depends on the db restoring script
-  # check this carefully
-  set :admin_uid, 6
-
-  # === system config begins ===
-  # set public folder
+  # redis conf for delayed mailing jobs
+  set :redis_conf, { host: '127.0.0.1',
+                     port: 6379,
+                     mailer_list: 'validation',
+                     db: 8 }
+  set :site_host, 'http://localhost:4567'
   set :public_folder, File.dirname(__FILE__) + '/public'
-
-  # set rack session
   use Rack::Session::Pool, expire_after: 60 * 60 * 2, http_only: true
 end

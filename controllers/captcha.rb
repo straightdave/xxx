@@ -14,14 +14,12 @@ get '/captcha/image/:index' do
 end
 
 post '/captcha/try' do
+  session[:captcha_result] = nil
   if image_answer = params['value']
     captcha = VisualCaptchaCN::Captcha.new @session
     if captcha.validate_image image_answer
+      session[:captcha_result] = "ok"
       json ret: "success"
-    else
-      json ret: "failed"
     end
-  else
-    json ret: "error", msg: "no_captcha"
   end
 end

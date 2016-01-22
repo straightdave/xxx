@@ -5,15 +5,33 @@ post '/user/profile' do
     return json ret: "error", msg: "need_login"
   end
 
+  email_changed = user.info.email != params['email']
+  if email_changed && !user.can_change_email
+    return json ret: "error", msg: "cannot_change_email"
+  end
+
   user.info.nickname = params['nickname']
-  user.info.email = params['email']
-  user.info.intro = params['intro']
-  user.info.contact = params['contact']
-  user.info.city = params['city']
+  user.info.email    = params['email']
+  user.info.intro    = params['intro']
+  user.info.contact  = params['contact']
+  user.info.city     = params['city']
 
   if user.info.valid?
     user.info.save
     user.record_event(:update_profile, user)
+
+    if email_changed && user.can_change_email
+      user.status = User::NEWBIE
+      user.gen_and_set_new_vcode
+      if user.valid?
+        user.save
+        send_validation_mail user
+      else
+        puts "== #{user.errors.messages.inspect}"
+        return json ret: "error", msg: "resend_validation_failed"
+      end
+    end
+
     json ret: "success"
   else
     json ret: "error", msg: user.info.errors.messages.inspect
@@ -30,6 +48,7 @@ get '/user/profile' do
 
   @title = "我的资料"
   @user_info = @user.info
+  @is_newbie = (@user.status == User::NEWBIE)
   erb :own_profile
 end
 

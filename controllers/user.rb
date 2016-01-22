@@ -1,49 +1,88 @@
 # ===== user registering =====
 get '/user/register' do
+  log_out if login?
   @title = "用户注册"
-  return erb :user_register unless login?
+  erb :user_register
+end
+
+post '/user/check/:login_name' do |login_name|
+  if User.exists?(login_name: login_name)
+    json ret: "error", msg: "name_exist"
+  else
+    json ret: "success"
+  end
 end
 
 post '/user/register' do
-  login_name     = params['login_name']
-  password       = params['password']
-  password_again = params['password_again']
-  confirmed      = params['confirmed']
+  login_name = params['login_name']
+  email      = params['email']
+  password   = params['password']
+  nickname   = params['nickname']
 
-  # TODO: currently lack of judging captcha on backend (only frontend now)
+  if session[:captcha_result] != 'ok'
+    return json ret: "error", msg: "captcha_failed"
+  end
 
   if User.exists?(login_name: login_name)
     return json ret: "error", msg: "name_exist"
   end
 
-  if password_again != password || !confirmed
-    return json ret: "error", msg: "login_info_err"
+  new_user = User.new
+  new_user.login_name = login_name
+  new_user.set_password_and_salt password
+  new_user.gen_and_set_new_vcode
+  new_user.status = User::NEWBIE
+  new_user.build_info(
+    nickname: (nickname.empty? ? login_name : nickname),
+    email: email
+  )
+
+  if new_user.valid?
+    new_user.save
+    send_welcome_message new_user
+    send_validation_mail new_user
+    log_in new_user
+    json ret: "success", msg: new_user.id
+  else
+    json ret: "error", msg: "model_invalid"
+  end
+end
+
+get '/user/validation' do
+  id = params['id']
+  code = params['code']
+  @validated = !! User.validate(id, code)
+  @title = "验证结果"
+  erb :validation_result
+end
+
+post '/user/send_validation' do
+  if (last_sent_time = session[:last_sent_time]) &&
+     (Time.now.to_i - last_sent_time.to_i < 10)
+    return json ret: "error", msg: "resend_too_frequent"
   end
 
-  # random salt
-  salt = Time.now.hash.to_s[ -5 .. -1 ]
+  unless user = User.find_by(id: session[:user_id])
+    return json ret: "error", msg: "invalid_user"
+  end
 
-  new_login = User.new
-  new_login.login_name = login_name
-  new_login.set_password_and_salt(password, salt)
-  new_login.build_info(nickname: login_name)
-
-  if new_login.valid?
-    new_login.save
-    send_welcome_message new_login
-    login_user new_login
-    json ret: "success", msg: new_login.id
-  else
-    json ret: "error", msg: new_login.errors.messages.inspect
+  session[:last_sent_time] = Time.now.to_i
+  begin
+    user.gen_and_set_new_vcode
+    user.save!
+    send_validation_mail(user)
+    json ret: "success"
+  rescue
+    json ret: "error", msg: "resend_failed"
   end
 end
 
 # ===== login & logout =====
 get '/login' do
-  logout_user if login?
-  @return_page = params['r']
+  log_out if login?
   @name        = params['u']
-  @title = "用户登录"
+  @title       = "用户登录"
+  @return_page = params['r']
   erb :login
 end
 
@@ -80,7 +119,7 @@ post '/login' do
 
   user = User.find_by(login_name: login_name)
   if user && user.authenticate(password)
-    login_user user
+    log_in user
     session[:try_count]      = nil
     session[:delay_start]    = nil
     session[:delay_duration] = nil
@@ -91,7 +130,7 @@ post '/login' do
 end
 
 post '/logout' do
-  logout_user
+  log_out
   json ret: "success"
 end
 

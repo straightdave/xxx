@@ -3,7 +3,7 @@ helpers do
     session[:login_name] != nil && session[:user_id] != nil
   end
 
-  def login_user(user)
+  def log_in(user)
     session[:user_id]        = user.id
     session[:login_name]     = user.login_name
     session[:message_amount] = user.inbox_messages.where(isread: false).size
@@ -13,7 +13,7 @@ helpers do
     user.save if user.valid?
   end
 
-  def logout_user
+  def log_out
     session.destroy
   end
 

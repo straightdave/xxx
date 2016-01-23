@@ -27,7 +27,6 @@ post '/user/profile' do
         user.save
         send_validation_mail user
       else
-        puts "== #{user.errors.messages.inspect}"
         return json ret: "error", msg: "resend_validation_failed"
       end
     end

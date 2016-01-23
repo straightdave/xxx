@@ -491,8 +491,11 @@ function pager_move(p) {
 
 /* own prifle page */
 function resend_validation() {
+  var button = $("button#resend");
+  var origin_text = button.text();
+  var ticks = 15;
   $.post("/user/send_validation", function (data, status) {
-    $("button#resend").attr("disabled", "disabled");
+    button.attr("disabled", "disabled");
     if (data.ret == "error") {
       if (data.msg == "resend_too_frequent") {
         alert("发送过于频繁，请稍候重试");
@@ -501,5 +504,14 @@ function resend_validation() {
         alert("发送失败，可能是系统故障，请稍候重试");
       }
     }
+    var clock = setInterval(function () {
+      button.text(ticks + "秒后再次发送");
+      if (ticks == 0) {
+        clearInterval(clock);
+        button.text(origin_text);
+        button.removeAttr("disabled");
+      }
+      ticks--;
+    }, 1000);
   });
 }

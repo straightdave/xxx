@@ -66,7 +66,6 @@ class User < ActiveRecord::Base
   def gen_and_set_new_vcode
     temp = Time.now.hash.to_s[ -6 .. -1 ]
     self.vcode = Digest::MD5.hexdigest(self.login_name + temp)
-    puts "== now self.vcode = #{self.vcode}"
   end
 
   def authenticate(input_password)

@@ -106,7 +106,7 @@ CREATE TABLE `events` (
   `target_id` int(10) unsigned NOT NULL,
   `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -145,6 +145,43 @@ CREATE TABLE `followinfo` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `job_tag`
+--
+
+DROP TABLE IF EXISTS `job_tag`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `job_tag` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `job_id` int(10) unsigned NOT NULL,
+  `tag_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `jobs`
+--
+
+DROP TABLE IF EXISTS `jobs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `jobs` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `privilege` tinyint(3) unsigned DEFAULT '0',
+  `title` varchar(50) NOT NULL,
+  `company` varchar(50) NOT NULL COMMENT 'todo: use company_id FK instead',
+  `base_at` varchar(50) NOT NULL,
+  `content` text NOT NULL,
+  `hits` smallint(5) unsigned DEFAULT '0',
+  `expired_at` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `messages`
 --
 
@@ -161,7 +198,7 @@ CREATE TABLE `messages` (
   `isread` tinyint(1) DEFAULT '0',
   `isdelete` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=121 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=125 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -225,7 +262,7 @@ CREATE TABLE `tags` (
   UNIQUE KEY `name` (`name`),
   FULLTEXT KEY `ft_index_tags` (`name`,`desc`) /*!50100 WITH PARSER `ngram` */ ,
   FULLTEXT KEY `ft_index_tags_name` (`name`) /*!50100 WITH PARSER `ngram` */ 
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -250,7 +287,7 @@ CREATE TABLE `user_info` (
   PRIMARY KEY (`id`),
   KEY `fk_uid` (`user_id`),
   CONSTRAINT `user_info_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -274,7 +311,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `uni_loginname` (`login_name`),
   KEY `index_loginname` (`login_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -320,4 +357,4 @@ CREATE TABLE `watching_list` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-01-23  1:56:20
+-- Dump completed on 2016-01-25 23:14:41

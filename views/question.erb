@@ -44,8 +44,8 @@
           </div>
         </div>  <!-- end of voting box -->
 
-        <div class="col-md-11" id="question-content">
-          <div>
+        <div class="col-md-11" id="question-details">
+          <div class="question-content">
             <%= @q.content %>
           </div>
 
@@ -127,7 +127,8 @@
           </div>
 
         </div>
-      </div> <!-- end of #question-content -->
+      </div> <!-- end of #question-details -->
+      <hr>
 
       <!-- answers listed here : all col-9 width -->
       <div class="answers">
@@ -164,7 +165,8 @@
 
                   </div> <!-- end of voting box -->
                 </div>
-                <div class="col-md-11" id="answer-content">
+
+                <div class="col-md-11" id="answer-details">
                   <div class="answer-text">
                     <%= a.content %>
                   </div>

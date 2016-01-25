@@ -136,7 +136,7 @@ a.more {
 /* voting box */
 div.votingbox {
   text-align: center;
-  font-size: 1.1em;
+  font-size: 1.8em;
 }
 a.watching {
   color: gray;
@@ -150,10 +150,13 @@ h3.question-title {
   margin-top: 0px;
   margin-bottom: 20px;
 }
-div#question-content {
+
+div#question-details {
+  margin-bottom: 40px;
+}
+div.question-content {
   padding-left: 0px;
-  font-size: 1.1em;
-  margin-bottom: 20px;
+  font-size: 1.3em;
 }
 
 /* comment box */
@@ -180,9 +183,13 @@ div.comment-author {
 }
 
 /* style for answers on question page */
-div#answer-content {
+div#answer-details {
+  margin-bottom: 40px;
+}
+
+div.answer-text {
   padding-left: 0px;
-  margin-bottom: 20px;
+  font-size: 1.3em;
 }
 
 div.single-answer {

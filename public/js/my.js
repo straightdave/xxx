@@ -2,6 +2,9 @@
 
 $().ready(function () {
 
+  // own profile page
+  $("button#resend").removeAttr("disabled");
+  
   // tags-search and intag-search boxes' actions
   $("input.searchbox").keydown(function (event) {
     var keycode = (event.keyCode ? event.keyCode : event.which);
@@ -492,10 +495,11 @@ function pager_move(p) {
 /* own prifle page */
 function resend_validation() {
   var button = $("button#resend");
+  button.attr("disabled", "disabled");
   var origin_text = button.text();
   var ticks = 15;
+  button.text(ticks + "秒后再次发送");
   $.post("/user/send_validation", function (data, status) {
-    button.attr("disabled", "disabled");
     if (data.ret == "error") {
       if (data.msg == "resend_too_frequent") {
         alert("发送过于频繁，请稍候重试");
@@ -505,13 +509,13 @@ function resend_validation() {
       }
     }
     var clock = setInterval(function () {
+      ticks--;
       button.text(ticks + "秒后再次发送");
       if (ticks == 0) {
         clearInterval(clock);
         button.text(origin_text);
         button.removeAttr("disabled");
       }
-      ticks--;
     }, 1000);
   });
 }

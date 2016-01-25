@@ -4,7 +4,7 @@ $().ready(function () {
 
   // own profile page
   $("button#resend").removeAttr("disabled");
-  
+
   // tags-search and intag-search boxes' actions
   $("input.searchbox").keydown(function (event) {
     var keycode = (event.keyCode ? event.keyCode : event.which);
@@ -518,4 +518,9 @@ function resend_validation() {
       }
     }, 1000);
   });
+}
+
+/* job posting */
+function go_job(id) {
+  location.replace('/job/' + id);
 }

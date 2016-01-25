@@ -466,3 +466,37 @@ div.tooltip-inner {
   background-color: #DAE7F1;
   color: #219589;
 }
+
+/* job posts */
+div.job-posts span.posts-title {
+  font-size: 1.5em;
+  margin: 0;
+  padding-bottom: 3px;
+  text-align: center;
+  background-color: #337AB7;
+  display: block;
+  color: #FFF;
+}
+
+div.job-posts {
+  border: 4px solid #337AB7;
+  padding: 0px;
+  margin-top: 10px;
+}
+
+div.posts-container {
+  padding: 8px;
+}
+
+div.single-post p {
+  margin: 0;
+  padding: 0;
+}
+div.single-post p.post-job-company {
+  font-weight: bolder;
+}
+
+div.single-post {
+  margin-bottom: 8px;
+  cursor: pointer;
+}

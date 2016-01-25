@@ -10,15 +10,10 @@
           </div>
 
           <div class="avatar-controls">
-            <form id="avatar-form"
-                  method="post"
-                  enctype="multipart/form-data"
-                  charset="utf-8"
-                  action="/upload">
+            <form id="avatar-form" method="post" enctype="multipart/form-data"
+                  charset="utf-8" action="/upload">
               <label for="upload_avatar">改变头像</label>
-              <input type="file"
-                     id="upload_avatar"
-                     name="file"
+              <input type="file" id="upload_avatar" name="file"
                      aria-describedby="h_upload"
                      onchange="javascript:do_avatar_change();">
               <p id="h_upload" class="help-block">
@@ -32,9 +27,7 @@
         <div class="user-profile-main">
           <div class="form-group">
             <label for="l_nickname">昵称</label>
-            <input type="text"
-                   name="nickname"
-                   class="form-control"
+            <input type="text" name="nickname" class="form-control"
                    value="<%= @user_info.nickname %>"
                    aria-describedby="h_nickname">
             <span id="h_nickname" class="help-block">
@@ -44,9 +37,7 @@
 
           <div class="form-group">
             <label for="l_intro">个人简介</label>
-            <input type="text"
-                   name="intro"
-                   class="form-control"
+            <input type="text" name="intro" class="form-control"
                    value="<%= @user_info.intro %>"
                    aria-describedby="h_intro">
             <span id="h_intro" class="help-block">
@@ -56,36 +47,37 @@
 
           <div class="form-group">
             <label for="l_email">电子邮箱</label>
-            <input type="email"
-                   name="email"
-                   class="form-control"
+            <input type="email" name="email" class="form-control"
                    value="<%= @user_info.email %>"
                    aria-describedby="h_email">
             <span id="h_email" class="help-block">
               显示的用户电子邮箱
             </span>
+            <% if @is_newbie %>
+            没有收到验证邮件？
+            <button id="resend" onclick="javascript:resend_validation();"
+                    class="btn btn-sm">
+              重新发送验证邮件
+            </button>
+            <% else %>
+            <span style="color: green;">已验证</span>
+            <% end %>
           </div>
 
           <div class="form-group">
             <label for="l_contact">联系方式</label>
-            <input type="text"
-                   name="contact"
-                   class="form-control"
+            <input type="text" name="contact" class="form-control"
                    value="<%= @user_info.contact %>">
           </div>
 
           <div class="form-group">
             <label for="l_city">城市</label>
-            <input type="text"
-                   name="city"
-                   class="form-control"
+            <input type="text" name="city" class="form-control"
                    value="<%= @user_info.city %>">
           </div>
 
           <hr>
-          <input type="submit"
-                 class="btn btn-primary"
-                 value="更新"
+          <input type="submit" class="btn btn-primary" value="更新"
                  onclick="javascript:do_update();">
         </div>
       </div>

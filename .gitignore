@@ -26,3 +26,6 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# annoying redis dump
+dump.rdb

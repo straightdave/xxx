@@ -2,6 +2,9 @@
 
 $().ready(function () {
 
+  // own profile page
+  $("button#resend").removeAttr("disabled");
+  
   // tags-search and intag-search boxes' actions
   $("input.searchbox").keydown(function (event) {
     var keycode = (event.keyCode ? event.keyCode : event.which);
@@ -61,24 +64,23 @@ function remove_param(key) {
 /* ===== functions used for login/logout ===== */
 function login() {
   // login method 1: used in home page, modal window
-
   var is_valid = true;
   var u = $("input[name='modal-loginname']");
   var uv = u.val().trim();
   if (uv == "") {
-    set_error(u, "请输入用户名");
+    set_error(u, 'name');
     is_valid = false;
-  } else { set_ok(u); }
+  } else { set_success(u, 'name'); }
   var p = $("input[name='modal-password']");
   var pv = p.val().trim();
   if (pv == "") {
-    set_error(p, "请输入密码");
+    set_error(p, 'pass');
     is_valid = false;
-  } else { set_ok(p); }
+  } else { set_success(p, 'pass'); }
   if (is_valid) {
     var data = {
       "login_name" : uv,
-      "password" : pv
+      "password"   : pv
     };
     $.post("/login", data, function(d, status) {
       if (d.ret == "success") {
@@ -86,8 +88,8 @@ function login() {
       }
       else {
         if(d.msg == "login_fail") {
-          set_error(u);
-          set_error(p);
+          set_error(u, 'name');
+          set_error(p, 'pass');
           $("#err-msg").text("用户名密码不正确");
         }
         else if(d.msg == "waiting") {
@@ -117,26 +119,26 @@ function login2() {
   var name = name_input.val().trim();
   var reg=/^[0-9a-zA-Z_]{1,50}$/i;
   if (name == "" || !reg.test(name)) {
-    set_error(name_input, "登录名非法");
+    set_error(name_input, 'name');
     $("#err-msg2").text("登录名为下划线、字母和数字的组合，不超过50个字符");
     is_valid = false;
   }
   else {
-    set_ok(name_input);
+    set_success(name_input, 'name');
   }
   var pass_input = $("input[id='p']");
   var pass = pass_input.val().trim();
   if (pass == "") {
-    set_error(pass_input, "请填写密码");
+    set_error(pass_input, 'pass');
     is_valid = false;
   }
   else {
-    set_ok(pass_input);
+    set_success(pass_input, 'pass');
   }
   if (is_valid) {
     var data = {
       "login_name" : name,
-      "password" : pass
+      "password"   : pass
     };
     $.post("/login", data, function (data, status) {
       if(data.ret == "success") {
@@ -203,7 +205,8 @@ function do_ask() {
   var t = $("input[name='title']");
   var tt = t.val().trim();
   if(tt == "") {
-    set_error(t); err_msg += "请输入标题 &nbsp; ";
+    set_error(t, 'title');
+    err_msg += "请输入标题 &nbsp; ";
     is_valid = false;
   }
   var tag_v = $("input[name='tagsinput']").val();
@@ -213,7 +216,7 @@ function do_ask() {
   //var div_pos = content.lastIndexOf('<div');
   //content = content.substring(0, div_pos);
   if (content.length < 10) {
-    set_error($("textarea#editor1"));
+    set_error($("textarea#editor1"), 'content');
     err_msg += "字数太少了吧 &nbsp; ";
     is_valid = false;
   }
@@ -237,92 +240,20 @@ function do_ask() {
 }
 
 /* used in login or some */
-function set_ok(item) {
-  item.parent().removeClass("has-error");
+function set_normal(ele, eid) {
+  ele.parent().removeClass("has-error");
+  ele.parent().removeClass("has-success");
+  $("span").remove("#" + eid);
 }
-function set_error(item, msg) {
-  item.parent().addClass("has-error");
-  item.attr('placeholder', msg);
+function set_success(ele, eid='0') {
+  set_normal(ele, eid);
+  ele.parent().addClass("has-success");
+  ele.parent().append("<span id='" + eid + "' class='glyphicon glyphicon-ok form-control-feedback' aria-hidden='true'></span>");
 }
-
-/* register */
-function GetUrlParam(name) {
-  /* helper function for do_register */
-  var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)","i");
-  var r = window.location.search.substr(1).match(reg);
-  if (r != null) return (r[2]); return null;
-}
-
-function do_register() {
-  /* clicked on /user/register page */
-  var is_valid = true;
-  var name_input = $("input[id='lu']");
-  var name = name_input.val().trim();
-  var reg=/^[a-zA-Z0-9_]{1,50}$/i;
-  if (name == "" || !reg.test(name)) {
-    set_error(name_input, name);
-    $("#err-msg2").text("英文字母，数字和下划线的组合，不超过50个字符");
-    is_valid = false;
-  }
-  else {
-    set_ok(name_input);
-  }
-  var pass_input = $("input[id='p1']");
-  var pass = pass_input.val().trim();
-  if (pass == "" || pass.length < 6) {
-    set_error(pass_input);
-    $("#err-msg2").text("请填写6位或以上字符密码");
-    is_valid = false;
-  }
-  else {
-    set_ok(pass_input);
-  }
-  var pass_again_input = $("input[id='p2']");
-  var pass_again = pass_again_input.val().trim();
-  if (pass_again != pass) {
-    set_error(pass_again_input, "密码不一致");
-    is_valid = false;
-  }
-  else {
-    set_ok(pass_again_input);
-  }
-  var is_confirmed = $("input[name='confirmed']").prop("checked");
-  if (!is_confirmed) { $("#err-msg2").text("请阅读并同意我们的条款 :-)"); }
-  if (is_valid && is_confirmed) {
-    var data = {
-      "login_name" : name,
-      "password" : pass,
-      "password_again" : pass_again,
-      "confirmed" : is_confirmed
-    };
-    $.post("/user/register", data, function (data, status) {
-      if(data.ret == "error"){
-        switch(data.msg) {
-          case "login_info_err":
-            $("#err-msg2").text("注册信息有误");
-            break;
-          case "name_exist":
-            // walk around to put html element in text
-            $("#err-msg2").text("");
-            $("#err-msg2").append("该登录名已被使用，可尝试 <a href='/login?u=" +
-                                  name + "'>登录</a>");
-            break;
-          case "fail_captcha":
-            $("#err-msg2").text("图片识别有误");
-            break;
-          case "no_captcha":
-            $("#err-msg2").text("未选择图片");
-            break;
-          default:
-            $("#err-msg2").text(data.msg);
-        }
-      }
-      else if(data.ret == "success") {
-        var return_url = GetUrlParam("returnurl") || "/";
-        location.replace(return_url);
-      }
-    });
-  }
+function set_error(ele, eid='0') {
+  set_normal(ele, eid);
+  ele.parent().addClass("has-error");
+  ele.parent().append("<span id='" + eid +"' class='glyphicon glyphicon-remove form-control-feedback' aria-hidden='true'></span>");
 }
 
 /* question page */
@@ -559,4 +490,32 @@ function sort_by(key) {
 
 function pager_move(p) {
   location.replace(add_param('page', p));
+}
+
+/* own prifle page */
+function resend_validation() {
+  var button = $("button#resend");
+  button.attr("disabled", "disabled");
+  var origin_text = button.text();
+  var ticks = 15;
+  button.text(ticks + "秒后再次发送");
+  $.post("/user/send_validation", function (data, status) {
+    if (data.ret == "error") {
+      if (data.msg == "resend_too_frequent") {
+        alert("发送过于频繁，请稍候重试");
+      }
+      else {
+        alert("发送失败，可能是系统故障，请稍候重试");
+      }
+    }
+    var clock = setInterval(function () {
+      ticks--;
+      button.text(ticks + "秒后再次发送");
+      if (ticks == 0) {
+        clearInterval(clock);
+        button.text(origin_text);
+        button.removeAttr("disabled");
+      }
+    }, 1000);
+  });
 }

@@ -8,4 +8,5 @@ gem 'thin'
 gem 'activerecord'
 gem 'activerecord-mysql2-adapter'
 gem 'visual_captcha_cn'
-gem 'pony'
+
+gem 'redis', '~>3.2'

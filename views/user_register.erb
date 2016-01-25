@@ -2,49 +2,56 @@
 <link href="/css/visualcaptcha.src.css" rel="stylesheet">
 <% end %>
 
-<div class="container">
+<div class="container-fluid">
   <div class="row">
     <div class="col-md-4 col-md-offset-4">
-      <p>
-        <div class="form-group has-feedback">
-          <input class="form-control" type="text"
-                 name="login_name" id="lu" placeholder="登录名" />
-          <span class="form-control-feedback fui-user"></span>
-        </div>
-      </p>
-      <p>
-        <div class="form-group has-feedback">
-          <input class="form-control" type="password"
-                 name="password" id="p1" placeholder="密码" />
-          <span class="form-control-feedback fui-lock"></span>
-        </div>
-      </p>
-      <p>
-        <div class="form-group has-feedback">
-          <input class="form-control" type="password"
-                 name="password_again" id="p2" placeholder="密码again :-)" />
-          <span class="form-control-feedback fui-lock"></span>
-        </div>
+      <p class="text-1_5times">
+        现在就加入 韩非子说
       </p>
 
-      <!-- place for visual captcha -->
-      <div id="sample-captcha"></div>
+      <div id="mycaptcha"></div>
+
+      <div class="form-group has-feedback" id="name_input">
+        <input class="form-control" type="text" name="login_name" id="name"
+        placeholder="账号" data-toggle="tooltip" data-placement="right"
+        title="填写您的账号，由英文字母、数字或下划线组成，3~15个字符">
+      </div>
+
+      <div class="form-group has-feedback" id="email_input">
+        <input class="form-control" type="text" name="email" id="email"
+        placeholder="电子邮箱" data-toggle="tooltip" data-placement="right"
+        title="您的电子邮箱地址，稍后会给您发送账户激活邮件">
+      </div>
+
+      <div class="form-group has-feedback" id="pass_input">
+        <input class="form-control" type="password" name="password"
+        id="password" placeholder="密码" data-toggle="tooltip"
+        data-placement="right" title="密码由英文字母、符号或数字组成，6~20个字符">
+      </div>
+
+      <div class="form-group">
+        <input class="form-control" type="text" name="nickname"
+        id="nickname" placeholder="昵称" data-toggle="tooltip"
+        data-placement="right"
+        title="[可选] 若不填写昵称，则以账号作为默认昵称，稍后可以修改">
+      </div>
 
       <div class="form-group">
         <label>
-          <input type="checkbox" name="confirmed" checked /> &nbsp;
-          同意并遵守网站<a href="/terms">服务和隐私条款</a>
+          <input type="checkbox" name="confirmed" checked>
+          &nbsp;同意并遵守网站<a href="/terms">服务和隐私条款</a>
         </label>
       </div>
       <button class="btn btn-primary btn-lg" id="check-is-filled">
         注册
       </button>
-      <div id="err-msg2" style="margin-top:10px;" class="text-danger"></div>
+      <div id="register-err-msg" class="err-msg text-danger"></div>
     </div>
   </div>
 </div>
 
 <% content_for :extra_js_tags do %>
+<script src="/js/register_page.js"></script>
 <script src="/js/visualcaptcha.jquery.src.js"></script>
 <script src="/js/use_visualcaptcha.js"></script>
 <% end %>

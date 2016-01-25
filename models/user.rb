@@ -1,19 +1,22 @@
 require 'digest'
 
 class User < ActiveRecord::Base
-  # === associations ===
-  # detailed info of user
-  has_one :info, class_name: "UserInfo"
+  # === status code ===
+  NEWBIE  = 0 # just sign up, not mail-validated yet; can only sign in and surf
+  NORMAL  = 1 # normal, can do almost everything now
+  SUSPEND = 2 # can sign in only
+  BANNED  = 3 # cannot even sign in; profile/works could remain
+  REMOVED = 4 # cannot sign in anymore; no profile/works accessible
+  GOD     = 9 # has admin privilege
 
-  # inbox messages inside the site
+  # === associations ===
+  has_one :info, class_name: "UserInfo"
   has_many :inbox_messages, class_name: "Message", foreign_key: "to_uid"
 
-  # all answers gived by this user
-  # for the sake of listing high praised answers
+  # questions, answers and articles composed by user
   has_many :answers
-
-  # articles
   has_many :articles
+  has_many :asked_questions, class_name: "Question"
 
   # users that follow such users, and users whom such user follows
   has_and_belongs_to_many :followers, -> { uniq },
@@ -28,11 +31,8 @@ class User < ActiveRecord::Base
                           foreign_key: "follower_id",
                           association_foreign_key: "followee_id"
 
-  # user asks, answers and watchs questions
-  # user also can comment, but no need to refer to comments from users
-  has_many :asked_questions, class_name: "Question"
-  
-  has_and_belongs_to_many :watching_questions, -> { uniq },
+  # watched questions
+  has_and_belongs_to_many :watched_questions, -> { uniq },
                           class_name: "Question",
                           join_table: "watching_list",
                           foreign_key: "user_id",
@@ -41,32 +41,49 @@ class User < ActiveRecord::Base
   # user events
   has_many :events
 
-  # user-top association for top expert tags use
+  # relations between users and tags, for expertise analysis in the future
   has_many :tags, through: :expertises
   has_many :expertises
 
   # === validations ===
-  # login name contains only underscore, numbers and letters, no more than 50
   validates :login_name,
             format: { with: /\A[0-9a-zA-Z_]+\z/ },
             presence: true,
-            length: { in: 1..50 },
+            length: { in: 3 .. 15 },
             uniqueness: true
-
-  validates :password, presence: true
 
   # === helpers ===
   def url
     "/u/#{self.login_name}"
   end
 
-  def set_password_and_salt(input_password, salt)
-    self.salt = salt
+  def set_password_and_salt(input_password)
+    salt = Time.now.hash.to_s[ -6 .. -1 ]
+    self.salt     = salt
     self.password = add_salt(input_password, salt)
+  end
+
+  def gen_and_set_new_vcode
+    temp = Time.now.hash.to_s[ -6 .. -1 ]
+    self.vcode = Digest::MD5.hexdigest(self.login_name + temp)
   end
 
   def authenticate(input_password)
     self.password == add_salt(input_password, salt)
+  end
+
+  def self.validate(id, code)
+    ret = false
+    if (user = User.find_by(id: id)) &&
+       (user.status == User::NEWBIE) &&
+       (code == user.vcode)
+      user.status = User::NORMAL
+      if user.valid?
+        user.save
+        ret = true
+      end
+    end
+    ret
   end
 
   def follower_size
@@ -154,6 +171,11 @@ class User < ActiveRecord::Base
     self.events.order(created_at: :desc)
                .limit(num_per_slice)
                .offset(num_per_slice * part_no)
+  end
+
+  # privileges check
+  def can_change_email
+    self.status == User::NEWBIE || self.status == User::NORMAL
   end
 
   private

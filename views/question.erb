@@ -285,32 +285,8 @@
 
     <!-- right side ad or something others -->
     <div class="col-md-3">
-      <div class="ad">
-        ads ...
-      </div>
-
-      <!-- job post -->
-      <% if @jobs && !@jobs.empty? %>
-      <div class="job-posts">
-        <span class="posts-title">职位推荐</span>
-
-        <div class="posts-container">
-          <% @jobs.each do |job| %>
-          <div class="single-post" id="<%= job.id %>"
-               onclick="javascript:go_job(<%= job.id %>);">
-            <p class="post-job-title"><%= job.title %></p>
-            <p class="post-job-company"><%= job.company %></p>
-            <p class="post-job-base"><%= job.base_at %></p>
-            <% job.tags.each do |t| %>
-              <span class="q_tag"><%= t.name %></span>
-            <% end %>
-          </div>
-          <% end %>
-        </div>
-
-      </div>
-      <% end %>
-
+      <%= get_ad %>
+      <%= get_jobpost %>
     </div>
 
   </div><!-- end of top row -->

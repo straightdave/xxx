@@ -1,19 +1,19 @@
 # controller for homepage
 get '/' do
-  @sort_by = params['sort'] || 'default'
+  @sort_by = params['tab'] || 'default'
   number = params['num'] if params['num'].to_i > 0
   number ||= 20
 
   tmp = case @sort_by
-        when 'views'
-          Question.order(views: :desc, created_at: :desc)
-        when 'noanswer'
-          Question.joins("LEFT OUTER JOIN answers ON questions.id = answers.question_id")
-                  .where("answers.question_id IS NULL")
-                  .order("questions.created_at desc")
-        else
-          Question.order(created_at: :desc)
-        end
+  when 'hot'
+    Question.order(views: :desc, created_at: :desc)
+  when 'noanswer'
+    Question.joins("LEFT OUTER JOIN answers ON questions.id = answers.question_id")
+            .where("answers.question_id IS NULL")
+            .order("questions.created_at desc")
+  else
+    Question.order(created_at: :desc)
+  end
   @qs = tmp.take(number)
 
   # calculate hot tags

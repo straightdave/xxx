@@ -1,0 +1,20 @@
+<% if jobs && !jobs.empty? %>
+<div class="job-posts">
+  <a class="posts-title" href="/jobs">职位推荐</a>
+
+  <div class="posts-container">
+    <% jobs.each do |job| %>
+    <div class="single-post" id="<%= job.id %>"
+         onclick="javascript:go_job(<%= job.id %>);">
+      <p class="post-job-title"><%= job.title %></p>
+      <p class="post-job-company"><%= job.company %></p>
+      <p class="post-job-base"><%= job.base_at %></p>
+      <% job.tags.each do |t| %>
+        <span class="q_tag"><%= t.name %></span>
+      <% end %>
+    </div>
+    <% end %>
+  </div>
+
+</div>
+<% end %>

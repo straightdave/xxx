@@ -468,14 +468,15 @@ div.tooltip-inner {
 }
 
 /* job posts */
-div.job-posts span.posts-title {
+div.job-posts a.posts-title {
+  display: block;
+  background-color: #337AB7;
+  color: #FFF;
   font-size: 1.5em;
   margin: 0;
   padding-bottom: 3px;
   text-align: center;
-  background-color: #337AB7;
-  display: block;
-  color: #FFF;
+  text-decoration: none;
 }
 
 div.job-posts {
@@ -499,4 +500,14 @@ div.single-post p.post-job-company {
 div.single-post {
   margin-bottom: 8px;
   cursor: pointer;
+}
+
+/* for ad_sample */
+div.partial-ad img {
+  width: 100%;
+}
+div.partial-ad {
+  overflow: hidden;
+  border: 1px solid lightgray;
+  padding: 3px;
 }

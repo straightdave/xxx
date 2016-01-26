@@ -69,8 +69,6 @@ get '/q/:qid' do |qid|
     @answers.select { |answer| answer.scores >= -2 }
     @answers = @answers.to_a.sort { |x, y| y.scores <=> x.scores }
 
-    # job posts
-    @jobs = get_jobs
     erb :question
   else
     raise not_found

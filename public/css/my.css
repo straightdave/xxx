@@ -57,6 +57,10 @@ ol.breadcrumb {
   margin-bottom: 20px;
 }
 
+img.logo {
+  width: 140px;
+}
+
 /* home page hot tags */
 a.tag{
   font-size: 1.1em;
@@ -136,7 +140,7 @@ a.more {
 /* voting box */
 div.votingbox {
   text-align: center;
-  font-size: 1.8em;
+  font-size: 1.5em;
 }
 a.watching {
   color: gray;

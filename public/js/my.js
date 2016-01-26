@@ -245,12 +245,12 @@ function set_normal(ele, eid) {
   ele.parent().removeClass("has-success");
   $("span").remove("#" + eid);
 }
-function set_success(ele, eid='0') {
+function set_success(ele, eid) {
   set_normal(ele, eid);
   ele.parent().addClass("has-success");
   ele.parent().append("<span id='" + eid + "' class='glyphicon glyphicon-ok form-control-feedback' aria-hidden='true'></span>");
 }
-function set_error(ele, eid='0') {
+function set_error(ele, eid) {
   set_normal(ele, eid);
   ele.parent().addClass("has-error");
   ele.parent().append("<span id='" + eid +"' class='glyphicon glyphicon-remove form-control-feedback' aria-hidden='true'></span>");

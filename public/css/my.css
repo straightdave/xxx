@@ -29,11 +29,24 @@ footer {
 }
 
 div.footer-logo-box img {
-  width: 200px;
+  width: 150px;
+  margin: 10px;
 }
 
-div.footer-log-box span {
-  left: 0px;
+div.footer-logo-box span {
+  position: absolute;
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #4582EC;
+}
+
+footer ul.site-related {
+  list-style: none;
+  padding: 0px;
+}
+footer ul.site-related li {
+  display: block;
+  margin: 8px 0px;
 }
 
 .navbar {
@@ -48,11 +61,28 @@ ol.breadcrumb {
 
 .myjumbotron-home {
   width: 100%;
-  height: 150px;
+  height: 180px;
   background-color: #EBF2F5;
   margin-top: -40px;
   margin-bottom: 40px;
   padding: 20px;
+  padding-top: 40px;
+}
+
+.myjumbotron-home div {
+  float: left;
+  margin-right: 50px;
+  padding: 10px;
+}
+.myjumbotron-home img.logo-home-head {
+  width: 200px;
+}
+.myjumbotron-home p {
+  font-size: 1.2em;
+  color: #4582EC;
+}
+.myjumbotron-home p a {
+  margin: 0 5px;
 }
 
 .clear {
@@ -100,14 +130,14 @@ div.fixed-tool a.back-to-top:hover {
 }
 
 img.logo {
-  width: 140px;
+  width: 50px;
 }
 
 span.beta {
   position: relative;
   font-weight: bold;
   color: #028DDE;
-  left: -20px;
+  left: -10px;
   top: 0px;
 }
 
@@ -523,6 +553,11 @@ div.avatar-img img {
 }
 
 /* user register page */
+img.signup-logo {
+  width: 200px;
+}
+
+
 div.tooltip-inner {
   background-color: #DAE7F1;
   color: #219589;

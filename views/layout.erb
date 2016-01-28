@@ -12,6 +12,8 @@
       <% if @title %><%= @title %> | 韩非子说<% else %>韩非子说"<% end %>
     </title>
     <link rel="icon" href="/favicon.ico">
+    <link rel="shortcut icon" href="/favicon.ico"/>
+    <link rel="bookmark" href="/favicon.ico"/>
     <link href="/css/bootstrap-with-theme.min.css" rel="stylesheet">
     <link href="/css/my.css" rel="stylesheet">
     <%= yield_content :extra_css_tags %>
@@ -37,7 +39,7 @@
               <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="/">
-              <img alt="韩非子说" src="/site_logo1.jpg" class="logo" />
+              <img alt="韩非子说" src="/little-logo.png" class="logo" />
             </a>
             <span class="beta">Beta</span>
           </div>
@@ -190,7 +192,7 @@
 
       <!-- breadcumb -->
       <% if @breadcrumb %>
-      <div class="container-fluid">
+      <div class="container">
         <div class="bread-pane">
           <ol class="breadcrumb">
             <% @breadcrumb.each do |b| %>
@@ -221,17 +223,58 @@
 
           <div class="col-md-3">
             <div class="footer-logo-box">
-              <img alt="韩非子说" src="/site_logo1.jpg"/>
+              <img alt="韩非子说" src="/little-logo.png"/>
               <span>Beta</span>
             </div>
+            <p>
+              “非&trade;” 和 “韩非子说&trade;” 是注册商标<br />
+              &copy; 2016 立博拉（北京）网络技术有限公司<br />
+              当前版本 2016.01.30
+            </p>
           </div>
 
           <div class="col-md-3">
-            hahaha
+            <h5>网站相关</h5>
+            <ul class="site-related">
+              <li>
+                <a href="#">关于我们</a>
+              </li>
+              <li>
+                <a href="#">服务条款</a>
+              </li>
+              <li>
+                <a href="#">使用指南</a>
+              </li>
+              <li>
+                <a href="#">声望体系</a>
+              </li>
+              <li>
+                <a href="#">订阅每日精选</a>
+              </li>
+            </ul>
           </div>
 
           <div class="col-md-3">
             some logo, or words description...
+          </div>
+
+          <div class="col-md-3">
+            <h5>内容许可</h5>
+            <p>
+              除特别说明外，用户内容均采用
+              <a href="http://creativecommons.org/licenses/by-sa/3.0/cn/">
+                知识共享署名-相同方式共享 3.0 中国大陆许可协议
+              </a> 进行许可
+            </p>
+            <p>
+              同时感谢：<br />
+              Ruby
+              Sinatra
+              bootstrap
+              jquery
+              Glyphicons 
+              etc.
+            </p>
           </div>
 
         </div>

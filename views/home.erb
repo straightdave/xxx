@@ -1,12 +1,16 @@
 <!-- homepage -->
-<div class="container-fluid">
-  <div class="jumbotron">
-    又遇到棘手的法律问题啦？:-(  &nbsp;
-    <a class="btn btn-primary"
-       onclick="javascript:ask();"
-       role="button">我要提问</a>
-  </div>
+<div class="myjumbotron-home">
 
+    <p>
+      你好啊，哇哈哈哈
+    </p>
+    <a href="/ask" class="btn btn-default" role="button">提问</a>
+
+
+</div>
+
+
+<div class="container-fluid">
   <div class="row">
     <div class="col-md-9">
       <ul class="nav nav-tabs">
@@ -65,7 +69,7 @@
 
     <div class="col-md-3">
       <%= get_ad %>
-      
+
       <div class="tags">
           <h6>热门标签</h6>
           <% @hot_tags.each do |t| %>

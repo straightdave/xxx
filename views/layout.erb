@@ -39,6 +39,7 @@
             <a class="navbar-brand" href="/">
               <img alt="韩非子说" src="/site_logo1.jpg" class="logo" />
             </a>
+            <span class="beta">Beta</span>
           </div>
 
           <div class="collapse navbar-collapse" id="navbar-collapse-1">
@@ -58,15 +59,18 @@
               </li>
             </ul>
 
-            <form class="navbar-form navbar-right" role="search"
+            <form class="navbar-form navbar-left" role="search"
                   action="/search">
               <div class="form-group">
                 <input type="text" class="form-control" name="q"
+                       onfocus="javascript:widen_input(true);"
+                       onblur="javascript:widen_input(false);"
                        placeholder="快速搜索">
               </div>
             </form>
 
             <ul class="nav navbar-nav navbar-right">
+
               <% unless login? %>
               <li>
                 <a href="javascript:void(0);" data-toggle="modal"
@@ -145,6 +149,10 @@
               </li>
               <% end %>
 
+              <li>
+                <a href="/help">帮助</a>
+              </li>
+
             </ul>
           </div> <!-- /.navbar-collapse -->
         </div> <!-- /.container-fluid -->
@@ -208,44 +216,33 @@
     <!-- footer -->
     <footer>
       <div class="container-fluid">
-        <h3>韩非子说 <small>法律专业知识交流平台</small></h3>
+
         <div class="row">
 
-          <div class="col-md-1">
-            <p>
-              <a href="/about">关于</a>
-            </p>
-            <p>
-              <a href="/about">规则</a>
-            </p>
+          <div class="col-md-3">
+            <div class="footer-logo-box">
+              <img alt="韩非子说" src="/site_logo1.jpg"/>
+              <span>Beta</span>
+            </div>
           </div>
 
-          <div class="col-md-1">
-            <p>
-              <a href="/about">赞助</a>
-            </p>
-            <p>
-              <a href="/about">鸣谢</a>
-            </p>
+          <div class="col-md-3">
+            hahaha
           </div>
 
-          <div class="col-md-6 col-md-offset-4">
+          <div class="col-md-3">
             some logo, or words description...
           </div>
+
         </div>
 
-        <div class="row">
-          <p class="text-center">
-            --- 备案号相关文字 ---
-          </p>
-          <p class="text-center">
-            韩非子说 版本2015.12.30b1 &copy;
-            <a href="http://straightdave.github.io">Dave Wu</a>
-            All Rights Reserved
-          </p>
-        </div>
+
       </div>
     </footer>
+
+    <div class="fixed-tool">
+      <a href="#" class="back-to-top">回到顶部</a>
+    </div>
 
     <script src="/js/jquery.min.js"></script>
     <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>

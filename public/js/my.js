@@ -61,6 +61,18 @@ function remove_param(key) {
   return location.pathname + location.search;
 }
 
+/* navbar input */
+function widen_input(flag) {
+  if (true == flag) {
+    console.log("widen");
+    $("input[name='q']").animate({ width : '+=200px'});
+  }
+  else {
+    $("input[name='q']").animate({ width : '-=200px'});
+  }
+}
+
+
 /* ===== functions used for login/logout ===== */
 function login() {
   // login method 1: used in home page, modal window

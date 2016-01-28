@@ -10,19 +10,33 @@ body {
   /* always show the y-scrollbar, this is a walkaround
   to stop scrollbar affecting page width */
   overflow-y: scroll;
+  font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,STHeiti,"Microsoft Yahei",SimSun,sans-serif;
+  font-size: 14px;
+}
+
+div.wrapper {
+  margin-bottom: 300px;
 }
 
 footer {
   position: absolute;
-  bottom: 0;
+  bottom: 0px;
   width: 100%;
-  margin-top: 20px;
-  padding-top: 10px;
-  background-color: #E7E7E7;
+  height: 250px;
+  background-color: #EBF2F5;
   border-top: 1px solid lightgray;
+  padding: 20px;
 }
 
-.navbar, .btn {
+div.footer-logo-box img {
+  width: 200px;
+}
+
+div.footer-log-box span {
+  left: 0px;
+}
+
+.navbar {
   border-radius: 0;
 }
 
@@ -32,12 +46,40 @@ ol.breadcrumb {
   background-color: transparent;
 }
 
-.nav-tabs li a {
-  border-radius: 0;
+.myjumbotron-home {
+  width: 100%;
+  height: 150px;
+  background-color: #EBF2F5;
+  margin-top: -40px;
+  margin-bottom: 40px;
+  padding: 20px;
 }
 
 .clear {
   clear: both;
+}
+
+div.fixed-tool {
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+  border: 1px solid #DDD;
+  border-radius: 2px;
+  line-height: 1.25;
+  z-index: 1000;
+  padding: 5px;
+}
+
+div.fixed-tool a.back-to-top {
+  display: block;
+  text-decoration: none;
+  text-align: center;
+  width: 40px;
+  opacity: 0.6;
+}
+
+div.fixed-tool a.back-to-top:hover {
+  opacity: 1;
 }
 
 /* my common classes */
@@ -59,6 +101,14 @@ ol.breadcrumb {
 
 img.logo {
   width: 140px;
+}
+
+span.beta {
+  position: relative;
+  font-weight: bold;
+  color: #028DDE;
+  left: -20px;
+  top: 0px;
 }
 
 /* home page hot tags */
@@ -94,12 +144,12 @@ a.tag{
 }
 
 .listed-question .rank div.answered {
-  background-color: green;
+  background-color: #83B869;
   color: white;
 }
 
 .listed-question .rank div.answers {
-  color: green;
+  color: #83B869;
 }
 
 .listed-question .rank div small {
@@ -356,6 +406,18 @@ form.input-group button {
   font-size: 18px;
 }
 
+div.search-page-header img {
+  width:140px;
+}
+div.search-page-header span.beta-search-page {
+  position: relative;
+  left: 0px;
+  top: -20px;
+  color: #028DDE;
+  font-weight: bold;
+}
+
+
 /* search results page */
 div.search-results .search-item {
   padding: 10px;
@@ -390,16 +452,11 @@ div.tag-box p {
   margin-top: 5px;
 }
 
-div.pager {
-  font-size: 1.1em;
+div.pager2 {
   margin-top: 30px;
+  text-align: center;
 }
-div.pager span.active {
-  display: inline-block;
-  margin: 2px;
-  padding: 2px;
-  background-color: #DAE7F1;
-}
+
 
 /* tag page */
 div.intag-questions-pane .nav-tabs li {

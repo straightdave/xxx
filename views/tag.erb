@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container">
   <div class="row">
     <div class="col-md-9">
       <span class="q_tag text-1_5times"><%= @tag.name %></span>
@@ -49,30 +49,46 @@
           <% end %>
         </div>
 
-        <div class="pager">
-          <% if @page > 1 %>
-            <a href="javascript:void(0);"
-               onclick="javascript:pager_move(<%= @page - 1 %>);">上一页</a>
-          <% end %>
 
-          <% (1 .. @total_page).each do |pno| %>
-            <% if pno == @page %>
-              <span class="active"><%= pno %></span>
+        <div class="pager2">
+          <ul class="pagination pagination-sm">
+            <% if @page <= 1 %>
+              <li class="disabled"><a href="javascript:void(0);">&laquo;</a></li>
             <% else %>
-              <span>
+              <li>
                 <a href="javascript:void(0);"
-                   onclick="javascript:pager_move(<%= pno %>);">
-                  <%= pno %>
-                </a>
-              </span>
+                 onclick="javascript:pager_move(<%= @page - 1 %>);">&laquo;</a>
+              </li>
             <% end %>
-          <% end %>
 
-          <% if @page < @total_page %>
-          <a href="javascript:void(0);"
-             onclick="javascript:pager_move(<%= @page + 1 %>);">下一页</a>
-          <% end %>
+            <% (1 .. @total_page).each do |pno| %>
+              <% if pno == @page %>
+                <li class="active">
+                  <a href="javascript:void(0);"><%= pno %></a>
+                </li>
+              <% else %>
+                <li>
+                  <a href="javascript:void(0);"
+                     onclick="javascript:pager_move(<%= pno %>);">
+                    <%= pno %>
+                  </a>
+                </li>
+              <% end %>
+            <% end %>
+
+            <% if @page < @total_page %>
+              <li>
+                <a href="javascript:void(0);"
+                   onclick="javascript:pager_move(<%= @page + 1 %>);">&raquo;</a>
+              </li>
+            <% else %>
+              <li class="disabled"><a href="javascript:void(0);">&raquo;</a></li>
+            <% end %>
+
+          </ul>
         </div>
+
+
       </div>
 
     </div>
@@ -104,7 +120,7 @@
       </div>
       <hr>
 
-      ads here...
+      <%= get_ad %>
     </div>
   </div>
 </div>

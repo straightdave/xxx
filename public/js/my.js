@@ -298,6 +298,9 @@ function do_comment(qid) {
         if(data.msg == "need_login") {
           alert("请先登录");
         }
+        else if (data.msg == "repu_cannot_comment") {
+          alert("声誉超过50才可以评论呢");
+        }
       }
     });
   }
@@ -342,6 +345,12 @@ function vote(op_type, target_type, id) {
       }
       else if(data.msg == "already_voted") {
         alert("这个你已经投过票啦")
+      }
+      else if(data.msg == "repu_cannot_vote") {
+        alert("要声誉超过5分才可以顶哦")
+      }
+      else if(data.msg == "repu_cannot_devote") {
+        alert("要声誉过125才能踩哦")
       }
       else {
         alert(data.msg);

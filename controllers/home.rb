@@ -2,7 +2,7 @@
 get '/' do
   @sort_by = params['tab'] || 'default'
   number = params['num'] if params['num'].to_i > 0
-  number ||= 20
+  number ||= 50
 
   tmp = case @sort_by
   when 'hot'

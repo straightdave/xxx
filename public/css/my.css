@@ -138,16 +138,20 @@ img.cli-pane {
   margin-bottom: 20px;
 }
 
+div.head-logo-box {
+  width: 110px;
+}
 img.logo {
   width: 50px;
 }
 
 span.beta {
   position: relative;
+  font-size: 0.6em;
   font-weight: bold;
   color: #028DDE;
-  left: -10px;
-  top: 0px;
+  left: 55px;
+  top: -60px;
 }
 
 /* home page hot tags */

@@ -42,6 +42,7 @@ configure do
                      mailer_list: 'validation',
                      db: 8 }
   set :site_host, 'http://localhost:4567'
+  set :bind, '0.0.0.0'
   set :public_folder, File.dirname(__FILE__) + '/public'
   use Rack::Session::Pool, expire_after: 60 * 60 * 2, http_only: true
 end

@@ -14,7 +14,8 @@ helpers do
                    content:  "<a href='/u/#{answerer.login_name}'>
                               #{answerer.info.nickname}</a>回答了您的问题
                               <a href='/q/#{question.id}'>#{question.title}
-                              </a>"
+                              </a>",
+                   add_amount: false
   end
 
   def send_welcome_message(user)
@@ -35,7 +36,9 @@ helpers do
     msg.sent_at  = Time.now
     if msg.valid?
       msg.save
-      session[:message_amount] += 1 unless session[:message_amount].nil?
+      if false != args[:add_amount]
+        session[:message_amount] += 1 unless session[:message_amount].nil?
+      end
     end
   end
 end

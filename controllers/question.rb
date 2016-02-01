@@ -128,7 +128,7 @@ post '/q/:qid/answer' do |qid|
     if q.author.id != session[:user_id]
       if author = User.find_by(id: session[:user_id])
 
-        # same question answers once per user
+        # same question answers once by same user
         unless q.answers.where(author: author).empty?
           return json ret: "error", msg: "answer_twice"
         end

@@ -410,7 +410,7 @@ function unwatch1(qid) {
 function do_answer(qid) {
   var text = CKEDITOR.instances.editor1.getData();
   if(text.length < 10) {
-    alert(text + " >> no less than 10 char");
+    alert("答案起码得超过10个字吧。");
   }
   else {
     var data = { "content" : text };

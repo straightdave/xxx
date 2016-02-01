@@ -17,13 +17,13 @@ class Article < ActiveRecord::Base
 
   # == validations ==
   validates :title, length: { maximum: 100, too_long: "标题请勿超过100字符" }
-  validates :content, length: { maximum: 1000, too_long: "正文请勿超过1000字符" }
+  validates :content, length: { maximum: 5000, too_long: "正文请勿超过1000字符" }
 
   # == helpers ==
   def url
     "/a/#{self.id}"
   end
-  
+
   # == add mixins as a votable obj ==
   include Votability
 end

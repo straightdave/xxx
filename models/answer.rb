@@ -6,7 +6,7 @@ class Answer < ActiveRecord::Base
   belongs_to :question
 
   # == validations ==
-  validates :content, length: { maximum: 500, too_long: "回答请勿超过500字符" }
+  validates :content, length: { maximum: 2000, too_long: "proceed_max_length" }
 
   # == helpers ==
   def url

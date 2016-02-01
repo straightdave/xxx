@@ -257,6 +257,11 @@ div.question-content {
 }
 
 /* comment box */
+a.comment-btn:hover {
+  text-decoration: none;
+}
+
+
 div.comments {
   margin-top: 10px;
   margin-bottom: 15px;

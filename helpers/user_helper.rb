@@ -7,9 +7,6 @@ helpers do
     session[:user_id]        = user.id
     session[:login_name]     = user.login_name
     session[:message_amount] = user.inbox_messages.where(isread: false).size
-
-    user.last_login_ip = request.ip
-    user.last_login_at = Time.now
     user.save if user.valid?
   end
 

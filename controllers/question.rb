@@ -11,7 +11,11 @@ end
 
 post '/ask' do
   return (json ret: "error", msg: "need_login") unless login?
+
   author = User.find_by(id: session[:user_id])
+  unless author.status == User::NORMAL
+    return json ret: "error", msg: "wrong_status"
+  end
 
   new_q = Question.new
   new_q.title = params['title']
@@ -35,7 +39,7 @@ post '/ask' do
   new_q.save
   set_just_viewed(new_q.id)
   send_msg_after_ask(author, new_q)
-  author.info.update_reputation(2)
+  author.update_reputation(2)
   author.record_event(:ask, new_q)
   json ret: "success", msg: new_q.id
 end
@@ -147,7 +151,7 @@ post '/q/:qid/answer' do |qid|
           answer.save
           q.save
           send_msg_after_answer(q, author)
-          author.info.update_reputation(2)
+          author.update_reputation(2)
           author.add_expertise(q.tag_ids, :answered_once)
           author.record_event(:answer, answer)
           json ret: "success", msg: answer.id
@@ -188,7 +192,7 @@ post '/q/:qid/accept' do |qid|
 
   if question.valid? && answerer.valid?
     question.save && answerer.save
-    answerer.info.update_reputation(5)
+    answerer.update_reputation(5)
     answerer.add_expertise(question.tag_ids, :accepted_once)
     question.author.record_event(:accept, answer)
     json ret: "success"

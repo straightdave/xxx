@@ -246,6 +246,9 @@ function do_ask() {
         if(data.msg == "need_login") {
           alert("请先登录");
         }
+        else if(data.msg == "wrong_status") {
+          alert("您的状态无法提问哦。请先验证邮箱。如果没有收到验证邮件，可以去 -更新资料- 页面操作。");
+        }
       }
     });
   } else { $("#err_msg_ask").html(err_msg); }
@@ -450,22 +453,32 @@ function do_avatar_change() {
 function do_update() {
   var nickname = $("input[name='nickname']").val();
   var intro = $("input[name='intro']").val();
-  var email = $("input[name='email']").val();
-  var contact = $("input[name='contact']").val();
+  var phone = $("input[name='phone']").val();
   var city = $("input[name='city']").val();
-  // TODO: validate things ...
+  var qq = $("input[name='qq']").val();
+  var wechat = $("input[name='wechat']").val();
+  var email2 = $("input[name='email2']").val();
+  var email = $("input[name='email']").val();
 
   var data = {
     "nickname" : nickname,
     "intro" : intro,
-    "email" : email,
-    "contact" : contact,
-    "city" : city
+    "phone" : phone,
+    "city" : city,
+    "qq" : qq,
+    "wechat" : wechat,
+    "email2" : email2,
+    "email" : email
   };
 
   $.post("/user/profile", data, function (data, status) {
     if(data.ret == "success") {
       location.replace(location.href);
+    }
+    else {
+      if(data.msg == "cannot_change_email") {
+        alert("您当前的状态不可以变更邮箱哦")
+      }
     }
   });
 }

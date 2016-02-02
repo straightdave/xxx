@@ -1,7 +1,8 @@
 class Job < ActiveRecord::Base
   # == post privilege ==
-  NORMAL = 0
-  TOPPED = 1
+  NORMAL  = 0
+  TOPPED  = 1
+  EXPIRED = 2
 
   # == associations ==
   has_and_belongs_to_many :tags, -> { uniq },

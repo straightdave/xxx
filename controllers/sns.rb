@@ -36,6 +36,18 @@ post '/u/:name/unfollow' do |name|
   end
 end
 
+get '/u/:name' do |name|
+  unless @user = User.find_by(login_name: name)
+    raise not_found
+  end
+
+  @user_info = @user.info
+  @title     = @user_info.nickname
+  @followed  = @user.followers.exists?(session[:user_id]) if login?
+  @events    = @user.get_events  # top 20 by default
+  erb :user_profile
+end
+
 get '/user/home' do
   redirect to('/login?r=' + CGI.escape('/user/home')) unless login?
   unless @user = User.find_by(id: session[:user_id])

@@ -22,13 +22,38 @@
           </blockquote>
 
           <p>
+            <span class="glyphicon glyphicon-envelope"></span>
+            &nbsp; <%= @user.email %>
+          </p>
+
+          <% if !@user_info.phone.nil? %>
+          <p>
+            <span class="glyphicon glyphicon-earphone"></span>
+            &nbsp; <%= @user_info.phone %>
+          </p>
+          <% end %>
+
+          <% if !@user_info.city.nil? %>
+          <p>
             <span class="glyphicon glyphicon-map-marker"></span>
             &nbsp; <%= @user_info.city %>
           </p>
+          <% end %>
+
+          <% if !@user_info.qq.nil? %>
           <p>
-            <span class="glyphicon glyphicon-envelope"></span>
-            &nbsp; <%= @user_info.email %>
+            QQ:
+            &nbsp; <%= @user_info.qq %>
           </p>
+          <% end %>
+
+          <% if !@user_info.wechat.nil? %>
+          <p>
+            微信:
+            &nbsp; <%= @user_info.wechat %>
+          </p>
+          <% end %>
+
           <p>
             <span id="whensignup">
               <%= time_ago_in_words_zh(@user.created_at) %>加入
@@ -47,7 +72,7 @@
             <li>
               <div class="each-stat">
                 <h5>声望</h5>
-                <span><%= @user_info.reputation %></span>
+                <span><%= @user.reputation %></span>
               </div>
             </li>
             <li>
@@ -148,7 +173,7 @@
 
 
       <div class="ad-col-3">
-        
+
       </div>
 
     </div>

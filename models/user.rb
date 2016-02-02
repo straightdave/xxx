@@ -4,8 +4,8 @@ class User < ActiveRecord::Base
   # === status code ===
   NEWBIE  = 0 # just sign up, not mail-validated yet; can only sign in and surf
   NORMAL  = 1 # normal, can do almost everything now
-  SUSPEND = 2 # can sign in only
-  BANNED  = 3 # cannot even sign in; profile/works could remain
+  SUSPEND = 2 # can sign in & surf, like newbie
+  BANNED  = 3 # even cannot sign in; profile/works still accessible
   REMOVED = 4 # cannot sign in anymore; no profile/works accessible
   GOD     = 9 # has admin privilege
 
@@ -13,12 +13,12 @@ class User < ActiveRecord::Base
   has_one :info, class_name: "UserInfo"
   has_many :inbox_messages, class_name: "Message", foreign_key: "to_uid"
 
-  # questions, answers and articles composed by user
+  # questions, answers and articles provided by this user
   has_many :answers
   has_many :articles
   has_many :asked_questions, class_name: "Question"
 
-  # users that follow such users, and users whom such user follows
+  # users that follow such user, and users whom such user follows
   has_and_belongs_to_many :followers, -> { uniq },
                           class_name: "User",
                           join_table: "followinfo",
@@ -41,9 +41,17 @@ class User < ActiveRecord::Base
   # user events
   has_many :events
 
-  # relations between users and tags, for expertise analysis in the future
-  has_many :tags, through: :expertises
+  # relations between users and tags, so-called 'expertises'
   has_many :expertises
+
+  # medals user earned
+  has_and_belongs_to_many :medals, -> { uniq },
+                          join_table: "user_medal",
+                          foreign_key: "user_id",
+                          association_foreign_key: "medal_id"
+
+  # organization
+  belongs_to :organization
 
   # === validations ===
   validates :login_name,
@@ -52,15 +60,23 @@ class User < ActiveRecord::Base
             length: { in: 3 .. 15 },
             uniqueness: true
 
+  validates :email,
+            presence: true,
+            uniqueness: true
+
   # === helpers ===
   def url
     "/u/#{self.login_name}"
   end
 
-  def set_password_and_salt(input_password)
+  def set_password(input_password)
     salt = Time.now.hash.to_s[ -6 .. -1 ]
     self.salt     = salt
     self.password = add_salt(input_password, salt)
+  end
+
+  def authenticate(input_password)
+    self.password == add_salt(input_password, salt)
   end
 
   def gen_and_set_new_vcode
@@ -68,22 +84,22 @@ class User < ActiveRecord::Base
     self.vcode = Digest::MD5.hexdigest(self.login_name + temp)
   end
 
-  def authenticate(input_password)
-    self.password == add_salt(input_password, salt)
-  end
-
   def self.validate(id, code)
-    ret = false
     if (user = User.find_by(id: id)) &&
        (user.status == User::NEWBIE) &&
        (code == user.vcode)
       user.status = User::NORMAL
       if user.valid?
         user.save
-        ret = true
+        return true
       end
     end
-    ret
+    false
+  end
+
+  def update_reputation(delta)
+    self.reputation += delta
+    save if valid?
   end
 
   def follower_size
@@ -129,27 +145,27 @@ class User < ActiveRecord::Base
   # type should be atoms: ':ask', ':answer', ':comment', ...
   def record_event(type, target_obj)
     event_type_id = case type
-    when :ask then 1
-    when :answer then 2
-    when :comment then 3
-    when :compose then 4
-    when :vote then 5
-    when :devote then 6
-    when :watch then 7
-    when :unwatch then 8
-    when :follow then 9
-    when :unfollow then 10
+    when :ask            then 1
+    when :answer         then 2
+    when :comment        then 3
+    when :compose        then 4
+    when :vote           then 5
+    when :devote         then 6
+    when :watch          then 7
+    when :unwatch        then 8
+    when :follow         then 9
+    when :unfollow       then 10
     when :update_profile then 11
-    when :accept then 12
+    when :accept         then 12
     else 0
     end
 
     target_type_id = case
     when target_obj.is_a?(Question) then 1
-    when target_obj.is_a?(Answer) then 2
-    when target_obj.is_a?(Comment) then 3
-    when target_obj.is_a?(Article) then 4
-    when target_obj.is_a?(User) then 5  # update own profile without param 'obj'
+    when target_obj.is_a?(Answer)   then 2
+    when target_obj.is_a?(Comment)  then 3
+    when target_obj.is_a?(Article)  then 4
+    when target_obj.is_a?(User)     then 5  # update profile without param 'obj'
     else 0
     end
 

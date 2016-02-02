@@ -60,7 +60,7 @@
               <img class="avatar-sm"
                    src="<%= @q.author.info.avatar || '/avatar.jpg' %>">
               <a href="/u/<%= @q.author.login_name %>">
-                <%= @q.author.info.nickname %>(<%= @q.author.info.reputation %>)
+                <%= @q.author.info.nickname %>(<%= @q.author.reputation %>)
               </a>
               提问于<%= time_ago_in_words_zh(@q.created_at) %>
             </div>
@@ -94,7 +94,7 @@
                   <div class="comment-author">
                     <a href="/u/<%= c.author.login_name %>">
                       <%= c.author.info.nickname %>(<%=
-                          c.author.info.reputation %>)
+                          c.author.reputation %>)
                     </a>
                     <%= time_ago_in_words_zh(c.created_at) %>
                   </div>
@@ -176,7 +176,7 @@
                          src="<%= a.author.info.avatar || '/avatar.jpg' %>">
                     <a href="/u/<%= a.author.login_name %>">
                       <%= a.author.info.nickname %>(<%=
-                          a.author.info.reputation %>)
+                          a.author.reputation %>)
                     </a>
                     回答于<%= time_ago_in_words_zh(a.created_at) %>
                   </div> <!-- end of author box of answer -->
@@ -225,7 +225,7 @@
                           <div class="comment-author">
                             <a href="/u/<%= c.author.login_name %>">
                               <%= c.author.info.nickname %>(<%=
-                                  c.author.info.reputation %>)
+                                  c.author.reputation %>)
                             </a>
                             <%= time_ago_in_words_zh(c.created_at) %>
                           </div>

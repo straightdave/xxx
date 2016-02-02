@@ -1,32 +1,53 @@
 helpers do
   def send_validation_mail(user)
-    to      = user.info.email
-    subject = "韩非子说用户验证"
-    content = "亲爱滴#{user.info.nickname}你好，请点击或复制链接 #{settings.site_host}/user/validation?id=#{user.id}&code=#{user.vcode} 以激活你的账户。成功激活后就可以提问和回答问题了。"
+    if settings.mail_validation || true
 
-    data = { to: to, subject: subject, content: content, time: Time.now.to_i }
-    send_mail_job(data)
+      # body rendering
+      body = erb :mail_tpl_confirm, :layout => false, :locals => {
+        :nick_name  => user.info.nickname,
+        :site_host  => settings.site_host,
+        :user_id    => user.id,
+        :user_vcode => user.vcode
+      }
+
+      send_mail_job({
+        :type        => MailLog::TYPE::USER_CONFIRM,
+        :from        => 'noreply@hanfeizishuo.com',
+        :to          => user.email,
+        :receiver_id => user.id,
+        :subject     => "韩非子说用户验证",
+        :body        => body,
+        :time        => Time.now.to_i
+      })
+
+    else
+      return "Not to send since in no production env."
+    end
   end
 
   private
-  def get_redis_client
+  def send_mail_job(data)
+    mail_log = MailLog.new
+    mail_log.type        = data[:type]
+    mail_log.from        = data[:from]
+    mail_log.to          = data[:to]
+    mail_log.receiver_id = data[:receiver_id]
+
+    @rc = get_redis_client
     begin
-      @rc || (Redis.new(
-        :host => settings.redis_conf[:host],
-        :post => settings.redis_conf[:port],
-        :db   => settings.redis_conf[:db]
-      ))
-    rescue Exception => e
-      puts e.message
+      @rc.lpush(settings.redis_conf[:mail_queue], data.to_json)
+      mail_log.status = MailLog::STATUS::SENDING
+    rescue
+      mail_log.status = MailLog::STATUS::ERROR
     end
+    mail_log.save if mail_log.valid?
   end
 
-  def send_mail_job(data)
-    begin
-      @rc = get_redis_client
-      @rc.lpush(settings.redis_conf[:mailer_list], data.to_json)
-    rescue Exception => e
-      puts e.message
-    end
+  def get_redis_client
+    @rc || Redis.new(
+      :host => settings.redis_conf[:host],
+      :port => settings.redis_conf[:port],
+      :db   => settings.redis_conf[:db]
+    )
   end
 end

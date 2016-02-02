@@ -46,15 +46,50 @@
           </div>
 
           <div class="form-group">
-            <label for="l_email">电子邮箱</label>
+            <label for="l_phone">电话</label>
+            <input type="text" name="phone" class="form-control"
+                   value="<%= @user_info.phone %>">
+          </div>
+
+          <div class="form-group">
+            <label for="l_city">城市</label>
+            <input type="text" name="city" class="form-control"
+                   value="<%= @user_info.city %>">
+          </div>
+
+          <div class="form-group">
+            <label for="l_qq">QQ</label>
+            <input type="text" name="qq" class="form-control"
+                   value="<%= @user_info.qq %>">
+          </div>
+
+          <div class="form-group">
+            <label for="l_wechat">微信</label>
+            <input type="text" name="wechat" class="form-control"
+                   value="<%= @user_info.wechat %>">
+          </div>
+
+          <div class="form-group">
+            <label for="l_email2">备用邮箱</label>
+            <input type="text" name="email2" class="form-control"
+                   value="<%= @user_info.email2 %>">
+            <span id="h_email2" class="help-block">
+              如果注册邮箱突然无法访问，备份邮箱就十分关键。
+            </span>
+          </div>
+
+          <hr />
+
+          <div class="form-group">
+            <label for="l_email">修改注册电子邮箱</label>
             <input type="email" name="email" class="form-control"
-                   value="<%= @user_info.email %>"
+                   value="<%= @user.email %>"
                    aria-describedby="h_email">
             <span id="h_email" class="help-block">
-              显示的用户电子邮箱
+              注册时填写的电子邮箱。注意，修改邮箱将需要重新验证。
             </span>
             <% if @is_newbie %>
-            没有收到验证邮件？
+            您的状态为<span style="color: red;">未验证</span>。没有收到验证邮件？
             <button id="resend" onclick="javascript:resend_validation();"
                     class="btn btn-sm">
               重新发送验证邮件
@@ -62,18 +97,6 @@
             <% else %>
             <span style="color: green;">已验证</span>
             <% end %>
-          </div>
-
-          <div class="form-group">
-            <label for="l_contact">联系方式</label>
-            <input type="text" name="contact" class="form-control"
-                   value="<%= @user_info.contact %>">
-          </div>
-
-          <div class="form-group">
-            <label for="l_city">城市</label>
-            <input type="text" name="city" class="form-control"
-                   value="<%= @user_info.city %>">
           </div>
 
           <hr>

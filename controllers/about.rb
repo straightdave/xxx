@@ -9,6 +9,12 @@ get '/terms' do
   erb :terms
 end
 
+get '/help' do
+  @title = "帮助"
+  erb :help
+end
+
+
 # TODO: delete this
 get '/show_session' do
   data = ""

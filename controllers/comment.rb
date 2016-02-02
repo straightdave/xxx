@@ -27,7 +27,7 @@ post %r{/([q|a|w])/(\d+)/comment} do |target, id|
 
   if c.valid? && obj.valid?
     c.save && obj.save
-    author.info.update_reputation(1)
+    author.update_reputation(1)
 
     # new event recording method,
     # be aware of the target saved is the stuff which get commented

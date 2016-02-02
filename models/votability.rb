@@ -15,7 +15,7 @@ module Votability
   # when object get voted, author will get some praises:
   # update reputation and all corresponding expertises
   def get_voted
-    self.author.info.update_reputation(2)
+    self.author.update_reputation(2)
 
     if self.is_a?(Comment)
       # commenting will not directly get expertises, but
@@ -33,7 +33,7 @@ module Votability
   end
 
   def get_devoted
-    self.author.info.update_reputation(-2)
+    self.author.update_reputation(-2)
     self.author.expertises.where(tag_id: get_tids).all.each do |e|
       e.devoted_once
     end

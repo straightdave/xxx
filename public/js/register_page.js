@@ -6,7 +6,7 @@ $().ready(function () {
     var target = $(event.target);
     var login_name = target.val().trim();
     if (login_name.length >= 3 && login_name.length <= 15) {
-      $.post('/user/check/' + login_name, function (data, status) {
+      $.post('/user/check_name/' + login_name, function (data, status) {
         if (data.ret == "success") {
           set_success(target, 'name');
         }
@@ -15,6 +15,19 @@ $().ready(function () {
         }
       });
     }
+  });
+
+  $("input[name='email']").blur(function (event) {
+    var target = $(event.target);
+    var email = target.val().trim();
+    $.post('/user/check_email/' + email, function (data, status) {
+      if (data.ret == "success") {
+        set_success(target, 'email');
+      }
+      else {
+        set_error(target, 'email');
+      }
+    });
   });
 });
 
@@ -76,6 +89,10 @@ function do_register() {
             $("#register-err-msg").text("");
             $("#register-err-msg").append(
               "该登录名已被使用，可尝试 <a href='/login?u=" + name + "'>登录</a>");
+            break;
+          case "email_exist":
+            $("#register-err-msg").text("");
+            $("#register-err-msg").append("该邮箱已被使用");
             break;
           case "model_invalid":
             alert("用户信息有误，保存失败");

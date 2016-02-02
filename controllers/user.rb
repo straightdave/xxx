@@ -5,9 +5,17 @@ get '/user/register' do
   erb :user_register
 end
 
-post '/user/check/:login_name' do |login_name|
+post '/user/check_name/:login_name' do |login_name|
   if User.exists?(login_name: login_name)
     json ret: "error", msg: "name_exist"
+  else
+    json ret: "success"
+  end
+end
+
+post '/user/check_email/:email' do |email|
+  if User.exists?(email: email)
+    json ret: "error", msg: "email_exist"
   else
     json ret: "success"
   end
@@ -27,14 +35,18 @@ post '/user/register' do
     return json ret: "error", msg: "name_exist"
   end
 
+  if User.exists?(email: email)
+    return json ret: "error", msg: "email_exist"
+  end
+
   new_user = User.new
   new_user.login_name = login_name
-  new_user.set_password_and_salt password
+  new_user.status     = User::NEWBIE
+  new_user.email      = email
+  new_user.set_password(password)
   new_user.gen_and_set_new_vcode
-  new_user.status = User::NEWBIE
   new_user.build_info(
-    nickname: (nickname.empty? ? login_name : nickname),
-    email: email
+    nickname: (nickname.empty? ? login_name : nickname)
   )
 
   if new_user.valid?

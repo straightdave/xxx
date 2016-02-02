@@ -1,11 +1,14 @@
 get '/jobs' do
   @title = "职位大全"
   @navbar_active = "jobs"
-  @breadcrumb = [
-    {name: "首页", url: '/'},
-    {name: "职位", active: true}
-  ]
   erb :job_home
+end
+
+post '/jobs' do
+  return (json ret: "error", msg: "need_login") unless login?
+  author = User.find_by(id: session[:user_id])
+
+  
 end
 
 

@@ -34,15 +34,30 @@ after do
   headers @headers
 end
 
-# other config
+# common config
 configure do
   # redis conf for delayed mailing jobs
-  set :redis_conf, { host: '127.0.0.1',
-                     port: 6379,
-                     mailer_list: 'validation',
-                     db: 8 }
+  set :redis_conf, {
+    host: '127.0.0.1',
+    port: 6379,
+    mail_queue: 'validation',
+    db: 8
+  }
+
+  # used in mail (since site host may change)
   set :site_host, 'http://localhost:4567'
-  set :bind, '0.0.0.0'
+
+  # no need to send mail in develop env
+  disable :mail_validation
+
+  enable :logging
   set :public_folder, File.dirname(__FILE__) + '/public'
   use Rack::Session::Pool, expire_after: 60 * 60 * 2, http_only: true
+end
+
+configure :production do
+  # enable mailing on user register
+  enable :mail_validation
+
+  set :site_host, 'http://115.28.62.31:4567'
 end

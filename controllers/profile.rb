@@ -1,20 +1,22 @@
 # ====== user profile actions ======
-# update own profile
 post '/user/profile' do
   unless user = User.find_by(id: session[:user_id])
     return json ret: "error", msg: "need_login"
   end
 
-  email_changed = user.info.email != params['email']
+  email_changed = user.email != params['email']
   if email_changed && !user.can_change_email
     return json ret: "error", msg: "cannot_change_email"
   end
 
   user.info.nickname = params['nickname']
-  user.info.email    = params['email']
   user.info.intro    = params['intro']
-  user.info.contact  = params['contact']
+  user.info.phone    = params['contact']
   user.info.city     = params['city']
+  user.info.qq       = params['qq']
+  user.info.wechat   = params['wechat']
+  user.info.email2   = params['email2']
+  user.email         = params['email']
 
   if user.info.valid?
     user.info.save
@@ -37,7 +39,6 @@ post '/user/profile' do
   end
 end
 
-# view one's own profile
 get '/user/profile' do
   redirect to('/login?r=' + CGI.escape('/user/profile')) unless login?
 
@@ -49,19 +50,6 @@ get '/user/profile' do
   @user_info = @user.info
   @is_newbie = (@user.status == User::NEWBIE)
   erb :own_profile
-end
-
-# view other's profile
-get '/u/:name' do |name|
-  unless @user = User.find_by(login_name: name)
-    raise not_found
-  end
-
-  @user_info = @user.info
-  @title     = @user_info.nickname
-  @followed  = @user.followers.exists?(session[:user_id]) if login?
-  @events    = @user.get_events  # top 20 by default
-  erb :user_profile
 end
 
 # upload avatar files (maybe any file)

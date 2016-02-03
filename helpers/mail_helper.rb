@@ -32,6 +32,9 @@ helpers do
     mail_log.from        = data[:from]
     mail_log.to          = data[:to]
     mail_log.receiver_id = data[:receiver_id]
+    mail_log.save if mail_log.valid?
+
+    data[:log_id] = mail_log.id
 
     @rc = get_redis_client
     begin

@@ -115,6 +115,12 @@ function new_tag() {
         tag_sug_click(name);
         $("#new-tag-modal").modal('hide');
       }
+      else if (data.msg == "wrong_status"){
+        alert("你的状态不可以创建标签");
+      }
+      else if (data.msg == "lack_of_args"){
+        alert("信息不完整");
+      }
       else {
         alert("创建失败");
       }

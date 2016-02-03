@@ -49,8 +49,8 @@ configure do
 
   # no need to send mail in develop env
   disable :mail_validation
+  disable :status_limit
 
-  enable :logging
   set :public_folder, File.dirname(__FILE__) + '/public'
   use Rack::Session::Pool, expire_after: 60 * 60 * 2, http_only: true
 end
@@ -58,6 +58,7 @@ end
 configure :production do
   # enable mailing on user register
   enable :mail_validation
+  disable :status_limit   # for now, just disable this
 
   set :site_host, 'http://115.28.62.31:4567'
 end

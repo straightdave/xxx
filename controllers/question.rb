@@ -1,5 +1,9 @@
 get '/ask' do
   redirect to('/login?r=' + CGI.escape('/ask')) unless login?
+
+  author = User.find_by(id: session[:user_id])
+  @can_ask = (author.status == User::NORMAL || !settings.status_limit)
+
   @title = "提问"
   @navbar_active = "qna"
   @breadcrumb = [
@@ -13,7 +17,7 @@ post '/ask' do
   return (json ret: "error", msg: "need_login") unless login?
 
   author = User.find_by(id: session[:user_id])
-  unless author.status == User::NORMAL
+  if author.status != User::NORMAL && settings.status_limit
     return json ret: "error", msg: "wrong_status"
   end
 
@@ -131,6 +135,10 @@ post '/q/:qid/answer' do |qid|
   if q = Question.find_by(id: qid)
     if q.author.id != session[:user_id]
       if author = User.find_by(id: session[:user_id])
+
+        if author.status != User::NORMAL && settings.status_limit
+          return json ret: "error", msg: "wrong_status"
+        end
 
         # same question answers once by same user
         unless q.answers.where(author: author).empty?

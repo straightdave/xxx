@@ -1,6 +1,6 @@
 helpers do
   def send_validation_mail(user)
-    if settings.mail_validation || true
+    if settings.mail_validation   # || true  # also send mail in dev env
 
       # body rendering
       body = erb :mail_tpl_confirm, :layout => false, :locals => {

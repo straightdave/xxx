@@ -33,6 +33,18 @@
 <!--<script src="//cdn.bootcss.com/ckeditor/4.5.4/ckeditor.js"></script>-->
 
 <div class="container">
+  <% unless @can_ask %>
+  <div class="alert alert-warning alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <p>
+      您的状态可能暂时不可以提问题哦，请先验证邮箱吧。
+    </p>
+  </div>
+  <% end %>
+
+
   <div class="row">
     <div class="col-md-8">
       <p>提问前好好想想，是不是真的不会？得到满意回答后也别忘记积累知识哦。</p>

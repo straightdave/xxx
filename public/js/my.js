@@ -425,11 +425,14 @@ function do_answer(qid) {
         if(data.msg == "self_answer") {
           alert("自己不可以回答自己提出的问题哟~");
         }
+        else if(data.msg == "wrong_status") {
+          alert("您的状态尚不可以回答问题，请检查是否已验证邮箱");
+        }
         else if(data.msg == "need_login") {
-          alert("请先登录。");
+          alert("请先登录");
         }
         else if(data.msg == "answer_twice") {
-          alert("同一问题不可以回答两次哟~您可以对之前的回答写些评论。");
+          alert("同一问题不可以回答两次哟~您可以对之前的回答写些评论");
         }
         else {
           alert(data.msg);

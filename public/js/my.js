@@ -94,23 +94,28 @@ function login() {
       "login_name" : uv,
       "password"   : pv
     };
-    $.post("/login", data, function(d, status) {
-      if (d.ret == "success") {
-        location.replace(location.href);
+    $.post("/login", data, function(data, status) {
+      if (data.ret == "success") {
+        if(data.msg == "admin") {
+          location.replace("/admin");
+        }
+        else {
+          location.replace(location.href);
+        }
       }
       else {
-        if(d.msg == "login_fail") {
+        if(data.msg == "login_fail") {
           set_error(u, 'name');
           set_error(p, 'pass');
           $("#err-msg").text("用户名密码不正确");
         }
-        else if(d.msg == "waiting") {
+        else if(data.msg == "waiting") {
           $("#err-msg").text("由于错误次数过多，请等待一会儿再试");
         }
-        else if(d.msg == "fail_5") {
+        else if(data.msg == "fail_5") {
           $("#err-msg").text("由于错误超过5次，请等待15秒再试");
         }
-        else if(d.msg == "fail_10") {
+        else if(data.msg == "fail_10") {
           $("#err-msg").text("由于错误超过10次，请等待30秒再试");
         }
         else {
@@ -154,8 +159,13 @@ function login2() {
     };
     $.post("/login", data, function (data, status) {
       if(data.ret == "success") {
-        var return_url = ret_page || "/";
-        location.replace(return_url);
+        if(data.msg == "admin") {
+          location.replace(data.msg);
+        }
+        else {
+          var return_url = ret_page || "/";
+          location.replace(return_url);
+        }
       }
       else {
         if(data.msg == "login_fail") {

@@ -1,6 +1,6 @@
 # === actions of insite messages ===
 get '/user/messages' do
-  redirect to('/login?r=' + CGI.escape('/user/messages')) unless login?
+  redirect to('/login?r=' + CGI.escape('/user/messages') + '&w=1') unless login?
   unless user = User.find_by(id: session[:user_id])
     return json ret: "error", msg: "user_error"
   end

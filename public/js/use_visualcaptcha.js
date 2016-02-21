@@ -24,15 +24,15 @@
         };
         $.post('/captcha/try', chosen_img_data, function (data, status) {
           if(data.ret == "success") {
-            do_register();
+            do_signup();
           }
           else {
-            $("#register-err-msg").text("验证码图像选择错误");
+            $("#signup-err-msg").text("验证码图像选择错误");
           }
         });
       }
       else {
-        $("#register-err-msg").text("请选取一个图像");
+        $("#signup-err-msg").text("请选取一个图像");
       }
     };
     $('#check-is-filled').on('click.app', _sayIsVisualCaptchaFilled);

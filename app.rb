@@ -69,7 +69,6 @@ end
 
 # avoid db connection deadlock issue
 after do
-  logger.info "=== shutdown the db connection!"
   ActiveRecord::Base.connection.close
   headers @headers
 end

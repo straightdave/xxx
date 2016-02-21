@@ -1,13 +1,20 @@
 require 'digest'
 
 class User < ActiveRecord::Base
-  # === status code ===
-  NEWBIE  = 0 # just sign up, not mail-validated yet; can only sign in and surf
-  NORMAL  = 1 # normal, can do almost everything now
-  SUSPEND = 2 # can sign in & surf, like newbie
-  BANNED  = 3 # even cannot sign in; profile/works still accessible
-  REMOVED = 4 # cannot sign in anymore; no profile/works accessible
-  GOD     = 9 # has admin privilege
+  module Status
+    NEWBIE  = 0 # just signed up, no mail-validated yet; can only sign in
+    NORMAL  = 1 # normal, can do almost everything now
+    SUSPEND = 2 # like newbie; NORMAL => SUSPEND if changed email, etc.
+    BANNED  = 3 # even cannot sign in; no profile/works accessible
+    REMOVED = 4 # removed from db sooner or later in db refine routine
+  end
+
+  module Role
+    USER       = 0
+    MODERATOR  = 1
+    ADMIN      = 8
+    SUPERADMIN = 9
+  end
 
   # === associations ===
   has_one :info, class_name: "UserInfo"
@@ -60,9 +67,7 @@ class User < ActiveRecord::Base
             length: { in: 3 .. 15 },
             uniqueness: true
 
-  validates :email,
-            presence: true,
-            uniqueness: true
+  validates :email, presence: true, uniqueness: true
 
   # === helpers ===
   def url
@@ -86,9 +91,9 @@ class User < ActiveRecord::Base
 
   def self.validate(id, code)
     if (user = User.find_by(id: id)) &&
-       (user.status == User::NEWBIE) &&
+       (user.status == Status::NEWBIE) &&
        (code == user.vcode)
-      user.status = User::NORMAL
+      user.status = Status::NORMAL
       if user.valid?
         user.save
         return true
@@ -189,9 +194,13 @@ class User < ActiveRecord::Base
                .offset(num_per_slice * part_no)
   end
 
+  def admin?
+    self.role == Role::ADMIN || self.role == Role::SUPERADMIN
+  end
+
   # privileges check
   def can_change_email
-    self.status == User::NEWBIE || self.status == User::NORMAL
+    self.status == Status::NEWBIE || self.status == Status::NORMAL
   end
 
   private

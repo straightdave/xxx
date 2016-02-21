@@ -23,7 +23,7 @@ post '/user/profile' do
     user.record_event(:update_profile, user)
 
     if email_changed && user.can_change_email
-      user.status = User::NEWBIE
+      user.status = User::Status::NEWBIE
       user.gen_and_set_new_vcode
       if user.valid?
         user.save
@@ -40,7 +40,7 @@ post '/user/profile' do
 end
 
 get '/user/profile' do
-  redirect to('/login?r=' + CGI.escape('/user/profile')) unless login?
+  redirect to('/login?r=' + CGI.escape('/user/profile') + '&w=1') unless login?
 
   unless @user = User.find_by(id: session[:user_id])
     return (json ret: "error", msg: "account_error")
@@ -48,7 +48,7 @@ get '/user/profile' do
 
   @title = "我的资料"
   @user_info = @user.info
-  @is_newbie = (@user.status == User::NEWBIE)
+  @is_newbie = (@user.status == User::Status::NEWBIE)
   erb :own_profile
 end
 

@@ -1,5 +1,5 @@
 get '/ask' do
-  redirect to('/login?r=' + CGI.escape('/ask')) unless login?
+  redirect to('/login?r=' + CGI.escape('/ask') + '&w=1') unless login?
 
   author = User.find_by(id: session[:user_id])
   @can_ask = (author.status == User::NORMAL || !settings.status_limit)

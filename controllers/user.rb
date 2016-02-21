@@ -1,8 +1,8 @@
 # ===== user registering =====
-get '/user/register' do
+get '/user/signup' do
   log_out if login?
   @title = "用户注册"
-  erb :user_register
+  erb :user_signup
 end
 
 post '/user/check_name/:login_name' do |login_name|
@@ -21,7 +21,7 @@ post '/user/check_email/:email' do |email|
   end
 end
 
-post '/user/register' do
+post '/user/signup' do
   login_name = params['login_name']
   email      = params['email']
   password   = params['password']
@@ -41,13 +41,11 @@ post '/user/register' do
 
   new_user = User.new
   new_user.login_name = login_name
-  new_user.status     = User::NEWBIE
+  new_user.status     = User::Status::NEWBIE
   new_user.email      = email
   new_user.set_password(password)
   new_user.gen_and_set_new_vcode
-  new_user.build_info(
-    nickname: (nickname.empty? ? login_name : nickname)
-  )
+  new_user.build_info( nickname: (nickname.empty? ? login_name : nickname) )
 
   if new_user.valid?
     new_user.save
@@ -95,6 +93,14 @@ get '/login' do
   @name        = params['u']
   @title       = "用户登录"
   @return_page = params['r']
+  words_flag   = params['w'].to_i
+
+  @words_on_login_page = case words_flag
+  when 1 then "请先登录"
+  when 2 then "请登录管理员"
+  else nil
+  end
+
   erb :login
 end
 
@@ -135,7 +141,12 @@ post '/login' do
     session[:try_count]      = nil
     session[:delay_start]    = nil
     session[:delay_duration] = nil
-    json ret: "success"
+
+    if user.admin?
+      json ret: "success", msg: "admin"
+    else
+      json ret: "success"
+    end
   else
     json ret: "error", msg: "login_fail"
   end

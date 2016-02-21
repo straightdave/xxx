@@ -41,6 +41,10 @@ get '/u/:name' do |name|
     raise not_found
   end
 
+  if @user.role == User::Role::ADMIN
+    redirect to("/")
+  end
+
   @user_info = @user.info
   @title     = @user_info.nickname
   @followed  = @user.followers.exists?(session[:user_id]) if login?
@@ -49,15 +53,14 @@ get '/u/:name' do |name|
 end
 
 get '/user/home' do
-  redirect to('/login?r=' + CGI.escape('/user/home')) unless login?
+  redirect to('/login?r=' + CGI.escape('/user/home') + '&w=1') unless login?
+
   unless @user = User.find_by(id: session[:user_id])
     raise not_found
   end
 
   @title = "用户首页"
   @user_info = @user.info
-
-  # events of all followed
   @events = Event.event_of_users(@user.followee_ids)
   erb :user_home
 end

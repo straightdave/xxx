@@ -65,5 +65,4 @@ ActiveRecord::Base.default_timezone = :local
 # avoid db connection deadlock issue
 after do
   ActiveRecord::Base.connection.close
-  headers @headers
 end

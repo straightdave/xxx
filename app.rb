@@ -62,14 +62,8 @@ ActiveRecord::Base.establish_connection(
 # let sinatra use correct timezone to save data
 ActiveRecord::Base.default_timezone = :local
 
-before do
-  @session = VisualCaptchaCN::Session.new session
-  @headers = { 'Access-Control-Allow-Origin' => '*' }
-end
-
 # avoid db connection deadlock issue
 after do
-  logger.info "=== shutdown the db connection!"
   ActiveRecord::Base.connection.close
   headers @headers
 end

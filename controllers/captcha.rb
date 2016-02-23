@@ -1,3 +1,8 @@
+before '/captcha/*' do
+  @session = VisualCaptchaCN::Session.new session
+  @headers = { 'Access-Control-Allow-Origin' => '*' }
+end
+
 get '/captcha/start/:how_many' do |how_many|
   captcha = VisualCaptchaCN::Captcha.new @session
   captcha.generate how_many

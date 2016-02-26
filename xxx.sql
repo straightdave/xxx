@@ -27,7 +27,6 @@ CREATE TABLE `answers` (
   `question_id` int(10) unsigned NOT NULL,
   `user_id` int(10) unsigned NOT NULL,
   `content` text,
-  `votes` smallint(6) DEFAULT '0',
   `status` tinyint(3) unsigned DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
@@ -82,8 +81,7 @@ CREATE TABLE `comments` (
   `user_id` int(10) unsigned NOT NULL COMMENT 'commented by user',
   `commentable_id` int(10) unsigned NOT NULL,
   `commentable_type` varchar(50) NOT NULL,
-  `content` text,
-  `votes` smallint(6) DEFAULT '0',
+  `content` text NOT NULL,
   `status` tinyint(3) unsigned DEFAULT '0' COMMENT '0-normal;1-deleted;',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
@@ -106,7 +104,7 @@ CREATE TABLE `events` (
   `target_id` int(10) unsigned NOT NULL,
   `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -127,6 +125,24 @@ CREATE TABLE `expertises` (
   `expert_score` smallint(6) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `feedbacks`
+--
+
+DROP TABLE IF EXISTS `feedbacks`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `feedbacks` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `title` varchar(50) NOT NULL,
+  `description` text NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -198,7 +214,7 @@ CREATE TABLE `mail_logs` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -237,7 +253,7 @@ CREATE TABLE `messages` (
   `isread` tinyint(1) DEFAULT '0',
   `isdelete` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -249,11 +265,8 @@ DROP TABLE IF EXISTS `organizations`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `organizations` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `description` text,
-  `size` varchar(50) DEFAULT NULL,
-  `founded_at` varchar(10) DEFAULT '2015',
-  `location` varchar(255) DEFAULT NULL,
+  `name` varchar(50) NOT NULL,
+  `type` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '0-school;1-lawfirm',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -272,7 +285,7 @@ CREATE TABLE `question_tag` (
   `question_id` int(10) unsigned NOT NULL,
   `tag_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -287,9 +300,8 @@ CREATE TABLE `questions` (
   `title` varchar(255) DEFAULT NULL,
   `user_id` int(10) unsigned DEFAULT NULL,
   `content` text,
-  `views` int(10) unsigned DEFAULT '0',
+  `views` mediumint(8) unsigned DEFAULT '0',
   `accepted_answer_id` int(10) unsigned DEFAULT '0',
-  `votes` smallint(6) DEFAULT '0',
   `last_doer_id` int(10) unsigned DEFAULT '0',
   `last_do_type` tinyint(3) unsigned DEFAULT '0' COMMENT '0-ask;1-answer;2-comment',
   `last_do_at` datetime DEFAULT NULL,
@@ -299,6 +311,25 @@ CREATE TABLE `questions` (
   PRIMARY KEY (`id`),
   FULLTEXT KEY `ft_index` (`title`,`content`) /*!50100 WITH PARSER `ngram` */ ,
   FULLTEXT KEY `ft_index_title` (`title`) /*!50100 WITH PARSER `ngram` */ 
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `reports`
+--
+
+DROP TABLE IF EXISTS `reports`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `reports` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL COMMENT 'reporter id',
+  `reportable_id` int(10) unsigned NOT NULL,
+  `reportable_type` varchar(50) NOT NULL,
+  `content` text NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -321,7 +352,7 @@ CREATE TABLE `tags` (
   UNIQUE KEY `name` (`name`),
   FULLTEXT KEY `ft_index_tags` (`name`,`desc`) /*!50100 WITH PARSER `ngram` */ ,
   FULLTEXT KEY `ft_index_tags_name` (`name`) /*!50100 WITH PARSER `ngram` */ 
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -348,7 +379,7 @@ CREATE TABLE `user_info` (
   PRIMARY KEY (`id`),
   KEY `fk_uid` (`user_id`),
   CONSTRAINT `user_info_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -363,6 +394,21 @@ CREATE TABLE `user_medal` (
   `user_id` int(10) unsigned NOT NULL,
   `medal_id` int(10) unsigned NOT NULL,
   `created_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `user_organization`
+--
+
+DROP TABLE IF EXISTS `user_organization`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user_organization` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `organization_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -383,13 +429,12 @@ CREATE TABLE `users` (
   `salt` varchar(255) NOT NULL,
   `status` tinyint(3) unsigned DEFAULT '0',
   `reputation` mediumint(8) unsigned DEFAULT '0',
-  `organization_id` int(10) unsigned DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uni_email` (`email`) USING HASH,
   UNIQUE KEY `uni_login_name` (`login_name`) USING HASH
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -408,7 +453,7 @@ CREATE TABLE `votes` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -423,7 +468,7 @@ CREATE TABLE `watching_list` (
   `user_id` int(10) unsigned NOT NULL,
   `question_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -435,4 +480,4 @@ CREATE TABLE `watching_list` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-02-03 10:02:57
+-- Dump completed on 2016-02-27  0:55:42

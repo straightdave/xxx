@@ -38,11 +38,20 @@ class User < ActiveRecord::Base
                           foreign_key: "user_id",
                           association_foreign_key: "question_id"
 
+  # user <-> organization
+  has_and_belongs_to_many :organization, -> { uniq },
+                          join_table: "user_organization",
+                          class_name: "Organization",
+                          foreign_key: "user_id",
+                          association_foreign_key: "organization_id"
+
   # user events
   has_many :events
 
   # relations between users and tags, so-called 'expertises'
   has_many :expertises
+
+  has_many :reports, as: :reportable
 
   # medals user earned
   has_and_belongs_to_many :medals, -> { uniq },

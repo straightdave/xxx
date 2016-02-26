@@ -1,0 +1,26 @@
+<script src="/vendors/ckeditor/ckeditor.js"></script>
+<!--<script src="//cdn.bootcss.com/ckeditor/4.5.4/ckeditor.js"></script>-->
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-9">
+      <p>欢迎反馈</p>
+
+      <div class="form-group has-feedback">
+        <input type="text" class="form-control" name="title"
+               placeholder="言简意赅的标题" />
+      </div>
+
+      <div class="form-group">
+        <textarea id="editor_fb" name="editor_fb"></textarea>
+        <script>
+          CKEDITOR.replace('editor_fb');
+        </script>
+      </div>
+
+      <button class="btn btn-primary" onclick="javascript:do_feedback();">提交</button>
+      <div id="err_msg_fb" class="text-danger"></div>
+    </div>
+
+  </div>
+</div>

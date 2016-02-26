@@ -20,7 +20,7 @@ post %r{/([q|a|c])/(\d+)/(devote|vote)} do |target_type, id, behavior|
   return (json ret: "error", msg: "already_voted") if already_voted?(obj)
 
   if behavior == "vote"
-    if user.info.reputation > 15
+    if user.reputation > 15
       vote = obj.votes.build(voter: user)
       vote.points = 1
       obj.get_voted
@@ -28,7 +28,7 @@ post %r{/([q|a|c])/(\d+)/(devote|vote)} do |target_type, id, behavior|
       return json ret: "error", msg: "repu_cannot_vote"
     end
   elsif behavior == "devote"
-    if user.info.reputation > 125
+    if user.reputation > 125
       vote = obj.votes.build(voter: user)
       vote.points = -1
       obj.get_devoted

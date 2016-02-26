@@ -289,7 +289,7 @@ function cancel_comment_answer(answer_id) {
 function do_comment(qid) {
   var text = $("textarea#comment_area").val();
   if(text.length < 10) {
-    alert("no less than 10 char");
+    alert("起码要多于10个字吧");
   }
   else {
     var data = { "content" : text };
@@ -302,7 +302,7 @@ function do_comment(qid) {
           alert("请先登录");
         }
         else if (data.msg == "repu_cannot_comment") {
-          alert("声誉超过50才可以评论呢");
+          alert("声誉超过10才可以评论呢");
         }
       }
     });
@@ -312,7 +312,7 @@ function do_comment(qid) {
 function do_comment_answer(aid) {
   var text = $("textarea#comment_area_answer_" + aid).val();
   if(text.length < 10) {
-    alert("no less than 10 char");
+    alert("起码要多于10个字吧");
   }
   else {
     var data = { "content" : text };
@@ -455,13 +455,13 @@ function do_avatar_change() {
 /* update user's profile */
 function do_update() {
   var nickname = $("input[name='nickname']").val();
-  var intro = $("input[name='intro']").val();
-  var phone = $("input[name='phone']").val();
-  var city = $("input[name='city']").val();
-  var qq = $("input[name='qq']").val();
-  var wechat = $("input[name='wechat']").val();
-  var email2 = $("input[name='email2']").val();
-  var email = $("input[name='email']").val();
+  var intro    = $("input[name='intro']").val();
+  var phone    = $("input[name='phone']").val();
+  var city     = $("input[name='city']").val();
+  var qq       = $("input[name='qq']").val();
+  var wechat   = $("input[name='wechat']").val();
+  var email2   = $("input[name='email2']").val();
+  var email    = $("input[name='email']").val();
 
   var data = {
     "nickname" : nickname,
@@ -560,4 +560,21 @@ function resend_validation() {
 /* job posting */
 function go_job(id) {
   location.replace('/job/' + id);
+}
+
+/* feedback */
+function do_feedback() {
+  var title = $("input[name='title']").val();
+  var desc = CKEDITOR.instances.editor_fb.getData();
+
+  $.post('/feedback', { "title" : title, "desc" : desc }, function (data, status) {
+    if (data.ret == "success") {
+      alert("提交成功");
+      location.replace('/');
+    }
+    else {
+      var err_msg = data.msg;
+      $("div#err_msg_fb").html(err_msg);
+    }
+  });
 }

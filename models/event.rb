@@ -31,18 +31,18 @@ class Event < ActiveRecord::Base
 
   def event_type_zh
     case self.event_type
-    when 1 then "提出"
-    when 2 then "回答"
-    when 3 then "评论"
-    when 4 then "发表"
-    when 5 then "投票给"
+    when 1 then "提出了"
+    when 2 then "回答了"
+    when 3 then "评论了"
+    when 4 then "发表了"
+    when 5 then "顶了"
     when 6 then "踩了"
-    when 7 then "收藏"
-    when 8 then "取消收藏"
-    when 9 then "关注"
-    when 10 then "取关"
-    when 11 then "修改"
-    when 12 then "采纳"
+    when 7 then "收藏了"
+    when 8 then "取消收藏了"
+    when 9 then "关注了"
+    when 10 then "取关了"
+    when 11 then "修改了"
+    when 12 then "采纳了"
     else ""
     end
   end

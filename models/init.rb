@@ -1,5 +1,6 @@
 # mixins should go first
 require_relative "votability"
+require_relative "reportability"
 
 # normal models
 require_relative "question"

@@ -9,6 +9,9 @@ class User < ActiveRecord::Base
   REMOVED = 4 # cannot sign in anymore; no profile/works accessible
   GOD     = 9 # has admin privilege
 
+  # === mixins ===
+  include Reportability
+  
   # === associations ===
   has_one :info, class_name: "UserInfo"
   has_many :inbox_messages, class_name: "Message", foreign_key: "to_uid"

@@ -1,3 +1,28 @@
+<!-- hidden modal for reporting -->
+<div class="modal fade" id="report-modal">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">投诉</h4>
+      </div>
+      <div class="modal-body">
+        <p>
+          <textarea name="reason" style="width: 100%;" placeholder="投诉理由"></textarea>
+        </p>
+        <div id="report-err-msg" class="text-danger"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary btn-sm"
+        onclick="javascript:new_report('q',<%= @q.id %>);">保存</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
 <script src="/vendors/ckeditor/ckeditor.js"></script>
 <!-- <script src="//cdn.bootcss.com/ckeditor/4.5.4/ckeditor.js"></script> -->
 <div class="container">
@@ -5,6 +30,17 @@
 
     <div class="col-md-9">
       <h3 class="question-title"><%= @q.title %></h3>
+      <div class="question-reporting">
+        <% if @q.is_reported? %>
+        <p class="text-warning">
+          <span class="glyphicon glyphicon-alert"></span>
+          &nbsp;被投诉中
+        </p>
+        <% else %>
+        <button class="btn btn-default btn-sm" data-toggle="modal"
+        data-target="#report-modal">投诉</button>
+        <% end %>
+      </div>
 
       <div class="row">
         <div class="col-md-1">

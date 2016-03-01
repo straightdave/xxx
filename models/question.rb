@@ -42,8 +42,9 @@ class Question < ActiveRecord::Base
   validates :title, length: { maximum: 100, too_long: "标题请勿超过100字符" }
   validates :content, length: { maximum: 500, too_long: "问题请勿超过500字符" }
 
-  # == add mixins as a votable obj ==
+  # == add mixins ==
   include Votability
+  include Reportability
 
   # == helpers ==
   def url

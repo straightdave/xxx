@@ -1,10 +1,43 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="profile-background">
-    </div>
+<!-- hidden modal for reporting -->
+<div class="modal fade" id="report-modal">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">投诉</h4>
+      </div>
+      <div class="modal-body">
+        <p>
+          <textarea name="reason" style="width: 100%;" placeholder="投诉理由"></textarea>
+        </p>
+        <div id="report-err-msg" class="text-danger"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary btn-sm"
+        onclick="javascript:new_report('u',<%= @user.id %>);">保存</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div class="profile-background">
+  <div class="report">
+    <% if @user.is_reported? %>
+    <p class="text-warning">
+      <span class="glyphicon glyphicon-alert"></span>
+      &nbsp;被投诉中
+    </p>
+    <% elsif @user.id != session[:user_id] %>
+    <button class="btn btn-default btn-sm" data-toggle="modal"
+    data-target="#report-modal">投诉</button>
+    <% end %>
   </div>
+</div>
 
-
+<div class="container">
   <div class="row">
     <div class="col-md-3">
       <div class="profile-pane">
@@ -53,7 +86,6 @@
             &nbsp; <%= @user_info.wechat %>
           </p>
           <% end %>
-
 
           <p>
             <span id="whensignup">
@@ -125,7 +157,6 @@
           </div>
         </div>
 
-
         <!-- lastest actions -->
         <div class="eventbox-list">
           <% if @events && @events.size > 0 %>
@@ -136,13 +167,15 @@
                 <img alt="<%= @user_info.nickname %>"
                      src="<%= @user_info.avatar || "/avatar.jpg"%>">
               </div>
-              <div class="event-content">
 
-                <h5>
+              <div class="event-author">
+                <h4>
                   <%= @user_info.nickname %>
                   <small>@<%= @user.login_name %></small>
-                </h5>
+                </h4>
+              </div>
 
+              <div class="event-content">
                 <p>
                   在<%= time_ago_in_words_zh(event.created_at) %>
                   <%= event.event_type_zh %>
@@ -151,24 +184,22 @@
                     <%= event.target_title %>
                   </a>
                 </p>
+
                 <% if event.target_quote %>
                 <blockquote>
                   <%= event.target_quote %>
                 </blockquote>
                 <% end %>
-
               </div>
+
               <div class="clear"></div>
-
             </div>
-
             <% end %>
+
           <% else %>
             暂无动态
           <% end %>
         </div>
-
-
 
       </div> <!-- end of profile-mid-pane -->
     </div> <!-- end of col-6 in the mid -->
@@ -189,14 +220,10 @@
       </div>
 
       <hr>
-
       <div class="ad-col-3">
         <%= get_ad %>
       </div>
-
-    </div>
-
-
+    </div> <!-- end of side column -->
 
   </div> <!-- end of the second row: main content -->
 </div>

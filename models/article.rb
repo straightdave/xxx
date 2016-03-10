@@ -2,6 +2,7 @@ class Article < ActiveRecord::Base
   # === associations ===
   has_many :comments, as: :commentable
   has_many :votes, as: :votable
+  has_many :reports, as: :reportable
 
   # user who asked this question
   # fk 'user_id' is in this model,so use 'belongs_to'

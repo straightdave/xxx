@@ -1,5 +1,6 @@
 # mixins should go first
 require_relative "votability"
+require_relative "reportability"
 
 # normal models
 require_relative "question"
@@ -10,6 +11,7 @@ require_relative "comment"
 require_relative "answer"
 require_relative "tag"
 require_relative "vote"
+require_relative "report"
 require_relative "message"
 require_relative "article"
 require_relative "event"
@@ -17,3 +19,4 @@ require_relative "job"
 require_relative "maillog"
 require_relative "organization"
 require_relative "medal"
+require_relative "feedback"

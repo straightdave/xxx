@@ -14,7 +14,7 @@ post %r{/([q|a|w])/(\d+)/comment} do |target, id|
     return json ret: "error", msg: "user_not_found"
   end
 
-  if author.info.reputation < 50
+  if author.reputation < 10
     return json ret: "error", msg: "repu_cannot_comment"
   end
 

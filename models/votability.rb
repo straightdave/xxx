@@ -1,4 +1,3 @@
-# provide mixins for all votable objects
 module Votability
   def scores
     return @t_score unless @t_score.nil?

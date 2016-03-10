@@ -1,10 +1,7 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="profile-background">
-    </div>
-  </div>
+<div class="profile-background">
+</div>
 
-
+<div class="container">
   <div class="row">
     <div class="col-md-3">
       <div class="profile-pane">
@@ -117,13 +114,15 @@
                        src="<%= event.user.info.avatar || "/avatar.jpg"%>">
                 </a>
               </div>
-              <div class="event-content">
 
-                <h5>
+              <div class="event-author">
+                <h4>
                   <%= event.user.info.nickname %>
                   <small>@<%= event.user.login_name %></small>
-                </h5>
+                </h4>
+              </div>
 
+              <div class="event-content">
                 <p>
                   在<%= time_ago_in_words_zh(event.created_at) %>
                   <%= event.event_type_zh %>
@@ -137,10 +136,9 @@
                   <%= event.target_quote %>
                 </blockquote>
                 <% end %>
-
               </div>
-              <div class="clear"></div>
 
+              <div class="clear"></div>
             </div>
 
             <% end %>

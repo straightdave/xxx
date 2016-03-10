@@ -14,6 +14,11 @@ get '/help' do
   erb :help
 end
 
+get '/career' do
+  @title = "本站的工作机会"
+  erb :career
+end
+
 
 # TODO: delete this
 get '/show_session' do

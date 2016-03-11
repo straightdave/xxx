@@ -11,4 +11,13 @@ class Job < ActiveRecord::Base
                           foreign_key: "job_id",
                           association_foreign_key: "tag_id"
 
+  # == helpers ==
+
+  # TODO:
+  # get job ads with more real process
+  #
+  def self.get_jobs(num = 4)
+    Job.order(created_at: :desc).take(num)
+  end
+
 end

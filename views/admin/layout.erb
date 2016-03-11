@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><% if @title %><%= @title %> | 韩非子说<% else %>韩非子说<% end %></title>
-    <link rel="icon" href="/favicon.ico">
-    <link rel="shortcut icon" href="/favicon.ico"/>
-    <link rel="bookmark" href="/favicon.ico"/>
-    <link href="/css/bootstrap-with-theme.min.css" rel="stylesheet">
-    <link href="/css/my.css" rel="stylesheet">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>韩非子说 控制台</title>
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/css/bootstrap-with-theme.min.css" />
+    <link rel="stylesheet" href="/css/my.css" />
     <%= yield_content :extra_css_tags %>
     <!--[if lt IE 9]>
       <script src="/js/html5shiv.min.js"></script>
@@ -35,7 +33,7 @@
             <div class="head-logo-box">
               <a class="navbar-brand" href="/admin">
                 <img alt="韩非子说" src="/little-logo.png" class="logo" />
-                <span class="beta">Beta</span>
+                <span class="beta">Alpha</span>
               </a>
             </div>
           </div>
@@ -97,14 +95,7 @@
                       <% end %>
                     </a>
                   </li>
-                  <li>
-                    <a href="/admin/profile">
-                      <span class="glyphicon glyphicon-user"
-                            aria-hidden="true">
-                      </span>
-                      &nbsp;更新资料
-                    </a>
-                  </li>
+                  
                   <li role="separator" class="divider"></li>
                   <li>
                     <a href="#" onclick="javascript:logout();">
@@ -155,24 +146,7 @@
         </div> <!-- modal dialog -->
       </div> <!-- /.modal -->
 
-      <!-- breadcumb -->
-      <% if @breadcrumb %>
-      <div class="container">
-        <div class="bread-pane">
-          <ol class="breadcrumb">
-            <% @breadcrumb.each do |b| %>
-            <li <% if b[:active] %>class="active"<% end %> >
-              <% if b[:url].nil? %>
-                <%= b[:name] %>
-              <% else %>
-                <a href="<%= b[:url] %>"><%= b[:name] %></a>
-              <% end %>
-            </li>
-            <% end %>
-          </ol>
-        </div>
-      </div>
-      <% end %>
+      <%= render_breadcrumb %>
 
       <!-- main content -->
       <%= yield %>
@@ -211,54 +185,7 @@
             </p>
           </div>
 
-
-          <div class="col-md-2">
-            <h5>网站相关</h5>
-            <ul class="site-related">
-              <li>
-                <a href="/about">关于我们</a>
-              </li>
-              <li>
-                <a href="/terms">服务条款</a>
-              </li>
-              <li>
-                <a href="/tour">使用指南</a>
-              </li>
-              <li>
-                <a href="/reputation">声望体系</a>
-              </li>
-              <li>
-                <a href="/subscribe">订阅每日精选</a>
-              </li>
-            </ul>
-          </div>
-
-          <div class="col-md-2">
-            <h5>联系我们</h5>
-            <ul class="site-related">
-              <li>
-                <a href="mailto:bug_report@hanfeizishuo.com">问题反馈</a>
-              </li>
-              <li>
-                <a href="mailto:business@hanfeizishuo.com">企业合作</a>
-              </li>
-              <li>
-                <a href="/career">本站工作机会</a>
-              </li>
-              <li>
-                <a href="http://">微博账号</a>
-              </li>
-            </ul>
-          </div>
-
-          <div class="col-md-2">
-            <h5>微信公众号<small>（假）</small></h5>
-            <img class="cli-pane" src="/cli.png" alt="微信公众号" />
-          </div>
-
         </div>
-
-
       </div>
     </footer>
 

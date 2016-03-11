@@ -1,0 +1,17 @@
+<% if @breadcrumb %>
+<div class="container">
+  <div class="bread-pane">
+    <ol class="breadcrumb">
+      <% @breadcrumb.each do |b| %>
+      <li <% if b[:active] %>class="active"<% end %> >
+        <% if b[:url].nil? %>
+          <%= b[:name] %>
+        <% else %>
+          <a href="<%= b[:url] %>"><%= b[:name] %></a>
+        <% end %>
+      </li>
+      <% end %>
+    </ol>
+  </div>
+</div>
+<% end %>

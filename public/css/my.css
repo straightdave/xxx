@@ -334,6 +334,7 @@ div.authorbox {
 img.avatar-sm {
   width: 50px;
   height: 50px;
+  border-radius: 50%;
 }
 img.avatar-xs {
   width: 20px;
@@ -480,6 +481,9 @@ form.input-group button {
   font-size: 18px;
 }
 
+div.search-page-header {
+  margin-left: 60px;
+}
 div.search-page-header img {
   width:140px;
 }
@@ -489,6 +493,10 @@ div.search-page-header span.beta-search-page {
   top: -20px;
   color: #028DDE;
   font-weight: bold;
+}
+div.search-page-header span.title-search-page {
+  position: relative;
+  top: 10px;
 }
 
 
@@ -598,7 +606,7 @@ div.avatar-img img {
   align-self: stretch;
 }
 
-/* user register page */
+/* user signup page */
 img.signup-logo {
   width: 200px;
 }

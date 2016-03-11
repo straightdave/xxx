@@ -31,7 +31,7 @@ $().ready(function () {
   });
 });
 
-function do_register() {
+function do_signup() {
   var is_valid = true;
   var err_msg = "";
   var name_input = $("input[id='name']");
@@ -82,17 +82,17 @@ function do_register() {
       "nickname"   : nickname,
       "email"      : email
     };
-    $.post("/user/register", data, function (data, status) {
+    $.post("/user/signup", data, function (data, status) {
       if(data.ret == "error"){
         switch(data.msg) {
           case "name_exist":
-            $("#register-err-msg").text("");
-            $("#register-err-msg").append(
+            $("#signup-err-msg").text("");
+            $("#signup-err-msg").append(
               "该登录名已被使用，可尝试 <a href='/login?u=" + name + "'>登录</a>");
             break;
           case "email_exist":
-            $("#register-err-msg").text("");
-            $("#register-err-msg").append("该邮箱已被使用");
+            $("#signup-err-msg").text("");
+            $("#signup-err-msg").append("该邮箱已被使用");
             break;
           case "model_invalid":
             alert("用户信息有误，保存失败");
@@ -107,6 +107,6 @@ function do_register() {
     });
   }
   else {
-    $("#register-err-msg").text(err_msg);
+    $("#signup-err-msg").text(err_msg);
   }
 }

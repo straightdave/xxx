@@ -15,3 +15,5 @@ require_relative "search"
 require_relative "job"
 require_relative "report"
 require_relative "feedback"
+
+require_relative "admin/init"

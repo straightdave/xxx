@@ -1,12 +1,13 @@
 # handle users' feedbacks behaviors
 get '/feedback' do
-  redirect to('/login?r=' + CGI.escape('/feedback')) unless login?
+  login_filter
+
   @title = "用户反馈"
   erb :feedback
 end
 
 post '/feedback' do
-  return (json ret: "error", msg: "需要登录") unless login?
+  login_filter
 
   author = User.find_by(id: session[:user_id])
   return (json ret: "error", msg: "账户异常") unless author

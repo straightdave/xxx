@@ -1,8 +1,6 @@
 # ====== user profile actions ======
 post '/user/profile' do
-  unless user = User.find_by(id: session[:user_id])
-    return json ret: "error", msg: "need_login"
-  end
+  login_filter
 
   email_changed = user.email != params['email']
   if email_changed && !user.can_change_email
@@ -23,7 +21,7 @@ post '/user/profile' do
     user.record_event(:update_profile, user)
 
     if email_changed && user.can_change_email
-      user.status = User::NEWBIE
+      user.status = User::Status::NEWBIE
       user.gen_and_set_new_vcode
       if user.valid?
         user.save
@@ -40,22 +38,19 @@ post '/user/profile' do
 end
 
 get '/user/profile' do
-  redirect to('/login?r=' + CGI.escape('/user/profile')) unless login?
-
-  unless @user = User.find_by(id: session[:user_id])
-    return (json ret: "error", msg: "account_error")
-  end
+  login_filter
+  @user = User.find_by(id: session[:user_id])
 
   @title = "我的资料"
   @user_info = @user.info
-  @is_newbie = (@user.status == User::NEWBIE)
+  @is_newbie = (@user.status == User::Status::NEWBIE)
   erb :own_profile
 end
 
 # upload avatar files (maybe any file)
 post '/upload' do
-  return (json ret: "error", msg: "need_login") unless login?
-
+  login_filter
+  
   unless params['file'] &&
          (tmpfile = params[:file][:tempfile]) &&
          (name = params[:file][:filename])

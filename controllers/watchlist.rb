@@ -1,9 +1,7 @@
 # == watching list page ==
 get '/user/watchlist' do
-  redirect to('/login?r=' + CGI.escape('/user/watchlist')) unless login?
-  unless user = User.find_by(id: session[:user_id])
-    return json ret: "error", msg: "user_error"
-  end
+  login_filter
+  user = User.find_by(id: session[:user_id])
 
   @title = "我关注的"
   @watchlist = user.watched_questions

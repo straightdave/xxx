@@ -1,9 +1,7 @@
 # === actions of insite messages ===
 get '/user/messages' do
-  redirect to('/login?r=' + CGI.escape('/user/messages')) unless login?
-  unless user = User.find_by(id: session[:user_id])
-    return json ret: "error", msg: "user_error"
-  end
+  login_filter
+  user = User.find_by(id: session[:user_id])
 
   @title = "收件箱"
   @messages = user.inbox_messages
@@ -16,17 +14,16 @@ end
 
 # ajax invoke for number of messages
 post '/user/message_amount' do
-  unless user = User.find_by(id: session[:user_id])
-    return json ret: "error", msg: "need_login"
-  end
+  login_filter
+  user = User.find_by(id: session[:user_id])
+
   json ret: "success", msg: user.inbox_messages.length
 end
 
 # mark all as read
 post '/user/mark_messages' do
-  unless user = User.find_by(id: session[:user_id])
-    return json ret: "error", msg: "need_login"
-  end
+  login_filter
+  user = User.find_by(id: session[:user_id])
 
   begin
     user.inbox_messages.where(isread: false).each { |m| m.isread = 1; m.save }

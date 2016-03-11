@@ -53,10 +53,8 @@ end
 
 # ajax call: create a tag
 post '/tags/new' do
+  login_filter
   author = User.find_by(id: session[:user_id])
-  if author.status != User::NORMAL && settings.status_limit
-    return json ret: "error", msg: "wrong_status"
-  end
 
   if (name = params['name']) && (desc = params['desc'])
     new_tag = Tag.new

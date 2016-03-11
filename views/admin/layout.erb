@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>韩非子说 控制台</title>
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/css/bootstrap-with-theme.min.css" />
+    <link rel="stylesheet" href="/css/my.css" />
+    <%= yield_content :extra_css_tags %>
+    <!--[if lt IE 9]>
+      <script src="/js/html5shiv.min.js"></script>
+      <script src="/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper"><!-- wrapper to make footer sticky to bottom -->
+
+      <!-- navbar -->
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse"
+                    data-target="#navbar-collapse-1"
+                    aria-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <div class="head-logo-box">
+              <a class="navbar-brand" href="/admin">
+                <img alt="韩非子说" src="/little-logo.png" class="logo" />
+                <span class="beta">Alpha</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="collapse navbar-collapse" id="navbar-collapse-1">
+
+            <ul class="nav navbar-nav">
+              <li <% if @navbar_active == "admin_home" %>class="active"<% end %>>
+                <a href="/admin">
+                  <span class="glyphicon glyphicon-home" aria-hidden="true">
+                  </span>&nbsp;首页
+                </a>
+              </li>
+              <li <% if @navbar_active == "account_manage" %>class="active"<% end %>>
+                <a href="/admin/accounts">帐户管理</a>
+              </li>
+              <li <% if @navbar_active == "organization_manage" %>class="active"<% end %>>
+                <a href="/admin/organizations">组织管理</a>
+              </li>
+              <li <% if @navbar_active == "job_manage" %>class="active"<% end %>>
+                <a href="/admin/jobs">职位管理</a>
+              </li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+
+              <% unless login? %>
+              <li>
+                <a href="<%= "/login?r=#{ CGI.escape('/admin/home') }" %>">
+                  <span class="glyphicon glyphicon-log-in" aria-hidden="true">
+                  </span>
+                  &nbsp;登录
+                </a>
+              </li>
+              <% else %>
+              <!-- for logged on user -->
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle"
+                            data-toggle="dropdown"
+                            role="button"
+                            aria-haspopup="true"
+                            aria-expanded="false">
+                  <%= get_login_name %>
+                  <% if get_message_amount > 0 %>
+                  &nbsp; <span class="badge"><%= get_message_amount %></span>
+                  <% end %>
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a href="/admin/messages">
+                      <span class="glyphicon glyphicon-envelope"
+                            aria-hidden="true">
+                      </span>
+                      &nbsp;我的消息&nbsp;
+                      <% if get_message_amount > 0 %>
+                      <span class="badge"><%= get_message_amount %></span>
+                      <% end %>
+                    </a>
+                  </li>
+
+                  <li role="separator" class="divider"></li>
+                  <li>
+                    <a href="#" onclick="javascript:logout();">
+                      <span class="glyphicon glyphicon-log-out"
+                            aria-hidden="true">
+                      </span>&nbsp;退出登录
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <% end %>
+
+              <li>
+                <a href="/admin/help">帮助</a>
+              </li>
+
+            </ul>
+          </div> <!-- /.navbar-collapse -->
+        </div> <!-- /.container-fluid -->
+      </nav>
+
+
+      <%= render_breadcrumb %>
+
+      <!-- main content -->
+      <%= yield %>
+
+    </div><!-- end of wrapper -->
+
+
+    <!-- footer -->
+    <footer>
+      <div class="container-fluid">
+
+        <div class="row">
+
+          <div class="col-md-3">
+            <div class="footer-logo-box">
+              <img alt="韩非子说" src="/little-logo.png"/>
+              <span>Beta</span>
+            </div>
+            <p>
+              “非&trade;” 和 “韩非子说&trade;” 是注册商标<br />
+              &copy; 2016 立博拉（北京）网络技术有限公司<br />
+              当前版本 2016.01.30
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </footer>
+
+    <div class="fixed-tool">
+      <a href="#" class="back-to-top">回到顶部</a>
+    </div>
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="/js/my.js"></script>
+    <script src="/js/my-admin.js"></script>
+    <%= yield_content :extra_js_tags %>
+  </body>
+</html>

@@ -1,6 +1,7 @@
 # ajax call for vote/devote one stuff
 post %r{/([q|a|c])/(\d+)/(devote|vote)} do |target_type, id, behavior|
-  return (json ret: "error", msg: "need_login") unless login?
+  login_filter
+  user = User.find_by(id: session[:user_id])
 
   obj = case target_type
   when "a" then Answer.find_by(id: id)
@@ -8,10 +9,6 @@ post %r{/([q|a|c])/(\d+)/(devote|vote)} do |target_type, id, behavior|
   when "q" then Question.find_by(id: id)
   end
   return (json ret: "error", msg: "target_not_found") unless obj
-
-  unless user = User.find_by(id: session[:user_id])
-    return json ret: "error", msg: "user_not_found"
-  end
 
   if obj.author.id == user.id
     return json ret: "error", msg: "no_vote_self"

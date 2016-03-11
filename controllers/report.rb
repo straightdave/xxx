@@ -5,11 +5,8 @@
 
 # create a report via ajax
 post '/report' do
-  return (json ret: "error", msg: "需要登录") unless login?
-
+  login_filter
   reporter = User.find_by(id: session[:user_id])
-  return (json ret: "error", msg: "账户错误") unless reporter
-  return (json ret: "error", msg: "您的状态有误") if reporter.status != User::NORMAL
 
   # interface to front-end
   # target_type: string, name of reporting target type

@@ -1,5 +1,5 @@
 post %r{/([q|a|w])/(\d+)/comment} do |target, id|
-  return (json ret: "error", msg: "need_login") unless login?
+  login_filter
 
   obj = case target
   when 'q' then Question.find_by(id: id)

@@ -1,7 +1,6 @@
 post '/u/:name/follow' do |name|
-  unless user = User.find_by(id: session[:user_id])
-    return json ret: "error", msg: "need_login"
-  end
+  login_filter
+  user = User.find_by(id: session[:user_id])
 
   unless target = User.find_by(login_name: name)
     return json ret: "error", msg: "user_not_found"
@@ -18,9 +17,8 @@ post '/u/:name/follow' do |name|
 end
 
 post '/u/:name/unfollow' do |name|
-  unless user = User.find_by(id: session[:user_id])
-    return json ret: "error", msg: "need_login"
-  end
+  login_filter
+  user = User.find_by(id: session[:user_id])
 
   unless target = User.find_by(login_name: name)
     return json ret: "error", msg: "user_not_found"
@@ -41,10 +39,6 @@ get '/u/:name' do |name|
     raise not_found
   end
 
-  if @user.role == User::Role::ADMIN
-    redirect to("/")
-  end
-
   @user_info = @user.info
   @title     = @user_info.nickname
   @followed  = @user.followers.exists?(session[:user_id]) if login?
@@ -53,7 +47,7 @@ get '/u/:name' do |name|
 end
 
 get '/user/home' do
-  redirect to('/login?r=' + CGI.escape('/user/home') + '&w=1') unless login?
+  login_filter
 
   unless @user = User.find_by(id: session[:user_id])
     raise not_found

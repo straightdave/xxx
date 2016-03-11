@@ -28,7 +28,9 @@ configure do
   }
 
   enable :mail_validation
-  disable :status_limit
+  enable :status_no_limit
+  enable :roles_no_limit
+
   set :site_host, 'http://localhost:4567'
   set :public_folder, File.dirname(__FILE__) + '/public'
   use Rack::Session::Pool, expire_after: 60 * 60 * 2, http_only: true
@@ -47,8 +49,10 @@ configure :production do
   }
 
   enable :mail_validation
-  disable :status_limit
-  set :site_host, 'http://115.28.62.31:4567'
+  enable :status_no_limit
+  disable :roles_no_limit
+
+  set :site_host, 'http://101.200.192.223:4567'
 end
 
 ActiveRecord::Base.establish_connection(
@@ -62,7 +66,7 @@ ActiveRecord::Base.establish_connection(
 # let sinatra use correct timezone to save data
 ActiveRecord::Base.default_timezone = :local
 
-# avoid db connection deadlock issue
+# avoid db connection refused issue
 after do
   ActiveRecord::Base.connection.close
 end

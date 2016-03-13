@@ -96,12 +96,7 @@ function login() {
     };
     $.post("/login", data, function(data, status) {
       if (data.ret == "success") {
-        if(data.msg == "admin") {
-          location.replace("/admin");
-        }
-        else {
-          location.replace(location.href);
-        }
+        location.replace(location.href);
       }
       else {
         if(data.msg == "login_fail") {

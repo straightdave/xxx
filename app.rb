@@ -29,7 +29,7 @@ configure do
 
   enable :mail_validation
   enable :status_no_limit
-  enable :roles_no_limit
+  disable :roles_no_limit
 
   set :site_host, 'http://localhost:4567'
   set :public_folder, File.dirname(__FILE__) + '/public'

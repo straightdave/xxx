@@ -31,8 +31,8 @@
               <span class="icon-bar"></span>
             </button>
             <div class="head-logo-box">
-              <a class="navbar-brand" href="/admin">
-                <img alt="韩非子说" src="/little-logo.png" class="logo" />
+              <a class="navbar-brand" href="/">
+                <img alt="回到用户入口" src="/little-logo.png" class="logo" />
                 <span class="beta">Alpha</span>
               </a>
             </div>
@@ -64,11 +64,11 @@
               <li>
                 <a href="<%= "/login?r=#{ CGI.escape('/admin/home') }" %>">
                   <span class="glyphicon glyphicon-log-in" aria-hidden="true">
-                  </span>
-                  &nbsp;登录
+                  </span> &nbsp;登录
                 </a>
               </li>
               <% else %>
+
               <!-- for logged on user -->
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle"
@@ -84,9 +84,8 @@
                 </a>
                 <ul class="dropdown-menu">
                   <li>
-                    <a href="/admin/messages">
-                      <span class="glyphicon glyphicon-envelope"
-                            aria-hidden="true">
+                    <a href="/user/messages">
+                      <span class="glyphicon glyphicon-envelope" aria-hidden="true">
                       </span>
                       &nbsp;我的消息&nbsp;
                       <% if get_message_amount > 0 %>
@@ -98,9 +97,8 @@
                   <li role="separator" class="divider"></li>
                   <li>
                     <a href="#" onclick="javascript:logout();">
-                      <span class="glyphicon glyphicon-log-out"
-                            aria-hidden="true">
-                      </span>&nbsp;退出登录
+                      <span class="glyphicon glyphicon-log-out" aria-hidden="true">
+                      </span> &nbsp;退出登录
                     </a>
                   </li>
                 </ul>

@@ -28,25 +28,15 @@ helpers do
   # eneral login checking for each action
   def login_filter(attr = {})
     req_path   = request.path
-    req_method = request.request_method
 
     # 1. check login
     unless login?
-      if req_method == "GET"
-        redirect to('/login?r=' + CGI.escape(req_path) + '&w=1')
-      else
-        return json ret: "error", msg: "需要登录"
-      end
+      redirect to('/login?r=' + CGI.escape(req_path) + '&w=1')
     end
 
     # 2. check account
     unless user = User.find_by(id: session[:user_id])
-      if req_method == "GET"
-        # go to error page with reason
-        return "account error"
-      else
-        return json ret: "error", msg: "账户错误"
-      end
+      redirect to('/login?r=' + CGI.escape(req_path) + '&w=3')
     end
 
     # 3. check status filtering
@@ -56,30 +46,19 @@ helpers do
       status = [ User::Status::NORMAL ]
     end
 
-    if status.index(user.status).nil? || settings.status_no_limit
-      if req_method == "GET"
-        # go to error page with reason
-        return "state error"
-      else
-        return json ret: "error", msg: "您的状态有误"
-      end
+    if status.index(user.status).nil? && !settings.status_no_limit
+      redirect to('/login?r=' + CGI.escape(req_path) + '&w=4')
     end
-
 
     # 4. check roles filtering
     roles = attr[:required_roles]
     if roles.nil? || roles.empty?
       # add normal user as required role if not specified
-      roles = [ User::Roles::User ]
+      roles = [ User::Role::USER ]
     end
 
-    if roles.index(user.role).nil? || settings.roles_no_limit
-      if req_method == "GET"
-        # go to error page with reason
-        return "authority error"
-      else
-        return json ret: "error", msg: "您的权限有误"
-      end
+    if roles.index(user.role).nil? && !settings.roles_no_limit
+      redirect to('/login?r=' + CGI.escape(req_path) + '&w=4')
     end
   end
 

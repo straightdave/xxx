@@ -98,6 +98,8 @@ get '/login' do
   @words_on_login_page = case words_flag
   when 1 then "请先登录"
   when 2 then "请登录管理员"
+  when 3 then "好像账户有问题啊，请重新登录试试？"
+  when 4 then "权限和状态有问题啊，请重新登录试试？"
   else nil
   end
 
@@ -142,13 +144,9 @@ post '/login' do
     session[:delay_start]    = nil
     session[:delay_duration] = nil
 
-    if user.admin?
-      json ret: "success", msg: "admin"
-    else
-      json ret: "success"
-    end
+    json ret: "success"
   else
-    json ret: "error", msg: "login_fail"
+    json ret: "error"
   end
 end
 

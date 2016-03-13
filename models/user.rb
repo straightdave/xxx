@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
 
   # === mixins ===
   include Reportability
-  
+
   # === associations ===
   has_one :info, class_name: "UserInfo"
   has_many :inbox_messages, class_name: "Message", foreign_key: "to_uid"

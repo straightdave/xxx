@@ -1,67 +1,17 @@
 <div class="container">
-  <h3>账户管理</h3>
-  <% if @user.role == User::Role::SUPERADMIN %>
-    <p>
-      作为超级管理员，此处管理的是普通管理员的账户
-    </p>
 
-    <div id="account-search-box">
-      <form class="form-inline">
-        <div class="form-group">
-          <input type="text" class="form-control" name="account-name"
-          placeholder="用户的login_name">
-        </div>
-        <button class="btn btn-default" onclick="">提升为管理员</button>
-      </form>
-    </div>
-  <% elsif @user.role == User::Role::ADMIN %>
-    <div id="account-search-box">
-      <form class="form-inline">
-        <div class="form-group">
-          <input type="text" class="form-control" name="account-name"
-          placeholder="搜索login name">
-        </div>
-        <button type="submit" class="btn btn-default"
-        onclick="">搜索</button>
-
-      </form>
-    </div>
-  <% end %>
+  <div>
+    <input type="text" id="search-username" placeholder="用户name">
+    <button class="btn btn-default btn-sm" id="btn-search-user">搜索</button>
+  </div>
 
   <div class="row">
-    <div class="col-md-8">
-      <table class="table table-striped table-hover" id="account-management">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>login_name</th>
-            <th>status</th>
-            <th>role</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @accounts.each do |u| %>
-          <tr>
-            <td><%= u.id %></td>
-            <td><%= u.login_name %></td>
-            <td><%= u.status %></td>
-            <td><%= u.role %></td>
-            <td>
-              <a class="show-detail" href="javascript:void(0);"
-              name="<%= u.id %>">管理</a>
-            </td>
-          </tr>
-          <% end %>
-        </tbody>
-      </table>
+    <div class="col-md-9">
+
     </div>
 
-    <div class="col-md-4">
-      <div class="account-detail-pane">
-
-
-      </div>
+    <div class="col-md-3">
+      wahaha
     </div>
   </div>
 </div>

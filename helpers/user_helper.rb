@@ -42,7 +42,6 @@ helpers do
     # 3. check status filtering
     status = attr[:required_status]
     if status.nil? || status.empty?
-      # add NORMAL as default requirement if not specified
       status = [ User::Status::NORMAL ]
     end
 
@@ -53,7 +52,6 @@ helpers do
     # 4. check roles filtering
     roles = attr[:required_roles]
     if roles.nil? || roles.empty?
-      # add normal user as required role if not specified
       roles = [ User::Role::USER ]
     end
 

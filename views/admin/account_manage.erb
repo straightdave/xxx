@@ -1,17 +1,93 @@
 <div class="container">
 
-  <div>
-    <input type="text" id="search-username" placeholder="用户name">
-    <button class="btn btn-default btn-sm" id="btn-search-user">搜索</button>
+  <div class="row">
+    <div class="col-md-4">
+      <form class="form-inline">
+        <input type="text" class="form-control" name="qn"
+          <% if @user %> value="<%= @user.login_name %>" <% end %>
+        placeholder="用户login name" />
+
+        <button type="submit" class="btn btn-primary"> 搜索 </button>
+      </form>
+    </div>
   </div>
+
+  <hr />
 
   <div class="row">
     <div class="col-md-9">
 
+      <table class='table table-striped table-bordered table-condensed'>
+        <tbody>
+          <tr><td colspan='2' align='center'>=== 基本信息 ===</td></tr>
+          <% if @user %>
+          <tr>
+            <td>
+              <%= @user %>
+            </td>
+            <td>
+
+            </td>
+          </tr>
+          <% else %>
+          <tr><td colspan='2'>无</td></tr>
+          <% end %>
+
+        </tbody>
+      </table>
+
     </div>
 
     <div class="col-md-3">
-      wahaha
-    </div>
-  </div>
-</div>
+      <p>
+        <strong>Status</strong>
+        <ul>
+          <li> NEWBIE = 0 </li>
+          <li> NORMAL = 1 </li>
+          <li> SUSPEND = 2 </li>
+          <li> BANNED = 3 </li>
+          <li> REMOVED = 4 </li>
+        </ul>
+      </p>
+      <p>
+        <strong>Roles</strong>
+        <ul>
+          <li> USER = 0 </li>
+          <li> MODERATOR = 1 </li>
+          <li> ADMIN = 8 </li>
+          <li> SUPERADMIN = 9 </li>
+        </ul>
+      </p>
+      <hr />
+
+      <% if @user %>
+      <form>
+        <p>
+          <select class="form-control" name="user-status">
+            <option value="0">NEWBIE</option>
+            <option value="1">NORMAL</option>
+            <option value="2">SUSPEND</option>
+            <option value="3">BANNED</option>
+            <option value="4">REMOVED</option>
+          </select>
+        </p>
+
+        <p>
+          <select class="form-control" name="user-role">
+            <option value="0">USER</option>
+            <option value="1">MODERATOR</option>
+            <option value="8">ADMIN</option>
+            <option value="9">SUPER ADMIN</option>
+          </select>
+        </p>
+
+        <button type="submit" class="btn btn-primary btn-sm">
+          修改
+        </button>
+      </form>
+      <% end %>
+
+    </div><!-- end of col-3 -->
+  </div> <!-- end of second row -->
+
+</div><!-- end of container -->

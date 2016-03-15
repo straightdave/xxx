@@ -5,7 +5,7 @@ post %r{/([q|a|w])/(\d+)/comment} do |target, id|
   when 'q' then Question.find_by(id: id)
   when 'a' then Answer.find_by(id: id)
   when 'w' then Article.find_by(id: id)
-  else nil  # TODO: other commentable here, maybe articles, news ...
+  else nil
   end
 
   return (json ret: "error", msg: "target_not_found") unless obj

@@ -14,6 +14,7 @@
     <link rel="bookmark" href="/favicon.ico" />
     <link rel="stylesheet" href="/css/bootstrap-with-theme.min.css" />
     <link rel="stylesheet" href="/css/my.css" />
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
     <%= yield_content :extra_css_tags %>
     <!--[if lt IE 9]>
       <script src="/js/html5shiv.min.js"></script>
@@ -37,7 +38,7 @@
               <span class="icon-bar"></span>
             </button>
             <div class="head-logo-box">
-              <a class="navbar-brand" href="/">
+              <a class="navbar-brand" href="/" title="Go Homepage">
                 <img alt="韩非子说" src="/little-logo.png" class="logo" />
                 <span class="beta">Alpha</span>
               </a>
@@ -46,50 +47,45 @@
 
           <div class="collapse navbar-collapse" id="navbar-collapse-1">
 
+            <!-- nav tabs near logo -->
             <ul class="nav navbar-nav">
               <li <% if @navbar_active == "qna" %>class="active"<% end %>>
-                <a href="/">
-                  <span class="glyphicon glyphicon-home" aria-hidden="true">
-                  </span>&nbsp;问答
+                <a href="/" title="Q&A page (Homepage)">
+                  <i class="fa fa-home"></i>&nbsp;问答
                 </a>
               </li>
               <li <% if @navbar_active == "tags" %>class="active"<% end %>>
-                <a href="/tags">标签</a>
+                <a href="/tags" title="Tags page">
+                  <i class="fa fa-tags"></i>&nbsp;标签
+                </a>
               </li>
               <li <% if @navbar_active == "jobs" %>class="active"<% end %>>
-                <a href="/jobs">职位</a>
+                <a href="/jobs" title="Find me a Job">
+                  <i class="fa fa-briefcase"></i>&nbsp;职位
+                </a>
               </li>
             </ul>
 
-            <form class="navbar-form navbar-left" role="search"
-                  action="/search">
+            <form class="navbar-form navbar-left" role="search" action="/search">
               <div class="form-group">
-                <input type="text" class="form-control" name="q"
+                <input type="text" class="form-control" name="q" placeholder="快速搜索"
                        onfocus="javascript:widen_input(true);"
-                       onblur="javascript:widen_input(false);"
-                       placeholder="快速搜索">
+                       onblur="javascript:widen_input(false);">
               </div>
             </form>
 
             <ul class="nav navbar-nav navbar-right">
-
               <% unless login? %>
+              <!-- for user not logged in -->
               <li>
-                <a href="javascript:void(0);" data-toggle="modal"
-                   data-target="#login-modal">
-                  <span class="glyphicon glyphicon-log-in" aria-hidden="true">
-                  </span>
-                  &nbsp;登录
-                </a>
+                <a href="javascript:void(0);" data-toggle="modal" data-target="#login-modal"
+                   title="Sign In"><i class="fa fa-sign-in"></i>&nbsp;登录</a>
               </li>
               <% else %>
-              <!-- for logged on user -->
+              <!-- for logged in user -->
               <li class="dropdown">
-                <a href="#" class="dropdown-toggle"
-                            data-toggle="dropdown"
-                            role="button"
-                            aria-haspopup="true"
-                            aria-expanded="false">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                   aria-haspopup="true" aria-expanded="false">
                   <%= get_login_name %>
                   <% if get_message_amount > 0 %>
                   &nbsp; <span class="badge"><%= get_message_amount %></span>
@@ -98,53 +94,33 @@
                 </a>
                 <ul class="dropdown-menu">
                   <li>
-                    <a href="/user/home">
-                      <span class="glyphicon glyphicon-sunglasses"
-                            aria-hidden="true">
-                      </span>
-                      &nbsp;我的首页
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/ask">
-                      <span class="glyphicon glyphicon-edit" aria-hidden="true">
-                      </span>
-                      &nbsp;快速提问
+                    <a href="/user/home" title="Your SNS Homepage">
+                      <i class="fa fa-comments"></i>&nbsp;我的首页
                     </a>
                   </li>
                   <li role="separator" class="divider"></li>
                   <li>
-                    <a href="/user/messages">
-                      <span class="glyphicon glyphicon-envelope"
-                            aria-hidden="true">
-                      </span>
-                      &nbsp;我的消息&nbsp;
+                    <a href="/user/messages" title="My Messages">
+                      <i class="fa fa-envelope"></i>&nbsp;我的消息
                       <% if get_message_amount > 0 %>
-                      <span class="badge"><%= get_message_amount %></span>
+                      &nbsp;<span class="badge"><%= get_message_amount %></span>
                       <% end %>
                     </a>
                   </li>
                   <li>
-                    <a href="/user/watchlist">
-                      <span class="glyphicon glyphicon-star" aria-hidden="true">
-                      </span>
-                      &nbsp;我关注的
+                    <a href="/user/watchlist" title="My Watchlist">
+                      <i class="fa fa-star"></i>&nbsp;我关注的
                     </a>
                   </li>
                   <li>
-                    <a href="/user/profile">
-                      <span class="glyphicon glyphicon-user"
-                            aria-hidden="true">
-                      </span>
-                      &nbsp;更新资料
+                    <a href="/user/profile" title="Update My Profile">
+                      <i class="fa fa-user"></i>&nbsp;更新资料
                     </a>
                   </li>
                   <li role="separator" class="divider"></li>
                   <li>
-                    <a href="#" onclick="javascript:logout();">
-                      <span class="glyphicon glyphicon-log-out"
-                            aria-hidden="true">
-                      </span>&nbsp;退出登录
+                    <a href="javascript:void(0);" onclick="javascript:logout();" title="Sign Out">
+                      <i class="fa fa-sign-out"></i>&nbsp;退出登录
                     </a>
                   </li>
                 </ul>
@@ -152,7 +128,7 @@
               <% end %>
 
               <li>
-                <a href="/help">帮助</a>
+                <a href="/help" title="Help">帮助</a>
               </li>
 
             </ul>
@@ -161,14 +137,14 @@
       </nav>
 
       <!-- modal login window -->
-      <div class="modal fade" id="login-modal" tabindex="-1" role="dialog"
-           aria-labelledby="myModalLabel">
+      <div class="modal fade" id="login-modal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-sm">
           <div class="modal-content">
             <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal"
-                     aria-hidden="true" aria-label="Close">&times;</button>
-              <h4 class="modal-title" id="myModalLabel">登录</h4>
+              <button class="close" data-dismiss="modal" aria-hidden="true" aria-label="Close">
+                &times;
+              </button>
+              <img alt="韩非子说" src="/little-logo.png" class="logo" />
             </div>
             <div class="modal-body">
               <div class="form-group has-feedback">
@@ -182,9 +158,8 @@
               <div id="err-msg" class="text-danger"></div>
             </div>
             <div class="modal-footer">
-              <input type="button" value="登录" class="btn btn-primary"
-                      onclick="javascript:login();" />
-              &nbsp;没有帐户？<a href="/user/register">注册</a>
+              <div style="float:left;">没有帐户？<a href="/user/register">注册</a></div>
+              <button class="btn btn-primary btn-sm" onclick="javascript:login();">登录</button>
             </div>
           </div>
         </div>
@@ -192,7 +167,6 @@
 
       <%= render_breadcrumb %>
 
-      <!-- main content -->
       <%= yield %>
 
     </div><!-- end of wrapper -->
@@ -203,15 +177,14 @@
       <div class="container-fluid">
 
         <div class="row">
-
           <div class="col-md-3">
             <div class="footer-logo-box">
               <img alt="韩非子说" src="/little-logo.png"/>
-              <span>Beta</span>
+              <span>Alpha</span>
             </div>
             <p>
               “非&trade;” 和 “韩非子说&trade;” 是注册商标<br />
-              &copy; 2016 立博拉（北京）网络技术有限公司<br />
+              &copy; 2016 数字天平（北京）网络技术有限公司<br />
               当前版本 2016.01.30
             </p>
           </div>
@@ -231,51 +204,49 @@
 
 
           <div class="col-md-2">
-            <h5>网站相关</h5>
+            <h5 title="About This Site">网站相关</h5>
             <ul class="site-related">
               <li>
-                <a href="/about">关于我们</a>
+                <a href="/about" title="About Us">关于我们</a>
               </li>
               <li>
-                <a href="/terms">服务条款</a>
+                <a href="/terms" title="Terms & Privacy">服务条款</a>
               </li>
               <li>
-                <a href="/admin/home">站点管理</a>
+                <a href="/admin/home" title="Admin Login">站点管理</a>
               </li>
             </ul>
           </div>
 
           <div class="col-md-2">
-            <h5>联系我们</h5>
+            <h5 title="Contact Us">联系我们</h5>
             <ul class="site-related">
               <li>
-                <a href="/feedback">问题反馈</a>
+                <a href="/feedback" title="Feedback">问题反馈</a>
               </li>
               <li>
-                <a href="/business">企业合作</a>
+                <a href="/business" title="Business Cooperation">企业合作</a>
               </li>
               <li>
-                <a href="/career">本站工作机会</a>
+                <a href="/career" title="Jobs of This Site">本站工作机会</a>
               </li>
               <li>
-                <a href="http://t.cn/account/hanfeizishuo">微博账号</a>
+                <a href="http://t.cn/account/hanfeizishuo" title="Weibo">微博账号</a>
               </li>
             </ul>
           </div>
 
           <div class="col-md-2">
-            <h5>微信公众号<small>（假）</small></h5>
+            <h5 title="WeChat">微信公众号<small>（假）</small></h5>
             <img class="cli-pane" src="/cli.png" alt="微信公众号" />
           </div>
+        </div><!-- end of the row -->
 
-        </div>
-
-
-      </div>
+      </div><!-- end of the container -->
     </footer>
 
     <div class="fixed-tool">
-      <a href="#" class="back-to-top">回到顶部</a>
+      <a href="#" class="back-to-top" title="Back to Top">回到顶部</a>
     </div>
 
     <script src="/js/jquery.min.js"></script>

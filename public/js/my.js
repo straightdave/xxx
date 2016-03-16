@@ -1,6 +1,13 @@
 /* xxx project copyrights 2015 Dave */
-
 $().ready(function () {
+  // sign in modal initialize
+  $('#login-modal').on('show.bs.modal', function () {
+    var namebox = $('input[name="modal-loginname"]');
+    var passbox = $('input[name="modal-password"]');
+    namebox.val(""); set_normal(namebox, "name");
+    passbox.val(""); set_normal(passbox, "pass");
+    $('#err-msg').text("");
+  })
 
   // own profile page
   $("button#resend").removeAttr("disabled");
@@ -63,12 +70,14 @@ function remove_param(key) {
 
 /* navbar input */
 function widen_input(flag) {
+  var input = $("input[name='q']");
   if (true == flag) {
-    console.log("widen");
-    $("input[name='q']").animate({ width : '+=200px'});
+    input.animate({ width : '+=200px'});
+    input.attr("placeholder", "<ENTER 回车>键确认");
   }
   else {
-    $("input[name='q']").animate({ width : '-=200px'});
+    input.animate({ width : '-=200px'});
+    input.attr("placeholder", "快速搜索");
   }
 }
 

@@ -3,10 +3,9 @@
   <div class="row">
     <div class="col-md-4">
       <form class="form-inline">
-        <input type="text" class="form-control" name="qn"
+        <input type="text" class="form-control" name="qn" placeholder="用户login name"
           <% if @user %> value="<%= @user.login_name %>" <% end %>
-        placeholder="用户login name" />
-
+        />
         <button type="submit" class="btn btn-primary"> 搜索 </button>
       </form>
     </div>
@@ -22,12 +21,60 @@
           <tr><td colspan='2' align='center'>=== 基本信息 ===</td></tr>
           <% if @user %>
           <tr>
-            <td>
-              <%= @user %>
-            </td>
-            <td>
-
-            </td>
+            <td>ID</td><td><%= @user.id %></td>
+          </tr>
+          <tr>
+            <td>登录名</td><td><%= @user.login_name %></td>
+          </tr>
+          <tr>
+            <td>注册邮箱</td><td><%= @user.email %></td>
+          </tr>
+          <tr>
+            <td>状态</td><td><%= @user.status %></td>
+          </tr>
+          <tr>
+            <td>角色</td><td><%= @user.role %></td>
+          </tr>
+          <tr>
+            <td>被举报？</td><td><%= @user.is_reported %></td>
+          </tr>
+          <tr>
+            <td>声望</td><td><%= @user.reputation %></td>
+          </tr>
+          <tr>
+            <td>创建时间</td><td><%= @user.created_at %></td>
+          </tr>
+          <tr>
+            <td>上次修改</td><td><%= @user.updated_at %></td>
+          </tr>
+          <tr><td colspan='2' align="center">=== 其它信息 ===</td></tr>
+          <tr>
+            <td>昵称</td><td><%= @user.info.nickname %></td>
+          </tr>
+          <tr>
+            <td>头像</td>
+            <td><img src="<%= @user.info.avatar %>" alt="<%= @user.login_name %>" /></td>
+          </tr>
+          <tr>
+            <td>自我介绍</td><td><%= @user.info.intro %></td>
+          </tr>
+          <tr>
+            <td>所在地</td><td><%= @user.info.city %></td>
+          </tr>
+          <tr>
+            <td>qq</td><td><%= @user.info.qq %></td>
+          </tr>
+          <tr>
+            <td>电话</td><td><%= @user.info.phone %></td>
+          </tr>
+          <tr>
+            <td>微信</td><td><%= @user.info.wechat %></td>
+          </tr>
+          <tr>
+            <td>网页</td><td><%= @user.info.home_page %></td>
+          </tr>
+          <tr>
+            <td>次要邮箱</td><td><%= @user.info.email2 %></td>
           </tr>
           <% else %>
           <tr><td colspan='2'>无</td></tr>
@@ -42,49 +89,56 @@
       <p>
         <strong>Status</strong>
         <ul>
-          <li> NEWBIE = 0 </li>
-          <li> NORMAL = 1 </li>
-          <li> SUSPEND = 2 </li>
-          <li> BANNED = 3 </li>
-          <li> REMOVED = 4 </li>
+          <li>0 - NEWBIE 刚注册尚未邮件认证，无法发言</li>
+          <li>1 - NORMAL 正常用户</li>
+          <li>2 - SUSPEND 被禁言</li>
+          <li>3 - BANNED 被禁止登录 </li>
+          <li>4 - REMOVED 被注销（一般不用）</li>
         </ul>
       </p>
       <p>
         <strong>Roles</strong>
         <ul>
-          <li> USER = 0 </li>
-          <li> MODERATOR = 1 </li>
-          <li> ADMIN = 8 </li>
-          <li> SUPERADMIN = 9 </li>
+          <li>0 - USER 普通用户</li>
+          <li>1 - MODERATOR 可编辑用户</li>
+          <li>8 - ADMIN 管理员</li>
+          <li>9 - SUPERADMIN 超级管理员</li>
         </ul>
       </p>
       <hr />
 
       <% if @user %>
-      <form>
-        <p>
-          <select class="form-control" name="user-status">
-            <option value="0">NEWBIE</option>
-            <option value="1">NORMAL</option>
-            <option value="2">SUSPEND</option>
-            <option value="3">BANNED</option>
-            <option value="4">REMOVED</option>
-          </select>
-        </p>
+        <form method="post" action="/admin/account/<%= @user.id %>">
+          <p>
+            <select class="form-control" name="user-status">
+              <option value="0" <% if @user.status == 0 %>selected<% end %>>NEWBIE</option>
+              <option value="1" <% if @user.status == 1 %>selected<% end %>>NORMAL</option>
+              <option value="2" <% if @user.status == 2 %>selected<% end %>>SUSPEND</option>
+              <option value="3" <% if @user.status == 3 %>selected<% end %>>BANNED</option>
+              <option value="4" <% if @user.status == 4 %>selected<% end %>>REMOVED</option>
+            </select>
+          </p>
 
-        <p>
-          <select class="form-control" name="user-role">
-            <option value="0">USER</option>
-            <option value="1">MODERATOR</option>
-            <option value="8">ADMIN</option>
-            <option value="9">SUPER ADMIN</option>
-          </select>
-        </p>
+          <p>
+            <select class="form-control" name="user-role">
+              <option value="0" <% if @user.role == 0 %>selected<% end %>>USER</option>
+              <option value="1" <% if @user.role == 1 %>selected<% end %>>MODERATOR</option>
+              <option value="8" <% if @user.role == 8 %>selected<% end %>>ADMIN</option>
+              <option value="9" <% if @user.role == 9 %>selected<% end %>>SUPER ADMIN</option>
+            </select>
+          </p>
 
-        <button type="submit" class="btn btn-primary btn-sm">
-          修改
-        </button>
-      </form>
+          <button type="submit" class="btn btn-primary btn-sm">修改</button>
+        </form>
+
+        <hr />
+
+        <% if @user.is_reported %>
+          <form action="/admin/account/<%= @user.id %>/reset_report" method="post">
+            <input class="btn btn-primary btn-sm" type="submit" value="重置举报" />
+          </form>
+        <% end %>
+
       <% end %>
 
     </div><!-- end of col-3 -->

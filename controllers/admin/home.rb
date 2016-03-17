@@ -1,7 +1,6 @@
 get '/admin/home' do
-  @user = User.find_by(id: session[:user_id])
   @title = "管理员页面"
-  @navbar_active = "admin_home"
+  @navbar_active = "home"
   erb 'admin/home'.to_sym, layout: 'admin/layout'.to_sym
 end
 

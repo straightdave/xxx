@@ -8,6 +8,7 @@
     <link rel="icon" href="/favicon.ico" />
     <link rel="stylesheet" href="/css/bootstrap-with-theme.min.css" />
     <link rel="stylesheet" href="/css/my.css" />
+    <link rel="stylesheet" href="/css/font-awesome.min.css" />
     <%= yield_content :extra_css_tags %>
     <!--[if lt IE 9]>
       <script src="/js/html5shiv.min.js"></script>
@@ -41,33 +42,21 @@
           <div class="collapse navbar-collapse" id="navbar-collapse-1">
 
             <ul class="nav navbar-nav">
-              <li <% if @navbar_active == "admin_home" %>class="active"<% end %>>
-                <a href="/admin">
-                  <span class="glyphicon glyphicon-home" aria-hidden="true">
-                  </span>&nbsp;首页
-                </a>
+              <li <% if @navbar_active == "home" %>class="active"<% end %>>
+                <a href="/admin/home">首页</a>
               </li>
-              <li <% if @navbar_active == "account_manage" %>class="active"<% end %>>
+              <li <% if @navbar_active == "acc" %>class="active"<% end %>>
                 <a href="/admin/account">帐户管理</a>
               </li>
-              <li <% if @navbar_active == "organization_manage" %>class="active"<% end %>>
-                <a href="/admin/organizations">组织管理</a>
+              <li <% if @navbar_active == "org" %>class="active"<% end %>>
+                <a href="/admin/org">组织管理</a>
               </li>
-              <li <% if @navbar_active == "job_manage" %>class="active"<% end %>>
-                <a href="/admin/jobs">职位管理</a>
+              <li <% if @navbar_active == "job" %>class="active"<% end %>>
+                <a href="/admin/job">职位管理</a>
               </li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
-
-              <% unless login? %>
-              <li>
-                <a href="<%= "/login?r=#{ CGI.escape('/admin/home') }" %>">
-                  <span class="glyphicon glyphicon-log-in" aria-hidden="true">
-                  </span> &nbsp;登录
-                </a>
-              </li>
-              <% else %>
 
               <!-- for logged on user -->
               <li class="dropdown">
@@ -85,11 +74,9 @@
                 <ul class="dropdown-menu">
                   <li>
                     <a href="/user/messages">
-                      <span class="glyphicon glyphicon-envelope" aria-hidden="true">
-                      </span>
-                      &nbsp;我的消息&nbsp;
+                      <i class="fa fa-envelope"></i> &nbsp;我的消息
                       <% if get_message_amount > 0 %>
-                      <span class="badge"><%= get_message_amount %></span>
+                      &nbsp; <span class="badge"><%= get_message_amount %></span>
                       <% end %>
                     </a>
                   </li>
@@ -97,13 +84,11 @@
                   <li role="separator" class="divider"></li>
                   <li>
                     <a href="#" onclick="javascript:logout();">
-                      <span class="glyphicon glyphicon-log-out" aria-hidden="true">
-                      </span> &nbsp;退出登录
+                      <i class="fa fa-sign-out"></i>&nbsp;退出登录
                     </a>
                   </li>
                 </ul>
               </li>
-              <% end %>
 
               <li>
                 <a href="/admin/help">帮助</a>

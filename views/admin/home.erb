@@ -1,5 +1,4 @@
 <div class="container">
-  <h3>Welcome, <%= @user.login_name %></h3>
 
   <p>
     以下是系统内的统计信息
@@ -30,6 +29,10 @@
           <tr>
             <td> 评论总计 </td>
             <td> <%= Comment.count %> </td>
+          </tr>
+          <tr>
+            <td> 标签总计 </td>
+            <td> <%= Tag.count %> </td>
           </tr>
         </tbody>
       </table>

@@ -25,18 +25,30 @@ helpers do
     session[:user_id]
   end
 
-  # eneral login checking for each action
+  # general login check
   def login_filter(attr = {})
-    req_path   = request.path
+    req_path   = CGI.escape(request.path)
+    req_method = request.request_method
+    is_get = req_method == 'GET'
 
     # 1. check login
     unless login?
-      redirect to('/login?r=' + CGI.escape(req_path) + '&w=1')
+      if is_get
+        redirect to('/login?r=' + req_path + '&w=1')
+      else
+        response.body = json ret: "error", msg: "请先登录"
+        halt 200
+      end
     end
 
     # 2. check account
     unless user = User.find_by(id: session[:user_id])
-      redirect to('/login?r=' + CGI.escape(req_path) + '&w=3')
+      if is_get
+        redirect to('/login?r=' + req_path + '&w=3')
+      else
+        response.body = json ret: "error", msg: "账户好像有问题"
+        halt 200
+      end
     end
 
     # 3. check status filtering
@@ -46,7 +58,12 @@ helpers do
     end
 
     if status.index(user.status).nil? && !settings.status_no_limit
-      redirect to('/login?r=' + CGI.escape(req_path) + '&w=4')
+      if is_get
+        redirect to('/login?r=' + req_path + '&w=4')
+      else
+        response.body = json ret: "error", msg: "账户状态有误"
+        halt 200
+      end
     end
 
     # 4. check roles filtering
@@ -56,7 +73,12 @@ helpers do
     end
 
     if roles.index(user.role).nil? && !settings.roles_no_limit
-      redirect to('/login?r=' + CGI.escape(req_path) + '&w=4')
+      if is_get
+        redirect to('/login?r=' + req_path + '&w=4')
+      else
+        response.body = json ret: "error", msg: "账户角色有误"
+        halt 200
+      end
     end
   end
 

@@ -5,7 +5,8 @@
 
 # create a report via ajax
 post '/report' do
-  login_filter
+  login_filter required_roles: [ User::Role::USER, User::Role::ADMIN ]
+
   reporter = User.find_by(id: session[:user_id])
 
   # interface to front-end
@@ -16,8 +17,6 @@ post '/report' do
   target_type = params['target_type']
   target_id   = params['target_id']
   content     = params['content']
-
-  return (json ret: "error", msg: "请不要投诉自己") if reporter.id == target_id
 
   target_obj = case target_type
   when 'u'
@@ -30,6 +29,12 @@ post '/report' do
     Article.find_by(id: target_id)
   end
   return (json ret: "error", msg: "投诉对象有误") unless target_obj
+
+  if target_obj.respond_to? :author
+    return (json ret: "error", msg: "请不要投诉自己的作品") if target_obj.author.id == reporter.id
+  else
+    return (json ret: "error", msg: "请不要投诉自己") if target_obj.id ==reporter.id
+  end
 
   # create report for such target
   report = target_obj.reports.build(reporter: reporter)

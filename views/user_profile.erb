@@ -1,27 +1,4 @@
-<!-- hidden modal for reporting -->
-<div class="modal fade" id="report-modal">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <h4 class="modal-title">投诉</h4>
-      </div>
-      <div class="modal-body">
-        <p>
-          <textarea name="reason" style="width: 100%;" placeholder="投诉理由"></textarea>
-        </p>
-        <div id="report-err-msg" class="text-danger"></div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary btn-sm"
-        onclick="javascript:new_report('u',<%= @user.id %>);">保存</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
+<%= render_report_modal('u', @user.id) %>
 
 <div class="profile-background">
   <div class="report">
@@ -42,8 +19,7 @@
     <div class="col-md-3">
       <div class="profile-pane">
         <div class="avatar">
-          <img alt="<%= @user_info.nickname %>"
-               src="<%= @user_info.avatar || "/avatar.jpg"%>">
+          <img alt="<%= @user_info.nickname %>" src="<%= @user_info.avatar || "/avatar.jpg"%>">
         </div>
 
         <div class="namebox">
@@ -55,35 +31,30 @@
           </blockquote>
 
           <p>
-            <span class="glyphicon glyphicon-envelope"></span>
-            &nbsp; <%= @user.email %>
+            <i class="fa fa-envelope"></i>&nbsp;<%= @user.email %>
           </p>
 
           <% if !@user_info.phone.nil? %>
           <p>
-            <span class="glyphicon glyphicon-earphone"></span>
-            &nbsp; <%= @user_info.phone %>
+            <i class="fa fa-phone"></i>&nbsp;<%= @user_info.phone %>
           </p>
           <% end %>
 
           <% if !@user_info.city.nil? %>
           <p>
-            <span class="glyphicon glyphicon-map-marker"></span>
-            &nbsp; <%= @user_info.city %>
+            <i class="fa fa-map-marker"></i>&nbsp;<%= @user_info.city %>
           </p>
           <% end %>
 
           <% if !@user_info.qq.nil? %>
           <p>
-            QQ:
-            &nbsp; <%= @user_info.qq %>
+            <i class="fa fa-qq"></i>&nbsp;<%= @user_info.qq %>
           </p>
           <% end %>
 
           <% if !@user_info.wechat.nil? %>
           <p>
-            微信:
-            &nbsp; <%= @user_info.wechat %>
+            <i class="fa fa-wechat"></i>&nbsp;<%= @user_info.wechat %>
           </p>
           <% end %>
 

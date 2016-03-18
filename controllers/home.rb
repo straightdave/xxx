@@ -1,7 +1,7 @@
 # controller for homepage
 get '/' do
   @sort_by = params['tab'] || 'default'
-  number = params['num'] if params['num'].to_i > 0
+  number   = params['num'] if params['num'].to_i > 0
   number ||= 50
 
   tmp = case @sort_by
@@ -20,7 +20,9 @@ get '/' do
   # top is using tag's attribute 'used' which is not so accurate
   # TODO: later we could find better way to count how hot tags are
   @hot_tags = Tag.top_used(20)
+
+  @title         = "首页"
   @navbar_active = "qna"
-  @title = "首页"
+  @hide_jumbotron = true if login?
   erb :home
 end

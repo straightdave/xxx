@@ -287,10 +287,12 @@ function set_error(ele, eid) {
 
 /* question page */
 function show_comment() {
-  $("div.commenting").slideDown();
+  var cmt_area = $("div.commenting");
+  cmt_area.slideDown();
 }
 function show_comment_answer(answer_id) {
-  $("div.commenting-answer-" + answer_id).slideDown();
+  var cmt_area = $("div.commenting-answer-" + answer_id)
+  cmt_area.slideDown();
 }
 function cancel_comment() {
   $("textarea#comment_area").val("");
@@ -390,9 +392,7 @@ function watch1(qid) {
         icon.attr("title", "点击收藏");
       }
       else {
-        if(data.msg == "need_login") {
-          alert("请先登录");
-        }
+        alert(data.msg);
       }
     });
   }
@@ -403,9 +403,7 @@ function watch1(qid) {
         icon.attr("title", "已收藏");
       }
       else {
-        if(data.msg == "need_login") {
-          alert("请先登录");
-        }
+        alert(data.msg);
       }
     });
   }
@@ -436,21 +434,7 @@ function do_answer(qid) {
         location.replace("/q/" + qid);
       }
       else {
-        if(data.msg == "self_answer") {
-          alert("自己不可以回答自己提出的问题哟~");
-        }
-        else if(data.msg == "wrong_status") {
-          alert("您的状态尚不可以回答问题，请检查是否已验证邮箱");
-        }
-        else if(data.msg == "need_login") {
-          alert("请先登录");
-        }
-        else if(data.msg == "answer_twice") {
-          alert("同一问题不可以回答两次哟~您可以对之前的回答写些评论");
-        }
-        else {
-          alert(data.msg);
-        }
+        alert(data.msg);
       }
     });
   }

@@ -1,5 +1,5 @@
-<!-- homepage -->
-<div class="myjumbotron-home">
+<% unless @hide_jumbotron %>
+<div class="myjumbotron-home" aria-hidden="true">
   <div>
     <img src="/logo.png" class="logo-home-head" alt="韩非子说"/>
   </div>
@@ -17,7 +17,7 @@
   </div>
   <div class="clear"></div>
 </div>
-
+<% end %>
 
 <div class="container">
   <div class="row">

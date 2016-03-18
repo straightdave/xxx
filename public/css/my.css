@@ -281,6 +281,10 @@ div.question-content {
 }
 
 /* comment box */
+textarea.commentbox {
+  margin: 3px 0;
+}
+
 a.comment-btn:hover {
   text-decoration: none;
 }
@@ -321,7 +325,7 @@ div.single-answer {
   margin: 10px 0 15px 0;
 }
 
-span.i-am-answer {
+.i-am-answer {
   color: #16A085;
 }
 

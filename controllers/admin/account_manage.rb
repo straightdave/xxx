@@ -9,14 +9,28 @@ end
 post '/admin/account/:uid/reset_report' do |uid|
   user = User.find_by(id: uid)
   user.is_reported = false
-  user.save if user.valid?
+  if user.valid?
+    user.save
+    AdminLog.create(
+      :user_id => get_user_id,
+      :log_text => "管理员#{get_login_name}重置了用户#{user.login_name}的举报状态"
+    )
+  end
   redirect to("/admin/account?qn=#{user.login_name}")
 end
 
 post '/admin/account/:uid' do |uid|
   user = User.find_by(id: uid)
+  old_status = user.status
+  old_role   = user.role
   user.role   = params['user-role']
   user.status = params['user-status']
-  user.save if user.valid?
+  if user.valid?
+    user.save
+    AdminLog.create(
+      :user_id => get_user_id,
+      :log_text => "管理员#{get_login_name}修改了用户#{user.login_name}的状态(#{old_status}=>#{user.status})，角色(#{old_role}=>#{user.role})"
+    )
+  end
   redirect to("/admin/account?qn=#{user.login_name}")
 end

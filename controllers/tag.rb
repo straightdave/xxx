@@ -6,9 +6,7 @@ get '/t/:tid' do |tid|
   @page    = params['page'] || 1    # show page 1 by default
   @page    = @page.to_i
 
-  if (search_str = params['q']) &&
-     (keys       = search_str.split '+') &&
-     (keys.size  > 0)
+  if (search_str = params['q']) && (keys = search_str.split '+') && (keys.size  > 0)
 
     # note: returned @questions is not ActiveRecord::Relations but a array
     # should use ruby array methods to deal with
@@ -17,11 +15,11 @@ get '/t/:tid' do |tid|
 
     @questions = case @sort_by
     when 'hot'
-     @questions.sort { |a, b| b.views <=> a.views }
-               .slice(20 * (@page - 1) .. 20 * @page)
+      @questions.sort { |a, b| b.views <=> a.views }
+                .slice(20 * (@page - 1) .. 20 * @page)
     when 'new'
-     @questions.sort { |a, b| b.created_at <=> a.created_at }
-               .slice(20 * (@page - 1) .. 20 * @page)
+      @questions.sort { |a, b| b.created_at <=> a.created_at }
+                .slice(20 * (@page - 1) .. 20 * @page)
     end
   else
     # no search filtered but all questions with this tag

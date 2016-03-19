@@ -14,4 +14,8 @@ helpers do
   def render_report_modal(type, id)
     erb :partial_report_modal, layout: false, locals: { item_type: type, item_id: id }
   end
+
+  def render_edit_modal(type, id)
+    erb :partial_edit_modal, layout: false, locals: { item_type: type, item_id: id }
+  end
 end

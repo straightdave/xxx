@@ -14,6 +14,10 @@ body {
   font-size: 14px;
 }
 
+a:focus {
+  outline: none;
+}
+
 div.wrapper {
   margin-bottom: 300px;
 }

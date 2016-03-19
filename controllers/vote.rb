@@ -8,13 +8,13 @@ post %r{/([q|a|c])/(\d+)/(devote|vote)} do |target_type, id, behavior|
   when "c" then Comment.find_by(id: id)
   when "q" then Question.find_by(id: id)
   end
-  return (json ret: "error", msg: "target_not_found") unless obj
+  return (json ret: "error", msg: "投票对象有误") unless obj
 
   if obj.author.id == user.id
-    return json ret: "error", msg: "no_vote_self"
+    return json ret: "error", msg: "不可以给自己投票哦"
   end
 
-  return (json ret: "error", msg: "already_voted") if already_voted?(obj)
+  return (json ret: "error", msg: "我已经投过票了") if already_voted?(obj)
 
   if behavior == "vote"
     if user.reputation > 15
@@ -22,7 +22,7 @@ post %r{/([q|a|c])/(\d+)/(devote|vote)} do |target_type, id, behavior|
       vote.points = 1
       obj.get_voted
     else
-      return json ret: "error", msg: "repu_cannot_vote"
+      return json ret: "error", msg: "声望要超过15才可以顶哦"
     end
   elsif behavior == "devote"
     if user.reputation > 125
@@ -30,7 +30,7 @@ post %r{/([q|a|c])/(\d+)/(devote|vote)} do |target_type, id, behavior|
       vote.points = -1
       obj.get_devoted
     else
-      return json ret: "error", msg: "repu_cannot_devote"
+      return json ret: "error", msg: "声望要超过125才可以踩哦"
     end
   end
 

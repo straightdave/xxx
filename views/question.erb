@@ -1,6 +1,8 @@
-<%= render_report_modal('q', @q.id) %>
-
 <script src="/vendors/ckeditor/ckeditor.js"></script>
+
+<%= render_report_modal('q', @q.id) %>
+<%= render_edit_modal('q', @q.id) %>
+
 <div class="container">
   <div class="row">
 
@@ -59,18 +61,24 @@
 
           <div class="tag-authorbox">
             <div class="tags">
-                <% @q.tags.each do |t| %>
-                  <span class="q_tag"><%= t.name %></span>
-                <% end %>
+              <% @q.tags.each do |t| %>
+              <span class="q_tag"><%= t.name %></span>
+              <% end %>
             </div>
 
             <div class="authorbox text-right">
-              <img class="avatar-sm"
-                   src="<%= @q.author.info.avatar || '/avatar.jpg' %>">
+              <img class="avatar-sm" src="<%= @q.author.info.avatar || '/avatar.jpg' %>">
               <a href="/u/<%= @q.author.login_name %>">
                 <%= @q.author.info.nickname %>(<%= @q.author.reputation %>)
               </a>
               提问于<%= time_ago_in_words_zh(@q.created_at) %>
+
+              <% if @q.author.id == session[:user_id] %>
+              <br />
+              <a class="btn btn-primary btn-xs" data-toggle="modal" data-target="#edit-modal">
+                <i class="fa fa-edit"></i>&nbsp;修改
+              </a>
+              <% end %>
             </div>
           </div>
 

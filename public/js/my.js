@@ -199,7 +199,6 @@ function logout() {
 }
 
 /* ===== my message page ===== */
-
 function mark_all_as_read() {
   $.post('/user/mark_messages', function (data, status) {
     if(data.ret == "success") {
@@ -211,7 +210,6 @@ function mark_all_as_read() {
 }
 
 /* ===== home page ===== */
-
 function ask() {
   $.get("/check_login", function (data, status) {
     if(data.ret){
@@ -224,7 +222,6 @@ function ask() {
 }
 
 /* ===== ask page ===== */
-
 function do_ask() {
   var is_valid = true;
   var err_msg = "";
@@ -356,24 +353,7 @@ function vote(op_type, target_type, id) {
       $("span[id='"+ target_type +"-scores-" + id + "']").text(data.msg);
     }
     else {
-      if(data.msg == "need_login") {
-        alert("请先登录");
-      }
-      else if(data.msg == "no_vote_self") {
-        alert("不能给自己投标哦");
-      }
-      else if(data.msg == "already_voted") {
-        alert("这个你已经投过票啦")
-      }
-      else if(data.msg == "repu_cannot_vote") {
-        alert("要声誉超过5分才可以顶哦")
-      }
-      else if(data.msg == "repu_cannot_devote") {
-        alert("要声誉过125才能踩哦")
-      }
-      else {
-        alert(data.msg);
-      }
+      alert(data.msg);
     }
   });
 }
@@ -488,8 +468,7 @@ function do_update() {
 function do_follow(user) {
   $.post("/u/" + user + "/follow", function (data, status) {
     if(data.ret == "success") {
-      /* if it becomes slow in the future, we can change elements without
-      refreshing page */
+      /* if it becomes slow in the future, we can change elements without refreshing page */
       location.replace(location.href);
     }
     else {
@@ -592,6 +571,22 @@ function new_report(type, id) {
       }
       else {
         err_box.html(data.msg);
+      }
+    });
+  }
+}
+
+
+/* edit content */
+function save_edit(strType, id) {
+  if(strType == 'q') {
+    var content = CKEDITOR.instances.editor2.getData();
+    $.post('/q/' + id, { 'content' : content }, function (data, status) {
+      if(data.ret == "success") {
+        location.replace(location.href);
+      }
+      else {
+        alert(data.msg);
       }
     });
   }

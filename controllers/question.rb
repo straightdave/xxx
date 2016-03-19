@@ -78,6 +78,25 @@ get '/q/:qid' do |qid|
   end
 end
 
+# == for ajax: edit content
+post '/q/:qid' do |qid|
+  login_filter
+
+  new_content = params['content']
+
+  if question = Question.find_by(id: qid)
+    question.content = new_content
+    if question.valid?
+      question.save
+      json ret: "success"
+    else
+      json ret: "error", msg: "问题更新失败"
+    end
+  else
+    json ret: "error", msg: "问题对象未找到"
+  end
+end
+
 
 # == watching or unwatching a question ==
 post '/q/:qid/watch' do |qid|

@@ -73,7 +73,7 @@
               </a>
               提问于<%= time_ago_in_words_zh(@q.created_at) %>
 
-              <% if @q.author.id == session[:user_id] %>
+              <% if @can_edit %>
               <br />
               <a class="btn btn-primary btn-xs" data-toggle="modal" data-target="#edit-modal">
                 <i class="fa fa-edit"></i>&nbsp;修改

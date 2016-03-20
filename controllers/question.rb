@@ -53,6 +53,8 @@ get '/q/:qid' do |qid|
       set_just_viewed(qid)
     end
 
+    user = User.find_by(id: session[:user_id])
+
     @watched = @q.watchers.exists?(id: session[:user_id])
     @answered = !@q.accepted_answer.nil?
     @hidden_mark = @q.author.id != session[:user_id] || @answered
@@ -71,6 +73,8 @@ get '/q/:qid' do |qid|
     @answers = @q.answers
     @answers.select { |answer| answer.scores >= -2 }
     @answers.to_a.sort! { |x, y| y.scores <=> x.scores }
+
+    @can_edit = (@q.author.id == session[:user_id]) || (user.role == User::Role::MODERATOR)
 
     erb :question
   else
@@ -100,7 +104,7 @@ end
 
 # == watching or unwatching a question ==
 post '/q/:qid/watch' do |qid|
-  login_filter
+  login_filter required_roles: [ User::Role::USER, User::Role::MODERATOR ]
 
   author = User.find_by(id: session[:user_id])
 

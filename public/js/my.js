@@ -420,6 +420,17 @@ function do_answer(qid) {
   }
 }
 
+function toggle_comment(qid) {
+  $.post('/q/' + qid + '/toggle_comment', {}, function (data, status) {
+    if(data.ret == "success") {
+      location.replace(location.href);
+    }
+    else {
+      alert(data.msg);
+    }
+  });
+}
+
 /* tag links on homepage */
 function go_tag(id) {
   location.replace("/t/" + id);

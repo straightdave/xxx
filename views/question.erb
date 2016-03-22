@@ -78,8 +78,31 @@
               <a class="btn btn-primary btn-xs" data-toggle="modal" data-target="#edit-modal">
                 <i class="fa fa-edit"></i>&nbsp;修改
               </a>
+                <% unless @is_ban_commenting %>
+                <a href="javascript:void(0);" class="btn btn-primary btn-xs"
+                   onclick="javascript:toggle_comment(<%= @q.id %>);">
+                  <i class="fa fa-ban text-danger"></i>&nbsp;关闭评论
+                </a>
+                <% else %>
+                <a href="javascript:void(0);" class="btn btn-primary btn-xs"
+                   onclick="javascript:toggle_comment(<%= @q.id %>);">
+                  <i class="fa fa-commenting"></i>&nbsp;打开评论
+                </a>
+                <% end %>
               <% end %>
             </div>
+
+            <% if @is_edited %>
+            <div class="authorbox text-right">
+              <img class="avatar-sm" src="<%= @last_editor.info.avatar || '/avatar.jpg' %>">
+              <a href="<%= @last_editor.url %>">
+                <%= @last_editor.info.nickname %>(<%= @last_editor.reputation %>)
+              </a>
+              最后修改于<%= time_ago_in_words_zh(@last_edit_time) %>
+            </div>
+            <% end %>
+
+            <div class="clear"></div>
           </div>
 
           <!-- comments go here -->
@@ -119,6 +142,7 @@
             <% end %>
           </div>
 
+          <% if login? && !@is_ban_commenting %>
           <div class="row">
             <div class="col-sm-12">
               <a href="javascript:void(0);" class="comment-btn"
@@ -137,6 +161,7 @@
               </div>
             </div>
           </div>
+          <% end %>
 
         </div>
       </div> <!-- end of #question-details -->

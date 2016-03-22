@@ -2,14 +2,14 @@ class Event < ActiveRecord::Base
   # == fields ==
   # id
   # event_type (1-ask; 2-answer; 3-comment; 4-compose; 5-vote; 6-devote;
-  #             7-watch; 8-unwatch; 9-follow; 10-unfollow; 11-update_profile;
+  #             7-watch; 8-unwatch; 9-follow; 10-unfollow; 11-update;
   #             12-accept;)
   # target_type (1-question; 2-answer; 3-comment; 4-article; 5-user)
   # target_id
   # created_at
 
   # == associations ==
-  belongs_to :user
+  belongs_to :invoker, class_name: "User", foreign_key: "user_id"
 
   # == helper ==
   def target
@@ -84,7 +84,7 @@ class Event < ActiveRecord::Base
 
   def target_quote
     unless self.target.is_a?(User)
-      get_abstract(self.target.content, 50)
+      get_abstract(self.target.content, 100)
     end
   end
 

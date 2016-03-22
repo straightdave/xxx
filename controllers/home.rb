@@ -24,5 +24,6 @@ get '/' do
   @title         = "首页"
   @navbar_active = "qna"
   @hide_jumbotron = true if login?
+
   erb :home
 end

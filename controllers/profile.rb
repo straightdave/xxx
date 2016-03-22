@@ -18,7 +18,7 @@ post '/user/profile' do
 
   if user.info.valid?
     user.info.save
-    user.record_event(:update_profile, user)
+    user.record_event(:update, user)
 
     if email_changed && user.can_change_email
       user.status = User::Status::NEWBIE
@@ -50,7 +50,7 @@ end
 # upload avatar files (maybe any file)
 post '/upload' do
   login_filter
-  
+
   unless params['file'] &&
          (tmpfile = params[:file][:tempfile]) &&
          (name = params[:file][:filename])

@@ -284,6 +284,18 @@ div.question-content {
   font-size: 1.3em;
 }
 
+div.tag-authorbox {
+  margin: 10px 0;
+}
+div.tag-authorbox div.tags {
+  float: left;
+}
+div.tag-authorbox div.authorbox {
+  float: right;
+  overflow: hidden;
+  margin-left: 30px;
+}
+
 /* comment box */
 textarea.commentbox {
   margin: 3px 0;
@@ -334,18 +346,10 @@ div.single-answer {
 }
 
 /* user styles on question page */
-div.authorbox {
-  overflow: hidden;
-}
-
 img.avatar-sm {
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
-}
-img.avatar-xs {
-  width: 20px;
-  height: 20px;
 }
 
 /* message page */

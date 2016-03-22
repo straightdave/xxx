@@ -18,6 +18,10 @@ post %r{/([q|a|w])/(\d+)/comment} do |target, id|
     return json ret: "error", msg: "repu_cannot_comment"
   end
 
+  if obj.status == 1
+    return json ret: "error", msg: "已关闭评论"
+  end
+
   content = params['content']
   c = Comment.new
   c.author = author

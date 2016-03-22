@@ -162,18 +162,18 @@ class User < ActiveRecord::Base
   # type should be atoms: ':ask', ':answer', ':comment', ...
   def record_event(type, target_obj)
     event_type_id = case type
-    when :ask            then 1
-    when :answer         then 2
-    when :comment        then 3
-    when :compose        then 4
-    when :vote           then 5
-    when :devote         then 6
-    when :watch          then 7
-    when :unwatch        then 8
-    when :follow         then 9
-    when :unfollow       then 10
-    when :update_profile then 11
-    when :accept         then 12
+    when :ask      then 1
+    when :answer   then 2
+    when :comment  then 3
+    when :compose  then 4
+    when :vote     then 5
+    when :devote   then 6
+    when :watch    then 7
+    when :unwatch  then 8
+    when :follow   then 9
+    when :unfollow then 10
+    when :update   then 11
+    when :accept   then 12
     else 0
     end
 

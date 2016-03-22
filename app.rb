@@ -31,6 +31,7 @@ configure do
   enable :status_no_limit
   disable :roles_no_limit
 
+  set :quoted_char_num, 140
   set :site_host, 'http://localhost:4567'
   set :public_folder, File.dirname(__FILE__) + '/public'
   use Rack::Session::Pool, expire_after: 60 * 60 * 2, http_only: true

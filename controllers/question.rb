@@ -53,28 +53,37 @@ get '/q/:qid' do |qid|
       set_just_viewed(qid)
     end
 
-    user = User.find_by(id: session[:user_id])
-
-    @watched = @q.watchers.exists?(id: session[:user_id])
-    @answered = !@q.accepted_answer.nil?
-    @hidden_mark = @q.author.id != session[:user_id] || @answered
-    @title = @q.title[0..6] + "..."
+    @watched       = @q.watchers.exists?(id: session[:user_id])
+    @answered      = !@q.accepted_answer.nil?
+    @hidden_mark   = @q.author.id != session[:user_id] || @answered
+    @title         = @q.title[0..6] + "..."
     @navbar_active = "qna"
     @page_keywords_list = @q.tags.inject("") {|sum, tag| sum << "#{tag.name} " }
-    @page_description = @q.title
+    @page_description   = @q.title
     @breadcrumb = [
       { name: "问答", url: '/' },
       { name: "问题详情", active: true }
     ]
 
+    last_edit_event = @q.get_last_edit_event
+    if @is_edited = !last_edit_event.nil?
+      @last_editor = last_edit_event.invoker
+      @last_edit_time = last_edit_event.created_at
+    end
+
     # answers order by score desc, and score must >= -2
     # MENTION! this is how to order/query a virtual attribute of activerecord
     # collection ( use `to_a` )
     @answers = @q.answers
-    @answers.select { |answer| answer.scores >= -2 }
+    @answers.select     { |answer| answer.scores >= -2 }
     @answers.to_a.sort! { |x, y| y.scores <=> x.scores }
 
-    @can_edit = (@q.author.id == session[:user_id]) || (user.role == User::Role::MODERATOR)
+    @can_edit = login? &&
+                (user = User.find_by(id: session[:user_id])) && (
+                (@q.author.id == session[:user_id]) ||
+                (user.role == User::Role::MODERATOR) )
+
+    @is_ban_commenting = (@q.status == Question::Status::NOCOMMENT)
 
     erb :question
   else
@@ -82,16 +91,48 @@ get '/q/:qid' do |qid|
   end
 end
 
+# == for ajax: edit ban commenting Status
+post '/q/:qid/toggle_comment' do |qid|
+  login_filter required_roles: [ User::Role::USER, User::Role::MODERATOR ]
+
+  if question = Question.find_by(id: qid)
+    if question.status == 0
+      question.status = 1
+    elsif question.status == 1
+      question.status = 0
+    end
+
+    if question.valid?
+      question.save
+      json ret: "success"
+    else
+      json ret: "error", msg: "状态修改失败"
+    end
+  else
+    json ret: "error", msg: "找不到此id的问题"
+  end
+end
+
 # == for ajax: edit content
 post '/q/:qid' do |qid|
-  login_filter
+  login_filter required_roles: [ User::Role::USER, User::Role::MODERATOR ]
 
+  editor = User.find_by(id: session[:user_id])
   new_content = params['content']
 
   if question = Question.find_by(id: qid)
+    # TODO: need more sophisticated validation of new content
+    old_content = question.content
+    if old_content.length > 4 * new_content.length
+      return json ret: "error", msg: "暂时规定修改后内容不得少于原文1/4"
+    end
+
     question.content = new_content
+    question.last_doer = editor
     if question.valid?
       question.save
+      editor.record_event(:update, question)
+      # TODO: editorial history (versions, text changes) should keep in log
       json ret: "success"
     else
       json ret: "error", msg: "问题更新失败"
@@ -104,7 +145,7 @@ end
 
 # == watching or unwatching a question ==
 post '/q/:qid/watch' do |qid|
-  login_filter required_roles: [ User::Role::USER, User::Role::MODERATOR ]
+  login_filter
 
   author = User.find_by(id: session[:user_id])
 

@@ -1,8 +1,12 @@
 class Question < ActiveRecord::Base
+  module Status
+    NORMAL    = 0
+    NOCOMMENT = 1
+  end
+
   # == associations ==
   # the accepted_answer foreign key is in question mod, so use 'belongs_to'
-  belongs_to :accepted_answer, class_name: "Answer",
-                               foreign_key: "accepted_answer_id"
+  belongs_to :accepted_answer, class_name: "Answer", foreign_key: "accepted_answer_id"
 
   # record the lastest doer (commentor, answerer, asker)
   # other fields: last_do_type, last_do_at
@@ -51,25 +55,41 @@ class Question < ActiveRecord::Base
     "/q/#{self.id}"
   end
 
+  def get_last_events(last_num = 1, event_type = 0)
+    # target_type = 1 means questions
+    result = Event.where(target_type: 1).where(target_id: self.id)
+
+    if event_type != 0
+      result = result.where(event_type: event_type)
+    end
+    # event_type = 0 mean all kinds of event type
+    result.order(created_at: :desc).take(last_num)
+  end
+
+  def get_last_event
+    self.get_last_events(1, 0).first
+  end
+
+  def get_last_edit_event
+    self.get_last_events(1, 11).first
+  end
+
   def self.ft_search(keys)
     # do full-text search with MySQL NGRAM ft engine
     search_str = keys.join(" ")
-    Question.where("MATCH (title,content)
-                    AGAINST ( ? IN NATURAL LANGUAGE MODE )", search_str)
+    Question.where("MATCH (title,content) AGAINST (? IN NATURAL LANGUAGE MODE)", search_str)
   end
 
   def self.ft_search_title(keys, limit = 10)
     # used in asking page
     search_str = keys.join(" ")
-    Question.where("MATCH (title) AGAINST ( ? IN NATURAL LANGUAGE MODE )",
-                    search_str).limit(limit)
+    Question.where("MATCH (title) AGAINST (? IN NATURAL LANGUAGE MODE)", search_str).limit(limit)
   end
 
   def self.ft_search_intag(keys, tag_id)
     search_str = keys.join(" ")
     Question.joins("JOIN question_tag ON question_tag.question_id = questions.id")
-            .where("question_tag.tag_id = ? AND
-                    MATCH (questions.title, questions.content)
-                    AGAINST ( ? IN NATURAL LANGUAGE MODE )", tag_id, search_str)
+            .where("question_tag.tag_id = ? AND MATCH (questions.title, questions.content)
+                    AGAINST (? IN NATURAL LANGUAGE MODE)", tag_id, search_str)
   end
 end

@@ -9,7 +9,7 @@
     </p>
     <% elsif @user.id != session[:user_id] %>
     <button class="btn btn-default btn-sm" data-toggle="modal"
-    data-target="#report-modal">投诉</button>
+    data-target="#report-modal" title="投诉"><i class="fa fa-warning"></i></button>
     <% end %>
   </div>
 </div>

@@ -143,7 +143,6 @@ post '/login' do
     session[:try_count]      = nil
     session[:delay_start]    = nil
     session[:delay_duration] = nil
-
     json ret: "success"
   else
     json ret: "error"

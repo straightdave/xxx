@@ -16,7 +16,7 @@
         </p>
         <% else %>
         <button class="btn btn-default btn-sm" data-toggle="modal"
-                data-target="#report-modal">投诉</button>
+                data-target="#report-modal" title="投诉"><i class="fa fa-warning"></i></button>
         <% end %>
       </div>
 
@@ -290,6 +290,7 @@
       </div> <!-- end of listed answers -->
 
       <hr>
+      <% if login? %>
       你的回答
       <!-- answer input box here : all col-9 width -->
       <div class="form-group">
@@ -301,6 +302,11 @@
       <a class="btn btn-primary" href="javascript:void(0);"
          onclick="javascript:do_answer(<%= @q.id %>);">提交</a>
       <div id="err_msg_ask" class="text-danger"></div>
+      <% else %>
+      请先
+      <a class="btn btn-default btn-sm"
+         href="/login?r=<%= CGI.escape(request.path) %>&w=1">登录</a> 后回答
+      <% end %>
     </div> <!-- end of col-9 -->
 
     <!-- right side ad or something others -->

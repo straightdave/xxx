@@ -7,7 +7,7 @@
       <div class="profile-pane">
         <div class="avatar">
           <img alt="<%= @user_info.nickname %>"
-               src="<%= @user_info.avatar || "/avatar.jpg"%>">
+               src="<%= @user.avatar_src %>">
         </div>
 
         <div class="namebox">
@@ -111,7 +111,7 @@
               <div class="event-avatar">
                 <a href="<%= event.user.url %>">
                   <img alt="<%= event.user.info.nickname %>"
-                       src="<%= event.user.info.avatar || "/avatar.jpg"%>">
+                       src="<%= event.user.avatar_src %>">
                 </a>
               </div>
 

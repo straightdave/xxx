@@ -19,7 +19,7 @@
     <div class="col-md-3">
       <div class="profile-pane">
         <div class="avatar">
-          <img alt="<%= @user_info.nickname %>" src="<%= @user_info.avatar || "/avatar.jpg"%>">
+          <img alt="<%= @user_info.nickname %>" src="<%= @user.avatar_src %>">
         </div>
 
         <div class="namebox">
@@ -136,7 +136,7 @@
             <div class="eventbox">
               <div class="event-avatar">
                 <img alt="<%= @user_info.nickname %>"
-                     src="<%= @user_info.avatar || "/avatar.jpg"%>">
+                     src="<%= @user.avatar_src %>">
               </div>
 
               <div class="event-author">

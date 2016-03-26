@@ -67,7 +67,7 @@
             </div>
 
             <div class="authorbox text-right">
-              <img class="avatar-sm" src="<%= @q.author.info.avatar || '/avatar.jpg' %>">
+              <img class="avatar-sm" src="<%= @q.author.avatar_src %>">
               <a href="/u/<%= @q.author.login_name %>">
                 <%= @q.author.info.nickname %>(<%= @q.author.reputation %>)
               </a>
@@ -94,7 +94,7 @@
 
             <% if @is_edited %>
             <div class="authorbox text-right">
-              <img class="avatar-sm" src="<%= @last_editor.info.avatar || '/avatar.jpg' %>">
+              <img class="avatar-sm" src="<%= @last_editor.avatar_src %>">
               <a href="<%= @last_editor.url %>">
                 <%= @last_editor.info.nickname %>(<%= @last_editor.reputation %>)
               </a>
@@ -112,15 +112,13 @@
                 <div class="single-comment">
 
                   <div class="comment-vote">
-                    <a href="javascript:void(0);"
-                       onclick="javascript:vote('vote','c',<%= c.id %>)"
-                       title="这条评论很有帮助，赞！">
+                    <a href="javascript:void(0);" title="这条评论很有帮助，赞！"
+                       onclick="javascript:vote('vote','c',<%= c.id %>)">
                       <i class="fa fa-caret-up"></i>
                     </a>
                     <span id = "c-scores-<%= c.id %>"><%= c.scores %></span>
-                    <a href="javascript:void(0);"
-                       onclick="javscript:vote('devote','c',<%= c.id %>)"
-                       title="这条评论不正确或者误导人，差评！">
+                    <a href="javascript:void(0);" title="这条评论不正确或者误导人，差评！"
+                       onclick="javscript:vote('devote','c',<%= c.id %>)">
                       <i class="fa fa-cret-down"></i>
                     </a>
                   </div> <!-- end of voting box -->
@@ -205,8 +203,8 @@
 
                   <div class="authorbox text-right">
                     <img class="avatar-sm"
-                         src="<%= a.author.info.avatar || '/avatar.jpg' %>">
-                    <a href="/u/<%= a.author.login_name %>">
+                         src="<%= a.author.avatar_src %>">
+                    <a href="<%= a.author.url %>">
                       <%= a.author.info.nickname %>(<%= a.author.reputation %>)
                     </a>
                     回答于<%= time_ago_in_words_zh(a.created_at) %>

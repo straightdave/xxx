@@ -87,6 +87,13 @@ post '/user/send_validation' do
   end
 end
 
+# === users list ===
+get '/users' do
+  @title = "Users"
+  @navbar_active = "users"
+  erb :user_all
+end
+
 # ===== login & logout =====
 get '/login' do
   log_out if login?

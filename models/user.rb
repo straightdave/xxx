@@ -86,6 +86,15 @@ class User < ActiveRecord::Base
     "/u/#{self.login_name}"
   end
 
+  def avatar_src
+    avatar_url = self.info.avatar
+    if avatar_url.empty? || !File.exists?("public#{avatar_url}")
+      "/avatar.jpg"
+    else
+      avatar_url
+    end
+  end
+
   def set_password(input_password)
     salt = Time.now.hash.to_s[ -6 .. -1 ]
     self.salt     = salt

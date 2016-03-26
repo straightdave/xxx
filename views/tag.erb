@@ -26,19 +26,15 @@
         <div class="intag-question-box">
           <% @questions.each do |q| %>
             <div class="q-title text-1_5times">
-              <a href="/q/<%= q.id %>"><%= q.title %></a>
+              <a href="<%= q.url %>"><%= q.title %></a>
             </div>
 
             <div class="q-authorinfo">
-              <a href="/u/<%= q.last_doer.login_name %>">
-                <%= q.last_doer.login_name %>
+              <a href="<%= q.get_last_doer.login_name %>">
+                <%= q.get_last_doer.login_name %>
               </a>
-              在<%= time_ago_in_words_zh(q.last_do_at) %>
-              <% if q.last_do_type == 0 %>
-              提问
-              <% elsif q.last_do_type == 1 %>
-              回答
-              <% end %>
+              在<%= time_ago_in_words_zh(q.get_last_event.created_at) %>
+              <%= q.get_last_event.event_type_zh %>
             </div>
 
             <div class="q-content">
@@ -104,7 +100,7 @@
         <h5>热门砖家</h5>
         <% @top_experts.each do |e| %>
           <div class="listed-expert">
-            <img class="listed-avatar" src="<%= e.info.avatar || '/avatar.jpg'%>"
+            <img class="listed-avatar" src="<%= e.avatar_src %>"
                  alt="<%= e.login_name %>" />
             <div class="listed-info">
               <span class="listed-name">

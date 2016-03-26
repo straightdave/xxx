@@ -10,7 +10,7 @@ class Question < ActiveRecord::Base
 
   # record the lastest doer (commentor, answerer, asker)
   # other fields: last_do_type, last_do_at
-  belongs_to :last_doer, class_name: "User", foreign_key: "last_doer_id"
+  #belongs_to :last_doer, class_name: "User", foreign_key: "last_doer_id"
 
   has_many :comments, as: :commentable
   has_many :votes, as: :votable
@@ -60,17 +60,23 @@ class Question < ActiveRecord::Base
     result = Event.where(target_type: 1).where(target_id: self.id)
 
     if event_type != 0
+      # event type = 0 - all kinds of events
       result = result.where(event_type: event_type)
     end
-    # event_type = 0 mean all kinds of event type
     result.order(created_at: :desc).take(last_num)
   end
 
   def get_last_event
+    # 0 - all kinds of events
     self.get_last_events(1, 0).first
   end
 
+  def get_last_doer
+    self.get_last_event.invoker
+  end
+
   def get_last_edit_event
+    # 11 - edit events
     self.get_last_events(1, 11).first
   end
 

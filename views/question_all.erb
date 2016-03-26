@@ -1,0 +1,103 @@
+<div class="container">
+
+  <div>
+    <img src="/logo.png" class="logo-home-head" alt="韩非子说"/>
+  </div>
+
+  <div class="row">
+    <div class="col-md-9">
+      <ul class="nav nav-tabs tabs-right">
+        <li role="presentation" class="<%= 'active' if @sorting == 'vote' %>">
+          <a href="/questions?sort=vote" title="most score">得分最高</a>
+        </li>
+        <li role="presentation" class="<%= 'active' if @sorting == 'active' %>">
+          <a href="/questions?sort=active" title="most active">最近活动</a>
+        </li>
+        <li role="presentation" class="<%= 'active' if @sorting == 'newest' %>">
+          <a href="/questions" title="newest">最新</a>
+        </li>      
+      </ul>
+
+      <% @questions.each do |q| %>
+        <div class="listed-question">
+          <div class="rank">
+            <div class="votes">
+              <%= q.scores %><small>得分</small>
+            </div>
+            <div <% if q.accepted_answer_id != 0 %>
+                      class="answered"
+                 <% elsif q.answers.length > 0 %>
+                      class="answers"
+                 <% end %> >
+              <%= q.answers.length %><small>回答</small>
+            </div>
+            <div class="views">
+              <%= q.views %><small>浏览</small>
+            </div>
+          </div>
+
+          <div class="question">
+            <div class="user">
+              <a href="<%= q.get_last_event.invoker.url %>">
+                <%= q.get_last_event.invoker.info.nickname %>
+              </a>
+              在<%= time_ago_in_words_zh(q.get_last_event.created_at) %>
+              <%= q.get_last_event.event_type_zh %>
+            </div>
+            <div class="title">
+              <a href="<%= q.url %>"><%= q.title %></a>
+              <% q.tags.each do |t| %>
+                <span class="q_tag"><%= t.name %></span>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- pager -->
+      <div class="pager2">
+        <ul class="pagination pagination-sm">
+          <% if @page <= 1 %>
+            <li class="disabled"><a href="javascript:void(0);">&laquo;</a></li>
+          <% else %>
+            <li>
+              <a href="javascript:void(0);"
+               onclick="javascript:pager_move(<%= @page - 1 %>);">&laquo;</a>
+            </li>
+          <% end %>
+
+          <% (1 .. @total_page).each do |pno| %>
+            <% if pno == @page %>
+              <li class="active">
+                <a href="javascript:void(0);"><%= pno %></a>
+              </li>
+            <% else %>
+              <li>
+                <a href="javascript:void(0);"
+                   onclick="javascript:pager_move(<%= pno %>);">
+                  <%= pno %>
+                </a>
+              </li>
+            <% end %>
+          <% end %>
+
+          <% if @page < @total_page %>
+            <li>
+              <a href="javascript:void(0);"
+                 onclick="javascript:pager_move(<%= @page + 1 %>);">&raquo;</a>
+            </li>
+          <% else %>
+            <li class="disabled"><a href="javascript:void(0);">&raquo;</a></li>
+          <% end %>
+        </ul>
+      </div> <!-- end of pager -->
+
+    </div> <!-- end of col-9 -->
+
+    <div class="col-md-3">
+      <%= render_ad %>
+      <%= render_job_posts %>
+    </div>
+
+  </div> <!-- end of row -->
+</div>

@@ -21,9 +21,8 @@ get '/' do
   # TODO: later we could find better way to count how hot tags are
   @hot_tags = Tag.top_used(20)
 
-  @title         = "首页"
-  @navbar_active = "qna"
+  @title          = "首页"
+  @navbar_active  = "qna"
   @hide_jumbotron = true if login?
-
   erb :home
 end

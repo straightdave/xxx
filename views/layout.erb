@@ -48,8 +48,18 @@
             <!-- nav tabs near logo -->
             <ul class="nav navbar-nav">
               <li <% if @navbar_active == "qna" %>class="active"<% end %>>
-                <a href="/" title="Q&A page (Homepage)">
-                  <i class="fa fa-home"></i>&nbsp;问答
+                <a href="/" title="Homepage">
+                  <i class="fa fa-home"></i>&nbsp;首页
+                </a>
+              </li>
+              <li <% if @navbar_active == "qs" %>class="active"<% end %>>
+                <a href="/questions" title="All questions">
+                  <i class="fa fa-question"></i>&nbsp;问题
+                </a>
+              </li>
+              <li <% if @navbar_active == "users" %>class="active"<% end %>>
+                <a href="/users" title="All users">
+                  <i class="fa fa-users"></i>&nbsp;用户
                 </a>
               </li>
               <li <% if @navbar_active == "tags" %>class="active"<% end %>>

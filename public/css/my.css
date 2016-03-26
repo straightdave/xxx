@@ -77,8 +77,9 @@ ol.breadcrumb {
   margin-right: 50px;
   padding: 10px;
 }
-.myjumbotron-home img.logo-home-head {
+img.logo-home-head {
   width: 200px;
+  margin-bottom: 30px;
 }
 .myjumbotron-home p {
   font-size: 1.2em;
@@ -706,4 +707,8 @@ ul.help-list li {
   text-decoration: none;
   display: block;
   margin: 5px 0;
+}
+
+ul.tabs-right li {
+  float: right;
 }

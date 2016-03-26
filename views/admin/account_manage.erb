@@ -53,7 +53,11 @@
           </tr>
           <tr>
             <td>头像</td>
-            <td><img src="<%= @user.info.avatar %>" alt="<%= @user.login_name %>" /></td>
+            <td>
+              <img src="<%= @user.avatar_src %>" alt="<%= @user.login_name %>" /><br />
+              SRC in DB: "<%= @user.info.avatar %>"
+            </br/>
+            </td>
           </tr>
           <tr>
             <td>自我介绍</td><td><%= @user.info.intro %></td>

@@ -21,10 +21,6 @@ post '/ask' do
   new_q.author  = author
   new_q.watchers << author # add to author's watching list by default
 
-  new_q.last_doer    = author
-  new_q.last_do_type = 0 # 0 means asking
-  new_q.last_do_at   = Time.now
-
   params['tags'].split(',').each do |t|
     tag = Tag.find_or_create_by(name: t)
     tag.used += 1
@@ -43,6 +39,40 @@ post '/ask' do
   json ret: "success", msg: new_q.id
 end
 
+# == questions ==
+get '/questions' do
+  if !(@sorting = params['sort']) || !(['newest', 'vote', 'active'].include?(@sorting))
+    @sorting = 'newest'
+  end
+
+  if !(slice = params['slice']) || (slice.to_i < 0)
+    slice = 50
+  end
+
+  if !(@page = params['page']) || (@page.to_i < 0)
+    @page = 1
+  end
+
+  @questions = Question.all.to_a
+  @questions = case @sorting
+  when 'vote'
+    @questions.sort { |a, b| b.scores <=> a.scores }
+  when 'newest'
+    @questions.sort { |a, b| b.created_at <=> a.created_at }
+  when 'active'
+    @questions.sort { |a, b| b.updated_at <=> a.updated_at }
+  end
+
+  total_questions = Question.count
+  @total_page = total_questions / 50
+  if total_questions % 50 != 0
+    @total_page += 1
+  end
+
+  @title         = "所有问题"
+  @navbar_active = "qs"
+  erb :question_all
+end
 
 # == display a question ==
 get '/q/:qid' do |qid|
@@ -128,7 +158,6 @@ post '/q/:qid' do |qid|
     end
 
     question.content = new_content
-    question.last_doer = editor
     if question.valid?
       question.save
       editor.record_event(:update, question)
@@ -207,9 +236,6 @@ post '/q/:qid/answer' do |qid|
   answer.question = q
   answer.content = content
   q.watchers << author
-  q.last_doer = author
-  q.last_do_type = 1    # 1 means answering
-  q.last_do_at = Time.now
 
   if answer.valid? && q.valid?
     answer.save

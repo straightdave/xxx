@@ -88,7 +88,7 @@ class User < ActiveRecord::Base
 
   def avatar_src
     avatar_url = self.info.avatar
-    if avatar_url.empty? || !File.exists?("public#{avatar_url}")
+    if avatar_url.nil? || avatar_url.empty? || !File.exists?("public#{avatar_url}")
       "/avatar.jpg"
     else
       avatar_url
@@ -166,6 +166,11 @@ class User < ActiveRecord::Base
     ret.limit number
   end
 
+  def get_top_expert_tags_string(number)
+    tags = self.top_expert_tags(number)
+    tags.inject { |str, x| str += x.name + ', ' }
+  end
+
   # user event recording
   # a user can use 'build' built-in method but here provided another one
   # type should be atoms: ':ask', ':answer', ':comment', ...
@@ -213,10 +218,6 @@ class User < ActiveRecord::Base
     self.events.order(created_at: :desc)
                .limit(num_per_slice)
                .offset(num_per_slice * part_no)
-  end
-
-  def admin?
-    self.role == Role::ADMIN || self.role == Role::SUPERADMIN
   end
 
   # privileges check

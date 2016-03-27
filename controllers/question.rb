@@ -45,11 +45,11 @@ get '/questions' do
     @sorting = 'newest'
   end
 
-  if !(slice = params['slice']) || (slice.to_i < 0)
+  if !(slice = params['slice']) || (slice.to_i <= 0)
     slice = 50
   end
 
-  if !(@page = params['page']) || (@page.to_i < 0)
+  if !(@page = params['page']) || (@page.to_i <= 0)
     @page = 1
   end
 
@@ -64,8 +64,8 @@ get '/questions' do
   end
 
   total_questions = Question.count
-  @total_page = total_questions / 50
-  if total_questions % 50 != 0
+  @total_page = total_questions / slice
+  if total_questions % slice != 0
     @total_page += 1
   end
 

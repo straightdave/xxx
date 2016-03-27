@@ -18,4 +18,8 @@ helpers do
   def render_edit_modal(type, id)
     erb :partial_edit_modal, layout: false, locals: { item_type: type, item_id: id }
   end
+
+  def render_pager
+    erb :partial_pager, layout: false
+  end
 end

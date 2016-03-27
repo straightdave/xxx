@@ -712,3 +712,30 @@ ul.help-list li {
 ul.tabs-right li {
   float: right;
 }
+
+/* all user page */
+img.avatar-listed {
+  width: 60px;
+  height: 60px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px 0;
+  margin-right: 10px;
+}
+
+div.listed-users {
+  margin: 30px 10px;
+}
+
+div.listed-user {
+  margin: 20px 10px;
+  width: 250px;
+  float: left;
+}
+
+div.listed-user div {
+  float: left;
+}
+
+div.listed-user div.user-detail {
+  margin-left: 5px;
+}

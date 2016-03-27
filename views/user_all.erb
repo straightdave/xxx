@@ -1,3 +1,36 @@
 <div class="container">
-  <h3>All Users</h3>
+  <p>
+    按照声望排序的所有用户列表
+  </p>
+
+  <div class="listed-users">
+    <% @users.each do |user| %>
+    <div class="listed-user">
+      <div>
+        <img class="avatar-listed" src="<%= user.avatar_src %>" alt="<%= user.login_name %>" />
+      </div>
+
+      <div class="user-detail">
+        <a class="anchor-username" href="<%= user.url %>">
+          <%= user.info.nickname %> (声望 <%= user.reputation %>)
+        </a>
+
+        <p>
+
+
+
+
+          注册于 <%= time_ago_in_words_zh(user.created_at) %>  <br />
+          <%= user.get_top_expert_tags_string(5) %>
+        </p>
+      </div>
+
+
+    </div>
+    <% end %>
+  </div>
+  <div class="clear"></div>
+
+  <%= render_pager %>
+
 </div>

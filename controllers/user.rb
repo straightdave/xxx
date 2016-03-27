@@ -89,7 +89,24 @@ end
 
 # === users list ===
 get '/users' do
-  @title = "Users"
+  if !(slice = params['slice']) || (slice.to_i <= 0)
+    slice = 100
+  end
+
+  if !(@page = params['page']) || (@page.to_i <= 0)
+    @page = 1
+  end
+
+  @users = User.order(reputation: :desc)
+               .limit(slice).offset(slice * (@page - 1))
+
+  total_users = User.count
+  @total_page = total_users / slice
+  if total_users % slice != 0
+    @total_page += 1
+  end
+
+  @title         = "所有用户"
   @navbar_active = "users"
   erb :user_all
 end

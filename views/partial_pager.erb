@@ -5,8 +5,9 @@
       <li class="disabled"><a href="javascript:void(0);">&laquo;</a></li>
     <% else %>
       <li>
-        <a href="javascript:void(0);"
-         onclick="javascript:pager_move(<%= @page - 1 %>);">&laquo;</a>
+        <a href="javascript:void(0);" onclick="javascript:pager_move(<%= @page - 1 %>);">
+          &laquo;
+        </a>
       </li>
     <% end %>
 
@@ -17,8 +18,7 @@
         </li>
       <% else %>
         <li>
-          <a href="javascript:void(0);"
-             onclick="javascript:pager_move(<%= pno %>);">
+          <a href="javascript:void(0);" onclick="javascript:pager_move(<%= pno %>);">
             <%= pno %>
           </a>
         </li>
@@ -27,8 +27,9 @@
 
     <% if @page < @total_page %>
       <li>
-        <a href="javascript:void(0);"
-           onclick="javascript:pager_move(<%= @page + 1 %>);">&raquo;</a>
+        <a href="javascript:void(0);" onclick="javascript:pager_move(<%= @page + 1 %>);">
+          &raquo;
+        </a>
       </li>
     <% else %>
       <li class="disabled"><a href="javascript:void(0);">&raquo;</a></li>

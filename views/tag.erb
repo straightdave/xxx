@@ -55,46 +55,7 @@
           <% end %>
         </div>
 
-
-        <div class="pager2">
-          <ul class="pagination pagination-sm">
-            <% if @page <= 1 %>
-              <li class="disabled"><a href="javascript:void(0);">&laquo;</a></li>
-            <% else %>
-              <li>
-                <a href="javascript:void(0);"
-                 onclick="javascript:pager_move(<%= @page - 1 %>);">&laquo;</a>
-              </li>
-            <% end %>
-
-            <% (1 .. @total_page).each do |pno| %>
-              <% if pno == @page %>
-                <li class="active">
-                  <a href="javascript:void(0);"><%= pno %></a>
-                </li>
-              <% else %>
-                <li>
-                  <a href="javascript:void(0);"
-                     onclick="javascript:pager_move(<%= pno %>);">
-                    <%= pno %>
-                  </a>
-                </li>
-              <% end %>
-            <% end %>
-
-            <% if @page < @total_page %>
-              <li>
-                <a href="javascript:void(0);"
-                   onclick="javascript:pager_move(<%= @page + 1 %>);">&raquo;</a>
-              </li>
-            <% else %>
-              <li class="disabled"><a href="javascript:void(0);">&raquo;</a></li>
-            <% end %>
-
-          </ul>
-        </div>
-
-
+        <%= render_pager %>
       </div>
 
     </div>

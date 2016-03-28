@@ -38,17 +38,17 @@
         <div class="listed-question">
           <div class="rank">
             <div class="votes">
-              <%= q.scores %><small>得分</small>
+              <%= get_format_number(q.scores) %><small>得分</small>
             </div>
             <div <% if q.accepted_answer_id != 0 %>
                       class="answered"
                  <% elsif q.answers.length > 0 %>
                       class="answers"
                  <% end %> >
-              <%= q.answers.length %><small>回答</small>
+              <%= get_format_number(q.answers.length) %><small>回答</small>
             </div>
             <div class="views">
-              <%= q.views %><small>浏览</small>
+              <%= get_format_number(q.views) %><small>浏览</small>
             </div>
           </div>
 
@@ -61,7 +61,7 @@
               <%= q.get_last_event.event_type_zh %>
             </div>
             <div class="title">
-              <a href="/q/<%= q.id %>"><%= q.title %></a>
+              <a href="<%= q.url %>"><%= q.title %></a>
               <% q.tags.each do |t| %>
                 <span class="q_tag"><%= t.name %></span>
               <% end %>
@@ -86,13 +86,13 @@
       <%= render_ad %>
 
       <div class="tags">
-          <h6>热门标签</h6>
-          <% @hot_tags.each do |t| %>
-            <a href="javascript:void(0);" class="tag"
-               onclick="javascript:go_tag(<%= t.id %>);">
-              <%= t.name %>
-            </a>
-          <% end %>
+        <h6>热门标签</h6>
+        <% @hot_tags.each do |t| %>
+          <a href="javascript:void(0);" class="tag"
+             onclick="javascript:go_tag(<%= t.id %>);">
+            <%= t.name %>
+          </a>
+        <% end %>
       </div>
 
       <%= render_job_posts %>

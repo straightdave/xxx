@@ -23,7 +23,7 @@
         <div class="listed-question">
           <div class="rank">
             <div class="votes">
-              <%= q.scores %><small>得分</small>
+              <%= get_format_number(q.scores) %><small>得分</small>
             </div>
             <div <% if q.accepted_answer_id != 0 %>
                       class="answered"

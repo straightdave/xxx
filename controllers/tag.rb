@@ -39,6 +39,11 @@ get '/t/:tid' do |tid|
   # find top 5 experts for this tag
   @top_experts = @tag.top_experts 5
 
+  # edit by moderators
+  @can_edit = login? &&
+              (user = User.find_by(id: session[:user_id])) &&
+              (user.role == User::Role::MODERATOR)
+
   @title = "标签：#{ @tag.name }"
   @navbar_active = "tags"
   @breadcrumb = [
@@ -47,6 +52,33 @@ get '/t/:tid' do |tid|
     { name: "#{ @tag.name }", active: true }
   ]
   erb :tag
+end
+
+# update tags by moderators
+post '/t/:tid' do |tid|
+  login_filter required_roles: [ User::Role::MODERATOR ]
+  unless tag = Tag.find_by(id: tid)
+    return json ret: "error", msg: "tag_error"
+  end
+
+  old_name = tag.name
+  old_desc = tag.desc
+
+  tag.name = params['tname']
+  tag.desc = params['tdesc']
+  if tag.valid?
+    tag.save
+
+    AdminLog.create(
+      :user_id => get_user_id,
+      :log_text => "Moderator #{get_login_name} \
+      修改了tag #{old_name}, name: #{old_name} => #{tag.name}, #{old_desc} => #{tag.desc}"
+    )
+
+    json ret: "success", msg: tag.id
+  else
+    json ret: "error", msg: "failed"
+  end
 end
 
 # ajax call: create a tag

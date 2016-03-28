@@ -601,4 +601,17 @@ function save_edit(strType, id) {
       }
     });
   }
+  else if (strType == 't') {
+    var name = $("input[name='tagname']").val();
+    var desc = $("textarea[name='tagdesc']").val();
+
+    $.post('/t/' + id, { 'tname' : name, 'tdesc' : desc }, function (data, status) {
+      if(data.ret == "success") {
+        location.replace(location.href);
+      }
+      else {
+        alert(data.msg);
+      }
+    });
+  }
 }

@@ -148,9 +148,17 @@ post '/q/:qid' do |qid|
   login_filter required_roles: [ User::Role::USER, User::Role::MODERATOR ]
 
   editor = User.find_by(id: session[:user_id])
+  if editor.role == User::Role::USER && editor.reputation < 25
+    return json ret: "error", msg: "声望超过25才可以修改"
+  end
+
   new_content = params['content']
 
   if question = Question.find_by(id: qid)
+    if editor.role == User::Role::USER && quesiton.is_edited
+      return json ret: "error", msg: "已经修改过一次了"
+    end
+
     # TODO: need more sophisticated validation of new content
     old_content = question.content
     if old_content.length > 4 * new_content.length
@@ -158,6 +166,10 @@ post '/q/:qid' do |qid|
     end
 
     question.content = new_content
+
+    # normal user can only edit once (for now: Mar.28, 2016)
+    question.is_edited = true if editor.role == User::Role::USER
+
     if question.valid?
       question.save
       editor.record_event(:update, question)

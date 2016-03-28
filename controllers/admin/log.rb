@@ -22,9 +22,9 @@ get '/admin/log' do
   end
 
   # paging
-  @page    = params['page'].to_i || 1
+  @page     = params['page'].to_i || 1
   @page_num = params['pnum'].to_i || 20
-  @page    = 1  if @page <= 0
+  @page     = 1  if @page <= 0
   @page_num = 20 if @page_num < 1
 
   @page_count = (logs.count / @page_num) + (logs.count % @page_num != 0 ? 1 : 0)

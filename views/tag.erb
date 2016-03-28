@@ -1,3 +1,6 @@
+<!-- modal of edit tag -->
+<%= render_tag_edit_modal %>
+
 <div class="container">
   <div class="row">
     <div class="col-md-9">
@@ -10,6 +13,13 @@
           <%= @tag.desc || "暂无简介" %>
         </p>
       </blockquote>
+
+      <% if @can_edit %>
+      <a href="javascript:void(0);" data-toggle="modal" class="comment-btn"
+         data-target="#tag-edit-modal">
+        <i class="fa fa-edit"></i>&nbsp;修改
+      </a>
+      <% end %>
 
       <div class="intag-questions-pane">
         <ul class="nav nav-tabs">
@@ -30,7 +40,7 @@
             </div>
 
             <div class="q-authorinfo">
-              <a href="<%= q.get_last_doer.login_name %>">
+              <a href="<%= q.get_last_doer.url %>">
                 <%= q.get_last_doer.login_name %>
               </a>
               在<%= time_ago_in_words_zh(q.get_last_event.created_at) %>
@@ -106,7 +116,7 @@
               <span class="listed-name">
                 <%= e.info.nickname %> (标签得分 <%= e.get_expert_score(@tag.id) %>)
               </span>
-              <a href="/u/<%= e.login_name %>">
+              <a href="<%= e.url %>">
                 <span class="listed-intro">@<%= e.login_name %></span>
               </a>
             </div>

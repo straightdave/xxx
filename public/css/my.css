@@ -305,6 +305,9 @@ textarea.commentbox {
 a.comment-btn:hover {
   text-decoration: none;
 }
+a.comment-btn:focus {
+  text-decoration: none;
+}
 
 div.comments {
   margin-top: 10px;

@@ -15,8 +15,12 @@ helpers do
     erb :partial_report_modal, layout: false, locals: { item_type: type, item_id: id }
   end
 
-  def render_edit_modal(type, id)
-    erb :partial_edit_modal, layout: false, locals: { item_type: type, item_id: id }
+  def render_edit_modal
+    erb :partial_edit_modal, layout: false
+  end
+
+  def render_tag_edit_modal
+    erb :partial_tag_edit_modal, layout: false
   end
 
   def render_pager

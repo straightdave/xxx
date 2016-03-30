@@ -16,6 +16,22 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `admin_logs`
+--
+
+DROP TABLE IF EXISTS `admin_logs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `admin_logs` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `log_text` varchar(255) NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `answers`
 --
 
@@ -27,6 +43,7 @@ CREATE TABLE `answers` (
   `question_id` int(10) unsigned NOT NULL,
   `user_id` int(10) unsigned NOT NULL,
   `content` text,
+  `scores` mediumint(8) unsigned DEFAULT '0',
   `status` tinyint(3) unsigned DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
@@ -82,6 +99,7 @@ CREATE TABLE `comments` (
   `commentable_id` int(10) unsigned NOT NULL,
   `commentable_type` varchar(50) NOT NULL,
   `content` text NOT NULL,
+  `scores` mediumint(8) unsigned DEFAULT '0',
   `status` tinyint(3) unsigned DEFAULT '0' COMMENT '0-normal;1-deleted;',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
@@ -104,7 +122,7 @@ CREATE TABLE `events` (
   `target_id` int(10) unsigned NOT NULL,
   `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -184,11 +202,11 @@ DROP TABLE IF EXISTS `jobs`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `jobs` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `privilege` tinyint(3) unsigned DEFAULT '0',
   `title` varchar(50) NOT NULL,
   `company` varchar(50) NOT NULL COMMENT 'todo: use company_id FK instead',
-  `base_at` varchar(50) NOT NULL,
+  `location` varchar(50) NOT NULL,
   `content` text NOT NULL,
+  `rank` tinyint(3) unsigned DEFAULT '0',
   `hits` smallint(5) unsigned DEFAULT '0',
   `expired_at` datetime DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
@@ -214,7 +232,7 @@ CREATE TABLE `mail_logs` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -253,7 +271,7 @@ CREATE TABLE `messages` (
   `isread` tinyint(1) DEFAULT '0',
   `isdelete` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -285,7 +303,7 @@ CREATE TABLE `question_tag` (
   `question_id` int(10) unsigned NOT NULL,
   `tag_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -301,18 +319,17 @@ CREATE TABLE `questions` (
   `user_id` int(10) unsigned DEFAULT NULL,
   `content` text,
   `views` mediumint(8) unsigned DEFAULT '0',
+  `scores` mediumint(8) unsigned DEFAULT '0',
   `accepted_answer_id` int(10) unsigned DEFAULT '0',
-  `last_doer_id` int(10) unsigned DEFAULT '0',
-  `last_do_type` tinyint(3) unsigned DEFAULT '0' COMMENT '0-ask;1-answer;2-comment',
-  `last_do_at` datetime DEFAULT NULL,
-  `status` tinyint(3) unsigned DEFAULT '0',
+  `status` tinyint(3) unsigned DEFAULT '0' COMMENT '0-normal;1-no_commenting',
   `is_reported` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `is_edited` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   FULLTEXT KEY `ft_index` (`title`,`content`) /*!50100 WITH PARSER `ngram` */ ,
   FULLTEXT KEY `ft_index_title` (`title`) /*!50100 WITH PARSER `ngram` */ 
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -331,7 +348,7 @@ CREATE TABLE `reports` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -353,7 +370,7 @@ CREATE TABLE `tags` (
   UNIQUE KEY `name` (`name`),
   FULLTEXT KEY `ft_index_tags` (`name`,`desc`) /*!50100 WITH PARSER `ngram` */ ,
   FULLTEXT KEY `ft_index_tags_name` (`name`) /*!50100 WITH PARSER `ngram` */ 
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -380,7 +397,7 @@ CREATE TABLE `user_info` (
   PRIMARY KEY (`id`),
   KEY `fk_uid` (`user_id`),
   CONSTRAINT `user_info_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -429,6 +446,7 @@ CREATE TABLE `users` (
   `vcode` varchar(255) DEFAULT NULL,
   `salt` varchar(255) NOT NULL,
   `status` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `role` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `is_reported` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `reputation` mediumint(8) unsigned DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
@@ -470,7 +488,7 @@ CREATE TABLE `watching_list` (
   `user_id` int(10) unsigned NOT NULL,
   `question_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -482,4 +500,4 @@ CREATE TABLE `watching_list` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-02-29  0:50:05
+-- Dump completed on 2016-03-31  0:09:08

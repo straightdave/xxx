@@ -16,21 +16,16 @@
         </a>
 
         <p>
-
-
-
-
           注册于 <%= time_ago_in_words_zh(user.created_at) %>  <br />
           <%= user.get_top_expert_tags_string(5) %>
         </p>
       </div>
-
 
     </div>
     <% end %>
   </div>
   <div class="clear"></div>
 
-  <%= render_pager %>
+  <%= render_pager_full %>
 
 </div>

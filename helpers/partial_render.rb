@@ -26,4 +26,8 @@ helpers do
   def render_pager
     erb :partial_pager, layout: false
   end
+
+  def render_pager_full
+    erb :partial_pager_full, layout: false
+  end
 end

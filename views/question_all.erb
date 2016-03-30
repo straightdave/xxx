@@ -8,14 +8,17 @@
   <div class="row">
     <div class="col-md-9">
       <ul class="nav nav-tabs tabs-right">
-        <li role="presentation" class="<%= 'active' if @sorting == 'vote' %>">
-          <a href="/questions?sort=vote" title="most score">得分最高</a>
+        <li role="presentation" class="<%= 'active' if @sort == 'vote' %>">
+          <a href="javascript:void(0);" onclick="javascript:sort_by('vote');"
+             title="most score">得分最高</a>
         </li>
-        <li role="presentation" class="<%= 'active' if @sorting == 'active' %>">
-          <a href="/questions?sort=active" title="most active">最近活动</a>
+        <li role="presentation" class="<%= 'active' if @sort == 'active' %>">
+          <a href="javascript:void(0);" onclick="javascript:sort_by('active');"
+             title="most active">最近活动</a>
         </li>
-        <li role="presentation" class="<%= 'active' if @sorting == 'newest' %>">
-          <a href="/questions" title="newest">最新</a>
+        <li role="presentation" class="<%= 'active' if @sort == 'newest' %>">
+          <a href="javascript:void(0);" onclick="javascript:sort_by('newest');"
+             title="newest">最新</a>
         </li>
       </ul>
 
@@ -55,7 +58,7 @@
         </div>
       <% end %>
 
-      <%= render_pager %>
+      <%= render_pager_full %>
 
     </div> <!-- end of col-9 -->
 

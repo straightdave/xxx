@@ -1,12 +1,4 @@
 module Votability
-  def scores
-    return @t_score unless @t_score.nil?
-
-    @t_scores = 0
-    votes.each { |v| @t_scores += v.points } if votes && !votes.empty?
-    @t_scores
-  end
-
   def scores=(new_val)
     @t_score = new_val
   end
@@ -14,6 +6,7 @@ module Votability
   # when object get voted, author will get some praises:
   # update reputation and all corresponding expertises
   def get_voted
+    self.scores += 1
     self.author.update_reputation(2)
 
     if self.is_a?(Comment)
@@ -32,7 +25,9 @@ module Votability
   end
 
   def get_devoted
+    self.scores -= 1
     self.author.update_reputation(-2)
+    
     self.author.expertises.where(tag_id: get_tids).all.each do |e|
       e.devoted_once
     end

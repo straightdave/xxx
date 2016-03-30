@@ -1,0 +1,133 @@
+<!--
+pager: full version
+- with '...' in the mid if too many pages
+- slice number chooser
+
+same interface with old pager(simple one):
+@page: current page
+@total_page: total count of pages
+@slice: activate tab of chosen slice
+-->
+<div class="pager-full">
+  <div class="pager-paging" style="float: left;">
+
+    <ul class="pagination pagination-sm">
+      <li <% if @page <= 1 %>class="disabled"<% end %>>
+        <a href="javascript:page_move(<%= @page - 1 %>)">&laquo;</a>
+      </li>
+
+      <% if @total_page <= 2 * 2 + 1 %>
+
+        <% (1 .. @total_page).each do |pno| %>
+        <li <% if @page == pno %>class="active"<% end %>>
+          <a href="javascript:void(0);"
+            <% if @page != pno %>
+            onclick="javascript:pager_move(<%= pno %>);"
+            <% end %>>
+            <%= pno %>
+          </a>
+        </li>
+        <% end %>
+
+      <% else %>
+
+        <% if @page > 2 + 1 && @page < @total_page - 2 %>
+
+          <li>
+            <a href="javascript:void(0);" onclick="javascript:pager_move(1);">1</a>
+          </li>
+          <li>
+            <a>...</a>
+          </li>
+
+          <% (@page - 2 .. @page + 2).each do |pno| %>
+          <li <% if @page == pno %>class="active"<% end %>>
+            <a href="javascript:void(0);"
+              <% if @page != pno %>
+              onclick="javascript:pager_move(<%= pno %>);"
+              <% end %>>
+              <%= pno %>
+            </a>
+          </li>
+          <% end %>
+
+          <li>
+            <a>...</a>
+          </li>
+          <li>
+            <a href="javascript:void(0);" onclick="javascript:pager_move(<%= @total_page %>);">
+              <%= @total_page %>
+            </a>
+          </li>
+
+        <% elsif @page < @total_page - 2 && @page <= 2 + 1 %>
+
+          <% (1 .. 5).each do |pno| %>
+          <li <% if @page == pno %>class="active"<% end %>>
+            <a href="javascript:void(0);"
+              <% if @page != pno %>
+              onclick="javascript:pager_move(<%= pno %>);"
+              <% end %>>
+              <%= pno %>
+            </a>
+          </li>
+          <% end %>
+
+          <li>
+            <a>...</a>
+          </li>
+          <li>
+            <a href="javascript:void(0);" onclick="javascript:pager_move(<%= @total_page %>);">
+              <%= @total_page %>
+            </a>
+          </li>
+
+        <% elsif @page > 2 + 1 && @page >= @total_page - 2 %>
+
+          <li>
+            <a href="javascript:void(0);" onclick="javascript:pager_move(1);">1</a>
+          </li>
+          <li>
+            <a>...</a>
+          </li>
+
+          <% (@total_page - 4 .. @total_page).each do |pno| %>
+          <li <% if @page == pno %>class="active"<% end %>>
+            <a href="javascript:void(0);"
+              <% if @page != pno %>
+              onclick="javascript:pager_move(<%= pno %>);"
+              <% end %>>
+              <%= pno %>
+            </a>
+          </li>
+          <% end %>
+
+        <% end %>
+
+      <% end %>
+
+      <li <% if @page >= @total_page %>class="disabled"<% end %>>
+        <a href="javascript:pager_move(<%= @page + 1 %>);">&raquo;</a>
+      </li>
+    </ul>
+
+
+  </div><!-- end of paging box -->
+
+
+  <div class="pager-slice-chooser" style="float:right;">
+    <ul class="pagination pagination-sm">
+      <li <% if @slice == 50 %>class="active"<% end %>>
+        <a href="javascript:void(0);" onclick="javascript:pager_slice(50);">50</a>
+      </li>
+      <li <% if @slice == 100 %>class="active"<% end %>>
+        <a href="javascript:void(0);" onclick="javascript:pager_slice(100);">100</a>
+      </li>
+      <li <% if @slice == 200 %>class="active"<% end %>>
+        <a href="javascript:void(0);" onclick="javascript:pager_slice(200);">200</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="clear"></div>
+</div> <!-- end of pager -->

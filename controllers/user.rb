@@ -89,20 +89,24 @@ end
 
 # === users list ===
 get '/users' do
-  if !(slice = params['slice']) || (slice.to_i <= 0)
-    slice = 100
+  if !(@slice = params['slice']) || (@slice.to_i <= 0)
+    @slice = 100
+  else
+    @slice = @slice.to_i
   end
 
   if !(@page = params['page']) || (@page.to_i <= 0)
     @page = 1
+  else
+    @page = @page.to_i
   end
 
   @users = User.order(reputation: :desc)
-               .limit(slice).offset(slice * (@page - 1))
+               .limit(@slice).offset(@slice * (@page - 1))
 
   total_users = User.count
-  @total_page = total_users / slice
-  if total_users % slice != 0
+  @total_page = total_users / @slice
+  if total_users % @slice != 0
     @total_page += 1
   end
 

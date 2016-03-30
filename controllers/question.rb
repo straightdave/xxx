@@ -41,31 +41,34 @@ end
 
 # == questions ==
 get '/questions' do
-  if !(@sorting = params['sort']) || !(['newest', 'vote', 'active'].include?(@sorting))
-    @sorting = 'newest'
+  if !(@sort = params['sort']) || !(['newest', 'vote', 'active'].include?(@sort))
+    @sort = 'newest'
   end
 
-  if !(slice = params['slice']) || (slice.to_i <= 0)
-    slice = 50
+  if !(@slice = params['slice']) || (@slice.to_i <= 0)
+    @slice = 50
+  else
+    @slice = @slice.to_i
   end
 
   if !(@page = params['page']) || (@page.to_i <= 0)
     @page = 1
+  else
+    @page = @page.to_i
   end
 
-  @questions = Question.all.to_a
-  @questions = case @sorting
+  @questions = case @sort
   when 'vote'
-    @questions.sort { |a, b| b.scores <=> a.scores }
+    Question.order(scores: :desc).limit(@slice).offset(@slice * (@page - 1))
   when 'newest'
-    @questions.sort { |a, b| b.created_at <=> a.created_at }
+    Question.order(created_at: :desc).limit(@slice).offset(@slice * (@page - 1))
   when 'active'
-    @questions.sort { |a, b| b.updated_at <=> a.updated_at }
+    Question.order(updated_at: :desc).limit(@slice).offset(@slice * (@page - 1))
   end
 
   total_questions = Question.count
-  @total_page = total_questions / slice
-  if total_questions % slice != 0
+  @total_page = total_questions / @slice
+  if total_questions % @slice != 0
     @total_page += 1
   end
 

@@ -517,6 +517,10 @@ function pager_move(p) {
   location.replace(add_param('page', p));
 }
 
+function pager_slice(s) {
+  location.replace(add_param('slice', s));
+}
+
 /* own prifle page */
 function resend_validation() {
   var button = $("button#resend");

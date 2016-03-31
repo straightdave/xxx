@@ -12,7 +12,6 @@ end
 
 post '/ask' do
   login_filter
-
   author = User.find_by(id: session[:user_id])
 
   new_q = Question.new
@@ -31,6 +30,7 @@ post '/ask' do
   unless new_q.valid?
     return (json ret: "error", msg: new_q.errors.messages.inspect)
   end
+
   new_q.save
   set_just_viewed(new_q.id)
   send_msg_after_ask(author, new_q)
@@ -57,14 +57,17 @@ get '/questions' do
     @page = @page.to_i
   end
 
+  # only show status of 0-normal, 1-no_commenting, 2-frozen
+  @questions = Question.where(status: [0, 1, 2])
   @questions = case @sort
   when 'vote'
-    Question.order(scores: :desc).limit(@slice).offset(@slice * (@page - 1))
+    @questions.order(scores: :desc)
   when 'newest'
-    Question.order(created_at: :desc).limit(@slice).offset(@slice * (@page - 1))
+    @questions.order(created_at: :desc)
   when 'active'
-    Question.order(updated_at: :desc).limit(@slice).offset(@slice * (@page - 1))
+    @questions.order(updated_at: :desc)
   end
+  @questions = @questions.limit(@slice).offset(@slice * (@page - 1))
 
   total_questions = Question.count
   @total_page = total_questions / @slice
@@ -98,6 +101,7 @@ get '/q/:qid' do |qid|
       { name: "问题详情", active: true }
     ]
 
+    # last event shown beside
     last_edit_event = @q.get_last_edit_event
     if @is_edited = !last_edit_event.nil?
       @last_editor = last_edit_event.invoker
@@ -111,12 +115,13 @@ get '/q/:qid' do |qid|
     @answers.select     { |answer| answer.scores >= -2 }
     @answers.to_a.sort! { |x, y| y.scores <=> x.scores }
 
-    @can_edit = login? &&
-                (user = User.find_by(id: session[:user_id])) && (
-                (@q.author.id == session[:user_id]) ||
-                (user.role == User::Role::MODERATOR) )
-
-    @is_ban_commenting = (@q.status == Question::Status::NOCOMMENT)
+    @can_edit = (!@q.is_frozen) &&
+                login? &&
+                (user = User.find_by(id: session[:user_id])) &&
+                (
+                  (@q.author.id == session[:user_id]) ||
+                  (user.role == User::Role::MODERATOR)
+                )
 
     erb :question
   else

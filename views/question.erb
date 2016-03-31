@@ -1,3 +1,9 @@
+<% if @q.is_hidden || @q.is_deleted %>
+<div class="container">
+  <h3>问题已经被隐藏或删除</h3>
+</div>
+<% else %>
+
 <script src="/vendors/ckeditor/ckeditor.js"></script>
 
 <%= render_report_modal('q', @q.id) %>
@@ -82,7 +88,7 @@
                   <i class="fa fa-edit"></i>&nbsp;修改问题
                 </a>&nbsp;
 
-                <% unless @is_ban_commenting %>
+                <% if @q.can_comment %>
                 <a href="javascript:void(0);" class="comment-btn"
                    onclick="javascript:toggle_comment(<%= @q.id %>);">
                   <i class="fa fa-ban text-danger"></i>&nbsp;关闭评论
@@ -144,7 +150,7 @@
             <% end %>
           </div>
 
-          <% if login? && !@is_ban_commenting %>
+          <% if login? && @q.can_comment %>
           <div class="row">
             <div class="col-sm-12">
               <a href="javascript:void(0);" class="comment-btn"
@@ -292,9 +298,11 @@
       </div> <!-- end of listed answers -->
 
       <hr>
-      <% if login? %>
+      <% if @q.is_frozen %>
+      问题被冻结，无法回答
+      <% elsif login? %>
       你的回答
-      <!-- answer input box here : all col-9 width -->
+      
       <div class="form-group">
         <textarea id="editor1" name="editor1"></textarea>
         <script>
@@ -319,3 +327,6 @@
 
   </div><!-- end of top row -->
 </div><!-- end of container -->
+
+
+<% end %>

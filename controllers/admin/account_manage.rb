@@ -8,12 +8,13 @@ end
 
 post '/admin/account/:uid/reset_report' do |uid|
   user = User.find_by(id: uid)
-  user.is_reported = false
+  old_number = user.has_reports
+  user.has_reports = 0
   if user.valid?
     user.save
     AdminLog.create(
       :user_id => get_user_id,
-      :log_text => "管理员#{get_login_name}重置了用户#{user.login_name}的举报状态"
+      :log_text => "管理员#{get_login_name}重置了用户#{user.login_name}的举报数量 #{old_number} => 0"
     )
   end
   redirect to("/admin/account?qn=#{user.login_name}")

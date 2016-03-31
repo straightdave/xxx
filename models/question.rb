@@ -2,6 +2,9 @@ class Question < ActiveRecord::Base
   module Status
     NORMAL    = 0
     NOCOMMENT = 1
+    FROZEN    = 2
+    HIDDEN    = 3
+    DELETED   = 4
   end
 
   # == associations ==
@@ -78,6 +81,22 @@ class Question < ActiveRecord::Base
   def get_last_edit_event
     # 11 - edit events
     self.get_last_events(1, 11).first
+  end
+
+  def can_comment
+    self.status == 0
+  end
+
+  def is_frozen
+    self.status >= 2
+  end
+
+  def is_hidden
+    self.status >= 3
+  end
+
+  def is_deleted
+    self.status == 4
   end
 
   def self.ft_search(keys)

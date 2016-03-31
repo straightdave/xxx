@@ -36,7 +36,7 @@
             <td>角色</td><td><%= @user.role %></td>
           </tr>
           <tr>
-            <td>被举报？</td><td><%= @user.is_reported %></td>
+            <td>被举报数目</td><td><%= @user.has_reports %></td>
           </tr>
           <tr>
             <td>声望</td><td><%= @user.reputation %></td>
@@ -137,7 +137,7 @@
 
         <hr />
 
-        <% if @user.is_reported %>
+        <% if @user.is_reported? %>
           <form action="/admin/account/<%= @user.id %>/reset_report" method="post">
             <input class="btn btn-primary btn-sm" type="submit" value="重置举报" />
           </form>

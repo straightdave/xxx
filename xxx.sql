@@ -100,7 +100,7 @@ CREATE TABLE `comments` (
   `commentable_type` varchar(50) NOT NULL,
   `content` text NOT NULL,
   `scores` mediumint(8) unsigned DEFAULT '0',
-  `status` tinyint(3) unsigned DEFAULT '0' COMMENT '0-normal;1-deleted;',
+  `status` tinyint(3) unsigned DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -321,8 +321,8 @@ CREATE TABLE `questions` (
   `views` mediumint(8) unsigned DEFAULT '0',
   `scores` mediumint(8) unsigned DEFAULT '0',
   `accepted_answer_id` int(10) unsigned DEFAULT '0',
-  `status` tinyint(3) unsigned DEFAULT '0' COMMENT '0-normal;1-no_commenting',
-  `is_reported` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `status` tinyint(3) unsigned DEFAULT '0',
+  `has_reports` tinyint(3) unsigned DEFAULT '0',
   `is_edited` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
@@ -346,7 +346,6 @@ CREATE TABLE `reports` (
   `reportable_type` varchar(50) NOT NULL,
   `content` text NOT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -500,4 +499,4 @@ CREATE TABLE `watching_list` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-03-31  0:09:08
+-- Dump completed on 2016-03-31 16:38:17

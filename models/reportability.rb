@@ -1,5 +1,5 @@
 module Reportability
   def is_reported?
-    self.is_reported    # already is boolean
+    self.has_reports > 0
   end
 end

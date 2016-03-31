@@ -6,13 +6,14 @@ get '/' do
 
   tmp = case @sort_by
   when 'hot'
-    Question.order(views: :desc, created_at: :desc)
+    # only show questions with status of normal, no_commenting, frozen
+    Question.where(status: [0, 1, 2]).order(views: :desc, created_at: :desc)
   when 'noanswer'
     Question.joins("LEFT OUTER JOIN answers ON questions.id = answers.question_id")
             .where("answers.question_id IS NULL")
             .order("questions.created_at desc")
   else
-    Question.order(created_at: :desc)
+    Question.where(status: [0, 1, 2]).order(created_at: :desc)
   end
   @qs = tmp.take(number)
 

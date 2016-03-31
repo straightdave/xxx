@@ -1,0 +1,99 @@
+<div class="container">
+
+  <div class="row">
+    <div class="col-md-4">
+      <form class="form-inline">
+        <input type="text" class="form-control" name="qid" placeholder="问题ID"
+          <% if @question %> value="<%= @question.id %>" <% end %>
+        />
+        <button type="submit" class="btn btn-primary"> 搜索 </button>
+      </form>
+    </div>
+  </div>
+
+  <hr />
+
+  <div class="row">
+    <div class="col-md-9">
+      <% if @question %>
+      <table class="table table-striped table-bordered table-condensed">
+        <thead>
+          <tr>
+            <th>
+              ID
+            </th>
+            <th>
+              title
+            </th>
+            <th>
+              content
+            </th>
+            <th>
+              投诉数量
+            </th>
+            <th>
+              Status
+            </th>
+            <th>
+              created_at
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <%= @question.id %>
+            </td>
+            <td>
+              <%= @question.title %>
+            </td>
+            <td>
+              <%= @question.content %>
+            </td>
+            <td>
+              <%= @question.has_reports %>
+            </td>
+            <td>
+              <%= @question.status %>
+            </td>
+            <td>
+              <%= @question.created_at %>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <% end %>
+
+    </div>
+
+    <div class="col-md-3">
+      <p>
+        <strong>Status</strong>
+        <ul>
+          <li>0 - normal</li>
+          <li>1 - no commenting</li>
+          <li>2 - frozen</li>
+          <li>3 - hidden</li>
+          <li>4 - deleted</li>
+        </ul>
+      </p>
+
+      <% if @question %>
+        <form method="post" action="/admin/question/<%= @question.id %>">
+          <p>
+            <select class="form-control" name="question-status">
+              <option value="0" <% if @question.status == 0 %>selected<% end %>>normal</option>
+              <option value="1" <% if @question.status == 1 %>selected<% end %>>no_commenting</option>
+              <option value="2" <% if @question.status == 2 %>selected<% end %>>frozen</option>
+              <option value="3" <% if @question.status == 3 %>selected<% end %>>hidden</option>
+              <option value="4" <% if @question.status == 4 %>selected<% end %>>deleted</option>
+            </select>
+          </p>
+
+          <button type="submit" class="btn btn-primary btn-sm">修改</button>
+        </form>
+      <% end %>
+
+    </div>
+  </div>
+</div>

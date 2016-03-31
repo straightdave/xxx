@@ -135,14 +135,6 @@
           <button type="submit" class="btn btn-primary btn-sm">修改</button>
         </form>
 
-        <hr />
-
-        <% if @user.is_reported? %>
-          <form action="/admin/account/<%= @user.id %>/reset_report" method="post">
-            <input class="btn btn-primary btn-sm" type="submit" value="重置举报" />
-          </form>
-        <% end %>
-
       <% end %>
 
     </div><!-- end of col-3 -->

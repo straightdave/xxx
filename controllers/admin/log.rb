@@ -21,15 +21,14 @@ get '/admin/log' do
                       { start_date: @start_at, end_date: @end_at })
   end
 
-  # paging
-  @page     = params['page'].to_i || 1
-  @page_num = params['pnum'].to_i || 20
-  @page     = 1  if @page <= 0
-  @page_num = 20 if @page_num < 1
+  # paging - full
+  @page  = params['page'].to_i  || 1
+  @slice = params['slice'].to_i || 50
+  @page  = 1  if @page <= 0
+  @slice = 50 if @slice < 1
 
-  @page_count = (logs.count / @page_num) + (logs.count % @page_num != 0 ? 1 : 0)
-  @logs = logs.order(created_at: :desc).limit(@page_num).offset(@page_num * (@page - 1))
+  @total_page = (logs.count / @slice) + (logs.count % @slice != 0 ? 1 : 0)
+  @logs = logs.order(created_at: :desc).limit(@slice).offset(@slice * (@page - 1))
 
-  puts "@login_name = #{@login_name}"
   erb 'admin/log_page'.to_sym, layout: 'admin/layout'.to_sym
 end

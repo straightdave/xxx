@@ -43,6 +43,7 @@ get '/u/:name' do |name|
   @title     = @user_info.nickname
   @followed  = @user.followers.exists?(session[:user_id]) if login?
   @events    = @user.get_events  # top 20 by default
+  @show_reported = (@user.has_reports >= 12)
   erb :user_profile
 end
 

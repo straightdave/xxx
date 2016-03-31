@@ -52,7 +52,7 @@ post '/report' do
   report.content = content
   target_obj.has_reports += 1
 
-  # reports change question status
+  # reports change question status (only question has views)
   if target_obj.respond_to? :views
     if target_obj.has_reports >= (target_obj.views / 4) &&
        target_obj.has_reports >= 5

@@ -69,9 +69,9 @@ get '/questions' do
   end
   @questions = @questions.limit(@slice).offset(@slice * (@page - 1))
 
-  total_questions = Question.count
-  @total_page = total_questions / @slice
-  if total_questions % @slice != 0
+  @total_questions = Question.count
+  @total_page = @total_questions / @slice
+  if @total_questions % @slice != 0
     @total_page += 1
   end
 

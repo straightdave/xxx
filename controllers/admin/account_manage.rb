@@ -1,6 +1,13 @@
 get '/admin/account' do
-  login_name = params['qn']
-  @user = User.find_by(login_name: login_name)
+  if uid = params['uid']
+    @user = User.find_by(id: uid)
+  end
+
+
+  if login_name = params['qn']
+    @user = User.find_by(login_name: login_name)
+  end
+
   @title = "账户管理"
   @navbar_active = "acc"
   erb 'admin/account_manage'.to_sym, layout: 'admin/layout'.to_sym

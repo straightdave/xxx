@@ -123,7 +123,7 @@ function login() {
           $("#err-msg").text("由于错误超过10次，请等待30秒再试");
         }
         else {
-          $("#err-msg").text("未知错误");
+          $("#err-msg").text(data.msg);
         }
       }
     });
@@ -187,7 +187,7 @@ function login2() {
           $("#err-msg2").text("由于错误超过10次，请等待30秒再试");
         }
         else {
-          $("#err-msg2").text("未知错误");
+          $("#err-msg2").text(data.msg);
         }
       }
     });

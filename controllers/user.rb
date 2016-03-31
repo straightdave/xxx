@@ -173,7 +173,7 @@ post '/login' do
     session[:delay_duration] = nil
     json ret: "success"
   else
-    json ret: "error"
+    json ret: "error", msg: "login_fail"
   end
 end
 

@@ -28,7 +28,7 @@ CREATE TABLE `admin_logs` (
   `log_text` varchar(255) NOT NULL,
   `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -446,7 +446,7 @@ CREATE TABLE `users` (
   `salt` varchar(255) NOT NULL,
   `status` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `role` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `is_reported` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `has_reports` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `reputation` mediumint(8) unsigned DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
@@ -499,4 +499,4 @@ CREATE TABLE `watching_list` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-03-31 16:38:17
+-- Dump completed on 2016-04-02 10:06:18

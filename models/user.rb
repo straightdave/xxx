@@ -101,6 +101,11 @@ class User < ActiveRecord::Base
     self.password = add_salt(input_password, salt)
   end
 
+  def reset_password(new_password)
+    # use old salt to hash temp passwords
+    self.password = add_salt(new_password, self.salt)
+  end
+
   def authenticate(input_password)
     self.password == add_salt(input_password, salt)
   end
@@ -115,6 +120,18 @@ class User < ActiveRecord::Base
        (user.status == Status::NEWBIE) &&
        (code == user.vcode)
       user.status = Status::NORMAL
+      user.vcode = ""
+      if user.valid?
+        user.save
+        return true
+      end
+    end
+    false
+  end
+
+  def self.check_reset_request(id, code)
+    if (user = User.find_by(id: id)) && (code == user.vcode)
+      user.vcode = ""
       if user.valid?
         user.save
         return true

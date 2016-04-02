@@ -194,5 +194,72 @@ get '/user/iforgot' do
 end
 
 post '/user/iforgot' do
-  json ret: "success"
+  if (name = params['name']) && (user = User.find_by(login_name: name))
+
+    unless email = params['email']
+      return json ret: "error", msg: "请输入邮箱"
+    end
+
+    if user.email == email
+      user.gen_and_set_new_vcode
+      user.save!
+      send_refind_mail user
+      json ret: "success"
+    else
+      json ret: "error", msg: "邮箱和用户名不匹配"
+    end
+
+  else
+    return json ret: "error", msg: "请输入注册名称或名称不存在"
+  end
+end
+
+# reset password page
+get '/user/reset_password' do
+  id   = params['id']
+  code = params['code']
+
+  if id.nil? || code.nil?
+    return "no id and vcode"
+  end
+
+  if !!User.check_reset_request(id, code)
+    # validate OK, show page
+    session[:user_id] = id
+    @title = "重设密码"
+    erb :reset_password
+  else
+    # reset request not valid, show error page
+    "We think this is an invalid request."
+  end
+end
+
+# reset new password
+post '/user/reset_password' do
+  pass1 = params['pass1']
+  pass2 = params['pass2']
+
+  unless id = session[:user_id]
+    return json ret: "error", msg: "用户id错误"
+  end
+
+  unless user = User.find_by(id: id)
+    return json ret: "error", msg: "用户对象错误"
+  end
+
+  if pass1.nil? || pass2.nil?
+    return json ret: "error", msg: "输入的密码为空"
+  end
+
+  if pass1 == pass2
+    user.reset_password(pass1)
+    if user.valid?
+      user.save
+      json ret: "success"
+    else
+      json ret: "error", msg: "密码重设失败"
+    end
+  else
+    json ret: "error", msg: "两次输入密码不一致"
+  end
 end

@@ -7,8 +7,8 @@ class MailLog < ActiveRecord::Base
   end
 
   module TYPE
-    USER_CONFIRM       = 0
-    PASSWORD_RETRIEVE  = 1
+    USER_CONFIRM   = 0
+    RESET_PASSWORD = 1
   end
 
   self.table_name = 'mail_logs'

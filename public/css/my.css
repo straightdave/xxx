@@ -741,4 +741,5 @@ div.listed-user div {
 
 div.listed-user div.user-detail {
   margin-left: 5px;
+  width: 150px;
 }

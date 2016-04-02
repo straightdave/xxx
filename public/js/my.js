@@ -619,3 +619,49 @@ function save_edit(strType, id) {
     });
   }
 }
+
+/* refind */
+function send_refind_email() {
+  var email = $("input[name='email']").val();
+  var name = $("input[name='name']").val();
+  if(name.length > 0 && email.length > 0) {
+    console.log("user input name: "  + name);
+    console.log("user input email: " + email);
+
+    $.post('/user/iforgot', { 'name' : name, 'email' : email }, function (data, status) {
+      if(data.ret == "success") {
+        alert("邮件已发送，请查收");
+        location.replace("/");
+      }
+      else {
+        alert(data.msg);
+      }
+    });
+  }
+}
+
+function save_new_password() {
+  var pass1 = $("input[name='new_pass1']").val();
+  var pass2 = $("input[name='new_pass2']").val();
+  if(pass1.length > 0 && pass2.length > 0) {
+    console.log("user input pass1: " + pass1);
+    console.log("user input pass2: " + pass2);
+
+    if(pass1 != pass2) {
+      alert("两次输入的不一致");
+    }
+    else {
+
+      $.post('/user/reset_password', { 'pass1' : pass1, 'pass2' : pass2 }, function (data, status) {
+        if(data.ret == "success") {
+          alert("密码重设成功");
+          location.replace("/");
+        }
+        else {
+          alert(data.msg);
+        }
+      });
+
+    }
+  }
+}

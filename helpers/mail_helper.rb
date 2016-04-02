@@ -25,6 +25,26 @@ helpers do
     end
   end
 
+  def send_refind_mail(user)
+    # body rendering
+    body = erb :mail_tpl_refind, :layout => false, :locals => {
+      :nick_name  => user.info.nickname,
+      :site_host  => settings.site_host,
+      :user_id    => user.id,
+      :user_vcode => user.vcode
+    }
+
+    send_mail_job({
+      :type        => MailLog::TYPE::RESET_PASSWORD,
+      :from        => 'noreply@hanfeizishuo.com',
+      :to          => user.email,
+      :receiver_id => user.id,
+      :subject     => "韩非子说重置密码",
+      :body        => body,
+      :time        => Time.now.to_i
+    })
+  end
+
   private
   def send_mail_job(data)
     mail_log = MailLog.new

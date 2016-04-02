@@ -1,8 +1,17 @@
 <div class="container">
-  <div class="row">
-    <div class="col-md-4 col-md-offset-4">
-      请联系管理员处理，抱歉~ <br>
-      <a href="/">返回首页</a>
-    </div>
-  </div>
+  <p>
+    如果您输入的邮箱同注册时留下的邮箱相同，我们将会发送重设密码的链接给那个邮箱。
+  </p>
+  <p>
+    用户名: <input type="text" placeholder="Login Name" name="name" value="<%= @name %>" />
+  </p>
+  <p>
+    Email: <input type="text" placeholder="Email" name="email" />
+  </p>
+  <p>
+    <button class="btn btn-primary btn-sm" id="refind_button"
+            onclick="javascript:send_refind_email();">
+      发送重设密码链接
+    </button>
+  </p>
 </div>

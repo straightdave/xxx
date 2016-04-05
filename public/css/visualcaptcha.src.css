@@ -12,27 +12,15 @@
   margin-bottom: 20px;
   min-height: 120px;
 }
-@media only screen and (min-width: 750px) {
-  .visualCaptcha {
-    margin-bottom: 50px;
-  }
-}
-.visualCaptcha * {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
+
 .visualCaptcha .audioField {
   font-size: 15px;
-  color: #495e62;
+  color: #DAE7F1;
   font-weight: 100;
   padding: 5px;
-  border: 1px solid #3bb6e4;
+  border: 2px solid #028DDE;
   height: 40px;
   width: 100%;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
 }
 @media only screen and (max-width: 360px) {
   .visualCaptcha .audioField {
@@ -48,17 +36,14 @@
 .accessibility-description,
 .visualCaptcha-explanation,
 .status.valid {
-  -webkit-border-radius: 7px;
-  -moz-border-radius: 7px;
-  border-radius: 7px;
-  background-color: #c1f7e8;
-  padding: 10px;
+  background-color: #EBF2F5;
+  padding: 6px 0 3px 0;
   text-align: center;
   font-family: 'Oxygen', sans-serif;
   font-size: 18px;
-  color: #219589;
-  font-weight: 100;
-  margin: 20px 0 24px;
+  color: #028DDE;
+  font-weight: 200;
+  margin: 20px 0 20px;
 }
 @media only screen and (max-width: 360px) {
   .accessibility-description,
@@ -83,13 +68,13 @@
 }
 .visualCaptcha-possibilities .img {
   padding: 4px;
-  border: 1px solid #ffffff;
+  border: 2px solid #ffffff;
   display: inline-block;
 }
 @media only screen and (min-width: 750px) {
   .visualCaptcha-possibilities .img {
     padding: 10px;
-    border: 3px solid #ffffff;
+    border: 2px solid #ffffff;
   }
 }
 .visualCaptcha-possibilities img {
@@ -114,27 +99,19 @@
   }
 }
 .visualCaptcha-possibilities .visualCaptcha-selected {
-  background-color: #c1f7e8;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
-  padding: 4px;
-  border: 1px dashed #099a9f;
+  background-color: #DAE7F1;
+  border: 2px dashed #028DDE;
 }
 @media only screen and (min-width: 750px) {
   .visualCaptcha-possibilities .visualCaptcha-selected {
     padding: 10px;
-    border: 3px dashed #099a9f;
+    border: 2px dashed #028DDE;
   }
 }
 .visualCaptcha-refresh-button {
-  padding: 9px 10px 7px;
-  margin: 0 5px;
-  background-color: #C1F7E8;
-  border: 2px solid #219589;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
+  margin-left: 24px;
+  padding: 8px 12px 12px 12px;
+  background-color: #EBF2F5;
 }
 .visualCaptcha-refresh-button img {
   width: 16px;
@@ -146,9 +123,6 @@
 .visualCaptcha-accessibility-button {
   padding: 9px 10px 7px;
   border: 1px solid black;
-  -webkit-border-radius: 100px;
-  -moz-border-radius: 100px;
-  border-radius: 100px;
 }
 .visualCaptcha-accessibility-button img {
   width: 16px;

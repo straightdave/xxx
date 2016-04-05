@@ -6,47 +6,47 @@
     <div class="col-md-3">
       <div class="profile-pane">
         <div class="avatar">
-          <img alt="<%= @user_info.nickname %>"
-               src="<%= @user.avatar_src %>">
+          <img alt="<%= @user_info.nickname %>" src="<%= @user.avatar_src %>">
         </div>
 
         <div class="namebox">
-          <h4 class="nickname"><%= @user_info.nickname %><br>
+          <h4 class="nickname">
+            <%= @user_info.nickname %><br>
             <small>@<%= @user.login_name %></small>
           </h4>
           <blockquote>
-            <%= @user_info.intro || "暂时没有简介哦~" %>
+            <%= @user_info.intro || "暂时没有简介" %>
           </blockquote>
 
           <p>
-            <span class="glyphicon glyphicon-envelope"></span>
+            <i class="fa fa-envelope"></i>
             &nbsp; <%= @user.email %>
           </p>
 
           <% if !@user_info.phone.nil? %>
           <p>
-            <span class="glyphicon glyphicon-earphone"></span>
+            <i class="fa fa-earphone"></i>
             &nbsp; <%= @user_info.phone %>
           </p>
           <% end %>
 
           <% if !@user_info.city.nil? %>
           <p>
-            <span class="glyphicon glyphicon-map-marker"></span>
+            <i class="fa fa-map-marker"></i>
             &nbsp; <%= @user_info.city %>
           </p>
           <% end %>
 
           <% if !@user_info.qq.nil? %>
           <p>
-            QQ:
+            <i class="fa fa-qq"></i>
             &nbsp; <%= @user_info.qq %>
           </p>
           <% end %>
 
           <% if !@user_info.wechat.nil? %>
           <p>
-            微信:
+            <i class="fa fa-wechat"></i>
             &nbsp; <%= @user_info.wechat %>
           </p>
           <% end %>
@@ -147,8 +147,6 @@
           <% end %>
         </div>
 
-
-
       </div> <!-- end of profile-mid-pane -->
     </div> <!-- end of col-6 in the mid -->
 
@@ -167,16 +165,7 @@
         <div class="clear"></div>
       </div>
 
-      <hr>
-
-
-      <div class="ad-col-3">
-
-      </div>
-
     </div>
-
-
 
   </div> <!-- end of the second row: main content -->
 </div>

@@ -1,8 +1,9 @@
 # ====== user profile actions ======
 post '/user/profile' do
   login_filter
+  user = User.find_by(id: session[:user_id])
 
-  email_changed = user.email != params['email']
+  email_changed = (user.email != params['email'])
   if email_changed && !user.can_change_email
     return json ret: "error", msg: "cannot_change_email"
   end

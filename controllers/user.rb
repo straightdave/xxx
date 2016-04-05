@@ -1,6 +1,5 @@
 # ===== user registering =====
 get '/user/signup' do
-  log_out if login?
   @title = "用户注册"
   erb :user_signup
 end
@@ -51,6 +50,7 @@ post '/user/signup' do
     new_user.save
     send_welcome_message new_user
     send_validation_mail new_user
+    log_out if login?
     log_in new_user
     json ret: "success", msg: new_user.id
   else
@@ -87,7 +87,7 @@ post '/user/send_validation' do
   end
 end
 
-# === users list ===
+# === all users list ===
 get '/users' do
   if !(@slice = params['slice']) || (@slice.to_i <= 0)
     @slice = 100
@@ -102,7 +102,8 @@ get '/users' do
   end
 
   @users = User.order(reputation: :desc)
-               .limit(@slice).offset(@slice * (@page - 1))
+               .limit(@slice)
+               .offset(@slice * (@page - 1))
 
   total_users = User.count
   @total_page = total_users / @slice
@@ -116,25 +117,12 @@ get '/users' do
 end
 
 # ===== login & logout =====
-get '/login' do
-  log_out if login?
-  @name        = params['u']
-  @title       = "用户登录"
-  @return_page = params['r']
-  words_flag   = params['w'].to_i
-
-  @words_on_login_page = case words_flag
-  when 1 then "请先登录"
-  when 2 then "请登录管理员"
-  when 3 then "好像账户有问题啊，请重新登录试试？"
-  when 4 then "权限和状态有问题啊，请重新登录试试？"
-  else nil
-  end
-
-  erb :login
+get '/user/signin' do
+  @title = "用户登录"
+  erb :user_signin
 end
 
-post '/login' do
+post '/user/signin' do
   if session[:delay_start] && session[:delay_duration]
     start_delay_sec = session[:delay_start].to_i
     delay_duration  = session[:delay_duration].to_i
@@ -167,6 +155,7 @@ post '/login' do
 
   user = User.find_by(login_name: login_name)
   if user && user.authenticate(password)
+    log_out if login?
     log_in user
     session[:try_count]      = nil
     session[:delay_start]    = nil

@@ -8,14 +8,15 @@
   <p></p>
 </div>
 <script>
-  function show_alert(type, text) {
-    var alert  = $("div[role='alert']");
-    var text_p = $("div[role='alert'] > p");
-    alert.removeClass("alert-info")
-         .removeClass("alert-danger")
-         .removeClass("alert-success")
-         .removeClass("alert-warning");
-    text_p.text("").append(text);
-    alert.addClass("alert-" + type).show();
-  }
+// providing js interface
+function show_alert(type, text) {
+  var alert  = $("div[role='alert']");
+  var text_p = $("div[role='alert'] > p");
+  alert.removeClass("alert-info")
+       .removeClass("alert-danger")
+       .removeClass("alert-success")
+       .removeClass("alert-warning");
+  text_p.text("").append(text);
+  alert.addClass("alert-" + type).show();
+}
 </script>

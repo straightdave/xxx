@@ -1,0 +1,121 @@
+<div class="container">
+  <%= render_alert_box %>
+
+  <div class="row">
+    <div class="col-md-4 col-md-offset-4">
+      <p class="signup-title">
+        登录 <img src="/logo.png" alt="韩非子说" />
+      </p>
+
+      <div class="form-group has-feedback">
+        <input class="form-control" type="text" name="login_name" placeholder="登录名" />
+      </div>
+
+      <div class="form-group has-feedback">
+        <input class="form-control" type="password" name="password" placeholder="密码" />
+      </div>
+
+      <button class="btn btn-primary" name="signin_on_page">
+        登录
+      </button>
+
+      <div class="box_under_bottom_button">
+        没有账户？ <a href='/user/signup'>注册</a>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function (window, $) {
+  // remove or append div to show error messages
+  var clean_below_msg = function (obj) {
+    $("div").remove("#msg-" + obj.attr("name"));
+  };
+  var show_below_msg = function (obj, text) {
+    clean_below_msg(obj);
+    obj.after("<div class='text-danger' id='msg-" + obj.attr("name") + "'>" + text + "</div>");
+  };
+
+  $(function () {
+    // set value when init ready
+    $("input[name='login_name']").val(getURLParameter("u"));
+  });
+
+  $("button[name='signin_on_page']").on('click.app', function () {
+    var is_ok_name = false;
+    var is_ok_pass = false;
+
+    // check name
+    var name_input = $("input[name='login_name']");
+    var name = name_input.val().trim();
+    var reg=/^[0-9a-zA-Z_]{1,50}$/i;
+    if (!reg.test(name)) {
+      is_ok_name = false;
+      set_error(name_input, 'name');
+      show_below_msg(name_input, "登录名为下划线、字母和数字的组合，不超过50个字符");
+    }
+    else {
+      is_ok_name = true;
+      set_success(name_input, 'name');
+      clean_below_msg(name_input);
+    }
+
+    // check password
+    var pass_input = $("input[name='password']");
+    var pass = pass_input.val().trim();
+    if (pass.length < 6 || pass.length > 20) {
+      is_ok_pass = false;
+      set_error(pass_input, 'pass');
+      show_below_msg(pass_input, "密码长度为6~20");
+    }
+    else {
+      is_ok_pass = true;
+      set_success(pass_input, 'pass');
+      clean_below_msg(pass_input);
+    }
+
+    if (is_ok_name && is_ok_pass) {
+      var data = {
+        "login_name" : name,
+        "password"   : pass
+      };
+      $.post("/user/signin", data, function (data, status) {
+        if(data.ret == "success") {
+          set_success(name_input, 'name');
+          set_success(pass_input, 'pass');
+          var return_url = getURLParameter("returnurl");
+          if(return_url != null) {
+            location.replace(return_url);
+          }
+          else {
+            location.replace("/");
+          }
+        }
+        else {
+          set_error(name_input, 'name');
+          set_error(pass_input, 'pass');
+          if(data.msg == "login_fail") {
+            show_alert(
+              "info",
+              "登录名或密码错误。忘记密码？<a href='/user/iforgot?u=" + name + "'>找回密码</a>"
+            );
+          }
+          else if(data.msg == "waiting") {
+            show_alert("warning", "由于错误次数过多，请等待一会儿再试");
+          }
+          else if(data.msg == "fail_5") {
+            show_alert("warning", "由于错误超过5次，请等待15秒再试");
+          }
+          else if(data.msg == "fail_10") {
+            show_alert("warning", "由于错误超过10次，请等待30秒再试");
+          }
+          else {
+            show_alert("error", data.msg);
+          }
+        }
+      });
+    }
+  });
+
+})(window, jQuery);
+</script>

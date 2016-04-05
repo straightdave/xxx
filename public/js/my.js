@@ -1,14 +1,5 @@
 /* xxx project copyrights 2015 Dave */
 $().ready(function () {
-  // sign in modal initialize
-  $('#login-modal').on('show.bs.modal', function () {
-    var namebox = $('input[name="modal-loginname"]');
-    var passbox = $('input[name="modal-password"]');
-    namebox.val(""); set_normal(namebox, "name");
-    passbox.val(""); set_normal(passbox, "pass");
-    $('#err-msg').text("");
-  })
-
   // own profile page
   $("button#resend").removeAttr("disabled");
 
@@ -27,7 +18,6 @@ $().ready(function () {
       location.replace(add_only_param("q", keywords));
     }
   });
-
 });
 
 /* basic functions */
@@ -39,9 +29,8 @@ function getURLParameter(name) {
   ) || null;
 }
 
+// add/update param and value for CURRENT URL
 function add_param(key, value) {
-  /* add/update param and value for CURRENT URL */
-
   var result = new RegExp(key + "=([^&]*)", "i").exec(location.search);
   result = (result && result[1]) || "";
 
@@ -89,7 +78,6 @@ function widen_input(flag) {
   }
 }
 
-
 /* ===== functions used for login/logout ===== */
 function login() {
   // login method 1: used in home page, modal window
@@ -132,70 +120,6 @@ function login() {
         }
         else {
           $("#err-msg").text(data.msg);
-        }
-      }
-    });
-  }
-}
-
-function login2() {
-  //login method 2: used in login page
-
-  var is_valid = true;
-  var ret_page = $("input[name='return_page']").val();
-  ret_page = decodeURIComponent(ret_page);
-  var name_input = $("input[id='u']");
-  var name = name_input.val().trim();
-  var reg=/^[0-9a-zA-Z_]{1,50}$/i;
-  if (name == "" || !reg.test(name)) {
-    set_error(name_input, 'name');
-    $("#err-msg2").text("登录名为下划线、字母和数字的组合，不超过50个字符");
-    is_valid = false;
-  }
-  else {
-    set_success(name_input, 'name');
-  }
-  var pass_input = $("input[id='p']");
-  var pass = pass_input.val().trim();
-  if (pass == "") {
-    set_error(pass_input, 'pass');
-    is_valid = false;
-  }
-  else {
-    set_success(pass_input, 'pass');
-  }
-  if (is_valid) {
-    var data = {
-      "login_name" : name,
-      "password"   : pass
-    };
-    $.post("/login", data, function (data, status) {
-      if(data.ret == "success") {
-        if(data.msg == "admin") {
-          location.replace(data.msg);
-        }
-        else {
-          var return_url = ret_page || "/";
-          location.replace(return_url);
-        }
-      }
-      else {
-        if(data.msg == "login_fail") {
-          $("#err-msg2").text("");
-          $("#err-msg2").append("登录名或密码错误。" +
-            "忘记密码？<a href='/user/iforgot?u=" + name + "'>找回密码</a>");
-        }
-        else if(data.msg == "waiting") {
-          $("#err-msg2").text("由于错误次数过多，请等待一会儿再试");
-        }
-        else if(data.msg == "fail_5") {
-          $("#err-msg2").text("由于错误超过5次，请等待15秒再试");
-        }
-        else if(data.msg == "fail_10") {
-          $("#err-msg2").text("由于错误超过10次，请等待30秒再试");
-        }
-        else {
-          $("#err-msg2").text(data.msg);
         }
       }
     });

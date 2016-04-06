@@ -1,21 +1,21 @@
-# ====== user profile actions ======
+# update user's (own) profile
 post '/user/profile' do
   login_filter
   user = User.find_by(id: session[:user_id])
 
   email_changed = (user.email != params['email'])
   if email_changed && !user.can_change_email
-    return json ret: "error", msg: "cannot_change_email"
+    return json ret: "error", msg: "当前状态不允许修改主邮箱"
   end
 
   user.info.nickname = params['nickname']
   user.info.intro    = params['intro']
-  user.info.phone    = params['contact']
+  user.info.phone    = params['phone']
   user.info.city     = params['city']
   user.info.qq       = params['qq']
   user.info.wechat   = params['wechat']
   user.info.email2   = params['email2']
-  user.email         = params['email']
+  user.email = params['email'] if email_changed
 
   if user.info.valid?
     user.info.save
@@ -28,10 +28,9 @@ post '/user/profile' do
         user.save
         send_validation_mail user
       else
-        return json ret: "error", msg: "resend_validation_failed"
+        return json ret: "error", msg: user.errors.messages.inspect
       end
     end
-
     json ret: "success"
   else
     json ret: "error", msg: user.info.errors.messages.inspect
@@ -41,11 +40,10 @@ end
 get '/user/profile' do
   login_filter
   @user = User.find_by(id: session[:user_id])
-
   @title = "我的资料"
   @user_info = @user.info
   @is_newbie = (@user.status == User::Status::NEWBIE)
-  erb :own_profile
+  erb :user_update
 end
 
 # upload avatar files (maybe any file)

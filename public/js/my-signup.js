@@ -169,14 +169,8 @@
     btnSubmit.on('click.app', _sayIsVisualCaptchaFilled);
 
     // checking fields when blur
-    $("input[name='login_name']").blur(function (event) {
-      check_name();
-    });
-    $("input[name='email']").blur(function (event) {
-      check_email();
-    });
-    $("input[name='password']").blur(function (event) {
-      check_password();
-    });
+    $("input[name='login_name']").blur(check_name);
+    $("input[name='email']").blur(check_email);
+    $("input[name='password']").blur(check_password);
   });
 }(window, jQuery));

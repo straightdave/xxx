@@ -67,17 +67,18 @@ get '/user/validation' do
   backdoor        = params['backdoor']    # TODO remove this. only for dev purpose
 
   if id.nil? || code.nil?
-    @validated = false
+    validated = false
   else
-    @validated = (User.validate(id, code) == :ok)
+    validated = (User.validate(id, code) == :ok)
   end
 
-  if backdoor == "true"
-    @validated = true
-  end
+  validated = true if backdoor == "true"
 
-  @title = "验证结果"
-  erb :user_validate
+  if validated
+    redirect to('/notice?reason=validok')
+  else
+    redirect to('/notice?reason=validfailed')
+  end
 end
 
 post '/user/send_validation' do

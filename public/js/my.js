@@ -275,45 +275,6 @@ function go_tag(id) {
   location.replace("/t/" + id);
 }
 
-/* update own profile page */
-function do_avatar_change() {
-  $("form#avatar-form").submit();
-}
-
-/* update user's profile */
-function do_update() {
-  var nickname = $("input[name='nickname']").val();
-  var intro    = $("input[name='intro']").val();
-  var phone    = $("input[name='phone']").val();
-  var city     = $("input[name='city']").val();
-  var qq       = $("input[name='qq']").val();
-  var wechat   = $("input[name='wechat']").val();
-  var email2   = $("input[name='email2']").val();
-  var email    = $("input[name='email']").val();
-
-  var data = {
-    "nickname" : nickname,
-    "intro" : intro,
-    "phone" : phone,
-    "city" : city,
-    "qq" : qq,
-    "wechat" : wechat,
-    "email2" : email2,
-    "email" : email
-  };
-
-  $.post("/user/profile", data, function (data, status) {
-    if(data.ret == "success") {
-      location.replace(location.href);
-    }
-    else {
-      if(data.msg == "cannot_change_email") {
-        alert("您当前的状态不可以变更邮箱哦")
-      }
-    }
-  });
-}
-
 /* sns */
 function do_follow(user) {
   $.post("/u/" + user + "/follow", function (data, status) {
@@ -360,33 +321,6 @@ function pager_slice(s) {
   location.replace(add_param('slice', s));
 }
 
-/* own prifle page */
-function resend_validation() {
-  var button = $("button#resend");
-  button.attr("disabled", "disabled");
-  var origin_text = button.text();
-  var ticks = 15;
-  button.text(ticks + "秒后再次发送");
-  $.post("/user/send_validation", function (data, status) {
-    if (data.ret == "error") {
-      if (data.msg == "resend_too_frequent") {
-        alert("发送过于频繁，请稍候重试");
-      }
-      else {
-        alert("发送失败，可能是系统故障，请稍候重试");
-      }
-    }
-    var clock = setInterval(function () {
-      ticks--;
-      button.text(ticks + "秒后再次发送");
-      if (ticks == 0) {
-        clearInterval(clock);
-        button.text(origin_text);
-        button.removeAttr("disabled");
-      }
-    }, 1000);
-  });
-}
 
 /* job posting */
 function go_job(id) {

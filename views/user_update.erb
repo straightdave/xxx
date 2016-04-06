@@ -1,0 +1,183 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="profile-main">
+
+        <div class="avatar-zone">
+          <div class="avatar-img">
+            <img src="<%= @user.avatar_src %>" title="<%= @user.login_name %>">
+          </div>
+          <div class="avatar-controls">
+            <form id="avatar-form" method="post" enctype="multipart/form-data"
+                  charset="utf-8" action="/upload">
+              <label>改变头像</label>
+              <input type="file" name="file" aria-describedby="h_upload" />
+              <p id="h_upload" class="help-block">
+                图片格式jpg jpeg png，不超过50k
+              </p>
+            </form>
+          </div>
+          <div class="clearfix"></div>
+        </div><!-- end of avatar zone -->
+
+        <div class="user-profile-main">
+          <div class="form-group">
+            <label>昵称</label>
+            <input type="text" name="nickname" class="form-control"
+                   value="<%= @user_info.nickname %>" aria-describedby="h_nickname">
+            <span id="h_nickname" class="help-block">页面显示的昵称。如果为空，默认显示为登录名</span>
+          </div>
+
+          <div class="form-group">
+            <label>个人简介</label>
+            <input type="text" name="intro" class="form-control"
+                   value="<%= @user_info.intro %>" aria-describedby="h_intro">
+            <span id="h_intro" class="help-block">一句话简单介绍或个性签名</span>
+          </div>
+
+          <div class="form-group">
+            <label>电话</label>
+            <input type="text" class="form-control" name="phone" value="<%= @user_info.phone %>">
+          </div>
+
+          <div class="form-group">
+            <label>城市</label>
+            <input type="text" name="city" class="form-control" value="<%= @user_info.city %>">
+          </div>
+
+          <div class="form-group">
+            <label>QQ</label>
+            <input type="text" name="qq" class="form-control" value="<%= @user_info.qq %>">
+          </div>
+
+          <div class="form-group">
+            <label>微信</label>
+            <input type="text" name="wechat" class="form-control" value="<%= @user_info.wechat %>">
+          </div>
+
+          <div class="form-group">
+            <label>备用邮箱</label>
+            <input type="text" name="email2" class="form-control" value="<%= @user_info.email2 %>"
+                   aria-describedby="h_email2">
+            <span id="h_email2" class="help-block">
+              如果注册邮箱突然无法访问，备份邮箱就十分关键。
+            </span>
+          </div>
+
+          <hr />
+
+          <div class="form-group">
+            <label><i class="fa fa-exclamation-circle"></i>&nbsp;修改注册电子邮箱</label>
+            <input type="email" name="email" class="form-control" value="<%= @user.email %>"
+                   aria-describedby="h_email">
+            <span id="h_email" class="help-block">
+              注册时填写的电子邮箱。注意，修改邮箱将需要重新验证。
+            </span>
+            <% if @is_validated %>
+            <span class="text-success">已验证</span>
+            <% else %>
+            邮箱状态为&nbsp;<span class="text-danger">未验证</span>。没有收到验证邮件？
+            <button class="btn btn-sm" name="btnSendMail">重新发送验证邮件</button>
+            <% end %>
+          </div>
+
+          <hr>
+          <button class="btn btn-primary" name="btnUpdate">保存修改</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function (window, $) {
+  var btnSendMail  = $("button[name='btnSendMail']");
+  var btnUpdate    = $("button[name='btnUpdate']");
+  var btnAvatar    = $("input[name='file']");
+  var emailbox     = $("input[name='email']");
+  var is_ok_email  = true;
+  var email_changed = false;
+
+  var _resend_validation = function () {
+    btnSendMail.attr("disabled", "disabled");
+    var origin_text = btnSendMail.text();
+    var ticks = 15;
+    btnSendMail.text(ticks + "秒后再次发送");
+    $.post("/user/send_validation", function (data, status) {
+      if (data.ret == "error") {
+        if (data.msg == "resend_too_frequent") {
+          show_below_msg(btnSendMail, "发送过于频繁，请稍候重试");
+        }
+        else {
+          show_below_msg(btnSendMail, "发送失败，可能是系统故障，请稍候重试");
+        }
+      }
+      else {
+        clean_below_msg(btnSendMail);
+      }
+      var clock = setInterval(function () {
+        ticks--;
+        btnSendMail.text(ticks + "秒后再次发送");
+        if (ticks >= 0) {
+          clearInterval(clock);
+          btnSendMail.text(origin_text);
+          btnSendMail.removeAttr("disabled");
+        }
+      }, 1000);
+    });
+  };
+
+  var check_email = function () {
+    _email = emailbox.val().trim();
+    var reg_email = /^[a-z0-9_\.-]+@[\da-z\.-]+\.[a-z\.]{2,6}$/i;
+    if (!reg_email.test(_email)) {
+      set_error(emailbox, 'email');
+      show_below_msg(emailbox, "请合法的电子邮箱地址");
+      is_ok_email = false;
+    }
+    else {
+      set_normal(emailbox, 'email');
+      clean_below_msg(emailbox);
+      is_ok_email = true;
+    }
+  };
+
+  /* update own profile page */
+  var _do_avatar_change = function () {
+    $("form#avatar-form").submit();
+  };
+
+  var _do_update = function () {
+    var data = {
+      "nickname" : $("input[name='nickname']").val().trim(),
+      "intro"    : $("input[name='intro']"   ).val().trim(),
+      "phone"    : $("input[name='phone']"   ).val().trim(),
+      "city"     : $("input[name='city']"    ).val().trim(),
+      "qq"       : $("input[name='qq']"      ).val().trim(),
+      "wechat"   : $("input[name='wechat']"  ).val().trim(),
+      "email2"   : $("input[name='email2']"  ).val().trim(),
+      "email"    : emailbox.val().trim()
+    };
+
+    check_email();
+
+    if (is_ok_email) {
+      $.post("/user/profile", data, function (data, status) {
+        if(data.ret == "success") {
+          location.replace("/user/home");
+        }
+        else {
+          show_below_msg(btnUpdate, data.msg);
+        }
+      });
+    }
+  };
+
+  $(function () {
+    btnSendMail.on('click.app', _resend_validation);
+    btnUpdate.on('click.app', _do_update);
+    btnAvatar.change(_do_avatar_change);
+    emailbox.change(function () { email_changed = true; });
+    emailbox.blur(check_email);
+  });
+})(window, jQuery);
+</script>

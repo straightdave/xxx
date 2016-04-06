@@ -57,16 +57,20 @@ get '/notice' do
   when :statuserror
     name   = params['ext_0']
     status = User.get_status_zh(params['ext_1'].to_i)
-
     @title   = "账户状态有误"
     @content = "您的账户（登录名：#{name}）当前的用户状态是（#{status}），无法进行此次操作。"
   when :roleerror
     name = params['ext_0']
     role = User.get_role_zh(params['ext_1'].to_i)
-    puts "#{name} - #{params['ext_1']} - #{role}"
-
     @title   = "账户角色有误"
     @content = "您的账户（登录名：#{name}）当前的角色是（#{role}），无法进行此次操作。"
+  when :validok
+    @title   = "恭喜，您的账户已通过验证"
+    @content = "<a href="/">回到首页</a>"
+  when :validfailed
+    @title   = "很遗憾，账户验证失败"
+    @content = "这很可能是由于验证信息中得验证码过期导致的，您可以尝试重新发送验证邮件 <br />
+                登陆后，进入“我的资料”下即可找到“重新发送验证邮件”的按钮"
   else
     @title   = "消息页面"
     @content = "您可以浏览“韩非子说”网站的精彩内容，或者参与其中： <a href='/user/signin'>登录</a>"

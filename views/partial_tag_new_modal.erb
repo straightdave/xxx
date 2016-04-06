@@ -1,0 +1,25 @@
+<div class="modal fade" id="new-tag-modal">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">新建标签</h4>
+      </div>
+      <div class="modal-body">
+        <p id="new-tag-name">
+          标签名称：<span class="q_tag"></span>
+        </p>
+        <hr>
+        <p id="new-tag-desc">
+          <textarea style="width: 100%;" placeholder="输入标签描述"></textarea>
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" class="btn btn-primary" onclick="javascript:new_tag();">保存</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

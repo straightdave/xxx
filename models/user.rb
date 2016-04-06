@@ -86,6 +86,27 @@ class User < ActiveRecord::Base
     "/u/#{self.login_name}"
   end
 
+  def self.get_status_zh(number)
+    case number
+    when 0 then "新注册"
+    when 1 then "正常"
+    when 2 then "冻结"
+    when 3 then "禁止"
+    when 4 then "注销"
+    else "未知"
+    end
+  end
+
+  def self.get_role_zh(number)
+    case number
+    when 0 then "普通用户"
+    when 1 then "版主"
+    when 8 then "管理员"
+    when 9 then "超级管理员"
+    else "未知"
+    end
+  end
+
   def avatar_src
     avatar_url = self.info.avatar
     if avatar_url.nil? || avatar_url.empty? || !File.exists?("public#{avatar_url}")
@@ -116,17 +137,24 @@ class User < ActiveRecord::Base
   end
 
   def self.validate(id, code)
-    if (user = User.find_by(id: id)) &&
-       (user.status == Status::NEWBIE) &&
-       (code == user.vcode)
+    # returning atoms
+
+    unless user = User.find_by(id: id)
+      return :nouser
+    end
+
+    if user.vcode == code
       user.status = Status::NORMAL
       user.vcode = ""
       if user.valid?
         user.save
-        return true
+        :ok
+      else
+        :error
       end
+    else
+      :wrong
     end
-    false
   end
 
   def self.check_reset_request(id, code)

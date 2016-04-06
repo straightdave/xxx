@@ -36,6 +36,10 @@ helpers do
     erb :partial_tag_edit_modal, layout: false
   end
 
+  def render_tag_new_modal
+    erb :partial_tag_new_modal, layout: false
+  end
+
   def render_pager
     erb :partial_pager, layout: false
   end

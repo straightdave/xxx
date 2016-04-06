@@ -27,15 +27,6 @@
 </div>
 <script>
 (function (window, $) {
-  // remove or append div to show error messages
-  var clean_below_msg = function (obj) {
-    $("div").remove("#msg-" + obj.attr("name"));
-  };
-  var show_below_msg = function (obj, text) {
-    clean_below_msg(obj);
-    obj.after("<div class='text-danger' id='msg-" + obj.attr("name") + "'>" + text + "</div>");
-  };
-
   $(function () {
     // set value when init ready
     $("input[name='login_name']").val(getURLParameter("u"));

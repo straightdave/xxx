@@ -20,7 +20,17 @@ $().ready(function () {
   });
 });
 
-/* basic functions */
+/* common functions */
+
+// remove or append div to show error messages
+function clean_below_msg(obj) {
+  $("div").remove("#msg-" + obj.attr("name"));
+}
+function show_below_msg(obj, text) {
+  clean_below_msg(obj);
+  obj.after("<div class='text-danger' id='msg-" + obj.attr("name") + "'>" + text + "</div>");
+}
+
 function getURLParameter(name) {
   return decodeURIComponent(
     (new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)')
@@ -79,8 +89,6 @@ function widen_input(flag) {
 }
 
 /* ===== functions used for login/logout ===== */
-
-
 function logout() {
   $.post('/logout', function() { location.replace('/'); });
 }
@@ -96,63 +104,7 @@ function mark_all_as_read() {
   });
 }
 
-/* ===== home page ===== */
-function ask() {
-  $.get("/check_login", function (data, status) {
-    if(data.ret){
-      location.href = "/ask";
-    }
-    else {
-      location.href = "/login?r=" + encodeURIComponent("/ask");
-    }
-  });
-}
-
-/* ===== ask page ===== */
-function do_ask() {
-  var is_valid = true;
-  var err_msg = "";
-  var t = $("input[name='title']");
-  var tt = t.val().trim();
-  if(tt == "") {
-    set_error(t, 'title');
-    err_msg += "请输入标题 &nbsp; ";
-    is_valid = false;
-  }
-  var tag_v = $("input[name='tagsinput']").val();
-  var content = CKEDITOR.instances.editor1.getData();
-  // remove the last div of the content
-  // which could be added by any browser plugin
-  //var div_pos = content.lastIndexOf('<div');
-  //content = content.substring(0, div_pos);
-  if (content.length < 10) {
-    set_error($("textarea#editor1"), 'content');
-    err_msg += "字数太少了吧 &nbsp; ";
-    is_valid = false;
-  }
-  if (content.length > 500) {
-    err_msg += "字数太多了 &nbsp; ";
-    is_valid = false;
-  }
-  if(is_valid) {
-    var data = { "title" : tt, "tags" : tag_v, "content" : content };
-    $.post("/ask", data, function (data, status) {
-      if(data.ret == "success"){
-        location.href = "/q/" + data.msg;
-      }
-      else {
-        if(data.msg == "need_login") {
-          alert("请先登录");
-        }
-        else if(data.msg == "wrong_status") {
-          alert("您的状态无法提问哦。请先验证邮箱。如果没有收到验证邮件，可以去 -更新资料- 页面操作。");
-        }
-      }
-    });
-  } else { $("#err_msg_ask").html(err_msg); }
-}
-
-/* used in login or some */
+/* common, used in login or some */
 function set_normal(ele, eid) {
   ele.parent().removeClass("has-error");
   ele.parent().removeClass("has-success");

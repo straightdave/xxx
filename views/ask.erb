@@ -2,38 +2,10 @@
 <link href="/css/bootstrap-tagsinput.css" rel="stylesheet">
 <% end %>
 
-<div class="modal fade" id="new-tag-modal">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <h4 class="modal-title">新建标签</h4>
-      </div>
-      <div class="modal-body">
-        <p id="new-tag-name">
-          标签名称：<span class="q_tag"></span>
-        </p>
-        <hr>
-        <p id="new-tag-desc">
-          <textarea style="width: 100%;" placeholder="输入标签描述"></textarea>
-        </p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-        <button type="button" class="btn btn-primary" onclick="javascript:new_tag();">保存</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
+<%= render_tag_new_modal %>
 
 <script src="/vendors/ckeditor/ckeditor.js"></script>
-<!--<script src="//cdn.bootcss.com/ckeditor/4.5.4/ckeditor.js"></script>-->
-
 <div class="container">
-
   <div class="row">
     <div class="col-md-8">
       <p>提问前好好想想，是不是真的不会？得到满意回答后也别忘记积累知识哦。</p>
@@ -58,9 +30,7 @@
         </script>
       </div>
 
-      <a class="btn btn-primary" href="javascript:void(0);"
-         onclick="javascript:do_ask();">提交</a>
-      <div id="err_msg_ask" class="text-danger"></div>
+      <button class="btn btn-primary" name="btnDoAsk">提交</button>
     </div>
 
     <div class="col-md-4">

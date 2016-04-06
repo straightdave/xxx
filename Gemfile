@@ -10,3 +10,5 @@ gem 'activerecord-mysql2-adapter'
 gem 'visual_captcha_cn'
 
 gem 'redis', '~>3.2'
+
+# dont forget 'pony' for mailer

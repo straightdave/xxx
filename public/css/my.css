@@ -758,3 +758,8 @@ div.listed-user div.user-detail {
   margin-left: 5px;
   width: 150px;
 }
+
+/* used in validation result page and info page */
+div.info_box {
+  margin: 70px 0;
+}

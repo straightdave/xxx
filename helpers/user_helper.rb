@@ -25,16 +25,16 @@ helpers do
     session[:user_id]
   end
 
-  # general login check
+  # general user status check
   def login_filter(attr = {})
     req_path   = CGI.escape(request.path)
     req_method = request.request_method
-    is_get = req_method == 'GET'
+    is_get = (req_method == 'GET')
 
     # 1. check login
     unless login?
       if is_get
-        redirect to('/login?r=' + req_path + '&w=1')
+        redirect to('/user/signin?returnurl=' + req_path)
       else
         response.body = json ret: "error", msg: "请先登录"
         halt 200
@@ -44,9 +44,9 @@ helpers do
     # 2. check account
     unless user = User.find_by(id: session[:user_id])
       if is_get
-        redirect to('/login?r=' + req_path + '&w=3')
+        redirect to("/notice?reason=accounterror&ext_0=#{user.login_name}")
       else
-        response.body = json ret: "error", msg: "账户好像有问题"
+        response.body = json ret: "error", msg: "账户登录状态有误"
         halt 200
       end
     end
@@ -59,9 +59,9 @@ helpers do
 
     if status.index(user.status).nil? && !settings.status_no_limit
       if is_get
-        redirect to('/login?r=' + req_path + '&w=4')
+        redirect to("/notice?reason=statuserror&ext_0=#{user.login_name}&ext_1=#{user.status}")
       else
-        response.body = json ret: "error", msg: "账户状态有误"
+        response.body = json ret: "error", msg: "账户当前状态有误"
         halt 200
       end
     end
@@ -74,7 +74,7 @@ helpers do
 
     if roles.index(user.role).nil? && !settings.roles_no_limit
       if is_get
-        redirect to('/login?r=' + req_path + '&w=4')
+        redirect to("/notice?reason=roleerror&ext_0=#{user.login_name}&ext_1=#{user.role}")
       else
         response.body = json ret: "error", msg: "账户角色有误"
         halt 200

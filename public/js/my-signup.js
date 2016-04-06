@@ -1,5 +1,4 @@
 (function(window, $) {
-  // page global variables
   var is_ok_name = false;
   var is_ok_email = false;
   var is_ok_password = false;
@@ -7,16 +6,6 @@
   var _login_name, _email, _password;
   var btnSubmit = $('#check-captcha-filled');
 
-  // remove or append div to show error messages
-  var clean_below_msg = function (obj) {
-    $("div").remove("#msg-" + obj.attr("name"));
-  };
-  var show_below_msg = function (obj, text) {
-    clean_below_msg(obj);
-    obj.after("<div class='text-danger' id='msg-" + obj.attr("name") + "'>" + text + "</div>");
-  };
-
-  // check fields
   var check_name = function () {
     var target = $("input[name='login_name']");
     _login_name = target.val().trim();
@@ -137,7 +126,6 @@
     }
   };
 
-  // register page init actions
   $(function() {
     // init and show mycaptcha
     var captchaEl = $("div#mycaptcha").visualCaptcha({

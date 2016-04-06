@@ -31,15 +31,6 @@
   var btnSignin = $("button[name='btnSignin']");
   var is_ok_name = true, is_ok_pass = true;
 
-  // remove or append div to show error messages
-  var clean_below_msg = function (obj) {
-    $("div").remove("#msg-" + obj.attr("name"));
-  };
-  var show_below_msg = function (obj, text) {
-    clean_below_msg(obj);
-    obj.after("<div class='text-danger' id='msg-" + obj.attr("name") + "'>" + text + "</div>");
-  };
-
   // sign in modal initialize
   $('#login-modal').on('show.bs.modal', function () {
     namebox.val(""); set_normal(namebox, "name");

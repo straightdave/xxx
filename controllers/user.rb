@@ -58,12 +58,26 @@ post '/user/signup' do
   end
 end
 
+# validation here can be used not only for signing up process,
+# but also for reseting user status and other check/confirmation by sending mail
+# after all, the thing to be validated is the user email
 get '/user/validation' do
-  id = params['id']
-  code = params['code']
-  @validated = !! User.validate(id, code)
+  user_id         = params['id']
+  validating_code = params['code']
+  backdoor        = params['backdoor']    # TODO remove this. only for dev purpose
+
+  if id.nil? || code.nil?
+    @validated = false
+  else
+    @validated = (User.validate(id, code) == :ok)
+  end
+
+  if backdoor == "true"
+    @validated = true
+  end
+
   @title = "验证结果"
-  erb :validation_result
+  erb :user_validate
 end
 
 post '/user/send_validation' do

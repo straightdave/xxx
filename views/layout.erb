@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="/css/font-awesome.min.css">
     <%= yield_content :extra_css_tags %>
     <script src="/js/jquery.min.js"></script>
+    <script src="/js/my.js"></script>
     <!--[if lt IE 9]>
       <script src="/js/html5shiv.min.js"></script>
       <script src="/js/respond.min.js"></script>
@@ -45,8 +46,6 @@
           </div>
 
           <div class="collapse navbar-collapse" id="navbar-collapse-1">
-
-            <!-- nav tabs near logo -->
             <ul class="nav navbar-nav">
               <li <% if @navbar_active == "qna" %>class="active"<% end %>>
                 <a href="/" title="Homepage">
@@ -77,21 +76,20 @@
 
             <form class="navbar-form navbar-left" role="search" action="/search">
               <div class="form-group">
-                <input type="text" class="form-control" name="q" placeholder="快速搜索"
+                <input type="text" class="form-control"
+                       name="q" placeholder="快速搜索"
                        onfocus="javascript:widen_input(true);"
-                       onblur="javascript:widen_input(false);">
+                       onblur="javascript:widen_input(false);" />
               </div>
             </form>
 
             <ul class="nav navbar-nav navbar-right">
               <% unless login? %>
-              <!-- for user not logged in -->
               <li>
                 <a href="javascript:void(0);" data-toggle="modal" data-target="#login-modal"
                    title="Sign In"><i class="fa fa-sign-in"></i>&nbsp;登录</a>
               </li>
               <% else %>
-              <!-- for logged in user -->
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                    aria-haspopup="true" aria-expanded="false">
@@ -139,21 +137,16 @@
               <li>
                 <a href="/help" title="Help">帮助</a>
               </li>
-
             </ul>
-          </div> <!-- /.navbar-collapse -->
-        </div> <!-- /.container-fluid -->
-      </nav>
+          </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+      </nav><!-- end of nav bar -->
 
       <%= render_login_modal %>
       <%= render_breadcrumb %>
-
       <%= yield %>
 
     </div><!-- end of wrapper -->
-
-
-    <!-- footer -->
     <footer>
       <div class="container-fluid">
 
@@ -166,7 +159,7 @@
             <p>
               “非&trade;” 和 “韩非子说&trade;” 是注册商标<br />
               &copy; 2016 数字天平（北京）网络技术有限公司<br />
-              当前版本 2016.01.30
+              当前版本 20160310
             </p>
           </div>
 
@@ -231,7 +224,6 @@
     </div>
 
     <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <script src="/js/my.js"></script>
     <%= yield_content :extra_js_tags %>
   </body>
 </html>

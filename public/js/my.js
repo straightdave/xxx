@@ -79,52 +79,7 @@ function widen_input(flag) {
 }
 
 /* ===== functions used for login/logout ===== */
-function login() {
-  // login method 1: used in home page, modal window
-  var is_valid = true;
-  var u = $("input[name='modal-loginname']");
-  var uv = u.val().trim();
-  if (uv == "") {
-    set_error(u, 'name');
-    is_valid = false;
-  } else { set_success(u, 'name'); }
-  var p = $("input[name='modal-password']");
-  var pv = p.val().trim();
-  if (pv == "") {
-    set_error(p, 'pass');
-    is_valid = false;
-  } else { set_success(p, 'pass'); }
-  if (is_valid) {
-    var data = {
-      "login_name" : uv,
-      "password"   : pv
-    };
-    $.post("/login", data, function(data, status) {
-      if (data.ret == "success") {
-        location.replace(location.href);
-      }
-      else {
-        if(data.msg == "login_fail") {
-          set_error(u, 'name');
-          set_error(p, 'pass');
-          $("#err-msg").text("用户名密码不正确");
-        }
-        else if(data.msg == "waiting") {
-          $("#err-msg").text("由于错误次数过多，请等待一会儿再试");
-        }
-        else if(data.msg == "fail_5") {
-          $("#err-msg").text("由于错误超过5次，请等待15秒再试");
-        }
-        else if(data.msg == "fail_10") {
-          $("#err-msg").text("由于错误超过10次，请等待30秒再试");
-        }
-        else {
-          $("#err-msg").text(data.msg);
-        }
-      }
-    });
-  }
-}
+
 
 function logout() {
   $.post('/logout', function() { location.replace('/'); });

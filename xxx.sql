@@ -389,7 +389,8 @@ CREATE TABLE `user_info` (
   `phone` varchar(50) DEFAULT NULL,
   `qq` varchar(20) DEFAULT NULL,
   `wechat` varchar(50) DEFAULT NULL,
-  `home_page` varchar(255) DEFAULT NULL,
+  `homepage` varchar(255) DEFAULT NULL,
+  `hideemail` tinyint(1) unsigned DEFAULT '0',
   `email2` varchar(255) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
@@ -498,4 +499,4 @@ CREATE TABLE `watching_list` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-04-05 12:07:24
+-- Dump completed on 2016-04-07 16:30:10

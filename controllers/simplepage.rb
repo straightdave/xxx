@@ -66,7 +66,7 @@ get '/notice' do
     @content = "您的账户（登录名：#{name}）当前的角色是（#{role}），无法进行此次操作。"
   when :validok
     @title   = "恭喜，您的账户已通过验证"
-    @content = "<a href="/">回到首页</a>"
+    @content = "<a href='/'>回到首页</a>"
   when :validfailed
     @title   = "很遗憾，账户验证失败"
     @content = "这很可能是由于验证信息中得验证码过期导致的，您可以尝试重新发送验证邮件 <br />

@@ -66,10 +66,10 @@ get '/user/validation' do
   validating_code = params['code']
   backdoor        = params['backdoor']    # TODO remove this. only for dev purpose
 
-  if id.nil? || code.nil?
+  if user_id.nil? || validating_code.nil?
     validated = false
   else
-    validated = (User.validate(id, code) == :ok)
+    validated = (User.validate(user_id, validating_code) == :ok)
   end
 
   validated = true if backdoor == "true"

@@ -109,16 +109,16 @@
             <% @events.each do |event| %>
             <div class="eventbox">
               <div class="event-avatar">
-                <a href="<%= event.user.url %>">
-                  <img alt="<%= event.user.info.nickname %>"
-                       src="<%= event.user.avatar_src %>">
+                <a href="<%= event.invoker.url %>">
+                  <img alt="<%= event.invoker.info.nickname %>"
+                       src="<%= event.invoker.avatar_src %>">
                 </a>
               </div>
 
               <div class="event-author">
                 <h4>
-                  <%= event.user.info.nickname %>
-                  <small>@<%= event.user.login_name %></small>
+                  <%= event.invoker.info.nickname %>
+                  <small>@<%= event.invoker.login_name %></small>
                 </h4>
               </div>
 

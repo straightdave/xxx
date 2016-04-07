@@ -30,9 +30,11 @@
             <%= @user_info.intro || "暂时没有简介哦~" %>
           </blockquote>
 
+          <% unless @user_info.hideemail %>
           <p>
             <i class="fa fa-envelope"></i>&nbsp;<%= @user.email %>
           </p>
+          <% end %>
 
           <% if !@user_info.phone.nil? %>
           <p>

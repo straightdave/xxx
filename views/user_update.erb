@@ -67,7 +67,9 @@
           <hr />
 
           <div class="form-group">
-            <label><i class="fa fa-exclamation-circle"></i>&nbsp;修改注册电子邮箱</label>
+            <label>
+              <i class="fa fa-exclamation-circle"></i>&nbsp;修改注册电子邮箱
+            </label>
             <input type="email" name="email" class="form-control" value="<%= @user.email %>"
                    aria-describedby="h_email">
             <span id="h_email" class="help-block">
@@ -79,6 +81,15 @@
             邮箱状态为&nbsp;<span class="text-danger">未验证</span>。没有收到验证邮件？
             <button class="btn btn-sm" name="btnSendMail">重新发送验证邮件</button>
             <% end %>
+          </div>
+
+          <div class="form-group">
+            <label>
+              <input type="checkbox"
+                     name="hideemail"
+                     <% if @user_info.hideemail %>checked<% end %> />
+              不显示我的邮箱
+            </label>
           </div>
 
           <hr>
@@ -155,7 +166,8 @@
       "qq"       : $("input[name='qq']"      ).val().trim(),
       "wechat"   : $("input[name='wechat']"  ).val().trim(),
       "email2"   : $("input[name='email2']"  ).val().trim(),
-      "email"    : emailbox.val().trim()
+      "email"    : emailbox.val().trim(),
+      "hideemail" : $("input[name='hideemail']").val().trim()
     };
 
     check_email();

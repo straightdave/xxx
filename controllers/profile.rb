@@ -16,6 +16,7 @@ post '/user/profile' do
   user.info.wechat   = params['wechat']
   user.info.email2   = params['email2']
   user.email = params['email'] if email_changed
+  user.info.hideemail = params['hideemail']
 
   if user.info.valid?
     user.info.save

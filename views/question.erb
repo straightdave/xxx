@@ -15,12 +15,14 @@
     <div class="col-md-9">
       <h3 class="question-title"><%= @q.title %></h3>
 
+      <% if login? && (@q.author.id != session[:user_id]) %>
       <div class="question-reporting">
         <button class="btn btn-default btn-sm" data-toggle="modal"
                 data-target="#report-modal" title="投诉">
           <i class="fa fa-warning"></i>
         </button>
       </div>
+      <% end %>
 
       <div class="row">
         <div class="col-md-1">
@@ -294,7 +296,7 @@
       <hr>
       <% if @q.is_frozen %>
       问题被冻结，无法回答
-      <% elsif login? %>
+      <% elsif login? && @q.author.id != session[:user_id] %>
       你的回答
 
       <div class="form-group">
@@ -306,7 +308,7 @@
       <a class="btn btn-primary" href="javascript:void(0);"
          onclick="javascript:do_answer(<%= @q.id %>);">提交</a>
       <div id="err_msg_ask" class="text-danger"></div>
-      <% else %>
+      <% elsif !login?%>
       请先
       <a class="btn btn-default btn-sm"
          href="/login?r=<%= CGI.escape(request.path) %>&w=1">登录</a> 后回答

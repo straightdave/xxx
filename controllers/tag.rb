@@ -81,8 +81,19 @@ post '/t/:tid' do |tid|
   end
 end
 
-# ajax call: create a tag
-post '/tags/new' do
+post '/tag/search' do
+  if (search_str = params['q']) &&
+     (keys = search_str.split '+') &&
+     keys.size > 0
+
+    results = Tag.ft_search_name keys
+    if results && results.size > 0
+      json num: results.size, data: results.to_json
+    end
+  end
+end
+
+post '/tag/new' do
   login_filter
   author = User.find_by(id: session[:user_id])
 
@@ -94,10 +105,10 @@ post '/tags/new' do
       new_tag.save
       json ret: "success", msg: new_tag.id
     else
-      json ret: "error", msg: "failed"
+      json ret: "error", msg: "新标签保存失败"
     end
   else
-    json ret: "error", msg: "lack_of_args"
+    json ret: "error", msg: "缺少内容"
   end
 end
 

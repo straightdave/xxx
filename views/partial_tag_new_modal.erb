@@ -18,8 +18,45 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-        <button type="button" class="btn btn-primary" onclick="javascript:new_tag();">保存</button>
+        <button type="button" class="btn btn-primary" name="btnSaveNewTag">保存</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<script>
+(function(window, $) {
+  var btnSaveNewTag = $("button[name='btnSaveNewTag']");
+
+  var add_new_tag = function (name) {
+    // clean origin hand-input and add new one to tagsinput
+    $("div[class='bootstrap-tagsinput'] > input").val('');
+    $("input[name='tagsinput']").tagsinput('add', name);
+  };
+
+  $("#new-tag-modal").on('show.bs.modal', function () {
+    clean_below_msg(btnSaveNewTag);
+  });
+
+  var _new_tag = function () {
+    var name = $("#new-tag-name > span").text().trim();
+    var desc = $("#new-tag-desc > textarea").val().trim();
+
+    console.log("wrote a tag, name=" + name + ", desc=" + desc);
+    if (name != '' && desc!= '') {
+      $.post('/tag/new', { "name": name, "desc": desc }, function (data, status) {
+        if (data.ret == "success") {
+          add_new_tag(name);
+          $("#new-tag-modal").modal('hide');
+        }
+        else {
+          show_below_msg(btnSaveNewTag, data.msg);
+        }
+      });
+    }
+    else {
+      show_below_msg(btnSaveNewTag, "表单元素缺少内容");
+    }
+  };
+  $("button[name='btnSaveNewTag']").on('click.app', _new_tag);
+})(window, jQuery);
+</script>

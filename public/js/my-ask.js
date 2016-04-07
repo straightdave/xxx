@@ -1,13 +1,26 @@
 (function (window, $) {
-  var is_ok_title = false,
-      is_ok_text  = false;
+  var is_ok_title = false, is_ok_text  = false;
   var btnDoAsk = $("button[name='btnDoAsk']");
   var titlebox = $("input[name='title']");
+  var tagsbox  = $("input[name='tagsinput']");
   var textbox  = $("input[id='editor1']").parent();
+
+  // add tag not by hand write
+  var tag_sug_click = function (name) {
+    $("div[class='bootstrap-tagsinput'] > input").val('');
+    $("input[name='tagsinput']").tagsinput('add', name);
+  };
+  // init and show tag modal
+  var tag_new_click = function (name) {
+    $("#new-tag-modal").modal('show');
+    $("#new-tag-name > span").text(name);
+    $("#new-tag-desc > textarea").val('');
+  };
 
   var _do_ask = function () {
     clean_below_msg(titlebox);
     clean_below_msg(textbox);
+    console.log("checked two boxes, title=" + is_ok_title +", text=" + is_ok_text);
 
     var title = titlebox.val().trim();
     if (title.length < 6) {
@@ -28,12 +41,18 @@
       set_error(textbox, 'text');
       show_below_msg(textbox, "内容不要少于10个字符");
     }
-    if (content.length > 500) {
+    else if (content.length > 500) {
       is_ok_text = false;
       set_error(textbox, 'text');
       show_below_msg(textbox, "内容不要多于500个字符");
     }
+    else {
+        is_ok_text = true;
+        set_normal(textbox, 'text');
+        clean_below_msg(textbox);
+    }
 
+    console.log("going to ask, title=" + is_ok_title +", text=" + is_ok_text);
     if(is_ok_title && is_ok_text) {
       clean_below_msg(btnDoAsk);
       var data = { "title" : title, "tags" : tag_v, "content" : content };
@@ -60,42 +79,8 @@
   };
   btnDoAsk.on('click.app', _do_ask);
 
-  // functions dealing with tags
-  var tag_sug_click = function (name) {
-    $("div[class='bootstrap-tagsinput'] > input").val('');
-    $("input[name='tagsinput']").tagsinput('add', name);
-  };
-  var tag_new_click = function (name) {
-    $("#new-tag-name > span").text(name);
-    $("#new-tag-modal").modal('show');
-    $("#new-tag-desc > textarea").val('');
-  };
-  var new_tag = function () {
-    var name = $("#new-tag-name > span").text();
-    var desc = $("#new-tag-desc > textarea").val();
-    console.log("name=" + name + ", desc= " + desc);
-    if (name.trim() != '' && desc.trim() != '') {
-      $.post('/tags/new', { "name": name, "desc": desc }, function (data, status) {
-        if (data.ret == "success") {
-          tag_sug_click(name);
-          $("#new-tag-modal").modal('hide');
-        }
-        else if (data.msg == "wrong_status"){
-          alert("你的状态不可以创建标签");
-        }
-        else if (data.msg == "lack_of_args"){
-          alert("信息不完整");
-        }
-        else {
-          alert("创建失败");
-        }
-      });
-    }
-  };
-
-
   // register some init ready functions
-  $().ready(function () {
+  $(function () {
     $("input[name='title']").focus();
 
     // load common func
@@ -127,7 +112,7 @@
             $("div.similar-question-list").html(content);
           }
           else {
-            console.log("Not found any");
+            console.log("Found no similar questions");
           }
         });
       }, 500);
@@ -140,15 +125,21 @@
         var keywords = event.target.value;
         if (keywords.trim().length < 2) return;
 
-        $.post('/search_tag', { "q" : keywords }, function (data, status) {
+        console.log("will popping up tag suggestions");
+
+        $.post('/tag/search', { "q" : keywords }, function (data, status) {
           if (data.num > 0) {
+            // found some to suggest
             var ts = JSON.parse(data.data);
+
+            // render found suggestions
             var tagItems = "";
             var all_diff = true;
             for(var i = 0; i < data.num; i++) {
-              tagItems += "<li>\n<a href='javascript:void(0);' onclick='tag_sug_click(\""+ ts[i].name +"\");'><span class='q_tag'>";
+              tagItems += "<li>\n<a href='javascript:void(0);' name='"+ ts[i].name +"'>";
+              tagItems += "<span class='q_tag'>";
               tagItems += ts[i].name;
-              tagItems += "</span> &times; ";
+              tagItems += "</span> &times;";
               tagItems += ts[i].used;
               tagItems += "</a>\n</li>\n";
               if (ts[i].name == keywords) {
@@ -156,18 +147,49 @@
               }
             }
             if (all_diff) {
+              console.log("listed all similar suggestions; but still no exactly one. create new");
+              console.log("==> " + keywords);
               tagItems += "<li role='separator' class='divider'></li>\n";
-              tagItems += "<li><a href='javascript:void(0);' onclick='tag_new_click(\"" + keywords + "\");'>创建标签<span class='q_tag'>";
+              tagItems += "<li><a href='javascript:void(0);' name='" + keywords + "'>";
+              tagItems += "创建标签<span class='q_tag'>";
               tagItems += keywords;
               tagItems += "</span></a></li>\n";
             }
             $(pane).html(tagItems);
+
+            // binding behaviors for each tag element
+            for(var i = 0; i < data.num; i++) {
+              console.log("binding event to ts[i]=" + ts[i].name);
+              var tag_name = ts[i].name;
+              $("a[name='" + tag_name + "']").click(function (event) {
+                var curr_name = event.target.name;
+                console.log("a[name='" + curr_name + "'] clicked: add sug click");
+                tag_sug_click(curr_name);
+              });
+            }
+            if (all_diff) {
+              $("a[name ='" + keywords + "']").click(function (event) {
+                var name = event.target.name;
+                console.log("a[name='" + name + "'] clicked: create new");
+                tag_new_click(name);
+              });
+            }
           }
           else {
-            var createNewTag = "<li><a href='javascript:void(0);' onclick='tag_new_click(\"" + keywords + "\");'>创建标签<span class='q_tag'>";
+            console.log("no suggests found, render create new: " + keywords);
+            // found no tag to suggest, show create new
+            var createNewTag = "<li><a href='javascript:void(0);'class='tagnew' name='" + keywords + "'>";
+            createNewTag += "创建标签<span class='q_tag'>";
             createNewTag += keywords;
             createNewTag += "</span></a></li>\n";
             $(pane).html(createNewTag);
+
+            // bind behavior for create new
+            $("a[name ='" + keywords + "']").click(function (event) {
+              var name = event.target.name;
+              console.log("a[name='" + name + "'] clicked: create new");
+              tag_new_click(name);
+            });
           }
         });
 

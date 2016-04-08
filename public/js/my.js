@@ -344,27 +344,6 @@ function do_feedback() {
   });
 }
 
-/* report */
-function new_report(type, id) {
-  var err_box = $("#report-err-msg");
-  var reason = $("textarea[name='reason']").val();
-  if (reason.length < 10) {
-    err_box.html("不能少于10个字");
-  }
-  else {
-    var post_data = { "target_type" : type, "target_id" : id, "content" : reason };
-    $.post('/report', post_data, function (data, status) {
-      if (data.ret == "success") {
-        location.replace(location.href);
-      }
-      else {
-        err_box.html(data.msg);
-      }
-    });
-  }
-}
-
-
 /* edit content */
 function save_edit(strType, id) {
   if(strType == 'q') {

@@ -53,7 +53,7 @@ configure :production do
   }
 
   enable :mail_validation
-  enable :status_no_limit
+  disable :status_no_limit
   disable :roles_no_limit
 
   # used in content of mailing (production environment)

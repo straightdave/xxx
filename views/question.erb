@@ -52,7 +52,7 @@
             <!-- has_accepted_answer mark -->
             <% if @answered %>
               <a id="answeredicon" href="#answer" title="跳到被标记的答案">
-                <i class="fa fa-check fa-2x"></i>
+                <i class="fa fa-check"></i>
               </a>
             <% end %>
           </div>
@@ -196,7 +196,7 @@
                     <br />
                     <!-- possible marked-as-answer sign -->
                     <% if @q.accepted_answer == a %>
-                    <i class="fa fa-check fa-2x i-am-answer"></i>
+                    <i class="fa fa-check i-am-answer"></i>
                     <% end %>
 
                   </div> <!-- end of voting box -->
@@ -223,7 +223,7 @@
                       <a href="javascript:void(0);" role="button"
                          class="btn btn-primary btn-sm" onclick="javascript:
                            mark_as_accepted(<%= @q.id %>, <%= a.id %>);">
-                        <i class="fa fa-check fa-2x"></i>&nbsp;标记为答案
+                        <i class="fa fa-check"></i>&nbsp;标记为答案
                       </a>
                     </div>
                   </div>

@@ -9,15 +9,47 @@
         <h4 class="modal-title">投诉</h4>
       </div>
       <div class="modal-body">
-        <p>
-          <textarea name="reason" style="width: 100%;" placeholder="投诉理由"></textarea>
-        </p>
-        <div id="report-err-msg" class="text-danger"></div>
+        <textarea name="reason" style="width: 100%;" placeholder="投诉理由"></textarea>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary btn-sm"
-        onclick="javascript:new_report('<%= item_type %>',<%= item_id %>);">保存</button>
+        <button class="btn btn-primary btn-sm" name="btnNewReport">保存</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<script>
+(function (window, $) {
+  var btnNewReport = $("button[name='btnNewReport']");
+  var textbox = $("textarea[name='reason']");
+
+  // init modal
+  $('#report-modal').on('show.bs.modal', function () {
+    clean_below_msg(textbox);
+  });
+
+  var _new_report = function () {
+    var reason = textbox.val();
+    if (reason.length < 20 || reason.length > 200) {
+      show_below_msg(textbox, "请不要少于20个或多于200个字");
+    }
+    else {
+      clean_below_msg(textbox);
+      clean_below_msg(btnNewReport);
+      var post_data = {
+        "target_type" : "<%= item_type %>",
+        "target_id" : "<%= item_id %>",
+        "content" : reason
+      };
+      $.post('/report', post_data, function (data, status) {
+        if (data.ret == "success") {
+          location.replace(location.href);
+        }
+        else {
+          show_below_msg(btnNewReport, "保存失败");
+        }
+      });
+    }
+  };
+  btnNewReport.on('click.app', _new_report);
+})(window, jQuery);
+</script>

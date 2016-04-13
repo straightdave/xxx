@@ -3,7 +3,7 @@ interface with controllers:
 @page : current page
 @total_page: total count of pages
 -->
-<div class="pager2">
+<div class="pager-simple">
   <ul class="pagination pagination-sm">
     <% if @page <= 1 %>
       <li class="disabled"><a href="javascript:void(0);">&laquo;</a></li>
@@ -39,4 +39,4 @@ interface with controllers:
       <li class="disabled"><a href="javascript:void(0);">&raquo;</a></li>
     <% end %>
   </ul>
-</div> <!-- end of pager -->
+</div>

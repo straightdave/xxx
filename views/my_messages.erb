@@ -2,41 +2,41 @@
   <div class="row">
     <div class="col-md-9">
       <div class="msg-list-head">
-        <span>我的消息</span>
-        <button type="button" class="btn btn-default btn-xs" id="btn_mark"
-                onclick="javascript:mark_all_as_read();"
-                <% if get_message_amount == 0 %>
-                  disabled="disabled"
-                <% end %> >将所有消息标记为已读</button>
+        <div>
+          <span>我的消息</span>
+        </div>  
+        <div class="right">
+          <button class="btn btn-default btn-xs" id="btn_mark"
+                  onclick="javascript:mark_all_as_read();"
+                  <% if get_message_amount == 0 %>
+                    disabled="disabled"
+                  <% end %> >
+            将所有消息标记为已读
+          </button>
+        </div>
+        <div class="clear"></div>
       </div>
 
-      <table class="table table-condensed">
-        <% @messages.order(sent_at: :desc).each do |m| %>
-        <tr>
-          <td>
+      <div class="msg-list">
+        <% @messages.each do |m| %>
 
-            <div class="message <% if !m.isread then %>unread<% end %>">
-              <div class="sender">
-                发件人: &nbsp;
-                <%= m.sender.nil? ? "unknown" : m.sender.info.nickname %>
-                @
-                <%= time_ago_in_words_zh(m.sent_at) %>
-              </div>
-              <div class="subject">
-                标题: &nbsp;
-                <%= m.subject %>
-              </div>
-              <div class="content">
-                <%= m.content %>
-              </div>
-            </div>
+          <div class="message <% if !m.isread then %>unread<% end %>">
+            <p>
+              <%= time_ago_in_words_zh(m.sent_at) %> &nbsp;
+              来自 &nbsp;
+              <%= m.sender.nil? ? "系统" : m.sender.info.nickname %>
+            </p>
+            <p>
+              <%= m.content %>
+            </p>
+          </div>
 
-          </td>
-        </tr>
         <% end %>
-      </table>
+      </div>
 
+      <%= render_pager_full %>
     </div>
+
     <div class="col-md-3">
       <%= render_ad %>
     </div>

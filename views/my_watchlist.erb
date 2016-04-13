@@ -7,8 +7,7 @@
         <% @watchlist.order(created_at: :desc).each do |q| %>
         <tr>
           <td>
-            <button type="button"
-                    class="btn btn-default btn-sm"
+            <button type="button" class="btn btn-default btn-sm"
                     onclick="javascript:unwatch1(<%= q.id %>);">
                移除关注
             </button>
@@ -25,6 +24,7 @@
         <% end %>
       </table>
 
+      <%= render_pager_full %>
     </div>
     <div class="col-md-3">
       <%= render_ad %>

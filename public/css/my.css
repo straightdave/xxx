@@ -369,11 +369,27 @@ div.msg-list-head {
 }
 
 div.msg-list-head span {
-  margin-right: 10px;
+  display: inline-block;
+  float: left;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+div.right {
+  float: right;
+}
+
+div.msg-list {
+  margin-top: 10px;
+}
+
+div.message {
+  padding: 10px 20px;
+  border-bottom: 3px solid white;
 }
 
 div.unread {
-  background-color: lightyellow;
+  background-color: #DAE7F1;
 }
 
 
@@ -552,9 +568,12 @@ div.tag-box p {
   margin-top: 5px;
 }
 
-div.pager2 {
+div.simple {
   margin-top: 30px;
   text-align: center;
+}
+div.pager-full {
+  margin-top: 30px;
 }
 
 /* tag page */
@@ -599,6 +618,9 @@ div.linked-title span {
 }
 div.linked-title a {
   text-decoration: none;
+}
+ul.dropdown-menu > li > a {
+  cursor: pointer;
 }
 
 
@@ -690,11 +712,6 @@ div.partial-ad {
   overflow: hidden;
   border: 1px solid lightgray;
   padding: 3px;
-}
-
-ul#tag-suggest {
-  top: 120px !important;
-  left: 25px !important;
 }
 
 /* report box for user */

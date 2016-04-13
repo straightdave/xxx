@@ -2,9 +2,19 @@
 get '/t/:tid' do |tid|
   raise not_found unless @tag = Tag.find_by(id: tid)
 
+  if !(@slice = params['slice']) || (@slice.to_i <= 0)
+    @slice = 50
+  else
+    @slice = @slice.to_i
+  end
+
+  if !(@page = params['page']) || (@page.to_i <= 0)
+    @page = 1
+  else
+    @page = @page.to_i
+  end
+
   @sort_by = params['sort'] || 'hot'
-  @page    = params['page'] || 1    # show page 1 by default
-  @page    = @page.to_i
 
   if (search_str = params['q']) && (keys = search_str.split '+') && (keys.size  > 0)
 
@@ -16,10 +26,10 @@ get '/t/:tid' do |tid|
     @questions = case @sort_by
     when 'hot'
       @questions.sort { |a, b| b.views <=> a.views }
-                .slice(20 * (@page - 1) .. 20 * @page)
+                .slice(@slice * (@page - 1) .. @slice * @page)
     when 'new'
       @questions.sort { |a, b| b.created_at <=> a.created_at }
-                .slice(20 * (@page - 1) .. 20 * @page)
+                .slice(@slice * (@page - 1) .. @slice * @page)
     end
   else
     # no search filtered but all questions with this tag
@@ -28,13 +38,13 @@ get '/t/:tid' do |tid|
     @questions = case @sort_by
     when 'hot'
      @tag.questions.order(views: :desc)
-         .limit(20).offset(20 * (@page - 1))
+         .limit(@slice).offset(@slice * (@page - 1))
     when 'new'
      @tag.questions.order(created_at: :desc)
-         .limit(20).offset(20 * (@page - 1))
+         .limit(@slice).offset(@slice * (@page - 1))
     end
   end
-  @total_page = total_size / 20 + (total_size % 20 != 0 ? 1 : 0)
+  @total_page = total_size / @slice + (total_size % @slice != 0 ? 1 : 0)
 
   # find top 5 experts for this tag
   @top_experts = @tag.top_experts 5
@@ -114,9 +124,19 @@ end
 
 # home page for all tags
 get '/tags' do
+  if !(@slice = params['slice']) || (@slice.to_i <= 0)
+    @slice = 50
+  else
+    @slice = @slice.to_i
+  end
+
+  if !(@page = params['page']) || (@page.to_i <= 0)
+    @page = 1
+  else
+    @page = @page.to_i
+  end
+
   @sort_by = params['sort'] || 'hot'
-  @page = params['page'] || 1    # 20 tags per page
-  @page = @page.to_i
 
   if (search_str = params['q']) &&
      (keys       = search_str.split '+') &&
@@ -127,21 +147,21 @@ get '/tags' do
     @tags = case @sort_by
     when 'hot'
       @tags.sort { |a, b| b.used <=> a.used }
-           .slice(20 * (@page - 1) .. 20 * @page)
+           .slice(@slice * (@page - 1) .. @slice * @page)
     when 'new'
       @tags.sort { |a, b| b.created_at <=> a.created_at }
-           .slice(20 * (@page - 1) .. 20 * @page)
+           .slice(@slice * (@page - 1) .. @slice * @page)
     end
   else
     total_size = Tag.count
     @tags = case @sort_by
     when 'hot'
-      Tag.order(used: :desc).limit(20).offset(20 * (@page - 1))
+      Tag.order(used: :desc).limit(@slice).offset(@slice * (@page - 1))
     when 'new'
-      Tag.order(created_at: :desc).limit(20).offset(20 * (@page - 1))
+      Tag.order(created_at: :desc).limit(@slice).offset(@slice * (@page - 1))
     end
   end
-  @total_page = total_size / 20 + (total_size % 20 != 0 ? 1 : 0)
+  @total_page = total_size / @slice + (total_size % @slice != 0 ? 1 : 0)
 
   @title = "标签大全"
   @navbar_active = "tags"

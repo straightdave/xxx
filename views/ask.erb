@@ -11,19 +11,18 @@
       <p>提问前好好想想，是不是真的不会？得到满意回答后也别忘记积累知识哦。</p>
 
       <div class="form-group has-feedback">
-        <input type="text" class="form-control" name="title"
-               placeholder="言简意赅的标题" />
+        <input type="text" class="form-control" name="title" placeholder="言简意赅的标题" />
       </div>
       <div class="form-group">
-        <input name="tagsinput" class="bootstrap-tagsinput"
-               data-role="tagsinput" placeholder="输入或选择标签"/>
+        <input name="tagsinput" class="bootstrap-tagsinput" data-role="tagsinput"
+               placeholder="输入或选择标签"/>
       </div>
-
-      <!-- hidden suggest menu -->
+      
+      <!-- hidden dropdown menu -->
       <ul class="dropdown-menu" id="tag-suggest">
       </ul>
 
-      <div class="form-group">
+      <div class="form-group" id="editor-box">
         <textarea id="editor1" name="editor1"></textarea>
         <script>
           CKEDITOR.replace('editor1');

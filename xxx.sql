@@ -265,7 +265,6 @@ CREATE TABLE `messages` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `from_uid` int(10) unsigned NOT NULL,
   `to_uid` int(10) unsigned NOT NULL,
-  `subject` varchar(255) DEFAULT NULL,
   `content` varchar(1024) DEFAULT NULL,
   `sent_at` datetime DEFAULT NULL,
   `isread` tinyint(1) DEFAULT '0',
@@ -499,4 +498,4 @@ CREATE TABLE `watching_list` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-04-07 16:30:10
+-- Dump completed on 2016-04-13 23:29:24

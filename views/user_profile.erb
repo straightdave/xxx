@@ -67,7 +67,7 @@
           </p>
 
           <div class="sns-actions">
-            <% if @user.id != get_user_id %>
+            <% if login? && @user.id != get_user_id %>
               <% if @followed %>
                 <a href="javascript:void(0);"
                    class="btn btn-default btn-sm"

@@ -1,7 +1,6 @@
 require_relative "home"
 require_relative "account_manage"
 require_relative "log"
-require_relative "job_manage"
 require_relative "reporting_manage"
 require_relative "question_manage"
 

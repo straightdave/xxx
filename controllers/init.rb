@@ -12,7 +12,6 @@ require_relative "article"
 require_relative "sns"
 require_relative "captcha"
 require_relative "search"
-require_relative "job"
 require_relative "report"
 require_relative "feedback"
 

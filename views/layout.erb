@@ -4,9 +4,10 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="keywords" content="<%= @page_keywords_list %>,法律,法务,问答,社区" />
-    <meta name="description" content="<%= @page_description %> 法律 法务 问答 社区" />
-    <title>韩非子说 | <%= @title %></title>
+    <meta name="keywords" content="<%= @page_keywords_list %>,
+          法律,法务,问答,社区,law,expertise exchange,community" />
+    <meta name="description" content="<%= @page_description %>" />
+    <title><%= @title %> | 韩非子说</title>
     <link rel="icon" href="/favicon.ico" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="bookmark" href="/favicon.ico" />
@@ -140,11 +141,9 @@
       <%= render_login_modal %>
       <%= render_breadcrumb %>
       <%= yield %>
-
     </div><!-- end of wrapper -->
     <footer>
       <div class="container-fluid">
-
         <div class="row">
           <div class="col-md-3">
             <div class="footer-logo-box">
@@ -193,22 +192,10 @@
               <li>
                 <a href="/feedback" title="Feedback">问题反馈</a>
               </li>
-              <li>
-                <a href="/business" title="Business Cooperation">企业合作</a>
-              </li>
-              <li>
-                <a href="/career" title="Jobs of This Site">本站工作机会</a>
-              </li>
-              <li>
-                <a href="http://t.cn/account/hanfeizishuo" title="Weibo">微博账号</a>
-              </li>
             </ul>
           </div>
 
-          <div class="col-md-2">
-            <h5 title="WeChat">微信公众号<small>（假）</small></h5>
-            <img class="cli-pane" src="/cli.png" alt="微信公众号" />
-          </div>
+
         </div><!-- end of the row -->
 
       </div><!-- end of the container -->

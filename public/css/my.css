@@ -14,7 +14,7 @@ body {
   font-size: 14px;
 }
 
-/* override styling */
+/* override original styling */
 .navbar {
   border-left: none;
   border-right: none;
@@ -150,6 +150,9 @@ img.cli-pane {
 }
 .margin-top-20 {
   margin-top: 20px;
+}
+.margin-top-60 {
+  margin-top: 60px;
 }
 
 .err-msg {
@@ -752,13 +755,11 @@ ul.tabs-right li {
 img.avatar-listed {
   width: 60px;
   height: 60px;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px 0;
   margin-right: 10px;
 }
 
 div.listed-users {
-  margin: 30px 10px;
+  margin: 0px 10px;
 }
 
 div.listed-user {

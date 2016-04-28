@@ -1,21 +1,24 @@
 get '/about' do
   @title = "关于"
-  @navbar_active = "about"
+  @navbar_hide_level = 'all'
   erb :about
 end
 
 get '/terms' do
   @title = "条款"
+  @navbar_hide_level = 'all'
   erb :terms
 end
 
 get '/help' do
   @title = "帮助"
+  @navbar_hide_level = 'all'
   erb :help
 end
 
 get '/career' do
   @title = "本站的工作机会"
+  @navbar_hide_level = 'all'
   erb :career
 end
 
@@ -28,6 +31,7 @@ get '/show_session' do
 end
 
 get '/404' do
+  @navbar_hide_level = 'all'
   erb :page_404, layout: false
 end
 
@@ -75,5 +79,7 @@ get '/notice' do
     @title   = "消息页面"
     @content = "您可以浏览“韩非子说”网站的精彩内容，或者参与其中： <a href='/user/signin'>登录</a>"
   end
+
+  @navbar_hide_level = 'logo'
   erb :page_info
 end

@@ -1,7 +1,8 @@
 <% if @navbar_hide_level != 'all' %>
 <style>
 div.navtab {
-  margin-bottom: 60px;
+  margin-top: 10px;
+  margin-bottom: 80px;
 }
 
 .navtab-left {
@@ -25,11 +26,9 @@ div.navtab {
 a.navtab-tab-button:hover {
   text-decoration: none;
 }
-
 a.activated {
   background-color: gold;
 }
-
 a.activated:hover {
   text-decoration: none;
 }
@@ -45,7 +44,9 @@ img.logo-navtab {
   <div class="navtab">
     <% if @navbar_hide_level != 'logo' %>
     <div class="navtab-left">
-      <img src="/logo.png" class="logo-navtab" alt="韩非子说"/>
+      <a href="/" title="Homepage">
+        <img src="/logo.png" class="logo-navtab" alt="韩非子说"/>
+      </a>
     </div>
     <% end %>
     <div class="navtab-right">

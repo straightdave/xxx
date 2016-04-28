@@ -1,0 +1,69 @@
+<% if @navbar_hide_level != 'all' %>
+<style>
+div.navtab {
+  margin-bottom: 60px;
+}
+
+.navtab-left {
+  float: left;
+}
+.navtab-right {
+  float: right;
+}
+.navtab-tab-button {
+  display: block;
+  float: left;
+  height: 30px;
+  margin-left: 5px;
+  text-decoration: none;
+  text-align: center;
+  padding: 5px 10px;
+  cursor: pointer;
+  background-color: #EBF2F5;
+}
+
+a.navtab-tab-button:hover {
+  text-decoration: none;
+}
+
+a.activated {
+  background-color: gold;
+}
+
+a.activated:hover {
+  text-decoration: none;
+}
+
+img.logo-navtab {
+  width: 120px;
+  margin-top: -5px;
+}
+
+</style>
+<div class="container">
+
+  <div class="navtab">
+    <% if @navbar_hide_level != 'logo' %>
+    <div class="navtab-left">
+      <img src="/logo.png" class="logo-navtab" alt="韩非子说"/>
+    </div>
+    <% end %>
+    <div class="navtab-right">
+      <a class="navtab-tab-button <% if @navbar_active == 'qs' %>activated<% end %>"
+         href="/questions" title="All questions">
+        <i class="fa fa-question"></i>&nbsp;问题
+      </a>
+      <a class="navtab-tab-button <% if @navbar_active == 'users' %>activated<% end %>"
+         href="/users" title="All users">
+        <i class="fa fa-users"></i>&nbsp;用户
+      </a>
+      <a class="navtab-tab-button <% if @navbar_active == 'tags' %>activated<% end %>"
+         href="/tags" title="All tags">
+        <i class="fa fa-tags"></i>&nbsp;标签
+      </a>
+      <div class="clear"></div>
+    </div>
+  </div>
+
+</div>
+<% end %>

@@ -48,31 +48,16 @@
 
           <div class="collapse navbar-collapse" id="navbar-collapse-1">
             <ul class="nav navbar-nav">
-              <li <% if @navbar_active == "qna" %>class="active"<% end %>>
-                <a href="/" title="Homepage">
-                  <i class="fa fa-home"></i>&nbsp;首页
-                </a>
-              </li>
-              <li <% if @navbar_active == "qs" %>class="active"<% end %>>
-                <a href="/questions" title="All questions">
-                  <i class="fa fa-question"></i>&nbsp;问题
-                </a>
-              </li>
-              <li <% if @navbar_active == "users" %>class="active"<% end %>>
-                <a href="/users" title="All users">
-                  <i class="fa fa-users"></i>&nbsp;用户
-                </a>
-              </li>
-              <li <% if @navbar_active == "tags" %>class="active"<% end %>>
-                <a href="/tags" title="Tags page">
-                  <i class="fa fa-tags"></i>&nbsp;标签
+              <li <% if request.path == '/ask' %>class="disabled"<% end %>>
+                <a href="/ask" title="ask" id="tab-ask">
+                  <i class="fa fa-hand-paper-o fa-2x"></i>&nbsp;我要提问
                 </a>
               </li>
             </ul>
 
             <form class="navbar-form navbar-left" role="search" action="/search">
               <div class="form-group">
-                <input type="text" class="form-control"
+                <input type="text" class="form-control" id="quicksearch"
                        name="q" placeholder="快速搜索"
                        onfocus="javascript:widen_input(true);"
                        onblur="javascript:widen_input(false);" />
@@ -139,6 +124,7 @@
       </nav><!-- end of nav bar -->
 
       <%= render_login_modal %>
+      <%= render_nav_tab %>
       <%= render_breadcrumb %>
       <%= yield %>
     </div><!-- end of wrapper -->

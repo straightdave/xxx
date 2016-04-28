@@ -44,6 +44,7 @@ get '/user/profile' do
   @title = "我的资料"
   @user_info = @user.info
   @is_newbie = (@user.status == User::Status::NEWBIE)
+  @navbar_hide_level = 'logo'
   erb :user_update
 end
 

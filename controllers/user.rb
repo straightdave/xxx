@@ -1,6 +1,7 @@
 # ===== user registering =====
 get '/user/signup' do
   @title = "用户注册"
+  @navbar_hide_level = 'all'
   erb :user_signup
 end
 
@@ -128,12 +129,17 @@ get '/users' do
 
   @title         = "所有用户"
   @navbar_active = "users"
+  @breadcrumb = [
+    { name: "首页", url: '/' },
+    { name: "用户", active: true }
+  ]
   erb :user_all
 end
 
 # ===== login & logout =====
 get '/user/signin' do
   @title = "用户登录"
+  @navbar_hide_level = 'all'
   erb :user_signin
 end
 

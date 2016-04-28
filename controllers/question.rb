@@ -77,6 +77,10 @@ get '/questions' do
 
   @title         = "所有问题"
   @navbar_active = "qs"
+  @breadcrumb = [
+    { name: "首页", url: '/' },
+    { name: "问题", active: true }
+  ]
   erb :question_all
 end
 

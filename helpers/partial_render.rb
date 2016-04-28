@@ -4,6 +4,10 @@ helpers do
   end
 
   def render_job_posts
+    # TODO: be careful!
+    # now we don't have model: Job
+    # do not use
+    # --- 2016/4/26
     erb :partial_jobpost, layout: false, locals: { jobs: Job.get_jobs }
   end
 
@@ -53,5 +57,16 @@ helpers do
     # function show_alert(type, text)
     # type in ["info", "success", "danger", "warning"]
     erb :partial_alertbox, layout: false
+  end
+
+  def render_foldable_header(hide)
+    erb :partial_foldable_header, layout: false, locals: { hide_header: hide }
+  end
+
+  def render_nav_tab
+    # API:
+    # @navbar_active
+    # @navbar_hide_level: logo, all 
+    erb :partial_nav_tab, layout: false
   end
 end

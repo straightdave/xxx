@@ -136,7 +136,7 @@
         }
         var top = $("div[class='bootstrap-tagsinput'] > input").offset().top;
         var left = $("div[class='bootstrap-tagsinput'] > input").offset().left;
-        $("ul#tag-suggest").css({"top" : 120, "left" : left - 50}).show();
+        $("ul#tag-suggest").css({"top" : 120, "left" : left - 130 }).show();
       });
     });
 

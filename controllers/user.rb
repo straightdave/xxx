@@ -138,6 +138,7 @@ end
 
 # ===== login & logout =====
 get '/user/signin' do
+  log_out
   @title = "用户登录"
   @navbar_hide_level = 'all'
   erb :user_signin

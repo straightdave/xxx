@@ -7,6 +7,7 @@ helpers do
     session[:user_id]        = user.id
     session[:login_name]     = user.login_name
     session[:message_amount] = user.inbox_messages.where(isread: false).size
+    session[:user_avatar_url] = user.info.avatar.nil? ? "/avatar.jpg" : user.info.avatar
     user.save if user.valid?
   end
 
@@ -23,6 +24,9 @@ helpers do
   end
   def get_user_id
     session[:user_id]
+  end
+  def get_avatar_src
+    session[:user_avatar_url]
   end
 
   # general user status check

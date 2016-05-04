@@ -36,25 +36,25 @@
           </p>
           <% end %>
 
-          <% if !@user_info.phone.nil? %>
+          <% if !@user_info.phone.nil? && !@user_info.phone.empty? %>
           <p>
             <i class="fa fa-phone"></i>&nbsp;<%= @user_info.phone %>
           </p>
           <% end %>
 
-          <% if !@user_info.city.nil? %>
+          <% if !@user_info.city.nil? && !@user_info.city.empty? %>
           <p>
             <i class="fa fa-map-marker"></i>&nbsp;<%= @user_info.city %>
           </p>
           <% end %>
 
-          <% if !@user_info.qq.nil? %>
+          <% if !@user_info.qq.nil? && !@user_info.qq.empty? %>
           <p>
             <i class="fa fa-qq"></i>&nbsp;<%= @user_info.qq %>
           </p>
           <% end %>
 
-          <% if !@user_info.wechat.nil? %>
+          <% if !@user_info.wechat.nil? && !@user_info.wechat.empty? %>
           <p>
             <i class="fa fa-wechat"></i>&nbsp;<%= @user_info.wechat %>
           </p>
@@ -194,7 +194,7 @@
 
       <hr>
       <div class="ad-col-3">
-        
+
       </div>
     </div> <!-- end of side column -->
 

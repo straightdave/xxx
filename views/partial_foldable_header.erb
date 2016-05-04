@@ -1,25 +1,23 @@
 <style>
 div.foldable-header {
   position: relative;
-  border: 1px solid lightgray;
   margin-bottom: 10px;
   background-color: #EBF2F5;
 }
 
 div.folded {
-  height: 37px;
+  height: 20px;
 }
 
 div.foldable-header > div.content {
   margin: 0 auto;
-  padding: 30px 40px 20px 40px;
+  padding: 30px 40px 10px 40px;
 }
 
 div.foldable-header > #folding-button {
   display: block;
   position: absolute;
-  right: 10px;
-  top: 5px;
+  right: 5px;
   z-index: 99;
   cursor: pointer;
 }
@@ -27,7 +25,7 @@ div.foldable-header > #folding-button {
 
 <div class="foldable-header <% if @hide_header %>folded<% end %>">
   <span id="folding-button">
-    <i class="fa fa-2x"></i>
+    <i class="fa"></i>
   </span>
   <div class="content">
   </div>
@@ -39,7 +37,7 @@ $(function () {
   var hbox = $(".foldable-header");
   var cbox = $(".foldable-header > .content");
   var unfolded_content = '\
-  <div><p>韩非子说&trade; 是讨论和学习法律知识的地方。<br />\
+    <div><p>韩非子说&trade; 是讨论和学习法律知识的地方。<br />\
     帮助他人，提高自己，还可以获取代表专业能力的声望。<br /></p><p>现在就 \
     <a class="btn btn-default btn-sm" href="/user/signin">登录</a> \
     <a class="btn btn-default btn-sm" href="/user/signup">注册</a> 吧！\

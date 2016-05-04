@@ -80,11 +80,9 @@ function widen_input(flag) {
   var input = $("input[name='q']");
   if (true == flag) {
     input.animate({ width : '+=200px'});
-    input.attr("placeholder", "[ENTER回车]键确认");
   }
   else {
     input.animate({ width : '-=200px'});
-    input.attr("placeholder", "快速搜索");
   }
 }
 

@@ -1,7 +1,6 @@
 # update user's (own) profile
 post '/user/profile' do
-  login_filter
-  user = User.find_by(id: session[:user_id])
+  user = login_filter
 
   email_changed = (user.email != params['email'])
   if email_changed && !user.can_change_email
@@ -39,8 +38,7 @@ post '/user/profile' do
 end
 
 get '/user/profile' do
-  login_filter
-  @user = User.find_by(id: session[:user_id])
+  @user = login_filter
   @title = "我的资料"
   @user_info = @user.info
   @is_newbie = (@user.status == User::Status::NEWBIE)

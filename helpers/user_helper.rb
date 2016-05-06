@@ -84,6 +84,8 @@ helpers do
         halt 200
       end
     end
-  end
 
+    # if all OK, return current user object
+    user
+  end
 end

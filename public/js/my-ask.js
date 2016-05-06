@@ -1,13 +1,13 @@
 // used in ask page ONLY
 (function (window, $) {
+  var titlebox  = $("input[name='title']");
+  var tagsbox   = $("input[name='tagsinput']");
+  var editorbox = $("div#editor-box");
 
   var do_ask = function () {
     var is_ok_title = false,
         is_ok_text  = false,
-        btnDoAsk  = $("button[name='btnDoAsk']"),
-        editorbox = $("div#editor-box"),
-        tagsbox   = $("input[name='tagsinput']"),
-        titlebox  = $("input[name='title']");
+        btnDoAsk  = $("button[name='btnDoAsk']");
 
     clean_below_msg(titlebox);
     clean_below_msg(editorbox);
@@ -50,6 +50,41 @@
     }
   };
 
+  var do_save_draft = function () {
+    // 1. get title (if none, use default draft title)
+    var title = titlebox.val().trim();
+
+    // 2. get tags content
+    var tag_v = tagsbox.val();
+
+    // 3. get content
+    var content = CKEDITOR.instances.editor1.getData();
+
+    // 4. serialize to JSON
+    var data = { "title" : title, "tags" : tag_v, "content" : content };
+    var data_str = JSON.stringify(data);
+    // 4.1 check data changed (cancel if no change)
+    var hash_code = hashCode(data_str);
+    var old_hash = getCookie("draft_print");
+    if (old_hash != "" && old_hash == hash_code) {
+      console.log("hash code " + hash_code + ", old hash " +
+        old_hash + ", cancel saving");
+      return;
+    }
+
+    // 5. save to draft content
+    $.post('/draft', { title: title, type: 'question', data: data_str },
+      function (data, status) {
+        if (data.ret == "success") {
+          setCookie("draft_print", hash_code, 1);
+          console.log("data saved. hash code: " + hash_code);
+        }
+        else {
+          alert(data.msg);
+        }
+    });
+  };
+
   var delay = (function(){
     var timer = 0;
     return function(callback, ms){
@@ -86,19 +121,51 @@
     }, 300);
   };
 
-  // document ready handler
+  // document ready
   $(function () {
-    var btnDoAsk  = $("button[name='btnDoAsk']"),  // final submit button
-        titlebox  = $("input[name='title']");   // textarea container div
+    var btnDoAsk     = $("button[name='btnDoAsk']"),  // final submit button
+        btnSaveDraft = $("button[name='btnSaveDraft']"),
+        titlebox     = $("input[name='title']");   // textarea container div
+
+    var draft_id_to_load = -1;
+    if (window.localStorage && window.localStorage["draft_id"]) {
+      draft_id_to_load = window.localStorage["draft_id"];
+      window.localStorage.removeItem("draft_id");
+      console.log("load draft id " + draft_id_to_load + " from localStorage");
+    }
+    else {
+      draft_id_to_load = getCookie("draft_id");
+      draft_id_to_load = parseInt(draft_id_to_load);
+      setCookie("draft_id", "-1", 1);
+      console.log("load draft id " + draft_id_to_load + " from cookie");
+    }
+
+    if (draft_id_to_load > 0) {
+      $.get('/draft/' + draft_id_to_load, function (data, status) {
+        if (data.ret == "success") {
+          console.log("load draft <id:" + draft_id_to_load + ">");
+          console.log("-> content: " + data.content);
+
+          var draft_obj = JSON.parse(data.content);
+          titlebox.val(draft_obj.title);
+          tagsbox.tagsinput("add", draft_obj.tags);
+          CKEDITOR.instances.editor1.setData(draft_obj.content);
+          console.log("draft loaded");
+        }
+      });
+    }
+    else {
+      console.log("no valid draft id");
+    }
 
     titlebox.focus();
     titlebox.keyup(titlebox_keyup);
     btnDoAsk.click(do_ask);
+    btnSaveDraft.click(do_save_draft);
 
     // bind keyup and blur event handler to other dynamic elements
     $("div[class='bootstrap-tagsinput']").on('keyup', "input", function (event) {
       event.preventDefault();
-
       var tag_input = $(this);
       var tag_name = tag_input.val();
       if (tag_name.length < 2) {
@@ -108,7 +175,6 @@
       $.post('/tag/search', { "q" : tag_name }, function (data, status) {
         if (data.num > 0) {
           var ts = JSON.parse(data.data);
-
           var tagItems = "";
           var all_diff = true;
           for(var i = 0; i < data.num; i++) {

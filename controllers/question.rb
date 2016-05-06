@@ -3,16 +3,11 @@ get '/ask' do
 
   @title = "提问"
   @navbar_active = "qna"
-  @breadcrumb = [
-    { name: "首页", url: '/' },
-    { name: "提问", active: true }
-  ]
   erb :ask
 end
 
 post '/ask' do
-  login_filter
-  author = User.find_by(id: session[:user_id])
+  author = login_filter
 
   new_q = Question.new
   new_q.title   = params['title']
@@ -77,10 +72,6 @@ get '/questions' do
 
   @title         = "所有问题"
   @navbar_active = "qs"
-  @breadcrumb = [
-    { name: "首页", url: '/' },
-    { name: "问题", active: true }
-  ]
   erb :question_all
 end
 
@@ -98,7 +89,7 @@ get '/q/:qid' do |qid|
     @hidden_mark   = @q.author.id != session[:user_id] || @answered
     @title         = @q.title[0..6] + "..."
     @navbar_active = "qna"
-    @page_keywords_list = @q.tags.inject("") {|sum, tag| sum << "#{tag.name} " }
+    @page_keywords_list = @q.tags.inject("") { |sum, tag| sum << "#{tag.name} " }
     @page_description   = @q.title
     @breadcrumb = [
       { name: "问答", url: '/' },
@@ -126,7 +117,6 @@ get '/q/:qid' do |qid|
                   (@q.author.id == session[:user_id]) ||
                   (user.role == User::Role::MODERATOR)
                 )
-
     erb :question
   else
     raise not_found
@@ -157,9 +147,8 @@ end
 
 # == for ajax: edit content
 post '/q/:qid' do |qid|
-  login_filter required_roles: [ User::Role::USER, User::Role::MODERATOR ]
+  editor = login_filter required_roles: [ User::Role::USER, User::Role::MODERATOR ]
 
-  editor = User.find_by(id: session[:user_id])
   if editor.role == User::Role::USER && editor.reputation < 25
     return json ret: "error", msg: "声望超过25才可以修改"
   end
@@ -198,9 +187,7 @@ end
 
 # == watching or unwatching a question ==
 post '/q/:qid/watch' do |qid|
-  login_filter
-
-  author = User.find_by(id: session[:user_id])
+  author = login_filter
 
   unless q = Question.find_by(id: qid)
     return json ret: "error", msg: "question_not_found"
@@ -218,9 +205,7 @@ end
 
 
 post '/q/:qid/unwatch' do |qid|
-  login_filter
-
-  author = User.find_by(id: session[:user_id])
+  author = login_filter
 
   unless q = Question.find_by(id: qid)
     return json ret: "error", msg: "question_not_found"
@@ -238,13 +223,12 @@ end
 
 # == answering ==
 post '/q/:qid/answer' do |qid|
-  login_filter
+  author = login_filter
 
   unless q = Question.find_by(id: qid)
     return json ret: "error", msg: "question_not_found"
   end
 
-  author = User.find_by(id: session[:user_id])
   if q.author.id == session[:user_id]
     return json ret: "error", msg: "不可以自己回答自己的问题"
   end

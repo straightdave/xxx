@@ -6,8 +6,7 @@ get '/feedback' do
 end
 
 post '/feedback' do
-  login_filter
-  author = User.find_by(id: session[:user_id])
+  author = login_filter
 
   # interface to front-end:
   # title - string

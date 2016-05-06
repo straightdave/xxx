@@ -4,6 +4,7 @@ require_relative "reportability"
 
 # normal models
 require_relative "question"
+require_relative "draft"
 require_relative "user"
 require_relative "userinfo"
 require_relative "expertise"

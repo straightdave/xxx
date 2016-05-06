@@ -1,5 +1,5 @@
 post %r{/([q|a|w])/(\d+)/comment} do |target, id|
-  login_filter
+  author = login_filter
 
   obj = case target
   when 'q' then Question.find_by(id: id)
@@ -9,10 +9,6 @@ post %r{/([q|a|w])/(\d+)/comment} do |target, id|
   end
 
   return (json ret: "error", msg: "target_not_found") unless obj
-
-  unless author = User.find_by(id: session[:user_id])
-    return json ret: "error", msg: "user_not_found"
-  end
 
   if author.reputation < 10
     return json ret: "error", msg: "repu_cannot_comment"

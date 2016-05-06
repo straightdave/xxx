@@ -1,7 +1,6 @@
-# == watching list page ==
+# get current user's watchlist page
 get '/user/watchlist' do
-  login_filter
-  user = User.find_by(id: session[:user_id])
+  user = login_filter
 
   if !(@slice = params['slice']) || (@slice.to_i <= 0)
     @slice = 50
@@ -20,10 +19,6 @@ get '/user/watchlist' do
   @total_page = total_number / @slice
   @total_page += 1 if total_number % @slice != 0
 
-  @title = "我关注的"
-  @breadcrumb = [
-    { name: "首页", url: '/' },
-    { name: "我关注的", active: true }
-  ]
-  erb :my_watchlist
+  @title = "我的收藏"
+  erb :user_watchlist
 end

@@ -1,7 +1,6 @@
 # ajax call for vote/devote one stuff
 post %r{/([q|a|c])/(\d+)/(devote|vote)} do |target_type, id, behavior|
-  login_filter
-  user = User.find_by(id: session[:user_id])
+  user = login_filter
 
   obj = case target_type
   when "a" then Answer.find_by(id: id)

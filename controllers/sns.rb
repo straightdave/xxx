@@ -1,6 +1,5 @@
 post '/u/:name/follow' do |name|
-  login_filter
-  user = User.find_by(id: session[:user_id])
+  user = login_filter
 
   unless target = User.find_by(login_name: name)
     return json ret: "error", msg: "user_not_found"
@@ -17,8 +16,7 @@ post '/u/:name/follow' do |name|
 end
 
 post '/u/:name/unfollow' do |name|
-  login_filter
-  user = User.find_by(id: session[:user_id])
+  user = login_filter
 
   unless target = User.find_by(login_name: name)
     return json ret: "error", msg: "user_not_found"
@@ -49,11 +47,7 @@ get '/u/:name' do |name|
 end
 
 get '/user/home' do
-  login_filter
-
-  unless @user = User.find_by(id: session[:user_id])
-    raise not_found
-  end
+  @user = login_filter
 
   @title = "用户首页"
   @user_info = @user.info

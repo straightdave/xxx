@@ -186,6 +186,7 @@ span.beta {
   top: -60px;
 }
 
+
 /* home page hot tags */
 a.tag{
   font-size: 1.1em;
@@ -383,7 +384,7 @@ div.msg-list-head span {
   font-weight: bold;
 }
 
-div.right {
+div.float-right {
   float: right;
 }
 
@@ -394,6 +395,9 @@ div.msg-list {
 div.message {
   padding: 10px 20px;
   border-bottom: 3px solid white;
+}
+div.message a {
+  text-decoration: none;
 }
 
 div.unread {
@@ -499,10 +503,21 @@ div.event-content blockquote {
 }
 
 
-/* watchlist page */
-span.watchlist-head {
-  margin-bottom: 10px;
+/* watchlist or draft page */
+td.td_for_btn {
+  width: 5%;
 }
+td.td_for_title {
+  width: auto;
+}
+td.td_for_title > a {
+  text-decoration: none;
+}
+td.td_for_date {
+  width: 20%;
+  text-align: right;
+}
+
 
 /* search page */
 div.search-mid-pane {
@@ -628,6 +643,9 @@ div.linked-title a {
 }
 ul.dropdown-menu > li > a {
   cursor: pointer;
+}
+button[name='btnSaveDraft'] {
+  float: right;
 }
 
 

@@ -5,7 +5,7 @@
         <div>
           <span>我的消息</span>
         </div>
-        <div class="right">
+        <div class="float-right">
           <button class="btn btn-default btn-xs" id="btn_mark"
                   onclick="javascript:mark_all_as_read();"
                   <% if get_message_amount == 0 %>
@@ -19,18 +19,16 @@
 
       <div class="msg-list">
         <% @messages.each do |m| %>
-
-          <div class="message <% if !m.isread then %>unread<% end %>">
-            <p>
-              <%= time_ago_in_words_zh(m.sent_at) %> &nbsp;
-              来自 &nbsp;
-              <%= m.sender.nil? ? "系统" : m.sender.info.nickname %>
-            </p>
-            <p>
-              <%= m.content %>
-            </p>
-          </div>
-
+        <div class="message <% if !m.isread then %>unread<% end %>">
+          <p>
+            <%= time_ago_in_words_zh(m.sent_at) %> &nbsp;
+            来自 &nbsp;
+            <%= m.sender.nil? ? "系统" : m.sender.info.nickname %>
+          </p>
+          <p>
+            <%= m.content %>
+          </p>
+        </div>
         <% end %>
       </div>
 
@@ -38,7 +36,7 @@
     </div>
 
     <div class="col-md-3">
-      
+
     </div>
   </div>
 </div>

@@ -1,6 +1,7 @@
 require 'digest'
 
 class User < ActiveRecord::Base
+
   module Status
     NEWBIE  = 0 # just signed up, no mail-validated yet; can only sign in
     NORMAL  = 1 # normal, can do almost everything now
@@ -27,6 +28,7 @@ class User < ActiveRecord::Base
   has_many :answers
   has_many :articles
   has_many :asked_questions, class_name: "Question"
+  has_many :drafts
 
   # users that follow such user, and users whom such user follows
   has_and_belongs_to_many :followers, -> { uniq },

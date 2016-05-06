@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-9">
+      <table class="table">
+        <% @user.drafts.order(created_at: :desc).each do |d| %>
+        <tr>
+          <td class="td_for_btn">
+            <button type="button" class="btn btn-default btn-sm"
+                    onclick="javascript:delete_draft(<%= d.id %>);">
+              删除
+            </button>
+          </td>
+          <td class="td_for_title">
+            <a href="javascript:void(0);"
+               onclick="javascript:resume_draft(<%= d.id %>, <%= d.draft_type %>);"
+               title="恢复草稿">
+              <%= d.title %>
+            </a>
+          </td>
+          <td class="td_for_date">
+            保存于<%= time_ago_in_words_zh(d.created_at) %>
+          </td>
+        </tr>
+        <% end %>
+      </table>
+    </div>
+    <div class="col-md-3">
+      <div>
+        <h5>草稿</h5>
+        <p>
+          每位用户最多保存10份草稿，超过后新的草稿将覆盖最旧一份。
+          点击草稿标题可以立即恢复到表单填写。
+        </p>
+      </div>
+      <hr>
+    </div>
+  </div>
+</div>

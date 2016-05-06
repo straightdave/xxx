@@ -5,9 +5,7 @@
 
 # create a report via ajax
 post '/report' do
-  login_filter required_roles: [ User::Role::USER, User::Role::ADMIN ]
-
-  reporter = User.find_by(id: session[:user_id])
+  reporter = login_filter required_roles: [ User::Role::USER, User::Role::ADMIN ]
 
   # interface to front-end
   # target_type: string, name of reporting target type

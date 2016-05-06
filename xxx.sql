@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.10, for osx10.11 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.12, for osx10.11 (x86_64)
 --
 -- Host: localhost    Database: xxx
 -- ------------------------------------------------------
--- Server version	5.7.10
+-- Server version	5.7.12
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -103,6 +103,24 @@ CREATE TABLE `comments` (
   `status` tinyint(3) unsigned DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `drafts`
+--
+
+DROP TABLE IF EXISTS `drafts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `drafts` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `draft_type` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '0-question;1-article',
+  `title` varchar(255) DEFAULT NULL,
+  `content` text,
+  `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -429,4 +447,4 @@ CREATE TABLE `watching_list` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-04-19  9:38:22
+-- Dump completed on 2016-05-06 17:50:25

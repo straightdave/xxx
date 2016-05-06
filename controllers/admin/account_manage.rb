@@ -3,7 +3,6 @@ get '/admin/account' do
     @user = User.find_by(id: uid)
   end
 
-
   if login_name = params['qn']
     @user = User.find_by(login_name: login_name)
   end

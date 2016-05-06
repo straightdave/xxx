@@ -116,14 +116,14 @@ same interface with old pager(simple one):
 
   <div class="pager-slice-chooser" style="float:right;">
     <ul class="pagination pagination-sm">
+      <li <% if @slice == 20 %>class="active"<% end %>>
+        <a href="javascript:void(0);" onclick="javascript:pager_slice(20);">20</a>
+      </li>
       <li <% if @slice == 50 %>class="active"<% end %>>
         <a href="javascript:void(0);" onclick="javascript:pager_slice(50);">50</a>
       </li>
       <li <% if @slice == 100 %>class="active"<% end %>>
         <a href="javascript:void(0);" onclick="javascript:pager_slice(100);">100</a>
-      </li>
-      <li <% if @slice == 200 %>class="active"<% end %>>
-        <a href="javascript:void(0);" onclick="javascript:pager_slice(200);">200</a>
       </li>
     </ul>
   </div>

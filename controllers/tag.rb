@@ -104,8 +104,7 @@ post '/tag/search' do
 end
 
 post '/tag/new' do
-  login_filter
-  author = User.find_by(id: session[:user_id])
+  author = login_filter
 
   if (name = params['name']) && (desc = params['desc'])
     new_tag = Tag.new
@@ -169,5 +168,5 @@ get '/tags' do
     { name: "首页", url: '/' },
     { name: "标签", active: true }
   ]
-  erb :tag_home
+  erb :tag_all
 end

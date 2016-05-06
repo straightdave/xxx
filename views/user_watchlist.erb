@@ -1,24 +1,22 @@
 <div class="container">
   <div class="row">
     <div class="col-md-9">
-      <span class="watchlist-head">我关注的问题</span>
-
       <table class="table">
         <% @watchlist.order(created_at: :desc).each do |q| %>
         <tr>
-          <td>
+          <td class="td_for_btn">
             <button type="button" class="btn btn-default btn-sm"
                     onclick="javascript:unwatch1(<%= q.id %>);">
-               移除关注
+               取消
             </button>
           </td>
-          <td>
+          <td class="td_for_title">
             <a href="/q/<%= q.id %>">
               <%= q.title %>
             </a>
           </td>
-          <td>
-            <%= time_ago_in_words_zh(q.created_at) %>
+          <td class="td_for_date">
+            收藏于<%= time_ago_in_words_zh(q.created_at) %>
           </td>
         </tr>
         <% end %>
@@ -26,8 +24,17 @@
 
       <%= render_pager_full %>
     </div>
+
     <div class="col-md-3">
-      
+      <div>
+        <h5>收藏</h5>
+        <p>
+          当你提问或回答问题的时候，会自动收藏该问题。
+          也可以点击问题正文边上的五角星来手动收藏或取消。
+        </p>
+      </div>
+      <hr>
     </div>
+
   </div>
 </div>

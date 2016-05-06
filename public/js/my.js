@@ -21,6 +21,37 @@ $().ready(function () {
 });
 
 /* common functions */
+function setCookie(c_name, value, expiredays) {
+  var exdate = new Date();
+  exdate.setDate(exdate.getDate() + expiredays);
+  document.cookie = c_name + "=" + escape(value) +
+    ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString());
+}
+function getCookie(c_name) {
+  if (document.cookie.length > 0) {
+    c_start = document.cookie.indexOf(c_name + "=");
+    if (c_start != -1) {
+      c_start = c_start + c_name.length + 1;
+      c_end = document.cookie.indexOf(";", c_start);
+      if (c_end == -1) {
+        c_end = document.cookie.length;
+      }
+      return unescape(document.cookie.substring(c_start, c_end));
+    }
+  }
+  return "";
+}
+
+function hashCode(str) {
+  var hash = 0, i, chr, len;
+  if (str.length === 0) return hash;
+  for (i = 0, len = str.length; i < len; i++) {
+    chr   = str.charCodeAt(i);
+    hash  = ((hash << 5) - hash) + chr;
+    hash |= 0; // Convert to 32bit integer
+  }
+  return hash;
+}
 
 // remove or append div to show error messages
 function clean_below_msg(obj) {
@@ -232,9 +263,7 @@ function unwatch1(qid) {
       location.replace(location.href);
     }
     else {
-      if(data.msg == "need_login") {
-        alert("请先登录");
-      }
+      alert(data.msg);
     }
   });
 }
@@ -277,7 +306,8 @@ function go_tag(id) {
 function do_follow(user) {
   $.post("/u/" + user + "/follow", function (data, status) {
     if(data.ret == "success") {
-      /* if it becomes slow in the future, we can change elements without refreshing page */
+      /* if it becomes slow in the future,
+      we can change elements without refreshing page */
       location.replace(location.href);
     }
     else {
@@ -310,15 +340,12 @@ function mark_as_accepted(qid, aid) {
 function sort_by(key) {
   location.replace(add_param('sort', key));
 }
-
 function pager_move(p) {
   location.replace(add_param('page', p));
 }
-
 function pager_slice(s) {
   location.replace(add_param('slice', s));
 }
-
 
 /* job posting */
 function go_job(id) {
@@ -330,7 +357,8 @@ function do_feedback() {
   var title = $("input[name='title']").val();
   var desc = CKEDITOR.instances.editor_fb.getData();
 
-  $.post('/feedback', { "title" : title, "desc" : desc }, function (data, status) {
+  $.post('/feedback', { "title" : title, "desc" : desc },
+  function (data, status) {
     if (data.ret == "success") {
       alert("提交成功");
       location.replace('/');
@@ -359,7 +387,8 @@ function save_edit(strType, id) {
     var name = $("input[name='tagname']").val();
     var desc = $("textarea[name='tagdesc']").val();
 
-    $.post('/t/' + id, { 'tname' : name, 'tdesc' : desc }, function (data, status) {
+    $.post('/t/' + id, { 'tname' : name, 'tdesc' : desc },
+    function (data, status) {
       if(data.ret == "success") {
         location.replace(location.href);
       }
@@ -401,8 +430,8 @@ function save_new_password() {
       alert("两次输入的不一致");
     }
     else {
-
-      $.post('/user/reset_password', { 'pass1' : pass1, 'pass2' : pass2 }, function (data, status) {
+      $.post('/user/reset_password', { 'pass1' : pass1, 'pass2' : pass2 },
+      function (data, status) {
         if(data.ret == "success") {
           alert("密码重设成功");
           location.replace("/");
@@ -411,7 +440,31 @@ function save_new_password() {
           alert(data.msg);
         }
       });
-
     }
+  }
+}
+
+/* draft page */
+function delete_draft(id) {
+  $.post('/draft/' + id + '/delete', function (data, status) {
+    if(data.ret == "success") {
+      location.replace(location.href);
+    }
+    else {
+      alert(data.msg);
+    }
+  });
+}
+
+function resume_draft(id, draft_type) {
+  if (window.localStorage) {
+    window.localStorage.setItem("draft_id", id);
+  }
+  else {
+    setCookie("draft_id", id, 1);
+  }
+
+  if (draft_type == 0) {
+    location.replace('/ask');
   }
 }

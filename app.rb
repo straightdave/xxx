@@ -57,7 +57,7 @@ configure :production do
   disable :roles_no_limit
 
   # used in content of mailing (production environment)
-  set :site_host, 'http://101.200.192.223:4567'
+  set :site_host, 'http://101.200.192.223'
 end
 
 ActiveRecord::Base.establish_connection(

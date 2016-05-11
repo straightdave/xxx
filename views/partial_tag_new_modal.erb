@@ -17,8 +17,10 @@
         </p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-        <button type="button" class="btn btn-primary" name="btnSaveNewTag">保存</button>
+        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">
+          关闭</button>
+        <button type="button" class="btn btn-primary btn-sm" name="btnSaveNewTag">
+          保存</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -26,7 +28,6 @@
 <script>
 (function(window, $) {
   $(function () {
-
     var btnSaveNewTag = $("button[name='btnSaveNewTag']");
 
     var add_new_tag = function (name) {

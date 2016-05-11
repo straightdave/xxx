@@ -530,10 +530,12 @@ td.td_for_title {
 }
 td.td_for_title > a {
   text-decoration: none;
+  font-size: 1.2em;
 }
 td.td_for_date {
   width: 20%;
   text-align: right;
+  font-size: 1.2em;
 }
 
 

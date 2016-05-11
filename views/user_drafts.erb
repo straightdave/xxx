@@ -5,15 +5,15 @@
         <% @user.drafts.order(created_at: :desc).each do |d| %>
         <tr>
           <td class="td_for_btn">
-            <button type="button" class="btn btn-default btn-sm"
-                    onclick="javascript:delete_draft(<%= d.id %>);">
-              删除
-            </button>
+            <a href="javascript:void(0);" title="删除"
+               onclick="javascript:delete_draft(<%= d.id %>);">
+              <i class="fa fa-close"></i>
+            </a>
           </td>
           <td class="td_for_title">
             <a href="javascript:void(0);"
                onclick="javascript:resume_draft(<%= d.id %>, <%= d.draft_type %>);"
-               title="恢复草稿">
+               title="点击恢复草稿">
               <%= d.title %>
             </a>
           </td>

@@ -70,9 +70,12 @@
                             role="button"
                             aria-haspopup="true"
                             aria-expanded="false">
-                  <%= get_login_name %>
-                  <% if get_message_amount > 0 %>
-                  &nbsp; <span class="badge"><%= get_message_amount %></span>
+                  <%= session[:login_name] %>
+                  <% if session[:message_amount] > 0 %>
+                    &nbsp;
+                    <span class="badge">
+                      <%= session[:message_amount] %>
+                    </span>
                   <% end %>
                   <span class="caret"></span>
                 </a>
@@ -80,8 +83,11 @@
                   <li>
                     <a href="/user/messages">
                       <i class="fa fa-envelope"></i> &nbsp;我的消息
-                      <% if get_message_amount > 0 %>
-                      &nbsp; <span class="badge"><%= get_message_amount %></span>
+                      <% if gsession[:message_amount] > 0 %>
+                        &nbsp;
+                        <span class="badge">
+                          <%= session[:message_amount] %>
+                        </span>
                       <% end %>
                     </a>
                   </li>

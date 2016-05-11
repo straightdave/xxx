@@ -218,6 +218,7 @@ function vote(op_type, target_type, id) {
   var url = "/" + target_type + "/" + id + "/" + op_type;
   $.post(url, function (data, status) {
     if(data.ret == "success") {
+      console.log("score changed to " + data.msg);
       $("span[id='"+ target_type +"-scores-" + id + "']").text(data.msg);
     }
     else {

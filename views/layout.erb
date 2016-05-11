@@ -76,10 +76,14 @@
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                    role="button" aria-haspopup="true" aria-expanded="false">
-                  <img class="avatar-xs" src="<%= get_avatar_src %>">&nbsp;
-                  <%= get_login_name %>
-                  <% if get_message_amount > 0 %>
-                  &nbsp; <span class="badge"><%= get_message_amount %></span>
+                  <img class="avatar-xs" src="<%= session[:user_avatar_url] %>">
+                  &nbsp;
+                  <%= session[:login_name] %>
+                  <% if session[:message_amount] > 0 %>
+                  &nbsp;
+                  <span class="badge">
+                    <%= session[:message_amount] %>
+                  </span>
                   <% end %>
                   <span class="caret"></span>
                 </a>
@@ -93,8 +97,10 @@
                   <li>
                     <a href="/user/messages" title="My Messages">
                       <i class="fa fa-envelope"></i>&nbsp;我的消息
-                      <% if get_message_amount > 0 %>
-                      &nbsp;<span class="badge"><%= get_message_amount %></span>
+                      <% if session[:message_amount] > 0 %>
+                      &nbsp;<span class="badge">
+                        <%= session[:message_amount] %>
+                      </span>
                       <% end %>
                     </a>
                   </li>

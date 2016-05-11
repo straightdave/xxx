@@ -4,36 +4,21 @@ helpers do
   end
 
   def log_in(user)
-    session[:user_id]        = user.id
-    session[:login_name]     = user.login_name
-    session[:message_amount] = user.inbox_messages.where(isread: false).size
-    session[:user_avatar_url] = user.info.avatar.nil? ? "/avatar.jpg" : user.info.avatar
-    user.save if user.valid?
+    session[:user_id]         = user.id
+    session[:login_name]      = user.login_name
+    session[:message_amount]  = user.inbox_messages.where(isread: false).size
+    session[:user_avatar_url] = user.avatar_src
   end
 
   def log_out
     session.destroy
   end
 
-  # used for views
-  def get_login_name
-    session[:login_name]
-  end
-  def get_message_amount
-    session[:message_amount]
-  end
-  def get_user_id
-    session[:user_id]
-  end
-  def get_avatar_src
-    session[:user_avatar_url]
-  end
-
   # general user status check
   def login_filter(attr = {})
     req_path   = CGI.escape(request.path)
     req_method = request.request_method
-    is_get = (req_method == 'GET')
+    is_get     = (req_method == 'GET')
 
     # 1. check login
     unless login?
@@ -46,7 +31,7 @@ helpers do
     end
 
     # 2. check account
-    unless user = User.find_by(id: session[:user_id])
+    unless user = @_current_user
       if is_get
         redirect to("/notice?reason=accounterror&ext_0=#{user.login_name}")
       else
@@ -61,7 +46,7 @@ helpers do
       status = [ User::Status::NORMAL ]
     end
 
-    if status.index(user.status).nil? && !settings.status_no_limit
+    if status.index(user.status).nil? && !settings.ignore_status_limit
       if is_get
         redirect to("/notice?reason=statuserror&ext_0=#{user.login_name}&ext_1=#{user.status}")
       else
@@ -76,7 +61,7 @@ helpers do
       roles = [ User::Role::USER ]
     end
 
-    if roles.index(user.role).nil? && !settings.roles_no_limit
+    if roles.index(user.role).nil? && !settings.ignore_roles_limit
       if is_get
         redirect to("/notice?reason=roleerror&ext_0=#{user.login_name}&ext_1=#{user.role}")
       else
@@ -85,7 +70,7 @@ helpers do
       end
     end
 
-    # if all OK, return current user object
+    # end: if all OK, return current user object
     user
   end
 end

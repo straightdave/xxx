@@ -27,13 +27,14 @@ configure do
     :mail_queue => 'validation'
   }
 
-  enable :mail_validation
-  enable :status_no_limit
-  disable :roles_no_limit
+  enable  :ignore_repu_limit
+  enable  :mail_validation
+  enable  :ignore_status_limit
+  disable :ignore_roles_limit
 
   set :quoted_char_num, 140
 
-  # used in mail content
+  # callback address of this site, used in mail content
   set :site_host, 'http://localhost:4567'
 
   set :public_folder, File.dirname(__FILE__) + '/public'
@@ -52,11 +53,11 @@ configure :production do
     :database => "xxx"
   }
 
-  enable :mail_validation
-  disable :status_no_limit
-  disable :roles_no_limit
+  disable :ignore_repu_limit
+  enable  :mail_validation
+  disable :ignore_status_limit
+  disable :ignore_roles_limit
 
-  # used in content of mailing (production environment)
   set :site_host, 'http://101.200.192.223'
 end
 
@@ -70,6 +71,12 @@ ActiveRecord::Base.establish_connection(
 
 # let sinatra use correct timezone to save data
 ActiveRecord::Base.default_timezone = :local
+
+before do
+  if login?
+    @_current_user = User.find_by(id: session[:user_id])
+  end
+end
 
 # avoid db connection refused issue
 after do

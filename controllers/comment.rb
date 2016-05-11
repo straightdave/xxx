@@ -10,7 +10,7 @@ post %r{/([q|a|w])/(\d+)/comment} do |target, id|
 
   return (json ret: "error", msg: "target_not_found") unless obj
 
-  if author.reputation < 10 && !settings.ignore_repu_limit
+  if author.reputation < 1 && !settings.ignore_repu_limit
     return json ret: "error", msg: "repu_cannot_comment"
   end
 

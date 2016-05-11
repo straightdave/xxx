@@ -183,7 +183,7 @@ function do_comment(qid) {
           alert("请先登录");
         }
         else if (data.msg == "repu_cannot_comment") {
-          alert("声誉超过10才可以评论呢");
+          alert("声誉是1以上才可以评论");
         }
       }
     });

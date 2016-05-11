@@ -20,7 +20,7 @@ post %r{/([q|a|c])/(\d+)/(devote|vote)} do |target_type, id, behavior|
     return json ret: "error", msg: "不可以给自己投票哦"
   end
 
-  return (json ret: "error", msg: "我已经投过票了") if already_voted?(obj)
+  return (json ret: "error", msg: "已经投过票了") if already_voted?(obj)
 
   if behavior == "vote"
     if user.reputation >= required_vote_repu || settings.ignore_repu_limit

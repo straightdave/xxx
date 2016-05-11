@@ -58,29 +58,29 @@ class Question < ActiveRecord::Base
     "/q/#{self.id}"
   end
 
-  def get_last_events(last_num = 1, event_type = 0)
+  def get_last_events(last_num = 1, event_type = [])
     # target_type = 1 means questions
-    result = Event.where(target_type: 1).where(target_id: self.id)
+    events = Event.where(target_type: 1).where(target_id: self.id)
 
-    if event_type != 0
-      # event type = 0 - all kinds of events
-      result = result.where(event_type: event_type)
+    if !event_type.empty?
+      events = events.where(event_type: event_type)
     end
-    result.order(created_at: :desc).take(last_num)
+
+    events.last(last_num)
   end
 
-  def get_last_event
-    # 0 - all kinds of events
-    self.get_last_events(1, 0).first
+  def get_last_question_event
+    # only show last asking/answering/commenting event of the question
+    self.get_last_events(1, [1,2,3]).first
   end
 
-  def get_last_doer
-    self.get_last_event.invoker
+  def get_last_question_doer
+    self.get_last_question_event.invoker
   end
 
   def get_last_edit_event
-    # 11 - edit events
-    self.get_last_events(1, 11).first
+    # 11 - 'update' events
+    self.get_last_events(1, [11]).first
   end
 
   def can_comment

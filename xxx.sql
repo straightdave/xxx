@@ -43,7 +43,7 @@ CREATE TABLE `answers` (
   `question_id` int(10) unsigned NOT NULL,
   `user_id` int(10) unsigned NOT NULL,
   `content` text,
-  `scores` mediumint(8) unsigned DEFAULT '0',
+  `scores` tinyint(4) DEFAULT '0',
   `status` tinyint(3) unsigned DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
@@ -99,7 +99,7 @@ CREATE TABLE `comments` (
   `commentable_id` int(10) unsigned NOT NULL,
   `commentable_type` varchar(50) NOT NULL,
   `content` text NOT NULL,
-  `scores` mediumint(8) unsigned DEFAULT '0',
+  `scores` tinyint(4) DEFAULT '0',
   `status` tinyint(3) unsigned DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
@@ -282,7 +282,7 @@ CREATE TABLE `questions` (
   `user_id` int(10) unsigned DEFAULT NULL,
   `content` text,
   `views` mediumint(8) unsigned DEFAULT '0',
-  `scores` mediumint(8) unsigned DEFAULT '0',
+  `scores` tinyint(4) DEFAULT '0',
   `accepted_answer_id` int(10) unsigned DEFAULT '0',
   `status` tinyint(3) unsigned DEFAULT '0',
   `has_reports` tinyint(3) unsigned DEFAULT '0',
@@ -395,7 +395,7 @@ CREATE TABLE `users` (
   `status` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `role` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `has_reports` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `reputation` mediumint(8) unsigned DEFAULT '0',
+  `reputation` mediumint(9) DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -418,7 +418,6 @@ CREATE TABLE `votes` (
   `votable_type` varchar(50) NOT NULL,
   `points` tinyint(4) DEFAULT '1',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -447,4 +446,4 @@ CREATE TABLE `watching_list` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-05-06 17:50:25
+-- Dump completed on 2016-05-11 18:00:09

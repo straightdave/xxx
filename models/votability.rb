@@ -4,15 +4,13 @@ module Votability
   # update reputation and all corresponding expertises
   def get_voted
     self.scores += 1
-    self.author.update_reputation(2)
 
-    # only for comments
-    if self.is_a?(Comment)
-      # to leave a comment will not directly get the commentor expertises
-      # only if such comment is voted
-      get_tids().each do |tid|
-        self.author.expertises.find_or_create_by(tag_id: tid)
-      end
+    if self.is_a?(Question)
+      self.author.update_reputation(10)
+    end
+
+    if self.is_a?(Answer)
+      self.author.update_reputation(15)
     end
 
     self.author.expertises.where(tag_id: get_tids).all.each do |e|

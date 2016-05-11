@@ -320,7 +320,7 @@ a.comment-btn:focus {
 }
 
 div.comments {
-  margin-top: 10px;
+  margin-top: 40px;
   margin-bottom: 15px;
 }
 
@@ -333,8 +333,26 @@ div.comment-vote, div.comment-text {
   margin-right: 10px;
 }
 
-div.comment-vote a {
-  color: lightgray;
+div.comment-vote {
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 3px;
+  background-color: #337AB7;
+  cursor: pointer;
+}
+
+div.comment-vote i {
+  display: inline-block;
+  color: #fff;
+}
+
+div.comment-vote span {
+  display: inline-block;
+  color: #fff;
+  margin-left: 5px;
+  padding-left: 2px;
+  padding-right: 2px;
+  border-radius: 3px;
 }
 
 div.comment-author {

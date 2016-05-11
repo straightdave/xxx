@@ -1,16 +1,17 @@
 helpers do
   def just_viewed_this?(qid)
-    return false unless cookies[:just_viewed]
-    !cookies[:just_viewed].split(':')
-                          .index(qid.to_s)
-                          .nil?
+    if cookies[:just_viewed].nil?
+      false
+    else
+      cookies[:just_viewed].split(':').include?(qid.to_s)
+    end
   end
 
   def set_just_viewed(qid)
-    if cookies[:just_viewed]
-      cookies[:just_viewed] += "#{qid}:"
-    else
+    if cookies[:just_viewed].nil?
       cookies[:just_viewed] = "#{qid}:"
+    else
+      cookies[:just_viewed] += "#{qid}:"
     end
   end
 

@@ -13,7 +13,7 @@ post '/ask' do
   new_q.title   = params['title']
   new_q.content = params['content']
   new_q.author  = author
-  new_q.watchers << author # add to author's watching list by default
+  new_q.watchers << author
 
   params['tags'].split(',').each do |t|
     tag = Tag.find_or_create_by(name: t)
@@ -25,16 +25,14 @@ post '/ask' do
   unless new_q.valid?
     return (json ret: "error", msg: new_q.errors.messages.inspect)
   end
-
   new_q.save
-  set_just_viewed(new_q.id)
+
   send_msg_after_ask(author, new_q)
-  author.update_reputation(2)
+  author.update_reputation(1)
   author.record_event(:ask, new_q)
   json ret: "success", msg: new_q.id
 end
 
-# == questions ==
 get '/questions' do
   if !(@sort = params['sort']) || !(['newest', 'vote', 'active'].include?(@sort))
     @sort = 'newest'
@@ -75,7 +73,6 @@ get '/questions' do
   erb :question_all
 end
 
-# == display a question ==
 get '/q/:qid' do |qid|
   if @q = Question.find_by(id: qid)
     unless just_viewed_this?(qid)
@@ -88,13 +85,10 @@ get '/q/:qid' do |qid|
     @answered      = !@q.accepted_answer.nil?
     @hidden_mark   = @q.author.id != session[:user_id] || @answered
     @title         = @q.title[0..6] + "..."
-    @navbar_active = "qna"
+
+    # SEO
     @page_keywords_list = @q.tags.inject("") { |sum, tag| sum << "#{tag.name} " }
     @page_description   = @q.title
-    @breadcrumb = [
-      { name: "问答", url: '/' },
-      { name: "问题详情", active: true }
-    ]
 
     # last event shown beside
     last_edit_event = @q.get_last_edit_event
@@ -104,17 +98,15 @@ get '/q/:qid' do |qid|
     end
 
     # answers order by score desc, and score must >= -2
-    # MENTION! this is how to order/query a virtual attribute of activerecord
-    # collection ( use `to_a` )
-    @answers = @q.answers
-    @answers.select     { |answer| answer.scores >= -2 }
-    @answers.to_a.sort! { |x, y| y.scores <=> x.scores }
+    @answers = @q.answers.where("scores >= -2").order(scores: :desc)
 
     @can_edit = (!@q.is_frozen) &&
-                login? &&
-                (user = User.find_by(id: session[:user_id])) &&
+                (user = @_current_user) &&
                 (
-                  (@q.author.id == session[:user_id]) ||
+                  (
+                    @q.user_id == user.id &&
+                    (user.reputation >= 250 || settings.ignore_repu_limit)
+                  ) ||
                   (user.role == User::Role::MODERATOR)
                 )
     erb :question
@@ -145,25 +137,26 @@ post '/q/:qid/toggle_comment' do |qid|
   end
 end
 
-# == for ajax: edit content
+# == edit question content
 post '/q/:qid' do |qid|
   editor = login_filter required_roles: [ User::Role::USER, User::Role::MODERATOR ]
 
-  if editor.role == User::Role::USER && editor.reputation < 25
-    return json ret: "error", msg: "声望超过25才可以修改"
+  if editor.role == User::Role::USER &&
+    (editor.reputation < 250 && !settings.ignore_repu_limit)
+    return json ret: "error", msg: "声望超过250才可以编辑问题"
   end
 
   new_content = params['content']
 
   if question = Question.find_by(id: qid)
-    if editor.role == User::Role::USER && quesiton.is_edited
+    if editor.role == User::Role::USER && question.is_edited
       return json ret: "error", msg: "已经修改过一次了"
     end
 
     # TODO: need more sophisticated validation of new content
     old_content = question.content
     if old_content.length > 4 * new_content.length
-      return json ret: "error", msg: "暂时规定修改后内容不得少于原文1/4"
+      return json ret: "error", msg: "修改后内容不得少于原文1/4"
     end
 
     question.content = new_content
@@ -229,7 +222,7 @@ post '/q/:qid/answer' do |qid|
     return json ret: "error", msg: "question_not_found"
   end
 
-  if q.author.id == session[:user_id]
+  if q.user_id == author.id
     return json ret: "error", msg: "不可以自己回答自己的问题"
   end
 
@@ -249,9 +242,12 @@ post '/q/:qid/answer' do |qid|
     answer.save
     q.save
     send_msg_after_answer(q, author)
-    author.update_reputation(2)
+
+    q.author.update_reputation(1)
+    author.update_reputation(1)
     author.add_expertise(q.tag_ids, :answered_once)
-    author.record_event(:answer, answer)
+
+    author.record_event(:answer, q)
     json ret: "success", msg: answer.id
   else
     json ret: "error", msg: "a:" + answer.errors.messages.inspect +
@@ -279,12 +275,15 @@ post '/q/:qid/accept' do |qid|
 
   question.accepted_answer = answer
   answerer = answer.author
+  asker    = question.author
 
-  if question.valid? && answerer.valid?
-    question.save && answerer.save
-    answerer.update_reputation(5)
+  if question.valid?
+    question.save
+
+    answerer.update_reputation(20)
     answerer.add_expertise(question.tag_ids, :accepted_once)
-    question.author.record_event(:accept, answer)
+    asker.update_reputation(2)
+    asker.record_event(:accept, answer)
     json ret: "success"
   else
     json ret: "error", msg: "accept_failed"

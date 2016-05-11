@@ -179,9 +179,7 @@ class User < ActiveRecord::Base
   # b) duplicated tags will not be added
   def add_expertise(tag_ids = [], reason)
     tag_ids.each do |tid|
-      unless exp = self.expertises.find_by(tag_id: tid)
-        exp = self.expertises.build(tag_id: tid)
-      end
+      exp = self.expertises.find_or_create_by(tag_id: tid)
       exp.send(reason) # reason is atom of method names (voted_once, etc.)
     end
   end

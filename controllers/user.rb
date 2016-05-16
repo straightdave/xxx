@@ -6,7 +6,7 @@ get '/user/signup' do
 end
 
 post '/user/check_name/:login_name' do |login_name|
-  if User.exists?(login_name: login_name)
+  if User.exists?(login_name: login_name.downcase)
     json ret: "error", msg: "name_exist"
   else
     json ret: "success"
@@ -14,7 +14,7 @@ post '/user/check_name/:login_name' do |login_name|
 end
 
 post '/user/check_email/:email' do |email|
-  if User.exists?(email: email)
+  if User.exists?(email: email.downcase)
     json ret: "error", msg: "email_exist"
   else
     json ret: "success"
@@ -26,6 +26,9 @@ post '/user/signup' do
   email      = params['email']
   password   = params['password']
   nickname   = params['nickname']
+
+  login_name.downcase! if login_name
+  email.downcase! if email
 
   if session[:captcha_result] != 'ok'
     return json ret: "error", msg: "captcha_failed"
@@ -65,7 +68,7 @@ end
 get '/user/validation' do
   user_id         = params['id']
   validating_code = params['code']
-  backdoor        = params['backdoor']    # TODO remove this. only for dev purpose
+  backdoor        = params['backdoor']    # TODO remove this. only for dev
 
   if user_id.nil? || validating_code.nil?
     validated = false
@@ -175,6 +178,8 @@ post '/user/signin' do
   login_name = params['login_name']
   password   = params['password']
 
+  login_name.downcase! if login_name
+
   user = User.find_by(login_name: login_name)
   if user && user.authenticate(password)
     log_out if login?
@@ -200,18 +205,19 @@ end
 # === password refinding ===
 get '/user/iforgot' do
   @name  = params["u"]
+  @name.downcase! if @name
   @title = "找回密码"
   erb :iforgot
 end
 
 post '/user/iforgot' do
-  if (name = params['name']) && (user = User.find_by(login_name: name))
+  if (name = params['name']) && (user = User.find_by(login_name: name.downcase))
 
     unless email = params['email']
       return json ret: "error", msg: "请输入邮箱"
     end
 
-    if user.email == email
+    if user.email == email.downcase
       user.gen_and_set_new_vcode
       user.save!
       send_refind_mail user

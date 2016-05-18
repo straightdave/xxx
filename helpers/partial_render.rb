@@ -59,14 +59,14 @@ helpers do
     erb :partial_alertbox, layout: false
   end
 
-  def render_foldable_header(hide)
-    erb :partial_foldable_header, layout: false, locals: { hide_header: hide }
+  def render_foldable_header
+    erb :partial_foldable_header, layout: false
   end
 
   def render_nav_tab
     # API:
     # @navbar_active
-    # @navbar_hide_level: logo, all 
+    # @navbar_hide_level: logo, all
     erb :partial_nav_tab, layout: false
   end
 end

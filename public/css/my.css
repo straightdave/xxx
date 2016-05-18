@@ -414,7 +414,7 @@ div.msg-list {
 }
 
 div.message {
-  padding: 10px 20px;
+  padding: 20px 20px 10px 20px;
   border-bottom: 3px solid white;
 }
 div.message a {

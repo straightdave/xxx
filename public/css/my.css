@@ -19,6 +19,9 @@ body {
   border-left: none;
   border-right: none;
 }
+.navbar-collapse {
+  padding-right: 0px;
+}
 
 #tab-ask {
   position: relative;

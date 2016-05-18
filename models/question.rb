@@ -46,8 +46,8 @@ class Question < ActiveRecord::Base
   # == validates ==
   # some other restrictions wrote in controller
   validates :title, :content, presence: true
-  validates :title, length: { maximum: 100, too_long: "标题请勿超过100字符" }
-  validates :content, length: { maximum: 500, too_long: "问题请勿超过500字符" }
+  validates :title, length: { maximum: 50, too_long: "标题请勿超过50字符" }
+  validates :content, length: { maximum: 500, too_long: "问题正文请勿超过500字符" }
 
   # == mixins ==
   include Votability

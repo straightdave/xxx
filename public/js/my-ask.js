@@ -13,10 +13,10 @@
     clean_below_msg(editorbox);
 
     var title = titlebox.val().trim();
-    if (title.length < 6) {
+    if (title.length < 6 || title.length > 50) {
       is_ok_title = false;
       set_error(titlebox, 'title');
-      show_below_msg(titlebox, "标题不要少于6个字符");
+      show_below_msg(titlebox, "标题不要少于6个或多于50个字符");
     }
     else {
       is_ok_title = true;

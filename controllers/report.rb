@@ -5,7 +5,11 @@
 
 # create a report via ajax
 post '/report' do
-  reporter = login_filter required_roles: [ User::Role::USER, User::Role::ADMIN ]
+  reporter = login_filter
+
+  if (reporter.reputation <= 200) && (!settings.ignore_repu_limit)
+    return (json ret: "error", msg: "声望值不足200，无法投诉")
+  end
 
   # interface to front-end
   # target_type: string, name of reporting target type
@@ -28,15 +32,15 @@ post '/report' do
   end
   return (json ret: "error", msg: "投诉对象有误") unless target_obj
 
-  if target_obj.respond_to? :author
-    # item which get reported has field 'author' - they are works not users
-    if target_obj.author.id == reporter.id
-      return (json ret: "error", msg: "请不要投诉自己的作品")
-    end
-  else
+  if target_type == 'u'
     # for user which get reported
     if target_obj.id == reporter.id
       return (json ret: "error", msg: "请不要投诉自己")
+    end
+  else
+    # item which get reported has field 'author' - they are posts
+    if target_obj.author.id == reporter.id
+      return (json ret: "error", msg: "请不要投诉自己的作品")
     end
   end
 
@@ -50,8 +54,9 @@ post '/report' do
   report.content = content
   target_obj.has_reports += 1
 
-  # reports change question status (only question has views)
-  if target_obj.respond_to? :views
+  # reports may cause status changes to questions and articles
+  # considering about how many they are viewed
+  if target_type == 'q' || target_type == 'ar'
     if target_obj.has_reports >= (target_obj.views / 4) &&
        target_obj.has_reports >= 5
       target_obj.status = 2 # frozen
@@ -61,11 +66,20 @@ post '/report' do
     end
   end
 
+  # to reduce reputation for receiving reports
+  if target_obj.has_reports >= 5
+    if target_type == 'u'
+      target_obj.update_reputation(-200)
+    else
+      target_obj.author.update_reputation(-200)
+    end
+  end
+
   if report.valid? && target_obj.valid?
     target_obj.save
     report.save
     json ret: "success"
   else
-    json ret: "error", msg: "投诉保存失败"
+    json ret: "error", msg: "投诉创建失败"
   end
 end

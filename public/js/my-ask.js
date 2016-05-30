@@ -104,7 +104,7 @@
         if (data.num > 0) {
           var qs = JSON.parse(data.data);
 
-          var content = "<p>相似问题</p>";
+          var content = "<h5>相似问题</h5>";
           for(var i = 0; i < qs.length; i++) {
             content += "<div class='linked-title'>";
             content += "  <span>" + qs[i].views + "</span>";
@@ -131,26 +131,26 @@
     if (window.localStorage && window.localStorage["draft_id"]) {
       draft_id_to_load = window.localStorage["draft_id"];
       window.localStorage.removeItem("draft_id");
-      console.log("load draft id " + draft_id_to_load + " from localStorage");
+      //console.log("load draft id " + draft_id_to_load + " from localStorage");
     }
     else {
       draft_id_to_load = getCookie("draft_id");
       draft_id_to_load = parseInt(draft_id_to_load);
       setCookie("draft_id", "-1", 1);
-      console.log("load draft id " + draft_id_to_load + " from cookie");
+      //console.log("load draft id " + draft_id_to_load + " from cookie");
     }
 
     if (draft_id_to_load > 0) {
       $.get('/draft/' + draft_id_to_load, function (data, status) {
         if (data.ret == "success") {
-          console.log("load draft <id:" + draft_id_to_load + ">");
-          console.log("-> content: " + data.content);
+          //console.log("load draft <id:" + draft_id_to_load + ">");
+          //console.log("-> content: " + data.content);
 
           var draft_obj = JSON.parse(data.content);
           titlebox.val(draft_obj.title);
           tagsbox.tagsinput("add", draft_obj.tags);
           CKEDITOR.instances.editor1.setData(draft_obj.content);
-          console.log("draft loaded");
+          //console.log("draft loaded");
         }
       });
     }
@@ -202,7 +202,7 @@
         }
         var top = $("div[class='bootstrap-tagsinput'] > input").offset().top;
         var left = $("div[class='bootstrap-tagsinput'] > input").offset().left;
-        $("ul#tag-suggest").css({"top" : 120, "left" : left - 130 }).show();
+        $("ul#tag-suggest").css({"top" : 90, "left" : left - 130 }).show();
       });
     });
 

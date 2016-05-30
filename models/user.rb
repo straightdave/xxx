@@ -53,6 +53,9 @@ class User < ActiveRecord::Base
   # user events
   has_many :events
 
+  # user reputation change logs
+  has_many :repu_changes, class_name: "ReputationChange"
+
   # relations between users and tags, so-called 'expertises'
   has_many :expertises
 
@@ -162,6 +165,7 @@ class User < ActiveRecord::Base
 
   def update_reputation(delta)
     self.reputation += delta
+    self.repu_changes.create(value: delta)
     save if valid?
   end
 

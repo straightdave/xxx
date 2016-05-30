@@ -314,6 +314,22 @@ CREATE TABLE `reports` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `repu_change_logs`
+--
+
+DROP TABLE IF EXISTS `repu_change_logs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `repu_change_logs` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `value` smallint(6) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `tags`
 --
 
@@ -446,4 +462,4 @@ CREATE TABLE `watching_list` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-05-11 18:00:09
+-- Dump completed on 2016-05-30 11:37:58

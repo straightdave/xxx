@@ -1,0 +1,159 @@
+<style>
+div#top-user-title {
+  background-color: gray;
+}
+
+div#top-user-title > h5 {
+  display: block;
+  margin: 0;
+  padding: 0;
+  float: left;
+}
+
+div#top-user-title > div {
+  float: right;
+}
+
+ul.simple-horiz-ul > li {
+  list-style: none;
+  display: block;
+  float: left;
+  margin-right: 5px;
+}
+
+ul.simple-horiz-ul a {
+  text-decoration: none;
+}
+
+ul.simple-horiz-ul a.disabled {
+  color: black;
+  cursor: default;
+}
+
+div#bodycontent {
+  margin: 5px;
+  padding: 5px 0 0 0;
+}
+
+ul.top-user-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+ul.top-user-list > li {
+  display: block;
+  margin: 10px 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+ul.top-user-list > li > a {
+  text-decoration: none;
+}
+
+ul.top-user-list > li > span {
+  display: block;
+  float: right;
+}
+
+img.top-user-avatar {
+  width: 30px;
+  margin-right: 10px;
+}
+
+</style>
+<div class="right-panel-box">
+  <div id="top-user-title">
+    <h5>排行榜</h5>
+    <div>
+      <ul class="simple-horiz-ul">
+        <li>
+          <a href="javascript:void(0);" class="top-user-by" name="today">本日</a>
+        </li>
+        <li>&middot;</li>
+        <li>
+          <a href="javascript:void(0);" class="top-user-by" name="week">本周</a>
+        </li>
+        <li>&middot;</li>
+        <li>
+          <a href="/users">更多</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="clear"></div>
+  <div id="bodycontent">
+    <ul class="top-user-list">
+    </ul>
+  </div>
+</div>
+<script>
+(function(window, $) {
+  var root_ul = $("ul.top-user-list");
+
+  var render_list = function (data) {
+    //console.log(data);
+    root_ul.empty();
+
+    if (data.length < 1) {
+      root_ul.append("暂无数据");
+      return;
+    }
+
+    for(var i = 0; i < data.length; i++) {
+      //console.log(data[i]);
+      var item = data[i];
+      var result = "\
+      <li>\
+        <a href='/u/" + item.login_name + "'>\
+          <img class='top-user-avatar' src='" +
+          ((item.avatar == null) ? 'avatar.jpg' : item.avatar) + "' alt='" +
+          item.login_name + "' />\
+          <span>" + item.nickname + "</span>\
+        </a>\
+        <span>" + ((item.repu_sum > 0) ? '+' : '') + item.repu_sum + "</span>\
+      </li>";
+      root_ul.append(result);
+    }
+  };
+
+  var render_top_today = function () {
+    $.get('/user/top_today', function (data, status) {
+      render_list(data);
+    });
+  };
+
+  var render_top_week = function () {
+    $.get('/user/top_week', function (data, status) {
+      render_list(data);
+    });
+  };
+
+  $(function () {
+    // set init clickable
+    $("a[name='today']").addClass("disabled");
+    $("a[name='today']").attr("disabled", "disabled");
+
+    // render init
+    render_top_today();
+
+    // bind event to <a>
+    $("a.top-user-by").click(function () {
+      var clicked_item = $(this);
+      if (clicked_item.attr("name") == "today") {
+        render_top_today();
+      }
+      else if (clicked_item.attr("name") == "week") {
+        render_top_week();
+      }
+
+      $("a.top-user-by").removeClass("disabled");
+      $("a.top-user-by").removeAttr("disabled"); // enable all
+      clicked_item.attr("disabled", "disabled");
+      clicked_item.addClass("disabled");  // disable this one
+    });
+  });
+
+})(window, jQuery);
+</script>

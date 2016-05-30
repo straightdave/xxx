@@ -78,6 +78,10 @@ footer ul.site-related li {
   margin: 8px 0px;
 }
 
+div.right-panel-box {
+  margin-top: 25px;
+}
+
 .navbar {
   border-radius: 0;
 }

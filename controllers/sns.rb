@@ -55,3 +55,13 @@ get '/user/home' do
   @navbar_hide_level = 'logo'
   erb :user_home
 end
+
+get '/user/top_today' do
+  data = ReputationChange.get_top_user_by(:today)
+  json data
+end
+
+get '/user/top_week' do
+  data = ReputationChange.get_top_user_by(:week)
+  json data
+end

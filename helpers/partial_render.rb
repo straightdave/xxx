@@ -69,4 +69,8 @@ helpers do
     # @navbar_hide_level: logo, all
     erb :partial_nav_tab, layout: false
   end
+
+  def render_top_user
+    erb :partial_top_user, layout: false
+  end
 end

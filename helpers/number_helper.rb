@@ -1,18 +1,29 @@
 helpers do
-  
-  def get_format_number(number)
-    case
-    when number >= 1000 && number <= 999999
+  # used in views
+  # hundred => Xk
+  # hundred thousand => Xm
+  # one digit reserved
+  def get_format_number(input_number)
+    number = input_number.abs
+    is_neg = (input_number < 0)
+
+    result = case
+    when number >= 1000 && number < 1000000
       pri = number / 1000
       sub = (number / 100) % 10
-      sub > 0 ? "#{pri}.#{sub}K" : "#{pri}K"
+      sub > 0 ? "#{pri}.#{sub}k" : "#{pri}k"
     when number > 999999
       pri = number / 1000000
       sub = (number / 100000) % 10
-      sub > 0 ? "#{pri}.#{sub}M" : "#{pri}M"
+      sub > 0 ? "#{pri}.#{sub}m" : "#{pri}m"
     else
       number.to_s
     end
-  end
 
+    if is_neg
+      "-#{result}"
+    else
+      result
+    end
+  end
 end

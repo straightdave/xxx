@@ -3,12 +3,13 @@
     <% @users.each do |user| %>
     <div class="listed-user">
       <div>
-        <img class="avatar-listed" src="<%= user.avatar_src %>" alt="<%= user.login_name %>" />
+        <img class="avatar-listed" src="<%= user.avatar_src %>"
+        alt="<%= user.login_name %>" />
       </div>
 
       <div class="user-detail">
         <a class="anchor-username" href="<%= user.url %>">
-          <%= user.info.nickname %> (<%= user.reputation %>)
+          <%= user.info.nickname %> (<%= get_format_number(user.reputation) %>)
         </a>
 
         <p>

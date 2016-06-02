@@ -14,6 +14,10 @@ body {
   font-size: 14px;
 }
 
+span.number-neg {
+  color: red;
+}
+
 /* override original styling */
 .navbar {
   border-left: none;

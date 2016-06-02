@@ -8,11 +8,11 @@ helpers do
     is_neg = (input_number < 0)
 
     result = case
-    when number >= 1000 && number < 1000000
+    when number >= 100 && number < 100000
       pri = number / 1000
       sub = (number / 100) % 10
       sub > 0 ? "#{pri}.#{sub}k" : "#{pri}k"
-    when number > 999999
+    when number > 100000
       pri = number / 1000000
       sub = (number / 100000) % 10
       sub > 0 ? "#{pri}.#{sub}m" : "#{pri}m"
@@ -21,7 +21,7 @@ helpers do
     end
 
     if is_neg
-      "-#{result}"
+      "<span class='number-neg'>-#{result}</span>"
     else
       result
     end

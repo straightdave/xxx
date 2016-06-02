@@ -112,7 +112,9 @@ img.top-user-avatar {
           item.login_name + "' />\
           <span>" + item.nickname + "</span>\
         </a>\
-        <span>" + ((item.repu_sum > 0) ? '+' : '') + item.repu_sum + "</span>\
+        <span " + ((item.repu_sum < 0) ? "class='number-neg'>" : ">") +
+          ((item.repu_sum >= 0) ? '+' : '') + item.repu_sum +
+        "</span>\
       </li>";
       root_ul.append(result);
     }

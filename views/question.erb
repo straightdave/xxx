@@ -73,7 +73,7 @@
             <div class="authorbox text-right">
               <img class="avatar-sm" src="<%= @q.author.avatar_src %>">
               <a href="<%= @q.author.url %>">
-                <%= @q.author.info.nickname %>(<%= @q.author.reputation %>)
+                <%= @q.author.info.nickname %>(<%= get_format_number(@q.author.reputation) %>)
               </a>
               提问于<%= time_ago_in_words_zh(@q.created_at) %>
 
@@ -102,7 +102,7 @@
             <div class="authorbox text-right">
               <img class="avatar-sm" src="<%= @last_editor.avatar_src %>">
               <a href="<%= @last_editor.url %>">
-                <%= @last_editor.info.nickname %>(<%= @last_editor.reputation %>)
+                <%= @last_editor.info.nickname %>(<%= get_format_number(@last_editor.reputation) %>)
               </a>
               最后修改于<%= time_ago_in_words_zh(@last_edit_time) %>
             </div>
@@ -121,7 +121,7 @@
                        title="为这条评论投票"
                        onclick="javascript:vote('vote','c',<%= c.id %>)">
                     <i class="fa fa-caret-up"></i>
-                    <span id="c-scores-<%= c.id %>"><%= c.scores %></span>
+                    <span id="c-scores-<%= c.id %>"><%= get_format_number(c.scores) %></span>
                     <!-- no devoting for comments -->
                   </div>
 
@@ -131,7 +131,7 @@
 
                   <div class="comment-author">
                     <a href="<%= c.author.url %>">
-                      <%= c.author.info.nickname %>(<%= c.author.reputation %>)
+                      <%= c.author.info.nickname %>(<%= get_format_number(c.author.reputation) %>)
                     </a>
                     <%= time_ago_in_words_zh(c.created_at) %>
                   </div>
@@ -183,7 +183,7 @@
                       <i class="fa fa-caret-up"></i>
                     </a>
                     <br />
-                    <span id = "a-scores-<%= a.id %>"><%= a.scores %></span>
+                    <span id = "a-scores-<%= a.id %>"><%= get_format_number(a.scores) %></span>
                     <br>
                     <a href="javascript:void(0);"
                        title="这答案不正确或者误导人，差评！"
@@ -208,7 +208,7 @@
                     <img class="avatar-sm"
                          src="<%= a.author.avatar_src %>">
                     <a href="<%= a.author.url %>">
-                      <%= a.author.info.nickname %>(<%= a.author.reputation %>)
+                      <%= a.author.info.nickname %>(<%= get_format_number(a.author.reputation) %>)
                     </a>
                     回答于<%= time_ago_in_words_zh(a.created_at) %>
                   </div> <!-- end of author box of answer -->
@@ -236,7 +236,7 @@
                                onclick="javascript:vote('vote','c',<%= c.id %>)">
                             <i class="fa fa-caret-up"></i>
                             <span id="c-scores-<%= c.id %>">
-                              <%= c.scores %>
+                              <%= get_format_number(c.scores) %>
                             </span>
                             <!-- no devoting for comments -->
                           </div>
@@ -247,7 +247,7 @@
 
                           <div class="comment-author">
                             <a href="<%= c.author.url %>">
-                              <%= c.author.info.nickname %>(<%= c.author.reputation %>)
+                              <%= c.author.info.nickname %>(<%= get_format_number(c.author.reputation) %>)
                             </a>
                             <%= time_ago_in_words_zh(c.created_at) %>
                           </div>

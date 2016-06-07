@@ -3,11 +3,11 @@ require 'digest'
 class User < ActiveRecord::Base
 
   module Status
-    NEWBIE  = 0 # just signed up, no mail-validated yet; can only sign in
-    NORMAL  = 1 # normal, can do almost everything now
-    SUSPEND = 2 # like newbie; NORMAL => SUSPEND if changed email, etc.
-    BANNED  = 3 # even cannot sign in; no profile/works accessible
-    REMOVED = 4 # removed from db sooner or later in db refine routine
+    NEWBIE  = 0
+    NORMAL  = 1
+    SUSPEND = 2
+    BANNED  = 3
+    REMOVED = 4
   end
 
   module Role
@@ -95,7 +95,7 @@ class User < ActiveRecord::Base
   def self.get_role_zh(number)
     case number
     when 0 then "普通用户"
-    when 1 then "版主"
+    when 1 then "仲裁员"
     when 8 then "管理员"
     when 9 then "超级管理员"
     else "未知"
@@ -131,15 +131,13 @@ class User < ActiveRecord::Base
     self.vcode = Digest::MD5.hexdigest(self.login_name + temp)
   end
 
-  def self.validate(id, code)
-    # returning atoms
-
-    unless user = User.find_by(id: id)
+  def self.validate(user_id, validate_code, target_status = Status::NORMAL)
+    unless user = User.find_by(id: user_id)
       return :nouser
     end
 
-    if user.vcode == code
-      user.status = Status::NORMAL
+    if user.vcode == validate_code
+      user.status = target_status
       user.vcode = ""
       if user.valid?
         user.save
@@ -152,8 +150,8 @@ class User < ActiveRecord::Base
     end
   end
 
-  def self.check_reset_request(id, code)
-    if (user = User.find_by(id: id)) && (code == user.vcode)
+  def self.check_reset_request(user_id, validate_code)
+    if (user = User.find_by(id: user_id)) && (validate_code == user.vcode)
       user.vcode = ""
       if user.valid?
         user.save
@@ -164,8 +162,8 @@ class User < ActiveRecord::Base
   end
 
   def update_reputation(delta)
-    self.reputation += delta
     self.repu_changes.create(value: delta)
+    self.reputation += delta
     save if valid?
   end
 

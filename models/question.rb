@@ -58,6 +58,17 @@ class Question < ActiveRecord::Base
     "/q/#{self.id}"
   end
 
+  # get (max 10) related/linked questions
+  # relate: consider both tags and titles
+  def get_related_questions(max = 10)
+    # TODO none for now
+  end
+
+  # linked: wrote as links in questions, answers or comments
+  def get_linked_questions(max = 10)
+    # TODO none for now
+  end
+
   def get_last_events(last_num = 1, event_type = [])
     # target_type = 1 means questions
     events = Event.where(target_type: 1).where(target_id: self.id)

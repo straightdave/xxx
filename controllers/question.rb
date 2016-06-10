@@ -196,7 +196,6 @@ post '/q/:qid/watch' do |qid|
   end
 end
 
-
 post '/q/:qid/unwatch' do |qid|
   author = login_filter
 
@@ -287,5 +286,42 @@ post '/q/:qid/accept' do |qid|
     json ret: "success"
   else
     json ret: "error", msg: "accept_failed"
+  end
+end
+
+# for (ajax get) linked and related questions
+# return data format: JSON array of
+# '{ id: zz, title: xxxx, votes: yy, has_acc: "true/false"}'
+get '/q/:qid/linked' do |qid|
+  if q = Question.find_by(id: qid)
+    ret = []
+    if lq = q.get_linked_questions
+      lq.each do |q|
+        ret << {
+          "id"      => q.id,
+          "title"   => q.title,
+          "votes"   => q.score,
+          "has_acc" => q.accepted_answer.nil?
+        }
+      end
+    end
+    json ret
+  end
+end
+
+get '/q/:qid/related' do |qid|
+  if q = Question.find_by(id: qid)
+    ret = []
+    if rq = q.get_related_questions
+      rq.each do |q|
+        ret << {
+          "id"      => q.id,
+          "title"   => q.title,
+          "votes"   => q.score,
+          "has_acc" => q.accepted_answer.nil?
+        }
+      end
+    end
+    json ret
   end
 end

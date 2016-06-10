@@ -73,4 +73,8 @@ helpers do
   def render_top_user
     erb :partial_top_user, layout: false
   end
+
+  def render_question_list(type = :related)
+    erb :partial_question_list, layout: false, locals: { question_type: type }
+  end
 end

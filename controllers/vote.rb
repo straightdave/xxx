@@ -1,18 +1,13 @@
-post %r{/([q|a|c])/(\d+)/(devote|vote)} do |target_type, id, behavior|
+post %r{/([q|a|c|article])/(\d+)/(downvote|vote)} do |type, id, act|
   user = login_filter
 
-  case target_type
+  obj = case type
   when "a" then
-    obj = Answer.find_by(id: id)
-    required_vote_repu = 15
-    required_devote_repu = 250
+    Answer.find_by(id: id)
   when "c" then
-    obj = Comment.find_by(id: id)
-    required_vote_repu = 1
+    Comment.find_by(id: id)
   when "q" then
-    obj = Question.find_by(id: id)
-    required_vote_repu = 10
-    required_devote_repu = 200
+    Question.find_by(id: id)
   end
   return (json ret: "error", msg: "获取投票对象出错") unless obj
 
@@ -20,31 +15,27 @@ post %r{/([q|a|c])/(\d+)/(devote|vote)} do |target_type, id, behavior|
     return json ret: "error", msg: "不可以给自己投票哦"
   end
 
-  return (json ret: "error", msg: "已经投过票了") if already_voted?(obj)
+  return (json ret: "error", msg: "你已经给这个投过票了") if user.already_voted?(obj)
 
-  if behavior == "vote"
-    if user.reputation >= required_vote_repu || settings.ignore_repu_limit
-      obj.votes.create(voter: user, points: 1)
+  if act == "vote"
+    if user.reputation >= 15 || settings.ignore_repu_limit
+      obj.votes.create(voter: user, points: 1, votee_id: obj.user_id)
       obj.get_voted
     else
-      return json ret: "error", msg: "声望不足#{required_vote_repu}，请参考声望权限说明"
+      return json ret: "error", msg: "声望不足，请参考声望权限说明"
     end
-  elsif behavior == "devote"
-    if user.reputation >= required_devote_repu || settings.ignore_repu_limit
-      obj.votes.create(voter: user, points: -1)
-      obj.get_devoted
+  elsif act == "downvote"
+    if user.reputation >= 125 || settings.ignore_repu_limit
+      obj.votes.create(voter: user, points: -1, votee_id: obj.user_id)
+      obj.get_downvoted
+      user.update_reputation(-1) # downvoter should be punished, too
     else
-      return json ret: "error", msg: "声望不足#{required_devote_repu}，请参考声望权限说明"
+      return json ret: "error", msg: "声望不足，请参考声望权限说明"
     end
   else
-    return json ret: "error", msg: "unknown behavior"
+    return json ret: "error", msg: "未知的动作"
   end
 
-  if obj.valid?
-    obj.save
-    user.record_event(behavior.to_sym, obj)
-    json ret: "success", msg: obj.scores
-  else
-    json ret: "error", msg: obj.errors.messages.inspect
-  end
+  user.record_event(act.to_sym, obj)
+  json ret: "success", msg: obj.scores
 end

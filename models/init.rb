@@ -1,8 +1,7 @@
-# mixins should go first
+# mixins go first
 require_relative "votability"
 require_relative "reportability"
 
-# normal models
 require_relative "question"
 require_relative "draft"
 require_relative "user"

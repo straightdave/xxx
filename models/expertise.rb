@@ -2,7 +2,7 @@
 # how users are good at such tags
 # user (n) : tag (n)
 # also it records statistics such as number of 'answers' of such tag,
-# number of 'accepted answers' of such tag, how many 'vote/devote' in this tag
+# number of 'accepted answers' of such tag, how many 'vote/downvote' in this tag
 class Expertise < ActiveRecord::Base
   # == associations ==
   # to get tag object from this
@@ -28,14 +28,14 @@ class Expertise < ActiveRecord::Base
     self.save if self.valid?
   end
 
-  # vote & devote also can be used by articles
+  # vote & downvote also can be used by articles
   def voted_once
     self.voted += 1
     self.expert_score += 1 * 2
     self.save if self.valid?
   end
 
-  def devoted_once
+  def downvoted_once
     self.voted += 1
     self.expert_score -= 1 * 2
     self.save if self.valid?

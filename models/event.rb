@@ -1,7 +1,7 @@
 class Event < ActiveRecord::Base
   # == fields ==
   # id
-  # event_type (1-ask; 2-answer; 3-comment; 4-compose; 5-vote; 6-devote;
+  # event_type (1-ask; 2-answer; 3-comment; 4-compose; 5-vote; 6-downvote;
   #             7-watch; 8-unwatch; 9-follow; 10-unfollow; 11-update;
   #             12-accept;)
   # target_type (1-question; 2-answer; 3-comment; 4-article; 5-user)

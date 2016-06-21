@@ -432,6 +432,7 @@ CREATE TABLE `votes` (
   `user_id` int(10) unsigned NOT NULL,
   `votable_id` int(10) unsigned NOT NULL,
   `votable_type` varchar(50) NOT NULL,
+  `votee_id` int(10) unsigned DEFAULT NULL COMMENT 'redundant: the guy who gets this vote',
   `points` tinyint(4) DEFAULT '1',
   `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -462,4 +463,4 @@ CREATE TABLE `watching_list` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-05-30 11:37:58
+-- Dump completed on 2016-06-21 23:00:18

@@ -1,34 +1,37 @@
 module Votability
+  # mixins for objects which get votes/downvotes
 
-  # when object get voted, author will get some praises:
-  # update reputation and all corresponding expertises
+  # when object get votes/downvotes, the following things will happen:
+  # 1. reputation
+  # 2. expertises
+
+  # NOTE: the public methods' names are formed as 'v + n.'
+  # and the subject should be the objects which get votes/downvotes
+
   def get_voted
+    # redundant: sum up total scores (all votes - all downvotes)
     self.scores += 1
 
-    if self.is_a?(Question)
-      self.author.update_reputation(10)
-    end
+    # update reputation
+    self.author.update_reputation(5) if self.is_a?(Question)
+    self.author.update_reputation(10) if self.is_a?(Answer)
 
-    if self.is_a?(Answer)
-      self.author.update_reputation(15)
-    end
-
-    self.author.expertises.where(tag_id: get_tids).all.each do |e|
+    # update post author's expertises
+    self.author.expertises.where(tag_id: get_tag_ids).all.each do |e|
       e.voted_once
     end
   end
 
-  def get_devoted
+  def get_downvoted
     self.scores -= 1
     self.author.update_reputation(-2)
-
-    self.author.expertises.where(tag_id: get_tids).all.each do |e|
-      e.devoted_once
+    self.author.expertises.where(tag_id: get_tag_ids).all.each do |e|
+      e.downvoted_once
     end
   end
 
   private
-  def get_tids
+  def get_tag_ids
     case
     when self.is_a?(Question) || self.is_a?(Article)
       self.tag_ids
@@ -41,8 +44,7 @@ module Votability
         self.commentable.question.tag_ids
       end
     else
-      []
+      [] # return no null
     end
   end
-
 end

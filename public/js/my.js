@@ -212,7 +212,7 @@ function do_comment_answer(aid) {
 
 function vote(op_type, target_type, id) {
   // params:
-  // op_type: 'vote' or 'devote'
+  // op_type: 'vote' or 'downvote'
   // target_type - target, 'q' for question, 'a' for answer, 'c' for comment
   // id - target id
   var url = "/" + target_type + "/" + id + "/" + op_type;

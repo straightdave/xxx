@@ -81,6 +81,10 @@ class User < ActiveRecord::Base
     "/u/#{self.login_name}"
   end
 
+  def already_voted?(obj)
+    obj.votes.any? { |v| v.user_id == self.id }
+  end
+
   def self.get_status_zh(number)
     case number
     when 0 then "新注册"
@@ -195,7 +199,7 @@ class User < ActiveRecord::Base
   end
 
   # returned object is user - tag relationship
-  # can get how many answered, accepted, voted and devoted other than score
+  # can get how many answered, accepted, voted and downvoted other than score
   # also can get tag model from it
   def top_expert_tags(number)
     ret = self.expertises.where("expert_score > 0").order(expert_score: :desc)
@@ -218,7 +222,7 @@ class User < ActiveRecord::Base
     when :comment  then 3
     when :compose  then 4
     when :vote     then 5
-    when :devote   then 6
+    when :downvote then 6
     when :watch    then 7
     when :unwatch  then 8
     when :follow   then 9

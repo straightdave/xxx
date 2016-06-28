@@ -98,6 +98,7 @@ get '/q/:qid' do |qid|
     end
 
     # answers order by score desc, and score must >= -2
+    # TODO: fold answers (not just hide or delete) whose scores are less than -2
     @answers = @q.answers.where("scores >= -2").order(scores: :desc)
 
     @can_edit = (!@q.is_frozen) &&

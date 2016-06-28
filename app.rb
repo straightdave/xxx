@@ -74,7 +74,9 @@ ActiveRecord::Base.default_timezone = :local
 
 before do
   if login?
-    @_current_user = User.find_by(id: session[:user_id])
+    unless @_current_user
+      @_current_user = User.find_by(id: session[:user_id])
+    end
   end
 end
 

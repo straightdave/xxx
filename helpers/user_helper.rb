@@ -16,17 +16,14 @@ helpers do
 
   # general user status check
   def login_filter(attr = {})
-    req_path   = CGI.escape(request.path)
-    req_method = request.request_method
-    is_get     = (req_method == 'GET')
+    is_get = (request.request_method == 'GET')
 
     # 1. check login
     unless login?
       if is_get
-        redirect to('/user/signin?returnurl=' + req_path)
+        redirect to('/user/signin?returnurl=' + CGI.escape(request.path))
       else
-        response.body = json ret: "error", msg: "请先登录"
-        halt 200
+        halt 555, (json ret: "error", msg: "请先登录")
       end
     end
 
@@ -35,8 +32,7 @@ helpers do
       if is_get
         redirect to("/notice?reason=accounterror&ext_0=#{user.login_name}")
       else
-        response.body = json ret: "error", msg: "账户登录状态有误"
-        halt 200
+        halt 555, (json ret: "error", msg: "登录账户数据有误")
       end
     end
 
@@ -50,8 +46,7 @@ helpers do
       if is_get
         redirect to("/notice?reason=statuserror&ext_0=#{user.login_name}&ext_1=#{user.status}")
       else
-        response.body = json ret: "error", msg: "账户当前状态有误"
-        halt 200
+        halt 555, (json ret: "error", msg: "账户当前状态有误")
       end
     end
 
@@ -65,12 +60,10 @@ helpers do
       if is_get
         redirect to("/notice?reason=roleerror&ext_0=#{user.login_name}&ext_1=#{user.role}")
       else
-        response.body = json ret: "error", msg: "账户角色有误"
-        halt 200
+        halt 555, (json ret: "error", msg: "账户角色有误")
       end
     end
 
-    # end: if all OK, return current user object
-    user
+    user  # end: if all OK, return current user object
   end
 end

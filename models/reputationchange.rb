@@ -37,4 +37,10 @@ class ReputationChange < ActiveRecord::Base
       LEFT JOIN users AS c ON a.user_id = c.id
       ORDER BY a.repu_sum DESC;");
   end
+
+  def self.get_today_sum_for_user(user_id)
+    ReputationChange
+      .where("user_id = :user_id AND created_at > CURDATE()", {user_id: user_id})
+      .sum("value")
+  end
 end

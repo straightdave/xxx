@@ -69,9 +69,9 @@ post '/report' do
   # to reduce reputation for receiving reports
   if target_obj.has_reports >= 5
     if target_type == 'u'
-      target_obj.update_reputation(-200)
+      target_obj.update_reputation(-20, "got more than 5 reportings")
     else
-      target_obj.author.update_reputation(-200)
+      target_obj.author.update_reputation(-20, "posts got more than 5 reportings")
     end
   end
 

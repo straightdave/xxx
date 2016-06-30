@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.md or http://ckeditor.com/license
 */
 
@@ -7,7 +7,7 @@ body
 {
 	/* Font */
 	font-family: sans-serif, Arial, Verdana, "Trebuchet MS";
-	font-size: 16px;
+	font-size: 12px;
 
 	/* Text color */
 	color: #333;
@@ -16,13 +16,15 @@ body
 	background-color: #fff;
 
 	margin: 20px;
-
 }
 
 .cke_editable
 {
-	font-size: 16px;
+	font-size: 13px;
 	line-height: 1.6;
+
+	/* Fix for missing scrollbars with RTL texts. (#10488) */
+	word-wrap: break-word;
 }
 
 blockquote

@@ -28,7 +28,7 @@ post %r{/([q|a|c|article])/(\d+)/(downvote|vote)} do |type, id, act|
     if user.reputation >= 125 || settings.ignore_repu_limit
       obj.votes.create(voter: user, points: -1, votee_id: obj.user_id)
       obj.get_downvoted
-      user.update_reputation(-1) # downvoter should be punished, too
+      user.update_reputation(-1, "downvoting") # downvoter should be punished, too
     else
       return json ret: "error", msg: "声望不足，请参考声望权限说明"
     end

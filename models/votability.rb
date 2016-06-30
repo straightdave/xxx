@@ -1,20 +1,21 @@
 module Votability
-  # mixins for objects which get votes/downvotes
+  # mixins for dealing with objects which get votes/downvotes
 
   # when object get votes/downvotes, the following things will happen:
-  # 1. reputation
-  # 2. expertises
+  # 1. author's reputation
+  # 2. author's expertises
 
   # NOTE: the public methods' names are formed as 'v + n.'
   # and the subject should be the objects which get votes/downvotes
 
   def get_voted
-    # redundant: sum up total scores (all votes - all downvotes)
+    # rscore: edundant field for quick calculating
+    # sum up total scores (all votes - all downvotes) for this obj
     self.scores += 1
 
     # update reputation
-    self.author.update_reputation(5) if self.is_a?(Question)
-    self.author.update_reputation(10) if self.is_a?(Answer)
+    self.author.update_reputation(5, "question got voted") if self.is_a?(Question)
+    self.author.update_reputation(10, "answer got voted") if self.is_a?(Answer)
 
     # update post author's expertises
     self.author.expertises.where(tag_id: get_tag_ids).all.each do |e|
@@ -24,10 +25,12 @@ module Votability
 
   def get_downvoted
     self.scores -= 1
-    self.author.update_reputation(-2)
+    self.author.update_reputation(-2, "post got downvoted")
     self.author.expertises.where(tag_id: get_tag_ids).all.each do |e|
       e.downvoted_once
     end
+    # NOTE: if downvote, the voter hisself also get him own reputation reduced
+    # this logic implemented in user behavior process, not here
   end
 
   private

@@ -165,8 +165,27 @@ class User < ActiveRecord::Base
     false
   end
 
-  def update_reputation(delta)
-    self.repu_changes.create(value: delta)
+  def update_reputation(delta, reason = "")
+    # one could get no more than 200 per day
+    # or could not make his reputation less than 1
+    return if self.reputation <= 1 && delta < 0
+
+    today_repu = ReputationChange.get_today_sum_for_user(self.id)
+    return if today_repu >= 200 && delta > 0
+
+    # ceiling to the max per day
+    if today_repu < 200 && today_repu + delta > 200
+      delta = 200 - today_repu
+      reason += " MAX"
+    end
+
+    # ceiling to the min reputation
+    if self.reputation > 1 && self.reputation + delta < 1
+      delta = 1 - self.reputation
+      reason += " MIN"
+    end
+
+    self.repu_changes.create(value: delta, reason: reason)
     self.reputation += delta
     save if valid?
   end

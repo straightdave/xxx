@@ -22,14 +22,6 @@ get '/career' do
   erb :career
 end
 
-
-# TODO: delete this
-get '/show_session' do
-  data = ""
-  session.each { |k, v| data += "#{k} => #{v}<br>" }
-  session.class.inspect + "<br>" + session.methods.sort.inspect + "<br>" + data
-end
-
 get '/404' do
   @navbar_hide_level = 'all'
   erb :page_404, layout: false
@@ -83,3 +75,13 @@ get '/notice' do
   @navbar_hide_level = 'logo'
   erb :page_info
 end
+
+
+
+# TODO: delete this
+get '/show_session' do
+  data = ""
+  session.each { |k, v| data += "#{k} => #{v}<br>" }
+  session.class.inspect + "<br>" + session.methods.sort.inspect + "<br>" + data
+end
+

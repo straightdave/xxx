@@ -28,7 +28,7 @@ post '/ask' do
   new_q.save
 
   send_msg_after_ask(author, new_q)
-  author.update_reputation(1)
+  author.update_reputation(1, "asked one question")
   author.record_event(:ask, new_q)
   json ret: "success", msg: new_q.id
 end
@@ -243,8 +243,8 @@ post '/q/:qid/answer' do |qid|
     q.save
     send_msg_after_answer(q, author)
 
-    q.author.update_reputation(1)
-    author.update_reputation(1)
+    q.author.update_reputation(1, "question answered once")
+    author.update_reputation(1, "answering one question")
     author.add_expertise(q.tag_ids, :answered_once)
 
     author.record_event(:answer, q)
@@ -280,9 +280,9 @@ post '/q/:qid/accept' do |qid|
   if question.valid?
     question.save
 
-    answerer.update_reputation(20)
+    answerer.update_reputation(20, "answer accepted")
     answerer.add_expertise(question.tag_ids, :accepted_once)
-    asker.update_reputation(2)
+    asker.update_reputation(2, "accepting one answer")
     asker.record_event(:accept, answer)
     json ret: "success"
   else

@@ -37,11 +37,13 @@
 
           <div class="question">
             <div class="user">
-              <a href="<%= q.get_last_question_event.invoker.url %>">
-                <%= q.get_last_question_event.invoker.info.nickname %>
-              </a>
-              在<%= time_ago_in_words_zh(q.get_last_question_event.created_at) %>
-              <%= q.get_last_question_event.event_type_zh %>
+              <% unless q.get_last_question_event.nil? %>
+                <a href="<%= q.get_last_question_event.invoker.url %>">
+                  <%= q.get_last_question_event.invoker.info.nickname %>
+                </a>
+                在<%= time_ago_in_words_zh(q.get_last_question_event.created_at) %>
+                <%= q.get_last_question_event.event_type_zh %>
+              <% end %>
             </div>
             <div class="title">
               <a href="<%= q.url %>"><%= q.title %></a>

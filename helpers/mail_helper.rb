@@ -15,7 +15,7 @@ helpers do
         :from        => 'noreply@hanfeizishuo.com',
         :to          => user.email,
         :receiver_id => user.id,
-        :subject     => "韩非子说用户验证",
+        :subject     => "是非说用户验证",
         :body        => body,
         :time        => Time.now.to_i
       })
@@ -39,7 +39,7 @@ helpers do
       :from        => 'noreply@hanfeizishuo.com',
       :to          => user.email,
       :receiver_id => user.id,
-      :subject     => "韩非子说重置密码",
+      :subject     => "是非说重置密码",
       :body        => body,
       :time        => Time.now.to_i
     })

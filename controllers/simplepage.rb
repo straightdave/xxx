@@ -69,7 +69,7 @@ get '/notice' do
                 登陆后，进入“我的资料”下即可找到“重新发送验证邮件”的按钮"
   else
     @title   = "消息页面"
-    @content = "您可以浏览“韩非子说”网站的精彩内容，或者参与其中： <a href='/user/signin'>登录</a>"
+    @content = "您可以浏览“是非说”网站的精彩内容，或者参与其中： <a href='/user/signin'>登录</a>"
   end
 
   @navbar_hide_level = 'logo'

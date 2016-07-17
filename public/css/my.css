@@ -218,6 +218,7 @@ a.tag{
 }
 
 .listed-question .rank {
+  margin-top: 2px;
   float: left;
   text-align: center;
   line-height: 1.2;
@@ -388,6 +389,7 @@ div#answer-details {
 div.answer-text {
   padding-left: 0px;
   font-size: 1.3em;
+  margin-bottom: 30px;
 }
 
 div.single-answer {

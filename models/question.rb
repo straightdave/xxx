@@ -61,7 +61,9 @@ class Question < ActiveRecord::Base
   # get (max 10) related/linked questions
   # relate: consider both tags and titles
   def get_related_questions(max = 10)
-    # TODO none for now
+    # TODO now only consider about similar titless
+    Question.where("MATCH (title) AGAINST (? IN NATURAL LANGUAGE MODE) AND id <> ?",
+      self.title, self.id).limit(max)
   end
 
   # linked: wrote as links in questions, answers or comments

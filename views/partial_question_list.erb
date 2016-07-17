@@ -72,21 +72,20 @@ a.list-title {
 (function (window, $) {
   var root_ul = $("ul#_<%= question_type.to_s %>");
   var base_url = location.pathname;   // like '/q/123'
-  var url = base_url + "/<%= question_type.to_s %>";
+  var url = base_url + "/<%= question_type.to_s %>"; // go '/q/123/related'
 
   $(function () {
     console.log("fetch data from " + url);
     $.get(url, function (data, status) {
       if (data && data.length > 0) {
-        console.log("get data more t 0");
-
+        console.log("get data more than 0 items");
         root_ul.empty();
 
         for(var i = 0; i < data.length; i++) {
           var item = data[i];
 
           var span_class;
-          if (item.has_acc == "true") {
+          if (item.has_acc) {
             span_class = "list-vote-box-acc";
           }
           else {
@@ -105,10 +104,11 @@ a.list-title {
           console.log("append li " + tmp);
           root_ul.append(tmp);
         }
-
+      }
+      else {
+        console.log("get 0 items <%= question_type.to_s %>")
       }
     });
-
   });
 })(window, jQuery);
 </script>

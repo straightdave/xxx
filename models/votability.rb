@@ -21,6 +21,8 @@ module Votability
     self.author.expertises.where(tag_id: get_tag_ids).all.each do |e|
       e.voted_once
     end
+
+    self.save if valid?
   end
 
   def get_downvoted
@@ -29,6 +31,7 @@ module Votability
     self.author.expertises.where(tag_id: get_tag_ids).all.each do |e|
       e.downvoted_once
     end
+    self.save if valid?
     # NOTE: if downvote, the voter hisself also get him own reputation reduced
     # this logic implemented in user behavior process, not here
   end

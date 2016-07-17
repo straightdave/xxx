@@ -301,8 +301,8 @@ get '/q/:qid/linked' do |qid|
         ret << {
           "id"      => q.id,
           "title"   => q.title,
-          "votes"   => q.score,
-          "has_acc" => q.accepted_answer.nil?
+          "votes"   => q.scores,
+          "has_acc" => !q.accepted_answer.nil?
         }
       end
     end
@@ -318,8 +318,8 @@ get '/q/:qid/related' do |qid|
         ret << {
           "id"      => q.id,
           "title"   => q.title,
-          "votes"   => q.score,
-          "has_acc" => q.accepted_answer.nil?
+          "votes"   => q.scores,
+          "has_acc" => !q.accepted_answer.nil?
         }
       end
     end

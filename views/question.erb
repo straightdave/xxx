@@ -218,25 +218,36 @@
                     <%= a.content %>
                   </div>
 
-                  <div class="authorbox text-right">
-                    <img class="avatar-sm"
-                         src="<%= a.author.avatar_src %>">
-                    <a href="<%= a.author.url %>">
-                      <%= a.author.info.nickname %>(<%= get_format_number(a.author.reputation) %>)
-                    </a>
-                    回答于<%= time_ago_in_words_zh(a.created_at) %>
-                  </div> <!-- end of author box of answer -->
-
-                  <!-- marking func for answer -->
                   <div class="row">
-                    <div class="col-sm-4 col-sm-offset-8 text-right
-                         <% if @hidden_mark %>hidden<% end %>">
+
+                    <div class="col-md-4 <% if @hidden_mark %>hidden<% end %>">
                       <a href="javascript:void(0);" role="button"
                          class="btn btn-primary btn-sm" onclick="javascript:
                            mark_as_accepted(<%= @q.id %>, <%= a.id %>);">
                         <i class="fa fa-check"></i>&nbsp;标记为答案
                       </a>
                     </div>
+
+                    <div class="col-md-4 col-md-offset-<% unless @hidden_mark %>4<% else %>8<% end %>">
+                      <div class="authorbox">
+                        <div>
+                          回答于 <%= time_ago_in_words_zh(a.created_at) %>
+                        </div>
+                        <div id="author-info">
+                          <div class="left">
+                            <img class="avatar" src="<%= a.author.avatar_src %>">
+                          </div>
+                          <div class="left marginleft">
+                            <a href="<%= a.author.url %>">
+                              <%= a.author.info.nickname %>
+                            </a>
+                            <div><%= get_format_number(a.author.reputation) %></div>
+                          </div>
+                          <div class="clear"></div>
+                        </div>
+                      </div>
+                    </div>
+
                   </div>
 
                   <!-- comments for answer -->
@@ -327,7 +338,6 @@
     </div> <!-- end of col-9 -->
 
     <div class="col-md-3">
-      <%= render_question_list :linked %>
       <%= render_question_list :related %>
     </div>
 

@@ -115,7 +115,7 @@ ol.breadcrumb {
   color: #4582EC;
 }
 
-.clear {
+div.clear {
   clear: both;
 }
 
@@ -305,18 +305,28 @@ div.question-content {
   padding-left: 0px;
   font-size: 1.3em;
 }
-
-div.tag-authorbox {
-  margin: 10px 0;
+div#tags {
+  margin: 10px 0 30px 0;
 }
-div.tag-authorbox div.tags {
+
+div.authorbox {
+  padding: 5px;
+  background: #DAE7F1;
+}
+
+div.authorbox > div {
+  margin: 3px;
+}
+
+div#author-info > div.left {
   float: left;
 }
-div.tag-authorbox div.authorbox {
-  float: right;
-  overflow: hidden;
-  margin-left: 30px;
+
+div#author-info > div.marginleft {
+  margin-left: 8px;
 }
+
+
 
 /* comment box */
 textarea.commentbox {
@@ -389,15 +399,17 @@ div.single-answer {
 }
 
 /* user styles on question page */
+img.avatar {
+  width: 40px;
+  height: 40px;
+}
 img.avatar-sm {
   width: 30px;
   height: 30px;
-  border-radius: 50%;
 }
 img.avatar-xs {
   width: 20px;
   height: 20px;
-  border-radius: 50%;
 }
 
 /* message page */

@@ -63,41 +63,35 @@
             <%= @q.content %>
           </div>
 
-          <div class="tag-authorbox">
-            <div class="tags">
-              <% @q.tags.each do |t| %>
-              <span class="q_tag"><%= t.name %></span>
-              <% end %>
-            </div>
+          <div id="tags">
+            <% @q.tags.each do |t| %>
+            <span class="q_tag"><%= t.name %></span>
+            <% end %>
+          </div>
 
-            <div class="authorbox text-right">
-              <img class="avatar-sm" src="<%= @q.author.avatar_src %>">
-              <a href="<%= @q.author.url %>">
-                <%= @q.author.info.nickname %>(<%= get_format_number(@q.author.reputation) %>)
+          <div class="row">
+            <div class="col-md-4">
+            <% if @can_edit %>
+              <a href="javascript:void(0);" data-toggle="modal"
+                 class="comment-btn" data-target="#edit-modal">
+                <i class="fa fa-edit"></i>&nbsp;修改问题
+              </a>&nbsp;
+
+              <% if @q.can_comment %>
+              <a href="javascript:void(0);" class="comment-btn"
+                 onclick="javascript:toggle_comment(<%= @q.id %>);">
+                <i class="fa fa-ban text-danger"></i>&nbsp;关闭评论
               </a>
-              提问于<%= time_ago_in_words_zh(@q.created_at) %>
-
-              <% if @can_edit %>
-                <br />
-                <a href="javascript:void(0);" data-toggle="modal"
-                   class="comment-btn" data-target="#edit-modal">
-                  <i class="fa fa-edit"></i>&nbsp;修改问题
-                </a>&nbsp;
-
-                <% if @q.can_comment %>
-                <a href="javascript:void(0);" class="comment-btn"
-                   onclick="javascript:toggle_comment(<%= @q.id %>);">
-                  <i class="fa fa-ban text-danger"></i>&nbsp;关闭评论
-                </a>
-                <% else %>
-                <a href="javascript:void(0);" class="comment-btn"
-                   onclick="javascript:toggle_comment(<%= @q.id %>);">
-                  <i class="fa fa-commenting"></i>&nbsp;打开评论
-                </a>
-                <% end %>
+              <% else %>
+              <a href="javascript:void(0);" class="comment-btn"
+                 onclick="javascript:toggle_comment(<%= @q.id %>);">
+                <i class="fa fa-commenting"></i>&nbsp;打开评论
+              </a>
               <% end %>
+            <% end %>
             </div>
 
+            <div class="col-md-4">
             <% if @is_edited %>
             <div class="authorbox text-right">
               <img class="avatar-sm" src="<%= @last_editor.avatar_src %>">
@@ -107,9 +101,29 @@
               最后修改于<%= time_ago_in_words_zh(@last_edit_time) %>
             </div>
             <% end %>
+            </div>
 
-            <div class="clear"></div>
-          </div>
+            <div class="col-md-4">
+              <div class="authorbox">
+                <div>
+                  提问于 <%= time_ago_in_words_zh(@q.created_at) %>
+                </div>
+                <div id="author-info">
+                  <div class="left">
+                    <img class="avatar" src="<%= @q.author.avatar_src %>">
+                  </div>
+                  <div class="left marginleft">
+                    <a href="<%= @q.author.url %>">
+                      <%= @q.author.info.nickname %>
+                    </a>
+                    <div><%= @q.author.reputation %></div>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+              </div>
+            </div>
+          </div> <!-- end of author info row -->
+
 
           <!-- comments go here -->
           <div class="comments">
@@ -164,7 +178,7 @@
           <% end %>
 
         </div>
-      </div> <!-- end of #question-details -->
+      </div>
       <hr>
 
       <!-- answers listed here : all col-9 width -->

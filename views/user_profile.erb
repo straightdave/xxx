@@ -1,19 +1,4 @@
-<%= render_report_modal('u', @user.id) %>
-
 <div class="profile-background">
-  <div class="report">
-    <% if @show_reported %>
-    <p class="text-warning">
-      <span class="glyphicon glyphicon-alert"></span>
-      &nbsp;被投诉中
-    </p>
-    <% elsif @user.id != session[:user_id] %>
-    <button class="btn btn-default btn-sm" data-toggle="modal"
-    data-target="#report-modal" title="投诉">
-      <i class="fa fa-warning"></i>
-    </button>
-    <% end %>
-  </div>
 </div>
 
 <div class="container">
@@ -21,7 +6,8 @@
     <div class="col-md-3">
       <div class="profile-pane">
         <div class="avatar">
-          <img alt="<%= @user_info.nickname %>" src="<%= @user.avatar_src %>">
+          <img alt="@<%= @user_info.nickname %>" src="<%= @user.avatar_src %>"
+               title="<%= @user_info.nickname %>">
         </div>
 
         <div class="namebox">
@@ -180,7 +166,6 @@
     </div> <!-- end of col-6 in the mid -->
 
     <div class="col-md-3">
-      <!-- fav tags -->
       <h5>擅长标签</h5>
       <div class="my-expert-tags">
         <% @user.top_expert_tags(5).each do |rel| %>
@@ -192,11 +177,6 @@
           </div>
         <% end %>
         <div class="clear"></div>
-      </div>
-
-      <hr>
-      <div class="ad-col-3">
-
       </div>
     </div> <!-- end of side column -->
 

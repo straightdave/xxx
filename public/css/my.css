@@ -238,6 +238,7 @@ a.tag{
 
 .listed-question .rank div.answers {
   color: #83B869;
+  border: solid 1px #83B869;
 }
 
 .listed-question .rank div small {
@@ -455,18 +456,18 @@ div.unread {
 
 div.profile-background {
    height: 340px;
-   margin-top: -120px;
+   margin-top: -150px;
    background-color: #DAE7F1;
 }
 
 div.profile-pane {
-  margin-top: -120px;
-  padding: 5px;
+  margin-top: -160px;
+  padding: 20px;
 }
 
 div.profile-pane div.avatar {
   margin: 0 auto;
-  padding: 5px;
+  margin-top: 30px;
   width: 200px;
   overflow: hidden;
 }
@@ -476,7 +477,6 @@ div.profile-pane div.avatar img {
 }
 
 div.profile-pane div.namebox {
-  padding-left: 50px;
 }
 
 div.profile-mid-pane, div.profile-right-pane {

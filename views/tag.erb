@@ -71,15 +71,17 @@
         <h5>热门砖家</h5>
         <% @top_experts.each do |e| %>
           <div class="listed-expert">
-            <img class="listed-avatar" src="<%= e.avatar_src %>"
+            <a href="<%= e.url %>">
+              <img class="listed-avatar" src="<%= e.avatar_src %>"
                  alt="<%= e.login_name %>" />
+            </a>
             <div class="listed-info">
-              <span class="listed-name">
-                <%= e.info.nickname %> (标签得分 <%= e.get_expert_score(@tag.id) %>)
+              <span class="listed-name"><%= e.info.nickname %></span>
+              标签得分
+              <span class="numbers-lg"><%= e.get_expert_score(@tag.id) %>
               </span>
-              <a href="<%= e.url %>">
-                <span class="listed-intro">@<%= e.login_name %></span>
-              </a>
+              <br>
+              <span class="listed-intro">@<%= e.login_name %></span>
             </div>
             <div class="clear"></div>
           </div>

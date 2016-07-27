@@ -38,29 +38,39 @@ helpers do
 
     # 3. check status filtering
     status = attr[:required_status]
-    if status.nil? || status.empty?
-      status = [ User::Status::NORMAL ]
-    end
 
-    if status.index(user.status).nil? && !settings.ignore_status_limit
-      if is_get
-        redirect to("/notice?reason=statuserror&ext_0=#{user.login_name}&ext_1=#{user.status}")
-      else
-        halt 555, (json ret: "error", msg: "账户当前状态有误")
+    if status != false
+      # if status == false (literally, the boolean value)
+      # it will not check this part, which means
+      # ALL status can access
+
+      if status.nil? || status.empty?
+        status = [ User::Status::NORMAL ]
+      end
+
+      if status.index(user.status).nil? && !settings.ignore_status_limit
+        if is_get
+          redirect to("/notice?reason=statuserror&ext_0=#{user.login_name}&ext_1=#{user.status}")
+        else
+          halt 555, (json ret: "error", msg: "账户当前状态有误")
+        end
       end
     end
 
     # 4. check roles filtering
     roles = attr[:required_roles]
-    if roles.nil? || roles.empty?
-      roles = [ User::Role::USER ]
-    end
 
-    if roles.index(user.role).nil? && !settings.ignore_roles_limit
-      if is_get
-        redirect to("/notice?reason=roleerror&ext_0=#{user.login_name}&ext_1=#{user.role}")
-      else
-        halt 555, (json ret: "error", msg: "账户角色有误")
+    if roles != false
+      if roles.nil? || roles.empty?
+        roles = [ User::Role::USER ]
+      end
+
+      if roles.index(user.role).nil? && !settings.ignore_roles_limit
+        if is_get
+          redirect to("/notice?reason=roleerror&ext_0=#{user.login_name}&ext_1=#{user.role}")
+        else
+          halt 555, (json ret: "error", msg: "账户角色有误")
+        end
       end
     end
 

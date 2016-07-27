@@ -13,9 +13,37 @@ body {
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, STHeiti, "Microsoft Yahei", SimSun, sans-serif;
   font-size: 14px;
 }
+a {
+  color: #07C;
+}
+a:hover {
+  color: #3AF;
+  text-decoration: none;
+}
+a:focus {
+  outline: none;
+}
 
 span.number-neg {
   color: red;
+  font-weight: bold;
+}
+span.numbers-lg {
+  font-size: 1.2em;
+  color: #848D95;
+  font-weight: bold;
+}
+span.numbers-sm {
+  font-size: 0.9em;
+  color: #848D95;
+  font-weight: bold;
+}
+
+div.float-right {
+  float: right;
+}
+div.float-left {
+  float: left;
 }
 
 /* override original styling */
@@ -25,6 +53,12 @@ span.number-neg {
 }
 .navbar-collapse {
   padding-right: 0px;
+}
+
+/* fix original bootstrap-with-theme badge */
+.badge {
+  padding: 3px 7px;
+  font-weight: bold;
 }
 
 #tab-ask {
@@ -41,10 +75,6 @@ span.number-neg {
 #quicksearch {
   border-radius: 0;
   background-color: #EBF2F5;
-}
-
-a:focus {
-  outline: none;
 }
 
 div.wrapper {
@@ -187,7 +217,6 @@ img.logo200 {
   width: 200px;
 }
 
-
 span.beta {
   position: relative;
   font-size: 0.6em;
@@ -232,13 +261,13 @@ a.tag{
 }
 
 .listed-question .rank div.answered {
-  background-color: #83B869;
+  background-color: #5fba7d;
   color: white;
 }
 
 .listed-question .rank div.answers {
-  color: #83B869;
-  border: solid 1px #83B869;
+  color: #5fba7d;
+  border: solid 1px #5fba7d;
 }
 
 .listed-question .rank div small {
@@ -247,10 +276,6 @@ a.tag{
 
 .listed-question .question div {
   display: inline-block;
-}
-
-.listed-question .question a {
-  color: black;
 }
 
 .listed-question .question .title {
@@ -428,20 +453,13 @@ div.msg-list-head span {
   font-weight: bold;
 }
 
-div.float-right {
-  float: right;
-}
-
 div.msg-list {
   margin-top: 10px;
 }
 
 div.message {
-  padding: 20px 20px 10px 20px;
-  border-bottom: 3px solid white;
-}
-div.message a {
-  text-decoration: none;
+  padding: 10px 5px;
+  border-bottom: 1px solid lightgray;
 }
 
 div.unread {
@@ -545,8 +563,20 @@ div.event-content blockquote {
   font-size: 1.1em;
 }
 
+/* watchlist page */
+div.watchlist-line {
+  font-size: 1.1em;
+  margin-bottom: 10px;
+}
+div.watchlist-line > div.float-left {
+  margin-right: 15px;
+}
+div.watchlist-line > div.float-right {
+  margin-left: 5px;
+}
 
-/* watchlist or draft page */
+
+/* draft page */
 td.td_for_btn {
   width: 5%;
 }
@@ -656,15 +686,17 @@ div.listed-expert {
   padding: 5px;
   margin: 5px;
 }
+span.listed-name {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: black;
+}
 div.listed-info {
   float: left;
-  padding-top: 5px;
 }
 div.listed-info span {
-  display: block;
   width: 180px;
   word-wrap: break-word;
-
 }
 span.listed-intro {
   color: gray;

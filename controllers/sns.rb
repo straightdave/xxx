@@ -47,7 +47,7 @@ get '/u/:name' do |name|
 end
 
 get '/user/home' do
-  @user = login_filter
+  @user = login_filter required_status: false, required_roles: false
 
   @title = "用户首页"
   @user_info = @user.info

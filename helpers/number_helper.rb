@@ -1,5 +1,5 @@
 helpers do
-  # used in views
+  # used in views (not in models)
   # hundred => Xk
   # hundred thousand => Xm
   # one digit reserved

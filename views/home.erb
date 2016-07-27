@@ -41,6 +41,9 @@
                 <a href="<%= q.get_last_question_event.invoker.url %>">
                   <%= q.get_last_question_event.invoker.info.nickname %>
                 </a>
+                <span class="numbers-sm">
+                  <%= q.get_last_question_event.invoker.get_repu_readible %>
+                </span>&nbsp;
                 在<%= time_ago_in_words_zh(q.get_last_question_event.created_at) %>
                 <%= q.get_last_question_event.event_type_zh %>
               <% end %>

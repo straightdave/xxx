@@ -1,6 +1,7 @@
 # === actions of insite messages ===
 get '/user/messages' do
-  user = login_filter required_status: [ User::Status::NEWBIE ]
+  # not require any status (which is normal as default)
+  user = login_filter required_status: false
 
   if !(@slice = params['slice']) || (@slice.to_i <= 0)
     @slice = 20
@@ -33,13 +34,13 @@ end
 
 # ajax invoke for number of messages
 post '/user/message_amount' do
-  user = login_filter required_status: [ User::Status::NEWBIE ]
+  user = login_filter required_status: false
   json ret: "success", msg: user.inbox_messages.length
 end
 
 # mark all as read
 post '/user/mark_messages' do
-  user = login_filter required_status: [ User::Status::NEWBIE ]
+  user = login_filter required_status: false
   begin
     user.inbox_messages.where(isread: false).each { |m| m.isread = 1; m.save }
     session[:message_amount] = 0

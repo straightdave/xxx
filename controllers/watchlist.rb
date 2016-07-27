@@ -1,6 +1,6 @@
 # get current user's watchlist page
 get '/user/watchlist' do
-  user = login_filter
+  user = login_filter required_status: false, required_roles: false
 
   if !(@slice = params['slice']) || (@slice.to_i <= 0)
     @slice = 50

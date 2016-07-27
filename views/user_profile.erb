@@ -86,31 +86,37 @@
             <li>
               <div class="each-stat">
                 <h5>声望</h5>
-                <span><%= get_format_number(@user.reputation) %></span>
+                <span class="numbers-lg">
+                <%= get_format_number(@user.reputation) %>
+                </span>
               </div>
             </li>
             <li>
               <div class="each-stat">
                 <h5>提问</h5>
-                <span><%= get_format_number(@user.asked_questions.count) %></span>
+                <span class="numbers-lg">
+                <%= get_format_number(@user.asked_questions.count) %></span>
               </div>
             </li>
             <li>
               <div class="each-stat">
                 <h5>回答</h5>
-                <span><%= get_format_number(@user.answers.count) %></span>
+                <span class="numbers-lg">
+                <%= get_format_number(@user.answers.count) %></span>
               </div>
             </li>
             <li>
               <div class="each-stat">
                 <h5>关注</h5>
-                <span><%= get_format_number(@user.followee_size) %></span>
+                <span class="numbers-lg">
+                <%= get_format_number(@user.followee_size) %></span>
               </div>
             </li>
             <li class="last">
               <div class="each-stat">
                 <h5>粉丝</h5>
-                <span><%= get_format_number(@user.follower_size) %></span>
+                <span class="numbers-lg">
+                <%= get_format_number(@user.follower_size) %></span>
               </div>
             </li>
           </ul>
@@ -172,7 +178,10 @@
           <div class="each-expert-tag">
             <a href="javascript:void(0);" class="tag"
                onclick="javascript:go_tag(<%= rel.tag_id %>);">
-              <%= rel.tag.name %>(<%= get_format_number(rel.expert_score) %>)
+              <%= rel.tag.name %>
+              <span class="numbers-sm">
+              <%= get_format_number(rel.expert_score) %>
+              </span>
             </a>
           </div>
         <% end %>

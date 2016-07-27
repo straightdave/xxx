@@ -1,6 +1,6 @@
 # update user's (own) profile
 post '/user/profile' do
-  user = login_filter
+  user = login_filter required_status: false, required_roles: false
 
   email_changed = (user.email != params['email'])
   if email_changed && !user.can_change_email
@@ -38,7 +38,7 @@ post '/user/profile' do
 end
 
 get '/user/profile' do
-  @user = login_filter
+  @user = login_filter required_status: false, required_roles: false
   @title = "我的资料"
   @user_info = @user.info
   @is_newbie = (@user.status == User::Status::NEWBIE)
@@ -48,7 +48,7 @@ end
 
 # upload avatar files (maybe any file)
 post '/upload' do
-  login_filter
+  login_filter required_status: false, required_roles: false
 
   unless params['file'] &&
          (tmpfile = params[:file][:tempfile]) &&

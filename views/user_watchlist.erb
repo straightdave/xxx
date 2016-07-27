@@ -1,28 +1,37 @@
 <div class="container">
   <div class="row">
     <div class="col-md-9">
-      <table class="table">
+
+      <% if @watchlist.size > 0 %>
+      <div class="watchlist">
+
         <% @watchlist.order(created_at: :desc).each do |q| %>
-        <tr>
-          <td class="td_for_btn">
+        <div class="watchlist-line">
+          <div class="float-left">
             <button type="button" class="btn btn-default btn-sm"
                     onclick="javascript:unwatch1(<%= q.id %>);">
-               取消
+               移除
             </button>
-          </td>
-          <td class="td_for_title">
+          </div>
+          <div class="float-left">
             <a href="/q/<%= q.id %>">
               <%= q.title %>
             </a>
-          </td>
-          <td class="td_for_date">
+          </div>
+          <div class="float-right">
             收藏于<%= time_ago_in_words_zh(q.created_at) %>
-          </td>
-        </tr>
+          </div>
+          <div class="clear"></div>
+        </div>
         <% end %>
-      </table>
 
+      </div>
       <%= render_pager_full %>
+
+      <% else %>
+        暂无收藏
+      <% end %>
+
     </div>
 
     <div class="col-md-3">

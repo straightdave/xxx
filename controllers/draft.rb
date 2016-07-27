@@ -1,11 +1,11 @@
 get '/drafts' do
-  @user = login_filter
+  @user = login_filter required_status: false, required_roles: false
   @title = "我的草稿"
   erb :user_drafts
 end
 
 get '/draft/:id' do |id|
-  user = login_filter
+  user = login_filter required_status: false, required_roles: false
   draft = user.drafts.where(id: id).first
 
   unless draft
@@ -15,7 +15,7 @@ get '/draft/:id' do |id|
 end
 
 post '/draft/:id/delete' do |id|
-  user = login_filter
+  user = login_filter required_status: false, required_roles: false
   draft = user.drafts.where(id: id).first
 
   unless draft
@@ -31,7 +31,7 @@ post '/draft/:id/delete' do |id|
 end
 
 post '/draft' do
-  user = login_filter
+  user = login_filter required_status: false, required_roles: false
 
   title = params['title']
   if title.nil? || title.empty?

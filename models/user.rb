@@ -280,6 +280,10 @@ class User < ActiveRecord::Base
                .offset(num_per_slice * part_no)
   end
 
+  def get_repu_readible
+    get_format_number(self.reputation)
+  end
+
   # privileges check
   def can_change_email
     self.status == Status::NEWBIE || self.status == Status::NORMAL
@@ -288,5 +292,23 @@ class User < ActiveRecord::Base
   private
   def add_salt(passwd, salt)
     Digest::MD5.hexdigest(passwd << salt)
+  end
+
+  def get_format_number(input_number)
+    number = input_number.abs
+    is_neg = (input_number < 0)
+
+    case
+    when number >= 100 && number < 100000
+      pri = number / 1000
+      sub = (number / 100) % 10
+      sub > 0 ? "#{pri}.#{sub}k" : "#{pri}k"
+    when number > 100000
+      pri = number / 1000000
+      sub = (number / 100000) % 10
+      sub > 0 ? "#{pri}.#{sub}m" : "#{pri}m"
+    else
+      number.to_s
+    end
   end
 end

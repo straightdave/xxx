@@ -233,6 +233,7 @@ span.beta {
 /* home page hot tags */
 a.tag{
   font-size: 1.1em;
+  font-weight: bold;
   text-decoration: none;
   cursor: pointer;
   background-color: #DAE7F1;
@@ -289,8 +290,8 @@ a.tag{
 span.q_tag {
   background-color: #DAE7F1;
   color: #39739D;
-  padding: 0px 4px;
-  margin: 2px;
+  font-weight: bold;
+  padding: 0px 7px 1px 7px;
   display: inline-block;
 }
 
@@ -842,21 +843,15 @@ ul.tabs-right li {
 }
 
 /* all user page */
+div.listed-user {
+  margin: 20px 10px;
+  width: 20%;
+}
+
 img.avatar-listed {
   width: 60px;
   height: 60px;
   margin-right: 10px;
-}
-
-div.listed-user {
-  margin: 20px 10px;
-  width: 250px;
-  float: left;
-}
-
-div.listed-user > div.user-detail {
-  margin-left: 5px;
-  width: 150px;
 }
 
 /* used in validation result page and info page */

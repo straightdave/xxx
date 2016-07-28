@@ -2,7 +2,7 @@
   <div class="listed-users">
 
     <% @users.each do |user| %>
-    <div class="listed-user">
+    <div class="listed-user float-left">
       <div class="float-left">
         <img class="avatar-listed"
         src="<%= user.avatar_src %>"
@@ -11,10 +11,11 @@
       </div>
 
       <div class="user-detail float-left">
-        <a class="anchor-username" href="<%= user.url %>">
+
+        <a href="<%= user.url %>">
           <%= user.info.nickname %>
           <span class="numbers-sm">
-          <%= get_format_number(user.reputation) %>
+            <%= get_format_number(user.reputation) %>
           </span>
         </a>
 
@@ -26,8 +27,9 @@
             <span class="q_tag"><%= rel.tag.name %></span>
           <% end %>
         </p>
-      </div>
 
+      </div>
+      <div class="clear"></div>
     </div>
     <% end %>
 

@@ -78,15 +78,15 @@
             <% if @is_validated %>
             <span class="text-success">已验证</span>
             <% else %>
-            邮箱状态为&nbsp;<span class="text-danger">未验证</span>。没有收到验证邮件？
+            邮箱状态为&nbsp;<span class="text-danger">未验证</span>。
+            没有收到验证邮件？
             <button class="btn btn-sm" name="btnSendMail">重新发送验证邮件</button>
             <% end %>
           </div>
 
           <div class="form-group">
             <label>
-              <input type="checkbox"
-                     name="hideemail"
+              <input type="checkbox" name="hideemail"
                      <% if @user_info.hideemail %>checked<% end %> />
               不显示我的邮箱
             </label>
@@ -125,11 +125,11 @@
       else {
         clean_below_msg(btnSendMail);
       }
-      var clock = setInterval(function () {
+      var clock_for_resend = setInterval(function () {
         ticks--;
         btnSendMail.text(ticks + "秒后再次发送");
-        if (ticks >= 0) {
-          clearInterval(clock);
+        if (ticks <= 0) {
+          clearInterval(clock_for_resend);
           btnSendMail.text(origin_text);
           btnSendMail.removeAttr("disabled");
         }

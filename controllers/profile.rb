@@ -14,7 +14,7 @@ post '/user/profile' do
   user.info.qq       = params['qq']
   user.info.wechat   = params['wechat']
   user.info.email2   = params['email2']
-  user.email = params['email'] if email_changed
+  user.email         = params['email'] if email_changed
   user.info.hideemail = params['hideemail']
 
   if user.info.valid?
@@ -41,7 +41,10 @@ get '/user/profile' do
   @user = login_filter required_status: false, required_roles: false
   @title = "我的资料"
   @user_info = @user.info
-  @is_newbie = (@user.status == User::Status::NEWBIE)
+
+  # set `validated` as `Not equal to NEWBIE` for now
+  # TODO: other situation may also need to validate
+  @is_validated = (@user.status != User::Status::NEWBIE)
   @navbar_hide_level = 'logo'
   erb :user_update
 end

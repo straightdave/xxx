@@ -1,6 +1,6 @@
 helpers do
   def send_validation_mail(user)
-    if settings.mail_validation   # || true  # also send mail in dev env
+    if settings.mail_validation == true
 
       # body rendering
       body = erb :mail_tpl_confirm, :layout => false, :locals => {
@@ -12,16 +12,12 @@ helpers do
 
       send_mail_job({
         :type        => MailLog::TYPE::USER_CONFIRM,
-        :from        => 'noreply@hanfeizishuo.com',
         :to          => user.email,
         :receiver_id => user.id,
         :subject     => "是非说用户验证",
         :body        => body,
         :time        => Time.now.to_i
       })
-
-    else
-      return "Not to send since in no production env."
     end
   end
 
@@ -36,7 +32,6 @@ helpers do
 
     send_mail_job({
       :type        => MailLog::TYPE::RESET_PASSWORD,
-      :from        => 'noreply@hanfeizishuo.com',
       :to          => user.email,
       :receiver_id => user.id,
       :subject     => "是非说重置密码",
@@ -49,7 +44,6 @@ helpers do
   def send_mail_job(data)
     mail_log = MailLog.new
     mail_log.type        = data[:type]
-    mail_log.from        = data[:from]
     mail_log.to          = data[:to]
     mail_log.receiver_id = data[:receiver_id]
     mail_log.save if mail_log.valid?

@@ -106,6 +106,16 @@ class User < ActiveRecord::Base
     end
   end
 
+  def generate_avatar(avatar_folder)
+    begin
+      avatar_url = "#{avatar_folder}/#{self.login_name}.png"
+      RubyIdenticon.create_and_save(self.login_name, avatar_url)
+      self.info.avatar = "/uploads/avatars/#{self.login_name}.png"
+    rescue Exception => e
+      puts "identicon creation failed: #{e.inspect}"
+    end
+  end
+
   def avatar_src
     avatar_url = self.info.avatar
     if avatar_url.nil? || avatar_url.empty? || !File.exists?("public#{avatar_url}")

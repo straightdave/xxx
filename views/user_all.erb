@@ -1,15 +1,21 @@
 <div class="container">
   <div class="listed-users">
+
     <% @users.each do |user| %>
     <div class="listed-user">
-      <div>
-        <img class="avatar-listed" src="<%= user.avatar_src %>"
-        alt="<%= user.login_name %>" />
+      <div class="float-left">
+        <img class="avatar-listed"
+        src="<%= user.avatar_src %>"
+        alt="@<%= user.login_name %>"
+        title="<%= user.login_name %>" />
       </div>
 
-      <div class="user-detail">
+      <div class="user-detail float-left">
         <a class="anchor-username" href="<%= user.url %>">
-          <%= user.info.nickname %> (<%= get_format_number(user.reputation) %>)
+          <%= user.info.nickname %>
+          <span class="numbers-sm">
+          <%= get_format_number(user.reputation) %>
+          </span>
         </a>
 
         <p>
@@ -24,9 +30,9 @@
 
     </div>
     <% end %>
+
+    <div class="clear"></div>
   </div>
-  <div class="clear"></div>
 
   <%= render_pager_full %>
-
 </div>

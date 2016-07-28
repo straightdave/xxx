@@ -195,6 +195,9 @@ img.cli-pane {
 .margin-top-60 {
   margin-top: 60px;
 }
+.margin-left-10 {
+  margin-left: 10px;
+}
 
 .err-msg {
   margin-top: 20px;
@@ -338,22 +341,13 @@ div#tags {
 
 div.authorbox {
   padding: 5px;
+  padding-bottom: 7px;
   background: #DAE7F1;
 }
 
 div.authorbox > div {
   margin: 3px;
 }
-
-div#author-info > div.left {
-  float: left;
-}
-
-div#author-info > div.marginleft {
-  margin-left: 8px;
-}
-
-
 
 /* comment box */
 textarea.commentbox {
@@ -481,20 +475,17 @@ div.profile-background {
 div.profile-pane {
   margin-top: -160px;
   padding: 20px;
+  background-color: #FFF;
 }
 
 div.profile-pane div.avatar {
   margin: 0 auto;
-  margin-top: 30px;
-  width: 200px;
+  width: 100%;
   overflow: hidden;
 }
 
 div.profile-pane div.avatar img {
   width: 100%;
-}
-
-div.profile-pane div.namebox {
 }
 
 div.profile-mid-pane, div.profile-right-pane {
@@ -857,21 +848,13 @@ img.avatar-listed {
   margin-right: 10px;
 }
 
-div.listed-users {
-  margin: 0px 10px;
-}
-
 div.listed-user {
   margin: 20px 10px;
   width: 250px;
   float: left;
 }
 
-div.listed-user div {
-  float: left;
-}
-
-div.listed-user div.user-detail {
+div.listed-user > div.user-detail {
   margin-left: 5px;
   width: 150px;
 }

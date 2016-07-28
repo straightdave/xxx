@@ -66,8 +66,7 @@ post '/upload' do
   end
 
   login_name = session[:login_name]
-  avatar_file_name = "#{login_name}"    # no ext for quick access
-  full_name = "#{settings.public_folder}/uploads/avatars/#{avatar_file_name}"
+  full_name = "#{settings.avatar_folder}/#{login_name}.#{ext}"
 
   File.open(full_name, "w+") do |file|
     file.puts tmpfile.read
@@ -75,7 +74,7 @@ post '/upload' do
 
   begin
     user_info = UserInfo.find_by(user_id: session[:user_id])
-    user_info.avatar = "/uploads/avatars/#{avatar_file_name}"
+    user_info.avatar = "/uploads/avatars/#{login_name}.#{ext}"
     user_info.save
     json ret: "success", msg: full_name
   rescue

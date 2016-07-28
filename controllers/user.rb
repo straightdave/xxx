@@ -51,6 +51,7 @@ post '/user/signup' do
   new_user.build_info( nickname: (nickname.empty? ? login_name : nickname) )
 
   if new_user.valid?
+    new_user.generate_avatar(settings.avatar_folder)
     new_user.save
     send_welcome_message new_user
     send_validation_mail new_user

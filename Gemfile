@@ -11,4 +11,6 @@ gem 'visual_captcha_cn'
 
 gem 'redis', '~>3.2'
 
+gem 'ruby_identicon'
+
 # dont forget 'pony' for mailer

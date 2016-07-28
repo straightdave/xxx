@@ -96,7 +96,10 @@
             <div class="authorbox text-right">
               <img class="avatar-sm" src="<%= @last_editor.avatar_src %>">
               <a href="<%= @last_editor.url %>">
-                <%= @last_editor.info.nickname %>(<%= get_format_number(@last_editor.reputation) %>)
+                <%= @last_editor.info.nickname %>
+                <span class="numbers-sm">
+                  <%= get_format_number(@last_editor.reputation) %>
+                </span>
               </a>
               最后修改于<%= time_ago_in_words_zh(@last_edit_time) %>
             </div>
@@ -109,14 +112,16 @@
                   提问于 <%= time_ago_in_words_zh(@q.created_at) %>
                 </div>
                 <div id="author-info">
-                  <div class="left">
+                  <div class="float-left">
                     <img class="avatar" src="<%= @q.author.avatar_src %>">
                   </div>
-                  <div class="left marginleft">
+                  <div class="float-left margin-left-10">
                     <a href="<%= @q.author.url %>">
                       <%= @q.author.info.nickname %>
                     </a>
-                    <div><%= @q.author.reputation %></div>
+                    <div>
+                      <span class="numbers-sm"><%= @q.author.reputation %></span>
+                    </div>
                   </div>
                   <div class="clear"></div>
                 </div>
@@ -144,10 +149,14 @@
                   </div>
 
                   <div class="comment-author">
-                    <a href="<%= c.author.url %>">
-                      <%= c.author.info.nickname %>(<%= get_format_number(c.author.reputation) %>)
-                    </a>
+                    评论于
                     <%= time_ago_in_words_zh(c.created_at) %>
+                    <a href="<%= c.author.url %>">
+                      <%= c.author.info.nickname %>
+                      <span class="numbers-sm">
+                      <%= get_format_number(c.author.reputation) %>
+                      </span>
+                    </a>
                   </div>
 
                   <div class="clear"></div>
@@ -234,14 +243,18 @@
                           回答于 <%= time_ago_in_words_zh(a.created_at) %>
                         </div>
                         <div id="author-info">
-                          <div class="left">
+                          <div class="float-left">
                             <img class="avatar" src="<%= a.author.avatar_src %>">
                           </div>
-                          <div class="left marginleft">
+                          <div class="float-left margin-left-10">
                             <a href="<%= a.author.url %>">
                               <%= a.author.info.nickname %>
                             </a>
-                            <div><%= get_format_number(a.author.reputation) %></div>
+                            <div>
+                              <span class="numbers-sm">
+                              <%= get_format_number(a.author.reputation) %>
+                              </span>
+                            </div>
                           </div>
                           <div class="clear"></div>
                         </div>
@@ -272,7 +285,10 @@
 
                           <div class="comment-author">
                             <a href="<%= c.author.url %>">
-                              <%= c.author.info.nickname %>(<%= get_format_number(c.author.reputation) %>)
+                              <%= c.author.info.nickname %>
+                              <span class="numbers-sm">
+                              <%= get_format_number(c.author.reputation) %>
+                              </span>
                             </a>
                             <%= time_ago_in_words_zh(c.created_at) %>
                           </div>

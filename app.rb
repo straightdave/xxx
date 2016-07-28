@@ -8,6 +8,7 @@ require 'json'
 require 'cgi'
 require 'redis'
 require 'visual_captcha_cn'
+require 'ruby_identicon'
 require_relative 'models/init'
 require_relative 'controllers/init'
 require_relative 'helpers/init'
@@ -38,6 +39,7 @@ configure do
   set :site_host, 'http://localhost:4567'
 
   set :public_folder, File.dirname(__FILE__) + '/public'
+  set :avatar_folder, File.dirname(__FILE__) + '/public/uploads/avatars'
   use Rack::Session::Pool, expire_after: 60 * 60 * 2, http_only: true
 
   log_file = File.new("#{settings.root}/log/#{settings.environment}.log", 'a+')

@@ -4,14 +4,15 @@
     <% @users.each do |user| %>
     <div class="listed-user float-left">
       <div class="float-left">
-        <img class="avatar-listed"
-        src="<%= user.avatar_src %>"
-        alt="@<%= user.login_name %>"
-        title="<%= user.login_name %>" />
+        <a href="<%= user.url %>">
+          <img class="avatar-listed"
+          src="<%= user.avatar_src %>"
+          alt="@<%= user.login_name %>"
+          title="<%= user.login_name %>" />
+        </a>
       </div>
 
       <div class="user-detail float-left">
-
         <a href="<%= user.url %>">
           <%= user.info.nickname %>
           <span class="numbers-sm">
@@ -21,13 +22,7 @@
 
         <p>
           注册于 <%= time_ago_in_words_zh(user.created_at) %>
-          <br />
-
-          <% user.top_expert_tags(3).each do |rel| %>
-            <span class="q_tag"><%= rel.tag.name %></span>
-          <% end %>
         </p>
-
       </div>
       <div class="clear"></div>
     </div>
@@ -35,6 +30,5 @@
 
     <div class="clear"></div>
   </div>
-
   <%= render_pager_full %>
 </div>

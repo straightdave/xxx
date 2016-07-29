@@ -798,15 +798,10 @@ div.single-post {
   cursor: pointer;
 }
 
-/* for ad_sample */
-div.partial-ad img {
-  width: 100%;
-}
-div.partial-ad {
-  overflow: hidden;
-  border: 1px solid lightgray;
-  padding: 3px;
-}
+/* All-User page */
+div#listed-user { margin: 10px; width: 260px; }
+div#user-detail { width: 180px; }
+div#listed-user img { width: 60px; height: 60px; margin-right: 10px; }
 
 /* report box for user */
 div.report {
@@ -840,19 +835,6 @@ ul.help-list li {
 
 ul.tabs-right li {
   float: right;
-}
-
-/* all user page */
-div.listed-user {
-  margin: 10px;
-  width: 265px;
-  overflow: auto; /* avoid floating elements outlayed */
-}
-
-img.avatar-listed {
-  width: 60px;
-  height: 60px;
-  margin-right: 10px;
 }
 
 /* used in validation result page and info page */

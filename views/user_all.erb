@@ -1,18 +1,16 @@
 <div class="container">
-  <div class="listed-users">
+  <div>
 
     <% @users.each do |user| %>
-    <div class="listed-user float-left">
+    <div id="listed-user" class="float-left">
+
       <div class="float-left">
         <a href="<%= user.url %>">
-          <img class="avatar-listed"
-          src="<%= user.avatar_src %>"
-          alt="@<%= user.login_name %>"
-          title="<%= user.login_name %>" />
+          <img src="<%= user.avatar_src %>" alt="@<%= user.login_name %>" title="<%= user.login_name %>" />
         </a>
       </div>
 
-      <div class="user-detail float-left">
+      <div id="user-detail" class="float-left">
         <a href="<%= user.url %>">
           <%= user.info.nickname %>
           <span class="numbers-sm">
@@ -21,7 +19,7 @@
         </a>
 
         <p>
-          注册于 <%= time_ago_in_words_zh(user.created_at) %>
+          注册于<%= time_ago_in_words_zh(user.created_at) %>
         </p>
       </div>
       <div class="clear"></div>

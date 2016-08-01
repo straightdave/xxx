@@ -17,7 +17,7 @@ class Tag < ActiveRecord::Base
   has_many :expertises
 
   # == validations ==
-  validates :name, length: { maximum: 50, too_long: "名字请勿超过50字符" }
+  validates :name, length: { maximum: 8, too_long: "名字请勿超过8字符" }
   validates :desc, length: { maximum: 100, too_long: "描述请勿超过100字符" }
 
   # == helpers ==

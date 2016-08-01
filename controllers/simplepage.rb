@@ -1,25 +1,7 @@
-get '/about' do
-  @title = "关于"
-  @navbar_hide_level = 'all'
-  erb :about
-end
-
 get '/terms' do
+  @navbar_hide_level = 'all'
   @title = "条款"
-  @navbar_hide_level = 'all'
   erb :terms
-end
-
-get '/help' do
-  @title = "帮助"
-  @navbar_hide_level = 'all'
-  erb :help
-end
-
-get '/career' do
-  @title = "本站的工作机会"
-  @navbar_hide_level = 'all'
-  erb :career
 end
 
 get '/404' do
@@ -75,7 +57,6 @@ get '/notice' do
   @navbar_hide_level = 'logo'
   erb :page_info
 end
-
 
 
 # TODO: delete this

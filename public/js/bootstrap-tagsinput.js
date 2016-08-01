@@ -17,7 +17,7 @@
     freeInput: true,
     addOnBlur: false,  // dave: false. for tag-sug
     maxTags: 5,
-    maxChars: 5,
+    maxChars: 8,
     confirmKeys: [], //[13, 44],  // dave: only confirm by click dropdown item
     delimiter: ',',
     delimiterRegex: null,

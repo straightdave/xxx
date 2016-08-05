@@ -628,6 +628,7 @@ div.search-page-header span.title-search-page {
 /* search results page */
 div.search-results .search-item {
   padding: 10px;
+  border-bottom: 1px solid lightgray;
 }
 
 div.search-results .q-title {

@@ -35,6 +35,12 @@
                   <%= get_abstract(q.content, 50) %>
                 </p>
               </div>
+
+              <div>
+                <% q.tags.each do |t| %>
+                  <span class="q_tag"><%= t.name %></span>
+                <% end %>
+              </div>
             </div>
 
             <div class="clear"></div>

@@ -1,32 +1,43 @@
-<!-- search results -->
 <div class="container">
   <div class="row">
     <div class="col-md-9">
-      <h2><%= " “#{@search_str}” " %><small>的搜索结果</small></h2>
+      <h2><%= "“#{@search_str}” " %><small>的搜索结果（<%= @results.size %>个结果）</small></h2>
       <hr>
       <div class="search-results">
 
         <% @results.each do |q| %>
           <div class="search-item">
 
-            <div class="q-title">
-              <a href="/q/<%= q.id %>"><%= q.title %></a>
+            <div class="float-left search-item-left">
+              <div class="left-boxes gray-and-bold">
+                <%= get_format_number(q.scores) %> <br/>得分
+              </div>
+              <div class="left-boxes <%= if !q.accepted_answer.nil? then "answered" elsif q.answers.size > 0 then "has-answers" end %>">
+                <%= get_format_number(q.answers.size) %> <br/>回答
+              </div>
             </div>
 
-            <div class="q-authorinfo">
-              <a href="<%= q.get_last_question_doer.url %>">
-                <%= q.get_last_question_doer.login_name %>
-              </a>
-              在<%= time_ago_in_words_zh(q.get_last_question_event.created_at) %>
-              <%= q.get_last_question_event.event_type_zh %>
+            <div class="float-left">
+              <div class="q-title">
+                <a href="/q/<%= q.id %>">问题：<%= q.title %></a>
+              </div>
+
+              <div class="q-authorinfo">
+                <a href="<%= q.get_last_question_doer.url %>">
+                  <%= q.get_last_question_doer.login_name %>
+                </a>
+                在<%= time_ago_in_words_zh(q.get_last_question_event.created_at) %>
+                <%= q.get_last_question_event.event_type_zh %>
+              </div>
+
+              <div class="q-content">
+                <p>
+                  <%= get_abstract(q.content, 50) %>
+                </p>
+              </div>
             </div>
 
-            <div class="q-content">
-              <p>
-                <%= get_abstract(q.content, 50) %>
-              </p>
-            </div>
-
+            <div class="clear"></div>
           </div>
         <% end %>
 
@@ -34,7 +45,6 @@
     </div>
 
     <div class="col-md-3">
-
     </div>
   </div>
 </div>

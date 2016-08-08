@@ -35,23 +35,46 @@
 
         <div class="intag-question-box">
           <% @questions.each do |q| %>
-            <div class="q-title text-1_5times">
-              <a href="<%= q.url %>"><%= q.title %></a>
+
+          <div class="search-item">
+
+            <div class="float-left search-item-left">
+              <div class="left-boxes gray-and-bold">
+                <%= get_format_number(q.scores) %> <br/>得分
+              </div>
+              <div class="left-boxes <%= if !q.accepted_answer.nil? then "answered" elsif q.answers.size > 0 then "has-answers" end %>">
+                <%= get_format_number(q.answers.size) %> <br/>回答
+              </div>
             </div>
 
-            <div class="q-authorinfo">
-              <a href="<%= q.get_last_question_doer.url %>">
-                <%= q.get_last_question_doer.login_name %>
-              </a>
-              在<%= time_ago_in_words_zh(q.get_last_question_event.created_at) %>
-              <%= q.get_last_question_event.event_type_zh %>
-            </div>
+            <div class="float-left">
+              <div class="q-title text-1_5times">
+                <a href="<%= q.url %>"><%= q.title %></a>
+              </div>
 
-            <div class="q-content">
-              <p>
-                <%= get_abstract(q.content, 50) %>
-              </p>
+              <div class="q-authorinfo">
+                <a href="<%= q.get_last_question_doer.url %>">
+                  <%= q.get_last_question_doer.login_name %>
+                </a>
+                在<%= time_ago_in_words_zh(q.get_last_question_event.created_at) %>
+                <%= q.get_last_question_event.event_type_zh %>
+              </div>
+
+              <div class="q-content">
+                <p>
+                  <%= get_abstract(q.content, 50) %>
+                </p>
+              </div>
+
+              <div>
+                <% q.tags.each do |t| %>
+                  <span class="q_tag"><%= t.name %></span>
+                <% end %>
+              </div>
+
             </div>
+            <div class="clear"></div>
+          </div>
           <% end %>
         </div>
 

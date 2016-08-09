@@ -16,7 +16,9 @@ get '/t/:tid' do |tid|
 
   @sort_by = params['sort'] || 'hot'
 
-  if (search_str = params['q']) && (keys = search_str.split '+') && (keys.size  > 0)
+  if (search_str = ERB::Util.h(params['q'])) &&
+    (keys = search_str.split '+') &&
+    keys.size > 0
 
     # note: returned @questions is not ActiveRecord::Relations but a array
     # should use ruby array methods to deal with
@@ -92,7 +94,7 @@ post '/t/:tid' do |tid|
 end
 
 post '/tag/search' do
-  if (search_str = params['q']) &&
+  if (search_str = ERB::Util.h(params['q'])) &&
      (keys = search_str.split '+') &&
      keys.size > 0
 
@@ -137,7 +139,7 @@ get '/tags' do
 
   @sort_by = params['sort'] || 'hot'
 
-  if (search_str = params['q']) &&
+  if (search_str = ERB::Util.h(params['q'])) &&
      (keys       = search_str.split '+') &&
      (keys.size  > 0)
     @tags = Tag.ft_search keys

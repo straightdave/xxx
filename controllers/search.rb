@@ -1,9 +1,8 @@
 get '/search' do
-  if (search_str = params['q']) &&
+  if (search_str = ERB::Util.h(params['q'])) &&
      (keys = search_str.split '+') &&
      keys.size > 0
 
-    # do some search work
     @results = Question.ft_search keys
     @search_str = search_str.gsub('+', ' ')
     @title = "搜索结果"
@@ -15,7 +14,7 @@ get '/search' do
 end
 
 post '/search_title' do
-  if (search_str = params['q']) &&
+  if (search_str = ERB::Util.h(params['q'])) &&
      (keys = search_str.split '+') &&
      keys.size > 0
 

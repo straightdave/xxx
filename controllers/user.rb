@@ -22,10 +22,10 @@ post '/user/check_email/:email' do |email|
 end
 
 post '/user/signup' do
-  login_name = params['login_name']
-  email      = params['email']
-  password   = params['password']
-  nickname   = params['nickname']
+  login_name = ERB::Util.h params['login_name']
+  email      = ERB::Util.h params['email']
+  password   = ERB::Util.h params['password']
+  nickname   = ERB::Util.h params['nickname']
 
   login_name.downcase! if login_name
   email.downcase! if email
@@ -67,9 +67,9 @@ end
 # but also for reseting user status and other check/confirmation by sending mail
 # after all, the thing to be validated is the user email
 get '/user/validation' do
-  user_id         = params['id']
-  validating_code = params['code']
-  backdoor        = params['backdoor']    # TODO remove this. only for dev
+  user_id         = ERB::Util.h params['id']
+  validating_code = ERB::Util.h params['code']
+  backdoor        = ERB::Util.h params['backdoor']    # TODO remove this. only for dev
 
   if user_id.nil? || validating_code.nil?
     validated = false
@@ -176,8 +176,8 @@ post '/user/signin' do
     session[:try_count] = try_count + 1
   end
 
-  login_name = params['login_name']
-  password   = params['password']
+  login_name = ERB::Util.h params['login_name']
+  password   = ERB::Util.h params['password']
 
   login_name.downcase! if login_name
 
@@ -212,9 +212,9 @@ get '/user/iforgot' do
 end
 
 post '/user/iforgot' do
-  if (name = params['name']) && (user = User.find_by(login_name: name.downcase))
+  if (name = ERB::Util.h(params['name'])) && (user = User.find_by(login_name: name.downcase))
 
-    unless email = params['email']
+    unless email = (ERB::Util.h params['email'])
       return json ret: "error", msg: "请输入邮箱"
     end
 
@@ -228,14 +228,14 @@ post '/user/iforgot' do
     end
 
   else
-    return json ret: "error", msg: "请输入注册名称或名称不存在"
+    json ret: "error", msg: "请输入注册名称或名称不存在"
   end
 end
 
 # reset password page
 get '/user/reset_password' do
-  id   = params['id']
-  code = params['code']
+  id   = ERB::Util.h params['id']
+  code = ERB::Util.h params['code']
 
   if id.nil? || code.nil?
     return "no id and vcode"
@@ -254,8 +254,8 @@ end
 
 # reset new password
 post '/user/reset_password' do
-  pass1 = params['pass1']
-  pass2 = params['pass2']
+  pass1 = ERB::Util.h params['pass1']
+  pass2 = ERB::Util.h params['pass2']
 
   unless id = session[:user_id]
     return json ret: "error", msg: "用户id错误"

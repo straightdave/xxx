@@ -18,7 +18,7 @@ post %r{/([q|a|w])/(\d+)/comment} do |target, id|
     return json ret: "error", msg: "已关闭评论"
   end
 
-  content = params['content']
+  content = ERB::Util.h params['content']
   c = Comment.new
   c.author = author
   c.content = content

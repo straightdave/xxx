@@ -2,19 +2,19 @@
 post '/user/profile' do
   user = login_filter required_status: false, required_roles: false
 
-  email_changed = (user.email != params['email'])
+  email_changed = (user.email != ERB::Util.h(params['email']))
   if email_changed && !user.can_change_email
     return json ret: "error", msg: "当前状态不允许修改主邮箱"
   end
 
-  user.info.nickname = params['nickname']
-  user.info.intro    = params['intro']
-  user.info.phone    = params['phone']
-  user.info.city     = params['city']
-  user.info.qq       = params['qq']
-  user.info.wechat   = params['wechat']
-  user.info.email2   = params['email2']
-  user.email         = params['email'] if email_changed
+  user.info.nickname = ERB::Util.h params['nickname']
+  user.info.intro    = ERB::Util.h params['intro']
+  user.info.phone    = ERB::Util.h params['phone']
+  user.info.city     = ERB::Util.h params['city']
+  user.info.qq       = ERB::Util.h params['qq']
+  user.info.wechat   = ERB::Util.h params['wechat']
+  user.info.email2   = ERB::Util.h params['email2']
+  user.email         = (ERB::Util.h params['email']) if email_changed
   user.info.hideemail = params['hideemail']
 
   if user.info.valid?

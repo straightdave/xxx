@@ -10,12 +10,13 @@ post '/ask' do
   author = login_filter
 
   new_q = Question.new
-  new_q.title   = params['title']
+  new_q.title   = ERB::Util.h params['title']
   new_q.content = params['content']
   new_q.author  = author
   new_q.watchers << author
 
   params['tags'].split(',').each do |t|
+    t = ERB::Util.h t
     tag = Tag.find_or_create_by(name: t)
     tag.used += 1
     new_q.tags << tag
@@ -220,10 +221,6 @@ post '/q/:qid/answer' do |qid|
 
   unless q = Question.find_by(id: qid)
     return json ret: "error", msg: "question_not_found"
-  end
-
-  if q.user_id == author.id
-    return json ret: "error", msg: "不可以自己回答自己的问题"
   end
 
   # same question answers once by same user

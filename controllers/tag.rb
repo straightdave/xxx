@@ -108,7 +108,7 @@ end
 post '/tag/new' do
   author = login_filter
 
-  if (name = params['name']) && (desc = params['desc'])
+  if (name = ERB::Util.h(params['name'])) && (desc = ERB::Util.h(params['desc']))
     new_tag = Tag.new
     new_tag.name = name
     new_tag.desc = desc

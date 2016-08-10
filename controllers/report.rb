@@ -16,9 +16,9 @@ post '/report' do
   #   'u' -> 'User', 'q' -> 'Question', 'an' -> 'answer', 'ar' -> 'article'
   # target_id: int, reporting target id
   # content: string, content of report
-  target_type = params['target_type']
-  target_id   = params['target_id']
-  content     = params['content']
+  target_type = ERB::Util.h params['target_type']
+  target_id   = ERB::Util.h params['target_id']
+  content     = ERB::Util.h params['content']
 
   target_obj = case target_type
   when 'u'

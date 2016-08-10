@@ -230,11 +230,13 @@
                   <div class="row">
 
                     <div class="col-md-4 <% if @hidden_mark %>hidden<% end %>">
+                      <% if @q.author.id != session[:user_id] %>
                       <a href="javascript:void(0);" role="button"
                          class="btn btn-primary btn-sm" onclick="javascript:
                            mark_as_accepted(<%= @q.id %>, <%= a.id %>);">
                         <i class="fa fa-check"></i>&nbsp;标记为答案
                       </a>
+                      <% end %>
                     </div>
 
                     <div class="col-md-4 col-md-offset-<% unless @hidden_mark %>4<% else %>8<% end %>">
@@ -299,6 +301,7 @@
                     <% end %>
                   </div>
 
+                  <% if login? && @q.can_comment %>
                   <a href="javascript:void(0);" class="comment-btn"
                      onclick="javascript:show_comment_answer(<%= a.id %>);">
                     <i class="fa fa-commenting-o"></i>&nbsp;发表评论
@@ -319,6 +322,7 @@
                       取消
                     </a>
                   </div>
+                  <% end %>
                 </div>
               </div> <!-- end of div.row -->
             </div> <!-- end of div.single-answer -->
@@ -331,7 +335,16 @@
       <hr>
       <% if @q.is_frozen %>
       问题被冻结，无法回答
-      <% elsif login? && @q.author.id != session[:user_id] %>
+
+      <% elsif !login?%>
+        请先
+        <a class="btn btn-default btn-sm"
+           href="/user/signin?returnurl=<%= CGI.escape(request.path) %>">
+          登录
+        </a>
+        后回答
+
+      <% else %>
       你的回答
 
       <div class="form-group">
@@ -343,13 +356,7 @@
       <a class="btn btn-primary" href="javascript:void(0);"
          onclick="javascript:do_answer(<%= @q.id %>);">提交</a>
       <div id="err_msg_ask" class="text-danger"></div>
-      <% elsif !login?%>
-        请先
-        <a class="btn btn-default btn-sm"
-           href="/user/signin?returnurl=<%= CGI.escape(request.path) %>">
-          登录
-        </a>
-        后回答
+
       <% end %>
     </div> <!-- end of col-9 -->
 

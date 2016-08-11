@@ -133,21 +133,20 @@ function mark_all_as_read() {
   });
 }
 
-/* common, used in login or some */
-function set_normal(ele, eid) {
+function set_normal(ele) {
   ele.parent().removeClass("has-error");
   ele.parent().removeClass("has-success");
-  $("span").remove("#" + eid);
+  $("span").remove("#" + ele.id);
 }
-function set_success(ele, eid) {
-  set_normal(ele, eid);
+function set_success(ele) {
+  set_normal(ele);
   ele.parent().addClass("has-success");
-  ele.parent().append("<span id='" + eid + "' class='glyphicon glyphicon-ok form-control-feedback' aria-hidden='true'></span>");
+  ele.parent().append("<span id='" + ele.id + "' class='fa fa-check form-control-feedback' aria-hidden='true'></span>");
 }
-function set_error(ele, eid) {
-  set_normal(ele, eid);
+function set_error(ele) {
+  set_normal(ele);
   ele.parent().addClass("has-error");
-  ele.parent().append("<span id='" + eid +"' class='glyphicon glyphicon-remove form-control-feedback' aria-hidden='true'></span>");
+  ele.parent().append("<span id='" + ele.id +"' class='fa fa-times form-control-feedback' aria-hidden='true'></span>");
 }
 
 /* question page */

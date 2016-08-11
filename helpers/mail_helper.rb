@@ -5,7 +5,7 @@ helpers do
       # body rendering
       body = erb :mail_tpl_confirm, :layout => false, :locals => {
         :nick_name  => user.info.nickname,
-        :site_host  => settings.site_host,
+        :site_host  => $Scheme_host_port,
         :user_id    => user.id,
         :user_vcode => user.vcode
       }
@@ -25,7 +25,7 @@ helpers do
     # body rendering
     body = erb :mail_tpl_refind, :layout => false, :locals => {
       :nick_name  => user.info.nickname,
-      :site_host  => settings.site_host,
+      :site_host  => $Scheme_host_port,
       :user_id    => user.id,
       :user_vcode => user.vcode
     }

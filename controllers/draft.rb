@@ -33,14 +33,16 @@ end
 post '/draft' do
   user = login_filter required_status: false, required_roles: false
 
-  title = params['title']
+  title = ERB::Util.h params['title']
   if title.nil? || title.empty?
     title = "草稿"
   end
 
+  title = title + " " + Time.now.localtime.strftime("%I:%M:%S%P")
+
   case params['type']
-  when 'question' then type = 0
-  when 'article'  then type = 1
+  when 'question'.freeze then type = 0
+  when 'article'.freeze  then type = 1
   else
     return json ret: "error", msg: "错误的草稿类型 #{ params['type'] }"
   end
@@ -60,7 +62,7 @@ post '/draft' do
     end
 
     draft.save
-    json ret: "success"
+    json ret: "success", msg: draft.id
   else
     json ret: "failed", msg: "draft save failed"
   end

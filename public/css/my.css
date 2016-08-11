@@ -304,6 +304,15 @@ a.more {
   display: block;
 }
 
+/* ask page */
+div#ask-editor-box {
+  height: 300px;
+}
+
+div.wangEditor-container {
+  margin-bottom: 10px;
+}
+
 /* question detail page */
 /* voting box */
 div.votingbox {
@@ -341,8 +350,7 @@ div#tags {
 }
 
 div.authorbox {
-  padding: 5px;
-  padding-bottom: 7px;
+  padding: 5px 10px;
   background: #DAE7F1;
 }
 

@@ -1,46 +1,38 @@
 <% content_for :extra_css_tags do %>
 <link href="/css/bootstrap-tagsinput.css" rel="stylesheet">
+<link href="/vendors/wangEditor/css/wangEditor.min.css" rel="stylesheet" >
 <% end %>
 
 <%= render_tag_new_modal %>
 
-<script src="/vendors/ckeditor/ckeditor.js"></script>
 <div class="container">
   <div class="row">
     <div class="col-md-8">
 
       <div class="form-group has-feedback">
-        <input type="text" class="form-control" name="title"
-               placeholder="言简意赅的标题" />
+        <input type="text" class="form-control" name="title" placeholder="言简意赅的标题" />
       </div>
       <div class="form-group">
-        <input name="tagsinput" class="bootstrap-tagsinput"
-               data-role="tagsinput" placeholder="输入或选择标签"/>
+        <input name="tagsinput" class="bootstrap-tagsinput" data-role="tagsinput"
+        placeholder="输入或选择标签"/>
       </div>
 
-      <!-- hidden dropdown menu -->
-      <ul class="dropdown-menu" id="tag-suggest">
-      </ul>
+      <!-- hidden dropdown menu: tag input suggestion -->
+      <ul class="dropdown-menu" id="tag-suggest"></ul>
 
-      <div class="form-group" id="editor-box" style="border: 1px solid grey;">
-        <textarea id="editor1" name="editor1"></textarea>
-        <script>
-          CKEDITOR.replace('editor1');
-        </script>
-      </div>
-
-      <button class="btn btn-primary" name="btnDoAsk">提交</button>
-      <button class="btn btn-default" name="btnSaveDraft">保存草稿</button>
+      <div class="form-group" id="ask-editor-box"></div>
+      <button class="btn btn-primary" name="btn_submit">提交问题</button>
+      <button class="btn btn-default" name="btn_save_draft">保存草稿</button>
     </div>
 
     <div class="col-md-4">
-      <div class="similar-question-list">
-      </div>
+      <div class="similar-question-list"></div>
     </div>
   </div>
 </div>
 
 <% content_for :extra_js_tags do %>
-<script src="/js/bootstrap-tagsinput.js"></script>
-<script src="/js/my-ask.js"></script>
+<script type="text/javascript" src="/js/bootstrap-tagsinput.js"></script>
+<script type="text/javascript" src="/vendors/wangEditor/js/wangEditor.min.js"></script>
+<script type="text/javascript" src="/js/my-ask.js"></script>
 <% end %>

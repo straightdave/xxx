@@ -1,88 +1,52 @@
-// used in ask page ONLY
 (function (window, $) {
-  var titlebox  = $("input[name='title']");
-  var tagsbox   = $("input[name='tagsinput']");
-  var editorbox = $("div#editor-box");
+  /* used in ask page only */
+  var submit_question = function (html_content) {
+    var _titleBox  = $("input[name='title']"),
+        _tagsBox   = $("input[name='tagsinput']"),
+        _editorBox = $("div#ask-editor-box"),
+        _submitBtn = $("button[name='btn_submit']"),
+        is_valid   = true;
 
-  var do_ask = function () {
-    var is_ok_title = false,
-        is_ok_text  = false,
-        btnDoAsk  = $("button[name='btnDoAsk']");
+    clean_below_msg(_titleBox);
+    clean_below_msg(_editorBox);
 
-    clean_below_msg(titlebox);
-    clean_below_msg(editorbox);
-
-    var title = titlebox.val().trim();
+    var title = _titleBox.val().trim();
     if (title.length < 6 || title.length > 50) {
-      is_ok_title = false;
-      set_error(titlebox, 'title');
-      show_below_msg(titlebox, "标题不要少于6个或多于50个字符");
+      is_valid = false;
+      set_error(_titleBox);
+      show_below_msg(_titleBox, "标题不要少于6个或多于50个字符");
     }
     else {
-      is_ok_title = true;
-      set_normal(titlebox, 'title');
-      clean_below_msg(titlebox);
+      is_valid = true;
+      set_normal(_titleBox);
+      clean_below_msg(_titleBox);
     }
 
-    var tag_v = tagsbox.val();
+    var tag_v = _tagsBox.val();
 
-    var content = CKEDITOR.instances.editor1.getData();
-    if (content.length < 10 || content.length > 500) {
-      is_ok_text = false;
-      set_error(editorbox, 'text');
-      show_below_msg(editorbox, "内容为 10 ~ 500 个字符");
+    if (html_content.length < 10 || html_content.length > 500) {
+      is_valid = false;
+      set_error(_editorBox);
+      show_below_msg(_editorBox, "内容为 10 ~ 500 个字符");
     }
     else {
-      is_ok_text = true;
-      set_normal(editorbox, 'text');
-      clean_below_msg(editorbox);
+      is_valid = true;
+      set_normal(_editorBox);
+      clean_below_msg(_editorBox);
     }
 
-    if(is_ok_title && is_ok_text) {
-      clean_below_msg(btnDoAsk);
-      var data = { "title" : title, "tags" : tag_v, "content" : content };
+    if (is_valid) {
+      clean_below_msg(_submitBtn);
+      var data = { "title" : title, "tags" : tag_v, "content" : html_content };
       $.post("/ask", data, function (data, status) {
-        if(data.ret == "success")
+        if(data.ret == "success") {
           location.href = "/q/" + data.msg;
-        else
-          show_below_msg(btnDoAsk, data.msg);
-      });
-    }
-  };
-
-  var do_save_draft = function () {
-    // 1. get title (if none, use default draft title)
-    var title = titlebox.val().trim();
-
-    // 2. get tags content
-    var tag_v = tagsbox.val();
-
-    // 3. get content
-    var content = CKEDITOR.instances.editor1.getData();
-
-    // 4. serialize to JSON
-    var data = { "title" : title, "tags" : tag_v, "content" : content };
-    var data_str = JSON.stringify(data);
-    // 4.1 check data changed (cancel if no change)
-    var hash_code = hashCode(data_str);
-    var old_hash = getCookie("draft_print");
-    if (old_hash != "" && old_hash == hash_code) {
-      console.log("hash code " + hash_code + ", old hash " +
-        old_hash + ", cancel saving");
-      return;
-    }
-
-    // 5. save to draft content
-    $.post('/draft', { title: title, type: 'question', data: data_str },
-      function (data, status) {
-        if (data.ret == "success") {
-          setCookie("draft_print", hash_code, 1);
-          console.log("data saved. hash code: " + hash_code);
         }
         else {
-          alert(data.msg);
+          show_below_msg(_submitBtn, data.msg);
         }
-    });
+      });
+    }
   };
 
   var delay = (function(){
@@ -121,58 +85,138 @@
     }, 300);
   };
 
-  // document ready
+  // start of document ready event dealer
   $(function () {
-    var btnDoAsk     = $("button[name='btnDoAsk']"),  // final submit button
-        btnSaveDraft = $("button[name='btnSaveDraft']"),
-        titlebox     = $("input[name='title']");   // textarea container div
+    var _titleBox  = $("input[name='title']"),
+        _tagsBox   = $("input[name='tagsinput']"),
+        _editorBox = $("div#ask-editor-box"),
+        _submitBtn = $("button[name='btn_submit']"),
+        _saveDraftBtn = $("button[name='btn_save_draft']");
 
+    _submitBtn.attr("disabled", "disabled");
+    _saveDraftBtn.attr("disabled", "disabled");
+
+    // init editor
+    // this mean every time this page renders (including refresh),
+    // the editor instance is initialized, losing every content
+    var editor = new wangEditor('ask-editor-box');
+    editor.config.menus = [
+      'bold','underline','italic','strikethrough','eraser','forecolor','|',
+      'quote','fontfamily','fontsize','unorderlist','orderlist','|',
+      'link','unlink','table','emotion','img','|',
+      'undo','redo','fullscreen'
+    ];
+    editor.config.uploadImgUrl = '/uploadeditor';
+    editor.config.uploadImgFileName = 'uploadedimage';
+    editor.config.hideLinkImg = true;
+    editor.onchange = function () {
+      var text_len = this.$txt.text().length;
+      if (text_len > 0) {
+        _submitBtn.removeAttr("disabled");
+        _saveDraftBtn.removeAttr("disabled");
+      }
+      else {
+        _submitBtn.attr("disabled", "disabled");
+      }
+    }
+    editor.create();
+    editor.$txt.html('');
+
+    // bind submit action
+    $("button[name='btn_submit']").click(function () {
+        submit_question(editor.$txt.html());
+    });
+
+    // load draft to textboxes and editors
     var draft_id_to_load = -1;
     if (window.localStorage && window.localStorage["draft_id"]) {
       draft_id_to_load = window.localStorage["draft_id"];
-      window.localStorage.removeItem("draft_id");
-      //console.log("load draft id " + draft_id_to_load + " from localStorage");
+      window.localStorage.removeItem("draft_id"); // clean draft id in storage
+      console.log("load draft id: " + draft_id_to_load + " from localStorage");
     }
     else {
       draft_id_to_load = getCookie("draft_id");
       draft_id_to_load = parseInt(draft_id_to_load);
-      setCookie("draft_id", "-1", 1);
-      //console.log("load draft id " + draft_id_to_load + " from cookie");
+      setCookie("draft_id", "-1", 1); // clean draft id in cookie (set to -1)
+      console.log("load draft id " + draft_id_to_load + " from cookie");
     }
 
     if (draft_id_to_load > 0) {
       $.get('/draft/' + draft_id_to_load, function (data, status) {
         if (data.ret == "success") {
-          //console.log("load draft <id:" + draft_id_to_load + ">");
-          //console.log("-> content: " + data.content);
+          console.log("load draft by id: " + draft_id_to_load);
 
           var draft_obj = JSON.parse(data.content);
-          titlebox.val(draft_obj.title);
-          tagsbox.tagsinput("add", draft_obj.tags);
-          CKEDITOR.instances.editor1.setData(draft_obj.content);
-          //console.log("draft loaded");
+          _titleBox.val(draft_obj.title);
+          _tagsBox.tagsinput("add", draft_obj.tags);
+
+          // we already has editor instance, so set editor content with draft
+          editor.$txt.html(draft_obj.content);
+          console.log("draft loaded successfully");
+        }
+        else {
+          console.log("server return draft failed: " + data.msg);
         }
       });
     }
     else {
-      console.log("no valid draft id");
+      console.log("no draft to load");
+      _titleBox.focus();
     }
 
-    titlebox.focus();
-    titlebox.keyup(titlebox_keyup);
-    btnDoAsk.click(do_ask);
-    btnSaveDraft.click(do_save_draft);
+    // bind title keyup action (finding similar titles)
+    _titleBox.keyup(titlebox_keyup);
 
-    // bind keyup and blur event handler to other dynamic elements
+    // bind draft saving button click event
+    _saveDraftBtn.click(function () {
+      var title = _titleBox.val().trim();
+      var tag_v = _tagsBox.val();
+      var content = editor.$txt.html();
+
+      var data = { "title" : title, "tags" : tag_v, "content" : content };
+      var data_str = JSON.stringify(data);
+
+      var hash_code = hashCode(data_str);
+      var old_hash = "";
+      if (window.localStorage && window.localStorage["draft_print"]) {
+        old_hash = window.localStorage["draft_print"];
+        console.log("saving draft: stored hash in localStorage");
+      }
+      else {
+        old_hash = getCookie("draft_print");
+      }
+      if (old_hash == hash_code) {
+        console.log("same with last hash, no need to save");
+        return;
+      }
+
+      $.post('/draft', { title: title, type: 'question', data: data_str },
+        function (data, status) {
+          if (data.ret == "success") {
+            _saveDraftBtn.attr("disabled", "disabled");
+
+            if (window.localStorage) {
+              window.localStorage["draft_print"] = hash_code;
+            }
+            setCookie("draft_print", hash_code, 1);
+            console.log("draft saved. hash code: " + hash_code);
+          }
+          else {
+            console.log("server saving draft failed: " + data.msg);
+          }
+        }
+      );
+    });
+
+    // bind keyup and blur event handler
+    // go server to find similar tags that already exist as suggestions
     $("div[class='bootstrap-tagsinput']").on('keyup', "input", function (event) {
       event.preventDefault();
       var tag_input = $(this);
       var tag_name = tag_input.val();
-      if (tag_name.length < 2) {
-        return;
-      }
+      if (tag_name.length < 2) { return; }
 
-      $.post('/tag/search', { "q" : tag_name }, function (data, status) {
+      $.post('/tag/search', {"q" : tag_name}, function (data, status) {
         if (data.num > 0) {
           var ts = JSON.parse(data.data);
           var tagItems = "";
@@ -182,9 +226,7 @@
             tagItems += "<span class='q_tag'>" + ts[i].name;
             tagItems += "</span> &times;" + ts[i].used + "</a></li>";
 
-            if (ts[i].name == tag_name) {
-              all_diff = false;
-            }
+            if (ts[i].name == tag_name) { all_diff = false; }
           }
           if (all_diff) {
             tagItems += "<li role='separator' class='divider'></li>";
@@ -206,14 +248,18 @@
       });
     });
 
-    // clean manual input letters and add chosen tag into tagsinput object
+    // if input some characters for tag, then refreshing page without hitting enter
+    // so some letters would remain there in the tagsinput box
+    // code here cleans manual input letters and add chosen tag into tagsinput object
+    // - it breaks into tagsinput.js and use jQuery delegation
     $("ul#tag-suggest").on("click", "li > a[class='sug-tag']", function (event) {
       event.preventDefault();
       $("div[class='bootstrap-tagsinput'] > input").val('');
       $("input[name='tagsinput']").tagsinput('add', $(this).attr('name')); // add this tag
     });
 
-    // pop-up and init the create-new-tag modal
+    // providing a jQuery delegation to pop-up and init the create-new-tag modal
+    // - similarly, it breaks into tagsinput.js
     $("ul#tag-suggest").on("click", "li > a[class='new-tag']", function (event) {
       event.preventDefault();
       $("#new-tag-modal").modal('show');
@@ -227,6 +273,5 @@
         $("ul#tag-suggest").hide();
       }, 200);
     });
-
-  });
+  }); // end of document.ready
 })(window, jQuery);

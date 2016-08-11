@@ -35,11 +35,9 @@ configure do
 
   set :quoted_char_num, 140
 
-  # callback address of this site, used in mail content
-  set :site_host, 'http://localhost:4567'
-
   set :public_folder, File.dirname(__FILE__) + '/public'
   set :avatar_folder, File.dirname(__FILE__) + '/public/uploads/avatars'
+  set :editorimage_folder, File.dirname(__FILE__) + '/public/uploads/editorimages'
   use Rack::Session::Pool, expire_after: 60 * 60 * 2, http_only: true
 
   log_file = File.new("#{settings.root}/log/#{settings.environment}.log", 'a+')
@@ -59,8 +57,6 @@ configure :production do
   enable  :mail_validation
   disable :ignore_status_limit
   disable :ignore_roles_limit
-
-  set :site_host, 'http://101.200.192.223'
 end
 
 ActiveRecord::Base.establish_connection(
@@ -75,6 +71,7 @@ ActiveRecord::Base.establish_connection(
 ActiveRecord::Base.default_timezone = :local
 
 before do
+  $Scheme_host_port = "#{request.scheme}://#{request.host_with_port}"
   if login?
     unless @_current_user
       @_current_user = User.find_by(id: session[:user_id])

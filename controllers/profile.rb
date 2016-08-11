@@ -87,3 +87,44 @@ post '/upload' do
   # for now, redirect to current page
   redirect to("/user/profile")
 end
+
+# upload pic for wangEditor
+post '/uploadeditor' do
+  login_filter required_status: false, required_roles: false
+
+  unless payload = request.POST
+    return "error|服务器错误：没有找到图片内容"
+  end
+
+  begin
+    tempfile = payload["uploadedimage"][:tempfile]
+    raw_filename = payload["uploadedimage"][:filename]
+
+    ext = raw_filename.split('.')[-1]
+    unless ["jpeg", "jpg", "png"].include? ext
+      return "error|只支持jpeg，jpg和png格式的图片"
+    end
+
+    size = tempfile.size
+    if size > 200 * 1024
+      return "error|图片（#{size}）不能超过200k（204800）"
+    end
+
+    login_name = session[:login_name]
+    full_name = "#{settings.editorimage_folder}/#{login_name}_#{raw_filename}"
+
+    begin
+      File.open(full_name, "w+") do |file|
+        file.puts tempfile.read
+      end
+    rescue
+      return "error|保存文件失败"
+    ensure
+      tempfile.close
+      tempfile.unlink
+    end
+    "#{$Scheme_host_port}/uploads/editorimages/#{login_name}_#{raw_filename}"
+  rescue
+    "error|服务器错误"
+  end
+end

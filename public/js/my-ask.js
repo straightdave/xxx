@@ -187,6 +187,7 @@
       }
       if (old_hash == hash_code) {
         console.log("same with last hash, no need to save");
+        _saveDraftBtn.attr("disabled", "disabled");
         return;
       }
 

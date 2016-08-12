@@ -5,7 +5,7 @@
 <% else %>
 
 <% content_for :extra_css_tags do %>
-<link href="/vendors/wangEditor/css/wangEditor.min.css" rel="stylesheet" >
+<link href="/vendors/wangEditor/css/wangEditor.min.css" rel="stylesheet">
 <% end %>
 
 <div class="container">
@@ -13,40 +13,29 @@
     <div class="col-md-9">
       <h3 class="question-title"><%= @q.title %></h3>
 
-      <% if login? && (@q.user_id != session[:user_id].to_i) %>
-      <div class="question-reporting">
-        <button class="btn btn-default btn-sm" data-toggle="modal"
-                data-target="#report-modal" title="投诉">
-          <i class="fa fa-warning"></i>
-        </button>
-      </div>
-      <% end %>
-
       <div class="row">
         <div class="col-md-1">
+
           <div class="votingbox">
             <a href="javascript:void(0);" title="好问题，赞！"
                onclick="javascript:vote('vote','q',<%= @q.id %>);">
               <i class="fa fa-caret-up fa-2x"></i>
             </a>
-            <br />
+            <br>
             <span id="q-scores-<%= @q.id %>"><%= @q.scores %></span>
-            <br />
-
+            <br>
             <a href="javascript:void(0);" title="这问题太逊了，埋了它！"
                onclick="javascript:vote('downvote','q',<%= @q.id %>);">
               <i class="fa fa-caret-down fa-2x"></i>
             </a>
-            <br />
-
+            <br>
             <a id="watchicon" href="javascript:void(0);"
                onclick="javascript:watch1(<%= @q.id %>);"
                title="<% if @watched %>已<% end %>收藏"
                class="<% if @watched %>watched<% else %>watching<% end %>" >
               <i class="fa fa-star"></i>
             </a>
-            <br />
-
+            <br>
             <!-- has_accepted_answer mark -->
             <% if @answered %>
               <a id="answeredicon" href="#answer" title="跳到被标记的答案">
@@ -54,54 +43,25 @@
               </a>
             <% end %>
           </div>
-        </div>  <!-- end of voting box -->
+        </div><!-- end of voting box -->
 
         <div class="col-md-11" id="question-details">
           <div class="question-content">
             <%= @q.content %>
           </div>
-
           <div id="tags">
             <% @q.tags.each do |t| %>
             <span class="q_tag"><%= t.name %></span>
             <% end %>
           </div>
 
-          <div class="row">
+          <div class="row"> <!-- question info row: buttons, authors, etc. -->
             <div class="col-md-4">
-            <% if @can_edit %>
-              <a href="javascript:void(0);" data-toggle="modal"
-                 class="comment-btn" data-target="#edit-modal">
-                <i class="fa fa-edit"></i>&nbsp;修改问题
-              </a>&nbsp;
-
-              <% if @q.can_comment %>
-              <a href="javascript:void(0);" class="comment-btn"
-                 onclick="javascript:toggle_comment(<%= @q.id %>);">
-                <i class="fa fa-ban text-danger"></i>&nbsp;关闭评论
-              </a>
-              <% else %>
-              <a href="javascript:void(0);" class="comment-btn"
-                 onclick="javascript:toggle_comment(<%= @q.id %>);">
-                <i class="fa fa-commenting"></i>&nbsp;打开评论
-              </a>
-              <% end %>
-            <% end %>
+            <!-- surposed to put edit/toggle comment buttons here -->
             </div>
 
             <div class="col-md-4">
-            <% if @is_edited %>
-            <div class="authorbox text-right">
-              <img class="avatar-sm" src="<%= @last_editor.avatar_src %>">
-              <a href="<%= @last_editor.url %>">
-                <%= @last_editor.info.nickname %>
-                <span class="numbers-sm">
-                  <%= get_format_number(@last_editor.reputation) %>
-                </span>
-              </a>
-              最后修改于<%= time_ago_in_words_zh(@last_edit_time) %>
-            </div>
-            <% end %>
+            <!-- surposed to put edition info here -->
             </div>
 
             <div class="col-md-4">
@@ -125,8 +85,7 @@
                 </div>
               </div>
             </div>
-          </div> <!-- end of author info row -->
-
+          </div> <!-- end of question info row -->
 
           <!-- comments go here -->
           <div class="comments">
@@ -192,16 +151,15 @@
           <%= @answers.size %>个回答
           <% @answers.each do |a| %>
             <div class="single-answer" id="a<%= a.id %>">
-              <div class="row"
-                <% if @q.accepted_answer == a %>id="answer"<% end %> >
-                <div class="col-md-1">
+              <div class="row" <% if @q.accepted_answer == a %>id="answer"<% end %>>
 
+                <div class="col-md-1">
                   <div class="votingbox">
                     <a href="javascript:void(0);" title="这条回答很有帮助，赞！"
                        onclick="javascript:vote('vote','a',<%= a.id %>);">
                       <i class="fa fa-caret-up"></i>
                     </a>
-                    <br />
+                    <br>
                     <span id = "a-scores-<%= a.id %>"><%= get_format_number(a.scores) %></span>
                     <br>
                     <a href="javascript:void(0);"
@@ -209,19 +167,16 @@
                        onclick="javscript:vote('downvote','a',<%= a.id %>);">
                       <i class="fa fa-caret-down"></i>
                     </a>
-                    <br />
+                    <br>
                     <!-- possible marked-as-answer sign -->
                     <% if @q.accepted_answer == a %>
                     <i class="fa fa-check i-am-answer"></i>
                     <% end %>
                   </div>
-
                 </div>
 
                 <div class="col-md-11" id="answer-details">
-                  <div class="answer-text">
-                    <%= a.content %>
-                  </div>
+                  <div class="answer-text"><%= a.content %></div>
 
                   <div class="row">
 
@@ -267,14 +222,13 @@
                       <% a.comments.each do |c| %>
                         <div class="single-comment">
 
-                          <div class="comment-vote"
-                               title="为这条评论投票"
+                          <div class="comment-vote" title="为这条评论投票"
                                onclick="javascript:vote('vote','c',<%= c.id %>)">
                             <i class="fa fa-caret-up"></i>
                             <span id="c-scores-<%= c.id %>">
                               <%= get_format_number(c.scores) %>
                             </span>
-                            <!-- no devoting for comments -->
+                            <!-- no downvoting for comments -->
                           </div>
 
                           <div class="comment-text">
@@ -307,8 +261,8 @@
                   <div class="form-group commenting-answer-<%= a.id %>"
                        style="display: none;">
                     <textarea id="comment_area_answer_<%= a.id %>"
-                              class="commentbox"
-                              rows="4" style="width: 100%"></textarea><br>
+                      class="commentbox" rows="4" style="width: 100%"></textarea>
+                    <br>
                     <a class="btn btn-primary btn-xs" href="javascript:void(0);"
                        onclick="javascript:do_comment_answer(<%= a.id %>);">
                       确认
@@ -325,7 +279,6 @@
 
           <% end %>
         <% end %>
-
       </div> <!-- end of listed answers -->
 
       <hr>
@@ -334,14 +287,9 @@
       <% if @q.is_frozen %>
       问题被冻结，无法回答
       <% elsif !login?%>
-      请先
-      <a class="btn btn-default btn-sm"
-         href="/user/signin?returnurl=<%= CGI.escape(request.path) %>">
-        登录
-      </a>
-      后回答
+      请先 <a class="btn btn-default btn-sm"
+         href="/user/signin?returnurl=<%= CGI.escape(request.path) %>">登录</a>后回答
       <% else %>
-      你的回答
       <div class="form-group" id="answer-editor-box"></div>
       <button class="btn btn-primary" name="btn_submit" data-qid="<%= @q.id %>">提交回答</button>
       <% content_for :extra_js_tags do %>

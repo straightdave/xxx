@@ -4,20 +4,18 @@
     var _titleBox  = $("input[name='title']"),
         _tagsBox   = $("input[name='tagsinput']"),
         _editorBox = $("div#ask-editor-box"),
-        _submitBtn = $("button[name='btn_submit']"),
-        is_valid   = true;
+        _submitBtn = $("button[name='btn_submit']");
 
     clean_below_msg(_titleBox);
     clean_below_msg(_editorBox);
 
     var title = _titleBox.val().trim();
     if (title.length < 6 || title.length > 50) {
-      is_valid = false;
       set_error(_titleBox);
       show_below_msg(_titleBox, "标题不要少于6个或多于50个字符");
+      return;
     }
     else {
-      is_valid = true;
       set_normal(_titleBox);
       clean_below_msg(_titleBox);
     }
@@ -25,24 +23,21 @@
     var tag_v = _tagsBox.val();
 
     if (html_content.length < 10 || html_content.length > 500) {
-      is_valid = false;
       set_error(_editorBox);
       show_below_msg(_editorBox, "内容为 10 ~ 500 个字符");
+      return;
     }
     else {
-      is_valid = true;
       set_normal(_editorBox);
       clean_below_msg(_editorBox);
     }
 
-    if (is_valid) {
-      clean_below_msg(_submitBtn);
-      var data = { "title" : title, "tags" : tag_v, "content" : html_content };
-      $.post("/ask", data, function (data, status) {
-        if(data.ret == "success") { location.href = "/q/" + data.msg; }
-        else { show_below_msg(_submitBtn, data.msg); }
-      });
-    }
+    clean_below_msg(_submitBtn);
+    var data = { "title" : title, "tags" : tag_v, "content" : html_content };
+    $.post("/ask", data, function (data, status) {
+      if(data.ret == "success") { location.href = "/q/" + data.msg; }
+      else { show_below_msg(_submitBtn, data.msg); }
+    });
   };
 
   var delay = (function(){
@@ -81,9 +76,7 @@
             root_ul.append(tmp);
           }
         }
-        else {
-          console.log("没有找到相似问题 for " + title);
-        }
+        else { console.log("没有找到相似问题 for " + title); }
       });
     }, 300);
   };

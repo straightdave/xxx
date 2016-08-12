@@ -48,6 +48,7 @@ post '/user/signup' do
   new_user.email      = email
   new_user.set_password(password)
   new_user.gen_and_set_new_vcode
+  new_user.reputation = 1
   new_user.build_info( nickname: (nickname.empty? ? login_name : nickname) )
 
   if new_user.valid?

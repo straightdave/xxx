@@ -29,7 +29,7 @@ post '/ask' do
   new_q.save
 
   send_msg_after_ask(author, new_q)
-  author.update_reputation(1, "asked one question")
+  author.update_reputation! by: 1, since: "asked one question"
   author.record_event(:ask, new_q)
   json ret: "success", msg: new_q.id
 end
@@ -179,7 +179,6 @@ post '/q/:qid' do |qid|
   end
 end
 
-
 # == watching or unwatching a question ==
 post '/q/:qid/watch' do |qid|
   author = login_filter
@@ -239,11 +238,6 @@ post '/q/:qid/answer' do |qid|
     answer.save
     q.save
     send_msg_after_answer(q, author)
-
-    q.author.update_reputation(1, "question answered once")
-    author.update_reputation(1, "answering one question")
-    author.add_expertise(q.tag_ids, :answered_once)
-
     author.record_event(:answer, q)
     json ret: "success", msg: answer.id
   else
@@ -277,10 +271,13 @@ post '/q/:qid/accept' do |qid|
   if question.valid?
     question.save
 
-    answerer.update_reputation(20, "answer accepted")
-    answerer.add_expertise(question.tag_ids, :accepted_once)
-    asker.update_reputation(2, "accepting one answer")
+    if answerer.id != asker.id
+      answerer.update_reputation! by: 15, since: "answer accepted"
+      answerer.add_expertise(question.tag_ids, :accepted_once)
+      asker.update_reputation! by: 2, since: "accepting one answer"
+    end
     asker.record_event(:accept, answer)
+
     json ret: "success"
   else
     json ret: "error", msg: "accept_failed"

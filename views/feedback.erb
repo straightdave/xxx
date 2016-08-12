@@ -1,5 +1,6 @@
-<script src="/vendors/ckeditor/ckeditor.js"></script>
-<!--<script src="//cdn.bootcss.com/ckeditor/4.5.4/ckeditor.js"></script>-->
+<% content_for :extra_css_tags do %>
+<link href="/vendors/wangEditor/css/wangEditor.min.css" rel="stylesheet" >
+<% end %>
 
 <div class="container">
   <div class="row">
@@ -7,20 +8,50 @@
       <p>欢迎反馈</p>
 
       <div class="form-group has-feedback">
-        <input type="text" class="form-control" name="title"
-               placeholder="言简意赅的标题" />
+        <input type="text" class="form-control" name="title" placeholder="言简意赅的标题" />
       </div>
 
       <div class="form-group">
-        <textarea id="editor_fb" name="editor_fb"></textarea>
+        <div id="feedback-editor-box"></div>
         <script>
-          CKEDITOR.replace('editor_fb');
+        (function (window, $) {
+          $(function () {
+            var editor = new wangEditor('feedback-editor-box');
+            editor.config.menus = [
+              'bold','underline','italic','strikethrough','eraser','forecolor','|',
+              'fontfamily','fontsize','unorderlist','orderlist','|',
+              'link','unlink','table','emotion'
+            ];
+            editor.create();
+
+            $("button[name='btn-submit']").click(function () {
+              var title = $("input[name='title']").val();
+              var desc = editor.$txt.html();
+
+              $.post('/feedback', { "title" : title, "desc" : desc },
+                function (data, status) {
+                  if (data.ret == "success") {
+                    alert("提交成功");
+                    location.replace('/');
+                  }
+                  else {
+                    $("div#err_msg_fb").html(data.msg);
+                  }
+                }
+              );
+            });
+          });
+        })(window, jQuery);
         </script>
       </div>
 
-      <button class="btn btn-primary" onclick="javascript:do_feedback();">提交</button>
+      <button class="btn btn-primary" name="btn-submit">提交</button>
       <div id="err_msg_fb" class="text-danger"></div>
     </div>
 
   </div>
 </div>
+
+<% content_for :extra_js_tags do %>
+<script type="text/javascript" src="/vendors/wangEditor/js/wangEditor.min.js"></script>
+<% end %>

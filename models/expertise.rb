@@ -29,13 +29,13 @@ class Expertise < ActiveRecord::Base
   end
 
   # vote & downvote also can be used by articles
-  def voted_once
+  def voted_once!
     self.voted += 1
     self.expert_score += 1 * 2
     self.save if self.valid?
   end
 
-  def downvoted_once
+  def downvoted_once!
     self.voted += 1
     self.expert_score -= 1 * 2
     self.save if self.valid?

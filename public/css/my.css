@@ -45,6 +45,14 @@ span.numbers-sm {
   float: left;
 }
 
+/* web editor */
+div[id$="-editor-box"] {
+  height: 300px;
+}
+div.wangEditor-container {
+  margin-bottom: 10px;
+}
+
 /* override original styling */
 .navbar {
   border-left: none;
@@ -239,6 +247,9 @@ a.tag {
 }
 
 /* right panel question page and ask page */
+div.right-panel-box {
+  margin-top: 10px;
+}
 div.right-panel-box-body {
   margin: 5px;
 }
@@ -339,15 +350,6 @@ span.q_tag {
 a.more {
   margin: 20px 0px;
   display: block;
-}
-
-/* ask page */
-div#ask-editor-box {
-  height: 300px;
-}
-
-div.wangEditor-container {
-  margin-bottom: 10px;
 }
 
 /* question detail page */
@@ -483,11 +485,11 @@ img.avatar-xs {
 /* message page */
 div.msg-list-head {
   padding-bottom: 10px;
-  border-bottom: solid 1px lightgray;
 }
 
 div.msg-list-head span {
   display: inline-block;
+  margin-top: 5px;
   float: left;
   font-size: 1.1em;
   font-weight: bold;
@@ -498,12 +500,16 @@ div.msg-list {
 }
 
 div.message {
-  padding: 10px 5px;
-  border-bottom: 1px solid lightgray;
+  padding: 15px 15px;
+  border-right: 1px solid lightgray;
+  margin-bottom: 15px;
+  box-shadow: 0 1px 5px lightgray;
 }
 
 div.unread {
-  background-color: #DAE7F1;
+  background: lightgray;
+  background: linear-gradient(-45deg, #fff 25px, transparent 0),
+              linear-gradient(-45deg, #134fb8 45px, #fff 0);
 }
 
 
@@ -567,9 +573,10 @@ span#whensignup {
 }
 
 div.eventbox {
-  background-color: #E7E7E7;
-  min-height: 100px;
-  margin: 10px;
+  padding: 15px 15px;
+  border-right: 1px solid lightgray;
+  margin-bottom: 15px;
+  box-shadow: 0 1px 5px lightgray;
 }
 
 div.eventbox div {
@@ -596,7 +603,6 @@ div.event-content h5 {
 
 div.event-content blockquote {
   margin: 0;
-  border-color: #FFF;
   font-size: 1.1em;
 }
 
@@ -781,11 +787,12 @@ button[name='btnSaveDraft'] {
   float: right;
 }
 
-
 /* own profile page (update profile) */
 div.profile-main {
-  border: solid 1px lightgray;
-  padding: 20px;
+  padding: 15px 15px;
+  border-right: 1px solid lightgray;
+  margin-bottom: 15px;
+  box-shadow: 0 1px 5px lightgray;
 }
 
 div.avatar-zone {

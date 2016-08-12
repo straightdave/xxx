@@ -9,21 +9,37 @@
       </div>
       <div class="modal-body">
         <p>
-          <textarea id="editor2" name="editor2"></textarea>
+          <div id="edit-editor-box"></div>
           <script>
-            CKEDITOR.replace('editor2');
-            var editor2 = CKEDITOR.instances.editor2;
-            editor2.setData("<%= @q.content %>");
-            editor2.once('change', function () {
-              $("button#btn_save").removeAttr("disabled");
+          (function (window, $) {
+            $(function () {
+              var qid = "<%= @q.id %>";
+
+              if (qid) {
+                var editor = new wangEditor('edit-editor-box');
+                editor.config.menus = [
+                  'bold','underline','italic','strikethrough','eraser','forecolor','|',
+                  'fontfamily','fontsize','unorderlist','orderlist','|',
+                  'link','unlink','table','emotion'
+                ];
+                editor.create();
+
+                $("button[name='btn-submit']").click(function () {
+                  var content = editor.$txt.html();
+                  $.post('/q/' + qid, { 'content' : content }, function (data, status) {
+                    if(data.ret == "success") { location.replace(location.href); }
+                    else { alert(data.msg); }
+                  });
+                });
+              }
             });
+          })(window, jQuery);
           </script>
         </p>
         <div id="edit-err-msg" class="text-danger"></div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary btn-sm" id="btn_save" disabled
-        onclick="javascript:save_edit('q', <%= @q.id %>);">保存</button>
+        <button class="btn btn-primary btn-sm" name="btn-submit">保存</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

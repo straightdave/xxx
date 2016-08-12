@@ -20,16 +20,12 @@
       else { _submitBtn.attr("disabled", "disabled"); }
     }
     editor.create();
-    editor.$txt.html('');
     _submitBtn.click(function () {
       console.log("prepare to submit answer to question (id: " + qid + ")");
       if (editor.$txt.text().length > 0) {
         var data = { "content" : editor.$txt.html() };
         $.post("/q/" + qid + "/answer", data, function (data, status) {
-          if(data.ret == "success") {
-            console.log("answer submit successfully");
-            location.replace("/q/" + qid);
-          }
+          if(data.ret == "success") { location.replace("/q/" + qid);}
           else { alert(data.msg); }
         });
       }

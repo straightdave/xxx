@@ -336,53 +336,6 @@ function go_job(id) {
   location.replace('/job/' + id);
 }
 
-/* feedback */
-function do_feedback() {
-  var title = $("input[name='title']").val();
-  var desc = CKEDITOR.instances.editor_fb.getData();
-
-  $.post('/feedback', { "title" : title, "desc" : desc },
-  function (data, status) {
-    if (data.ret == "success") {
-      alert("提交成功");
-      location.replace('/');
-    }
-    else {
-      var err_msg = data.msg;
-      $("div#err_msg_fb").html(err_msg);
-    }
-  });
-}
-
-/* edit content */
-function save_edit(strType, id) {
-  if(strType == 'q') {
-    var content = CKEDITOR.instances.editor2.getData();
-    $.post('/q/' + id, { 'content' : content }, function (data, status) {
-      if(data.ret == "success") {
-        location.replace(location.href);
-      }
-      else {
-        alert(data.msg);
-      }
-    });
-  }
-  else if (strType == 't') {
-    var name = $("input[name='tagname']").val();
-    var desc = $("textarea[name='tagdesc']").val();
-
-    $.post('/t/' + id, { 'tname' : name, 'tdesc' : desc },
-    function (data, status) {
-      if(data.ret == "success") {
-        location.replace(location.href);
-      }
-      else {
-        alert(data.msg);
-      }
-    });
-  }
-}
-
 /* refind */
 function send_refind_email() {
   var email = $("input[name='email']").val();

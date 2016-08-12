@@ -123,7 +123,6 @@
       }
     }
     editor.create();
-    editor.$txt.html('');
 
     // bind submit action
     $("button[name='btn_submit']").click(function () {

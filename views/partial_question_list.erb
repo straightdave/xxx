@@ -1,97 +1,28 @@
-<style>
-div.right-panel-box-title > h5{
-  display: block;
-  margin: 0;
-  padding: 0;
-  float: left;
-}
-
-div.right-panel-box-body {
-  margin: 5px;
-}
-
-div.right-panel-box-body > ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-div.right-panel-box-body > ul > li {
-  display: block;
-  margin: 10px 0;
-  padding: 0;
-}
-
-span.list-vote-box-acc {
-  display: block;
-  margin-right: 15px;
-  background-color: #5fba7d;
-  color: white;
-  border-radius: 3px;
-  width: 40px;
-  text-align: center;
-  float: left;
-}
-
-span.list-vote-box-nor {
-  display: block;
-  margin-right: 15px;
-  background-color: #eff0f1;
-  border-radius: 3px;
-  width: 40px;
-  text-align: center;
-  float: left;
-}
-
-a.list-title {
-  display: block;
-  float: left;
-  width: 75%;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-</style>
-<div class="right-panel-box">
-  <div class="right-panel-box-title">
-    <h5>
-      <%= (case question_type
-           when :linked then "关联问题"
-           when :related then "相似问题"
-           end) %>
-    </h5>
-  </div>
-  <div class="clear"></div>
-  <div class="right-panel-box-body">
-    <ul class="right-question-list" id="_<%= question_type.to_s %>">
-    </ul>
-  </div>
+<h5>
+  <%= (case question_type
+       when :linked then "关联问题"
+       when :related then "相似问题"
+       end) %>
+</h5>
+<div class="right-panel-box-body">
+  <ul id="_<%= question_type.to_s %>"></ul>
 </div>
-
 <script>
 (function (window, $) {
-  var root_ul = $("ul#_<%= question_type.to_s %>");
-  var base_url = location.pathname;   // like '/q/123'
-  var url = base_url + "/<%= question_type.to_s %>"; // go '/q/123/related'
-
   $(function () {
-    console.log("fetch data from " + url);
+    var type = "<%= question_type.to_s %>";
+    var root_ul = $("ul#_" + type);
+    var base_url = location.pathname;   // like '/q/123'
+    var url = base_url + "/" + type;   // go '/q/123/related'
     $.get(url, function (data, status) {
-      if (data && data.length > 0) {
-        console.log("get data more than 0 items");
+      if (data.length > 0) {
+        console.log("get data " + data.length + " items: " + url);
         root_ul.empty();
-
         for(var i = 0; i < data.length; i++) {
           var item = data[i];
-
           var span_class;
-          if (item.has_acc) {
-            span_class = "list-vote-box-acc";
-          }
-          else {
-            span_class = "list-vote-box-nor";
-          }
-
+          if (item.has_acc) { span_class = "list-vote-box-acc"; }
+          else { span_class = "list-vote-box-nor"; }
           var tmp = "\
           <li>\
             <span class='" + span_class + "'>" + item.votes + "</span>\
@@ -100,14 +31,10 @@ a.list-title {
             "</a>\
             <div class='clear'></div>\
           </li>";
-
-          // console.log("append li " + tmp);
           root_ul.append(tmp);
         }
       }
-      else {
-        console.log("get 0 items <%= question_type.to_s %>")
-      }
+      else { console.log("get 0 items " + type); }
     });
   });
 })(window, jQuery);

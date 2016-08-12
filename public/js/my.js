@@ -268,23 +268,7 @@ function unwatch1(qid) {
   });
 }
 
-function do_answer(qid) {
-  var text = CKEDITOR.instances.editor1.getData();
-  if(text.length < 10) {
-    alert("答案起码得超过10个字吧。");
-  }
-  else {
-    var data = { "content" : text };
-    $.post("/q/" + qid + "/answer", data, function (data, status) {
-      if(data.ret == "success") {
-        location.replace("/q/" + qid);
-      }
-      else {
-        alert(data.msg);
-      }
-    });
-  }
-}
+
 
 function toggle_comment(qid) {
   $.post('/q/' + qid + '/toggle_comment', {}, function (data, status) {

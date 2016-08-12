@@ -111,10 +111,6 @@ footer ul.site-related li {
   margin: 8px 0px;
 }
 
-div.right-panel-box {
-  margin-top: 25px;
-}
-
 .navbar {
   border-radius: 0;
 }
@@ -240,6 +236,47 @@ a.tag {
   padding: 1px 5px;
   margin: 2px;
   display: inline-block;
+}
+
+/* right panel question page and ask page */
+div.right-panel-box-body {
+  margin: 5px;
+}
+div.right-panel-box-body > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+div.right-panel-box-body > ul > li {
+  display: block;
+  margin: 10px 0;
+  padding: 0;
+}
+span.list-vote-box-acc {
+  display: block;
+  margin-right: 15px;
+  background-color: #5fba7d;
+  color: white;
+  border-radius: 3px;
+  width: 40px;
+  text-align: center;
+  float: left;
+}
+span.list-vote-box-nor {
+  display: block;
+  margin-right: 15px;
+  background-color: #eff0f1;
+  border-radius: 3px;
+  width: 40px;
+  text-align: center;
+  float: left;
+}
+a.list-title {
+  display: block;
+  float: left;
+  width: 75%;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 /* listing questions on homepage */

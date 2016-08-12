@@ -39,12 +39,8 @@
       clean_below_msg(_submitBtn);
       var data = { "title" : title, "tags" : tag_v, "content" : html_content };
       $.post("/ask", data, function (data, status) {
-        if(data.ret == "success") {
-          location.href = "/q/" + data.msg;
-        }
-        else {
-          show_below_msg(_submitBtn, data.msg);
-        }
+        if(data.ret == "success") { location.href = "/q/" + data.msg; }
+        else { show_below_msg(_submitBtn, data.msg); }
       });
     }
   };
@@ -59,26 +55,33 @@
 
   var titlebox_keyup = function (event) {
     var title = $(this).val().trim();
-    if (title.length < 2) {
-      return;
-    }
+    if (title.length < 3) { return; }
+    var root_ul = $("ul#_ul_similar_to_ask");
 
     delay(function () {
       $.post('/search_title', { "q" : title }, function (data, status) {
         if (data.num > 0) {
           var qs = JSON.parse(data.data);
 
-          var content = "<h5>相似问题</h5>";
+          root_ul.empty();
           for(var i = 0; i < qs.length; i++) {
-            content += "<div class='linked-title'>";
-            content += "  <span>" + qs[i].views + "</span>";
-            content += "  <a href='/q/" + qs[i].id + "'>" + qs[i].title + "</a>";
-            content += "<div>";
+            var item = qs[i];
+
+            var span_class;
+            if (item.has_acc) { span_class = "list-vote-box-acc"; }
+            else { span_class = "list-vote-box-nor"; }
+            var tmp = "\
+            <li>\
+              <span class='" + span_class + "'>" + item.votes + "</span>\
+              <a class='list-title' href='/q/" + item.id + "'>" +
+                item.title +
+              "</a>\
+              <div class='clear'></div>\
+            </li>";
+            root_ul.append(tmp);
           }
-          $("div.similar-question-list").html(content);
         }
         else {
-          $("div.similar-question-list").html('');
           console.log("没有找到相似问题 for " + title);
         }
       });
@@ -172,10 +175,8 @@
       var title = _titleBox.val().trim();
       var tag_v = _tagsBox.val();
       var content = editor.$txt.html();
-
       var data = { "title" : title, "tags" : tag_v, "content" : content };
       var data_str = JSON.stringify(data);
-
       var hash_code = hashCode(data_str);
       var old_hash = "";
       if (window.localStorage && window.localStorage["draft_print"]) {
@@ -195,7 +196,6 @@
         function (data, status) {
           if (data.ret == "success") {
             _saveDraftBtn.attr("disabled", "disabled");
-
             if (window.localStorage) {
               window.localStorage["draft_print"] = hash_code;
             }

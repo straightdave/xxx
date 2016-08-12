@@ -4,14 +4,12 @@
 </div>
 <% else %>
 
-<script src="/vendors/ckeditor/ckeditor.js"></script>
-
-<%= render_report_modal('q', @q.id) %>
-<%= render_edit_modal %>
+<% content_for :extra_css_tags do %>
+<link href="/vendors/wangEditor/css/wangEditor.min.css" rel="stylesheet" >
+<% end %>
 
 <div class="container">
   <div class="row">
-
     <div class="col-md-9">
       <h3 class="question-title"><%= @q.title %></h3>
 
@@ -136,12 +134,10 @@
               <% @q.comments.each do |c| %>
                 <div class="single-comment">
 
-                  <div class="comment-vote"
-                       title="为这条评论投票"
+                  <div class="comment-vote" title="为这条评论投票"
                        onclick="javascript:vote('vote','c',<%= c.id %>)">
                     <i class="fa fa-caret-up"></i>
                     <span id="c-scores-<%= c.id %>"><%= get_format_number(c.scores) %></span>
-                    <!-- no devoting for comments -->
                   </div>
 
                   <div class="comment-text">
@@ -333,32 +329,28 @@
       </div> <!-- end of listed answers -->
 
       <hr>
+
+      <!-- answering zone -->
       <% if @q.is_frozen %>
       问题被冻结，无法回答
-
       <% elsif !login?%>
-        请先
-        <a class="btn btn-default btn-sm"
-           href="/user/signin?returnurl=<%= CGI.escape(request.path) %>">
-          登录
-        </a>
-        后回答
-
+      请先
+      <a class="btn btn-default btn-sm"
+         href="/user/signin?returnurl=<%= CGI.escape(request.path) %>">
+        登录
+      </a>
+      后回答
       <% else %>
       你的回答
-
-      <div class="form-group">
-        <textarea id="editor1" name="editor1"></textarea>
-        <script>
-          CKEDITOR.replace('editor1');
-        </script>
-      </div>
-      <a class="btn btn-primary" href="javascript:void(0);"
-         onclick="javascript:do_answer(<%= @q.id %>);">提交</a>
-      <div id="err_msg_ask" class="text-danger"></div>
-
+      <div class="form-group" id="answer-editor-box"></div>
+      <button class="btn btn-primary" name="btn_submit" data-qid="<%= @q.id %>">提交回答</button>
+      <% content_for :extra_js_tags do %>
+      <script type="text/javascript" src="/vendors/wangEditor/js/wangEditor.min.js"></script>
+      <script type="text/javascript" src="/js/my-answer.js"></script>
       <% end %>
-    </div> <!-- end of col-9 -->
+      <% end %>
+      <!-- end of answering zone -->
+    </div>
 
     <div class="col-md-3">
       <%= render_question_list :related %>

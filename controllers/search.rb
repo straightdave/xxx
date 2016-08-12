@@ -20,7 +20,18 @@ post '/search_title' do
 
     results = Question.ft_search_title keys
     if results && results.size > 0
-      json num: results.size, data: results.to_json
+      ret = []
+
+      results.each do |q|
+        ret << {
+          "id"      => q.id,
+          "title"   => q.title,
+          "votes"   => q.scores,
+          "has_acc" => !q.accepted_answer.nil?
+        }
+      end
+
+      json num: ret.size, data: ret.to_json
     end
   end
 end

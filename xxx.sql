@@ -441,22 +441,22 @@ CREATE TABLE `users` (
 
 -- all pre-defined users' passwords are 'Password01!'
 -- dave's pass is '123123'
-INSERT INTO `users` (id, login_name, password, salt, email, reputation)
+INSERT INTO `users` (id, login_name, password, salt, role, email, reputation)
 VALUES
-(1, 'admin', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 'admin@shifeishuo.com', 99999),
-(2, 'root', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 'root@shifeishuo.com', 99999),
-(3, 'adm', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 'adm@shifeishuo.com',99999),
-(4, 'manager', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 'manager@shifeishuo.com', 99999),
-(5, 'siteroot', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 'siteroot@shifeishuo.com', 99999),
-(6, 'siteadmin', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 'siteadmin@shifeishuo.com', 99999),
-(7, 'rootuser', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 'rootuser@shifeishuo.com', 99999),
-(8, 'systemadmin', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 'systemadmin@shifeishuo.com', 99999),
-(9, 'sysadmin', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 'sysadmin@shifeishuo.com', 99999),
-(10, 'test', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 'test@shifeishuo.com', 99999),
-(11, 'testuser', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 'testuser@shifeishuo.com', 99999),
-(12, 'dave', 'b1b5de756adee4a8c266c8077c24db3b', 'salt', 'dave@shifeishuo.com', 99999),
-(13, 'qpy', 'b1b5de756adee4a8c266c8077c24db3b', 'salt', 'qpy@shifeishuo.com', 99999),
-(14, 'administrator', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 'administrator@shifeishuo.com', 99999);
+(1, 'admin', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 8, 'admin@shifeishuo.com', 99999),
+(2, 'root', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 8, 'root@shifeishuo.com', 99999),
+(3, 'adm', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 8, 'adm@shifeishuo.com',99999),
+(4, 'manager', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 8, 'manager@shifeishuo.com', 99999),
+(5, 'siteroot', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 8, 'siteroot@shifeishuo.com', 99999),
+(6, 'siteadmin', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 8, 'siteadmin@shifeishuo.com', 99999),
+(7, 'rootuser', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 8, 'rootuser@shifeishuo.com', 99999),
+(8, 'systemadmin', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 8, 'systemadmin@shifeishuo.com', 99999),
+(9, 'sysadmin', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 8, 'sysadmin@shifeishuo.com', 99999),
+(10, 'test', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 8, 'test@shifeishuo.com', 99999),
+(11, 'testuser', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 8, 'testuser@shifeishuo.com', 99999),
+(12, 'dave', 'b1b5de756adee4a8c266c8077c24db3b', 'salt', 8, 'dave@shifeishuo.com', 99999),
+(13, 'qpy', 'b1b5de756adee4a8c266c8077c24db3b', 'salt', 8, 'qpy@shifeishuo.com', 99999),
+(14, 'administrator', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 8, 'administrator@shifeishuo.com', 99999);
 
 INSERT INTO `user_info` (user_id, nickname)
 VALUES

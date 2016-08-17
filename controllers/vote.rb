@@ -15,7 +15,9 @@ post %r{/([q|a|c|article])/(\d+)/(downvote|vote)} do |type, id, act|
     return json ret: "error", msg: "不可以给自己投票哦"
   end
 
-  return (json ret: "error", msg: "你已经给这个投过票了") if user.already_voted?(obj)
+  if user.already_voted?(obj) && user.reputation < 50000
+    return json ret: "error", msg: "你已经给它投过票了"
+  end
 
   if act == "vote"
     if user.reputation >= 15 || settings.ignore_repu_limit

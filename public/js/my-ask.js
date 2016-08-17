@@ -1,4 +1,5 @@
 (function (window, $) {
+
   /* used in ask page only */
   var submit_question = function (html_content) {
     var _titleBox  = $("input[name='title']"),
@@ -210,6 +211,9 @@
       if (tag_name.length < 2) { return; }
 
       $.post('/tag/search', {"q" : tag_name}, function (data, status) {
+        var can_create_tag = data.can_create;
+        console.log(data);
+
         if (data.num > 0) {
           var ts = JSON.parse(data.data);
           var tagItems = "";
@@ -222,18 +226,26 @@
             if (ts[i].name == tag_name) { all_diff = false; }
           }
           if (all_diff) {
-            tagItems += "<li role='separator' class='divider'></li>";
-            tagItems += "<li><a name='" + tag_name + "' class='new-tag'>";
-            tagItems += "创建标签<span class='q_tag'>";
-            tagItems += tag_name + "</span></a></li>";
+            if (can_create_tag) {
+              tagItems += "<li role='separator' class='divider'></li>";
+              tagItems += "<li><a name='" + tag_name + "' class='new-tag'>";
+              tagItems += "创建标签 <span class='q_tag'>";
+              tagItems += tag_name + "</span></a></li>";
+            }
           }
           $("ul#tag-suggest").html(tagItems);
         }
         else {
-          var createNewTag = "<li><a name='" + tag_name + "' class='new-tag'>";
-          createNewTag += "创建标签<span class='q_tag'>";
-          createNewTag += tag_name + "</span></a></li>";
-          $("ul#tag-suggest").html(createNewTag);
+          if (can_create_tag) {
+            var createNewTag = "<li><a name='" + tag_name + "' class='new-tag'>";
+            createNewTag += "创建标签 <span class='q_tag'>";
+            createNewTag += tag_name + "</span></a></li>";
+            $("ul#tag-suggest").html(createNewTag);
+          }
+          else {
+            var createNewTag = "<li><a href='javascript:void(0);'>无匹配标签</a></li>";
+            $("ul#tag-suggest").html(createNewTag);
+          }
         }
         var top = $("div[class='bootstrap-tagsinput'] > input").offset().top;
         var left = $("div[class='bootstrap-tagsinput'] > input").offset().left;

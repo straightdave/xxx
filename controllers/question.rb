@@ -15,23 +15,30 @@ post '/ask' do
   new_q.author  = author
   new_q.watchers << author
 
-  params['tags'].split(',').each do |t|
-    t = ERB::Util.h t
-    tag = Tag.find_or_create_by(name: t)
-    tag.used += 1
-    new_q.tags << tag
-    tag.save if tag.valid?
-  end unless params['tags'].nil?
-
-  unless new_q.valid?
-    return (json ret: "error", msg: new_q.errors.messages.inspect)
+  if !params['tags'].nil?
+    params['tags'].split(',').each do |t|
+      t = ERB::Util.h t
+      tag = Tag.find_or_create_by(name: t)
+      tag.used += 1
+      if tag.valid?
+        tag.save
+      else
+        # TODO: needs transaction
+        return json ret: "error", msg: "保存标签(#{t})失败"
+      end
+      new_q.tags << tag
+    end
   end
-  new_q.save
 
-  send_msg_after_ask(author, new_q)
-  author.update_reputation! by: 1, since: "asked one question"
-  author.record_event(:ask, new_q)
-  json ret: "success", msg: new_q.id
+  if new_q.valid?
+    new_q.save
+    send_msg_after_ask(author, new_q)
+    author.record_event(:ask, new_q)
+    json ret: "success", msg: new_q.id
+  else
+    # TODO: need to use transaction to rollback
+    json ret: "error", msg: "保存问题失败"
+  end
 end
 
 get '/questions' do
@@ -277,7 +284,6 @@ post '/q/:qid/accept' do |qid|
       asker.update_reputation! by: 2, since: "accepting one answer"
     end
     asker.record_event(:accept, answer)
-
     json ret: "success"
   else
     json ret: "error", msg: "accept_failed"

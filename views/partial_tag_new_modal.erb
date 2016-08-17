@@ -11,6 +11,7 @@
         <p id="new-tag-name">
           标签名称：<span class="q_tag"></span>
         </p>
+        <p>标签类别：知识范畴</p>
         <hr>
         <p id="new-tag-desc">
           <textarea style="width: 100%;" placeholder="输入标签描述"></textarea>
@@ -44,8 +45,8 @@
       var name = $("#new-tag-name > span").text().trim();
       var desc = $("#new-tag-desc > textarea").val().trim();
 
-      console.log("wrote a tag, name=" + name + ", desc=" + desc);
       if (name != '' && desc!= '') {
+        // assume category is 'knowledge' only
         $.post('/tag/new', { "name": name, "desc": desc }, function (data, status) {
           if (data.ret == "success") {
             add_new_tag(name);

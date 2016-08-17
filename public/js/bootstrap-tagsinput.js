@@ -18,7 +18,7 @@
     addOnBlur: false,  // dave: false. for tag-sug
     maxTags: 5,
     maxChars: 8,
-    confirmKeys: [], //[13, 44],  // dave: only confirm by click dropdown item
+    confirmKeys: [],  // [13, 44] dave: only confirm by click dropdown item
     delimiter: ',',
     delimiterRegex: null,
     cancelConfirmKeysOnEmpty: true,
@@ -423,35 +423,36 @@
       }, self));
 
       self.$container.on('keypress', 'input', $.proxy(function(event) {
-         var $input = $(event.target);
+        var $input = $(event.target);
 
-         if (self.$element.attr('disabled')) {
-            self.$input.attr('disabled', 'disabled');
-            return;
-         }
+        if (self.$element.attr('disabled')) {
+          self.$input.attr('disabled', 'disabled');
+          return;
+        }
 
-         var text = $input.val(),
-         maxLengthReached = self.options.maxChars && text.length >= self.options.maxChars;
-         if (self.options.freeInput && (keyCombinationInList(event, self.options.confirmKeys) || maxLengthReached)) {
-            // Only attempt to add a tag if there is data in the field
-            if (text.length !== 0) {
-               self.add(maxLengthReached ? text.substr(0, self.options.maxChars) : text);
-               $input.val('');
-               // dave: cancel suggest menu if finishs input for a tag
-               $('#tag-suggest').hide();
-            }
+        var text = $input.val(),
+        maxLengthReached = self.options.maxChars && text.length >= self.options.maxChars;
+        if (self.options.freeInput && (keyCombinationInList(event, self.options.confirmKeys) || maxLengthReached)) {
+          // Only attempt to add a tag if there is data in the field
+          if (text.length !== 0) {
+            // dave: not auto-add this tag by exceeding max length
+            // self.add(maxLengthReached ? text.substr(0, self.options.maxChars) : text);
+            $input.val('');
+            // dave: cancel suggest menu if finishs input for a tag
+            $('#tag-suggest').hide();
+          }
 
-            // If the field is empty, let the event triggered fire as usual
-            if (self.options.cancelConfirmKeysOnEmpty === false) {
-               event.preventDefault();
-            }
-         }
+          // If the field is empty, let the event triggered fire as usual
+          if (self.options.cancelConfirmKeysOnEmpty === false) {
+             event.preventDefault();
+          }
+        }
 
-         // Reset internal input's size
-         var textLength = $input.val().length,
+        // Reset internal input's size
+        var textLength = $input.val().length,
             wordSpace = Math.ceil(textLength / 5),
             size = textLength + wordSpace + 1;
-         $input.attr('size', Math.max(this.inputSize, $input.val().length));
+        $input.attr('size', Math.max(this.inputSize, $input.val().length));
       }, self));
 
       // Remove icon clicked
@@ -509,7 +510,7 @@
      */
     findInputWrapper: function() {
       var elt = this.$input[0],
-        container = this.$container[0];
+          container = this.$container[0];
       while(elt && elt.parentNode !== container)
         elt = elt.parentNode;
 

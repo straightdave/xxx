@@ -69,6 +69,7 @@ end
 # update tags by moderators
 post '/t/:tid' do |tid|
   login_filter required_roles: [ User::Role::MODERATOR ]
+
   unless tag = Tag.find_by(id: tid)
     return json ret: "error", msg: "tag_error"
   end
@@ -93,14 +94,19 @@ post '/t/:tid' do |tid|
   end
 end
 
+# only used in asking page, ajax search
 post '/tag/search' do
+  user = login_filter
+  can_create = (user.reputation > 1500 || settings.ignore_repu_limit)
+
   if (search_str = ERB::Util.h(params['q'])) &&
      (keys = search_str.split '+') &&
      keys.size > 0
 
-    results = Tag.ft_search_name keys
-    if results && results.size > 0
-      json num: results.size, data: results.to_json
+    if results = (Tag.ft_search_name keys)
+      json num: results.size, data: results.to_json, can_create: can_create
+    else
+      json can_create: can_create
     end
   end
 end
@@ -108,10 +114,17 @@ end
 post '/tag/new' do
   author = login_filter
 
+  if author.reputation < 1500 && !settings.ignore_repu_limit
+    return json ret: "error", msg: "声望不足，无法创建tag"
+  end
+
   if (name = ERB::Util.h(params['name'])) && (desc = ERB::Util.h(params['desc']))
     new_tag = Tag.new
     new_tag.name = name
     new_tag.desc = desc
+    new_tag.category = 'knowledge'  # here creates knowledge scope tags only
+    new_tag.created_by = author.id
+
     if new_tag.valid?
       new_tag.save
       json ret: "success", msg: new_tag.id

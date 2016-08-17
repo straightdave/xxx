@@ -290,7 +290,7 @@ CREATE TABLE `questions` (
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   FULLTEXT KEY `ft_index` (`title`,`content`) /*!50100 WITH PARSER `ngram` */ ,
-  FULLTEXT KEY `ft_index_title` (`title`) /*!50100 WITH PARSER `ngram` */ 
+  FULLTEXT KEY `ft_index_title` (`title`) /*!50100 WITH PARSER `ngram` */
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -340,6 +340,7 @@ CREATE TABLE `tags` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
   `desc` varchar(255) DEFAULT NULL,
+  `category` varchar(10) DEFAULT 'unknown',
   `used` smallint(5) unsigned DEFAULT '0',
   `created_by` int(10) unsigned NOT NULL DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
@@ -347,9 +348,27 @@ CREATE TABLE `tags` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
   FULLTEXT KEY `ft_index_tags` (`name`,`desc`) /*!50100 WITH PARSER `ngram` */ ,
-  FULLTEXT KEY `ft_index_tags_name` (`name`) /*!50100 WITH PARSER `ngram` */ 
+  FULLTEXT KEY `ft_index_tags_name` (`name`) /*!50100 WITH PARSER `ngram` */
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+INSERT INTO `tags` (`name`, `category`)
+VALUES
+('北京','locale'),('上海','locale'),('南京','locale'),('深圳','locale'),
+('广州','locale'),('武汉','locale'),('香港','locale'),('杭州','lcale'),
+('厦门','locale'),('福州','locale'),('苏州','locale'),('连云港','locale'),
+('南宁','locale'),('无锡','locale'),('温州','locale'),('济南','locale'),
+('婚姻法','knowledge'),('民法','knowledge'),('刑法','knowledge'),
+('行政诉讼法','knowledge'),('民商法','knowledge'),('公司法','knowledge'),
+('税法','knowledge'),('未成年人保护法','knowledge'),('刑事诉讼法','knowledge'),
+('民事诉讼法','knowledge'),('反垄断法','knowledge'),('宪法','knowledge'),
+('股权变更','knowledge'),('合同法','knowledge'),('合同审查','knowledge'),
+('内控','knowledge'),('知识产权','knowledge'),('专利','knowledge'),
+('涉外','knowledge'),('海商法','knowledge'),('英文合同','knowledge'),
+('高新科技','knowledge'),('劳动法','knowledge'),('调解','knowledge'),
+('继承法','knowledge'),('遗产分配','knowledge'),('房屋产权','knowledge'),
+('公司法务','knowledge'),('外包','knowledge'),('食品卫生法','knowledge'),
+('商标','knowledge'),('物权法','knowledge'),('民事纠纷','knowledge');
 
 --
 -- Table structure for table `user_info`
@@ -420,6 +439,42 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+-- all pre-defined users' passwords are 'Password01!'
+-- dave's pass is '123123'
+INSERT INTO `users` (id, login_name, password, salt, email, reputation)
+VALUES
+(1, 'admin', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 'admin@shifeishuo.com', 99999),
+(2, 'root', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 'root@shifeishuo.com', 99999),
+(3, 'adm', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 'adm@shifeishuo.com',99999),
+(4, 'manager', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 'manager@shifeishuo.com', 99999),
+(5, 'siteroot', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 'siteroot@shifeishuo.com', 99999),
+(6, 'siteadmin', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 'siteadmin@shifeishuo.com', 99999),
+(7, 'rootuser', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 'rootuser@shifeishuo.com', 99999),
+(8, 'systemadmin', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 'systemadmin@shifeishuo.com', 99999),
+(9, 'sysadmin', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 'sysadmin@shifeishuo.com', 99999),
+(10, 'test', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 'test@shifeishuo.com', 99999),
+(11, 'testuser', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 'testuser@shifeishuo.com', 99999),
+(12, 'dave', 'b1b5de756adee4a8c266c8077c24db3b', 'salt', 'dave@shifeishuo.com', 99999),
+(13, 'qpy', 'b1b5de756adee4a8c266c8077c24db3b', 'salt', 'qpy@shifeishuo.com', 99999),
+(14, 'administrator', 'e02dfb7cee9fbd586ae8f63a03a6cae7', 'salt', 'administrator@shifeishuo.com', 99999);
+
+INSERT INTO `user_info` (user_id, nickname)
+VALUES
+(1, 'admin'),
+(2, 'root'),
+(3, 'adm'),
+(4, 'manager'),
+(5, 'siteroot'),
+(6, 'siteadmin'),
+(7, 'rootuser'),
+(8, 'systemadmin'),
+(9, 'sysadmin'),
+(10, 'test'),
+(11, 'testuser'),
+(12, 'dave'),
+(13, 'qpy'),
+(14, 'administrator');
+
 --
 -- Table structure for table `votes`
 --
@@ -463,4 +518,4 @@ CREATE TABLE `watching_list` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-07-28 13:56:48
+-- Dump completed on 2016-08-17 16:39:40

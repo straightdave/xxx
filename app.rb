@@ -34,6 +34,7 @@ configure do
   disable :ignore_roles_limit
 
   set :quoted_char_num, 140
+  set :show_exceptions, :after_handler    # comment this to show err detail in development
 
   set :public_folder, File.dirname(__FILE__) + '/public'
   set :avatar_folder, File.dirname(__FILE__) + '/public/uploads/avatars'

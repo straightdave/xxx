@@ -122,11 +122,12 @@ get '/users' do
     @page = @page.to_i
   end
 
-  @users = User.order(reputation: :desc)
+  @users = User.where("role <> 8 AND role <> 9")
+               .order(reputation: :desc)
                .limit(@slice)
                .offset(@slice * (@page - 1))
 
-  total_users = User.count
+  total_users = User.where("role <> 8 OR role <> 9").count
   @total_page = total_users / @slice
   if total_users % @slice != 0
     @total_page += 1

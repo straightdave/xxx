@@ -40,7 +40,7 @@ class Tag < ActiveRecord::Base
 
   def self.ft_search(keys, category = 'knowledge')
     search_str = keys.join(" ")
-    Tag.where("`category` = '?' AND MATCH (name, `desc`) AGAINST ( ? IN NATURAL LANGUAGE MODE )", category, search_str)
+    Tag.where("`category` = ? AND MATCH (name, `desc`) AGAINST ( ? IN NATURAL LANGUAGE MODE )", category, search_str)
   end
 
   def self.ft_search_name(keys, limit = 10)

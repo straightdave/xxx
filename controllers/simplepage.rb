@@ -22,7 +22,10 @@ not_found do
   erb :page_404, layout: false
 end
 
-error do
+error 400..550 do
+  @title = "{Error!}"
+  @reason = "#{env['sinatra.error'].message}"
+  @sub_reason = "如果您认为是bug，可以发邮件至<a href='mailto:bug@shifeishuo.com'>bug@shifeishuo.com</a>报告"
   erb :page_error, layout: false
 end
 

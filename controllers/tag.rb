@@ -170,12 +170,12 @@ get '/tags' do
            .slice(@slice * (@page - 1) .. @slice * @page)
     end
   else
-    total_size = Tag.count
+    total_size = Tag.where("category = 'knowledge'").count
     @tags = case @sort_by
     when 'hot'
-      Tag.order(used: :desc).limit(@slice).offset(@slice * (@page - 1))
+      Tag.where("category = 'knowledge'").order(used: :desc).limit(@slice).offset(@slice * (@page - 1))
     when 'new'
-      Tag.order(created_at: :desc).limit(@slice).offset(@slice * (@page - 1))
+      Tag.where("category = 'knowledge'").order(created_at: :desc).limit(@slice).offset(@slice * (@page - 1))
     end
   end
   @total_page = total_size / @slice + (total_size % @slice != 0 ? 1 : 0)

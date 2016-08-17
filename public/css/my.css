@@ -4,7 +4,7 @@ html {
 }
 body {
   /* Margin bottom by footer height */
-  margin-bottom: 240px;
+  margin-bottom: 250px;
 
   /* always show the y-scrollbar, this is a walkaround
   to stop scrollbar affecting page width */
@@ -92,7 +92,7 @@ footer {
   position: absolute;
   bottom: 0px;
   width: 100%;
-  height: 300px;
+  height: 250px;
   background-color: #EBF2F5;
   padding: 20px;
   padding-top: 50px;
@@ -910,4 +910,33 @@ ul.tabs-right li {
 /* used in validation result page and info page */
 div.info_box {
   margin: 70px 0;
+}
+
+/* 404 page */
+body.is_404 {
+  background: lightgray;
+  background: linear-gradient(135deg, #fff 55px, transparent 0),
+              linear-gradient(135deg, #134fb8 95px, transparent 0),
+              linear-gradient(135deg, #3AF 105px, #fff 0);
+  overflow-y: hidden;
+  font-size: 1.1em;
+}
+
+div.centered-box {
+  margin: 0 auto;
+  text-align: center;
+  margin-top: 280px;
+}
+
+div.centered-box > h1 {
+  font-size: 4em;
+}
+
+span#futa {
+  color: gray;
+}
+
+div.centered-box a {
+  text-decoration: none;
+  font-weight: bold;
 }

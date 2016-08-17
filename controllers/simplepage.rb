@@ -1,3 +1,9 @@
+get '/help' do
+  @navbar_hide_level = 'all'
+  @title = "帮助"
+  erb :help
+end
+
 get '/terms' do
   @navbar_hide_level = 'all'
   @title = "条款"
@@ -5,7 +11,6 @@ get '/terms' do
 end
 
 get '/404' do
-  @navbar_hide_level = 'all'
   erb :page_404, layout: false
 end
 

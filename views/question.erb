@@ -288,7 +288,7 @@
       问题被冻结，无法回答
       <% elsif !login?%>
       请先 <a class="btn btn-default btn-sm"
-         href="/user/signin?returnurl=<%= CGI.escape(request.path) %>">登录</a>后回答
+         href="/user/signin?returnurl=<%= CGI.escape(request.path) %>">登录</a> 后回答
       <% else %>
       <div class="form-group" id="answer-editor-box"></div>
       <button class="btn btn-primary" name="btn_submit" data-qid="<%= @q.id %>">提交回答</button>

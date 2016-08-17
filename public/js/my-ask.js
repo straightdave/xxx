@@ -210,7 +210,7 @@
       var tag_name = tag_input.val();
       if (tag_name.length < 2) { return; }
 
-      $.post('/tag/search', {"q" : tag_name}, function (data, status) {
+      $.post('/tag/search', {"q" : tag_name, "category" : "knowledge"}, function (data, status) {
         var can_create_tag = data.can_create;
         console.log(data);
 

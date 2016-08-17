@@ -62,26 +62,20 @@
         查看&nbsp;<a class="btn btn-default btn-sm" href="/questions">所有问题</a>
       </p>
       <p class="margin-top-20">
-        您可以通过&nbsp;
-        <a class="btn btn-default btn-sm" href="/tags">标签</a>&nbsp;
-        或者&nbsp;
-        <a class="btn btn-default btn-sm" href="/search">搜索</a>&nbsp;
+        您可以通过 <a class="btn btn-default btn-sm" href="/tags">标签</a>&nbsp;
+        或者 <a class="btn btn-default btn-sm" href="/search">搜索</a>&nbsp;
         功能更加精确地查找问题
       </p>
     </div>
 
     <div class="col-md-3">
-      <div class="tags">
-        <h5>热门标签</h5>
-        <% @hot_tags.each do |t| %>
-          <a href="javascript:void(0);" class="tag"
-             onclick="javascript:go_tag(<%= t.id %>);">
-            <%= t.name %>
-          </a>
-        <% end %>
+      <div class="right-panel-box">
+        <%= render_tag_box by: :hot, sum: 20 %>
       </div>
 
-      <%= render_top_user %>
+      <div class="right-panel-box">
+        <%= render_top_user %>
+      </div>
 
     </div>
   </div>

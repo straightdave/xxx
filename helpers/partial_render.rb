@@ -1,3 +1,5 @@
+
+
 helpers do
   def render_ad
     erb :partial_ad, layout: false
@@ -76,5 +78,16 @@ helpers do
 
   def render_question_list(type = :related)
     erb :partial_question_list, layout: false, locals: { question_type: type }
+  end
+
+  def render_tag_box(param = {})
+    by_what = param[:by] || :hot
+    amount = param[:sum] || 10
+
+    tags = case by_what
+    when :hot then
+      Tag.top_used(amount)
+    end
+    erb :partial_tags, layout: false, locals: { tags: tags }
   end
 end

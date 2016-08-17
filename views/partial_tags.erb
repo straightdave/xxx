@@ -1,0 +1,9 @@
+<% if tags.size > 0 %>
+  <div class="tags">
+  <% tags.each do |t| %>
+    <a href="/t/<%= t.id %>">
+      <span class="q_tag"><%= t.name %></span>
+    </a>
+  <% end %>
+  </div>
+<% end %>

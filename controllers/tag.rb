@@ -97,13 +97,16 @@ end
 # only used in asking page, ajax search
 post '/tag/search' do
   user = login_filter
+
+  category = params['category'] || 'knowledge'
+
   can_create = (user.reputation > 1500 || settings.ignore_repu_limit)
 
   if (search_str = ERB::Util.h(params['q'])) &&
      (keys = search_str.split '+') &&
      keys.size > 0
 
-    if results = (Tag.ft_search_name keys)
+    if results = (Tag.ft_search_name keys, category)
       json num: results.size, data: results.to_json, can_create: can_create
     else
       json can_create: can_create

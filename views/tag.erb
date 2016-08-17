@@ -6,7 +6,9 @@
     <div class="col-md-9">
       <span class="q_tag text-1_5times"><%= @tag.name %></span>
       &times; <%= @tag.used %>
+      <% if @tag.created_by != 0 %>
       创建于<%= time_ago_in_words_zh(@tag.created_at) %>
+      <% end %>
 
       <blockquote class="margin-top-10">
         <p>

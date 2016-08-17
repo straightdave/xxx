@@ -62,7 +62,7 @@
             </form>
 
             <ul class="nav navbar-nav navbar-right">
-              <% if !login? && request.path != '/user/signin' %>
+              <% if !login? && !(request.path.start_with?('/user/signin') || request.path.start_with?('/user/signup')) %>
               <li>
                 <a href="javascript:void(0);" data-toggle="modal"
                    data-target="#login-modal" title="Sign In">

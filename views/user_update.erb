@@ -9,11 +9,11 @@
           </div>
           <div class="avatar-controls">
             <form id="avatar-form" method="post" enctype="multipart/form-data"
-                  charset="utf-8" action="/upload">
+                    charset="utf-8" action="/upload">
               <label>改变头像</label>
               <input type="file" name="file" aria-describedby="h_upload" />
               <p id="h_upload" class="help-block">
-                图片格式jpg jpeg png，不超过50k
+                图片格式为jpg/jpeg或png，不超过50k
               </p>
             </form>
           </div>
@@ -31,7 +31,7 @@
           <div class="form-group">
             <label>个人简介</label>
             <input type="text" name="intro" class="form-control"
-                   value="<%= @user_info.intro %>" aria-describedby="h_intro">
+                   value="<%= @user_info.intro %>"c>
             <span id="h_intro" class="help-block">一句话简单介绍或个性签名</span>
           </div>
 
@@ -42,7 +42,8 @@
 
           <div class="form-group">
             <label>城市</label>
-            <input type="text" name="city" class="form-control" value="<%= @user_info.city %>">
+            <input type="text" name="city" class="form-control" value="<%= @user_info.city %>" aria-describedby="h_city">
+            <span id="h_city" class="help-block">正确的城市名称是非常重要的</span>
           </div>
 
           <div class="form-group">
@@ -57,8 +58,7 @@
 
           <div class="form-group">
             <label>备用邮箱</label>
-            <input type="text" name="email2" class="form-control" value="<%= @user_info.email2 %>"
-                   aria-describedby="h_email2">
+            <input type="text" name="email2" class="form-control" value="<%= @user_info.email2 %>" aria-describedby="h_email2">
             <span id="h_email2" class="help-block">
               如果注册邮箱突然无法访问，备份邮箱就十分关键。
             </span>
@@ -152,11 +152,6 @@
     }
   };
 
-  /* update own profile page */
-  var _do_avatar_change = function () {
-    $("form#avatar-form").submit();
-  };
-
   var _do_update = function () {
     var data = {
       "nickname" : $("input[name='nickname']").val().trim(),
@@ -174,12 +169,8 @@
 
     if (is_ok_email) {
       $.post("/user/profile", data, function (data, status) {
-        if(data.ret == "success") {
-          location.replace("/user/home");
-        }
-        else {
-          show_below_msg(btnUpdate, data.msg);
-        }
+        if(data.ret == "success") { location.replace("/user/home"); }
+        else { show_below_msg(btnUpdate, data.msg); }
       });
     }
   };
@@ -187,7 +178,25 @@
   $(function () {
     btnSendMail.on('click.app', _resend_validation);
     btnUpdate.on('click.app', _do_update);
-    btnAvatar.change(_do_avatar_change);
+    btnAvatar.change(function (event) {
+      if (this.files.length > 0) {
+        var file = this.files[0];
+        console.log(file);
+        var name = file.name;
+        var type = file.type;
+        var size = file.size;
+        if (size > 50000) {
+          show_below_msg(btnAvatar, "图片（" + size + "）尺寸过大");
+        }
+        else if (type != "image/png" && type != "image/jpeg") {
+          show_below_msg(btnAvatar, "图片格式（" + type + "）不符合要求");
+        }
+        else {
+          clean_below_msg(btnAvatar);
+          $("#avatar-form").submit();
+        }
+      }
+    });
     emailbox.change(function () { email_changed = true; });
     emailbox.blur(check_email);
   });

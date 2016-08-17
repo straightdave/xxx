@@ -1,47 +1,23 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="keywords" content="是非说,法律,法务,问答,社区" />
-    <meta name="description" content="是非说 法律 法务 问答 社区" />
-    <title>是非说 出错了</title>
-    <style type="text/css">
-      body {
-        font-family: 'Microsoft Yahei', monospace,serif;
-        padding: 0;
-        margin: 0;
-      }
-      p.words {
-        padding: 5px;
-      }
-      .big {
-        font-size: 2em;
-      }
-      div.mid-pane {
-        height: 400px;
-        width: 40%;
-        margin: 0 auto;
-        margin-top: 200px;
-      }
-      div.mid-pane img {
-        margin: 10px;
-        float: left;
-      }
-    </style>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><%= @title || "服务器错误" %> - 是非说</title>
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/css/my.css" />
+    <!--[if lt IE 9]>
+      <script src="/js/html5shiv.min.js"></script>
+      <script src="/js/respond.min.js"></script>
+    <![endif]-->
   </head>
-  <body>
-    <div class="mid-pane">
-      <img src="/hanfeizi.jpg" alt="hanfeizi" />
-      <p class="words">
-        <span class="big">是非曰：</span><br>
-        法已定矣。不以善言害法<br>
-        Mr. Hanfei said nobly: <br>
-        ¯\_(ツ)_/¯ <br>
-        Oh man you just stepped on a big pile of shit!
-      </p>
-      <a href="/">返回首页(back to home)</a>
+  <body class="is_error">
+    <div class="centered-box">
+      <h1><%= @title %></h1>
+      <p><%= @reason %><br>
+      <span id="futa"><%= @sub_reason %></span></p>
+      <p><a href="/">返回首页</a></p>
     </div>
   </body>
 </html>

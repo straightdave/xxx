@@ -16,41 +16,37 @@
 
 <div class="wrapper"><!-- body wrapper starts -->
 
-  <div class="w3-top">
+  <div class="w3-top" style="z-index:99">
   <ul class="w3-navbar w3-large w3-white w3-card-2">
     <li class="w3-hide-medium w3-hide-large w3-opennav w3-right">
-      <a href="javascript:void(0);" onclick="openX('navbar-sm')">
+      <a href="javascript:void(0)" onclick="openX('navbar-sm')">
         <i class="fa fa-bars"></i>
       </a>
     </li>
 
     <li class="w3-hide-small w3-dropdown-click">
-      <a href="javascript:void(0);" onclick="openLangBox()" title="Change Language">
+      <a href="javascript:void(0)" onclick="openLangBox()" title="Change Language">
         <i class="fa fa-language"></i>
       </a>
       <div id="langbox" class="w3-dropdown-content w3-white w3-card-2 w3-medium">
-        <a href="javascript:void(0);" onclick="changeLanguage('zh_cn')">中文 (zh-CN)</a>
-        <a href="javascript:void(0);" onclick="changeLanguage('en_us')">English (en-US)</a>
+        <a href="javascript:void(0)" onclick="changeLanguage('zh_cn')">中文 (zh-CN)</a>
+        <a href="javascript:void(0)" onclick="changeLanguage('en_us')">English (en-US)</a>
       </div>
     </li>
 
     <li class="w3-hide-small w3-dropdown-click">
-      <a id="anchor-mailbox" href="javascript:void(0);" onclick="openMailBox()">
+      <a id="anchor-mailbox" href="javascript:void(0)" onclick="openMailBox()">
         <i class="fa fa-envelope-o"></i>
       </a>
-      <div id="mailbox" class="w3-dropdown-content w3-card-2">
-        <div class="w3-container w3-padding">
-        </div>
+      <div id="mailbox" class="w3-dropdown-content w3-card-2 w3-medium">
       </div>
     </li>
 
     <li class="w3-hide-small w3-dropdown-click">
-      <a id="anchor-user" href="javascript:void(0);" onclick="openPersonalbox()">
+      <a id="anchor-user" href="javascript:void(0)" onclick="openPersonalbox()">
         <i class="fa fa-user"></i>
       </a>
-      <div id="personalbox" class="w3-dropdown-content w3-card-2">
-        <div class="w3-container w3-padding">
-        </div>
+      <div id="personalbox" class="w3-dropdown-content w3-card-2 w3-medium">
       </div>
     </li>
 
@@ -166,16 +162,20 @@ function btnSearchClick() {
   else { window.location = "/search?q=" + q_keys; }
 }
 
+function shortenMsg(content) {
+  return content.replace(/(<([^>]+)>)/img,"").replace(/[\s\n]+/ig," ").substr(0,20)+"...";
+}
+
 function openMailBox() {
   closeX("langbox");
   closeX("personalbox");
   var x = document.getElementById("mailbox");
-  var panel = $("#mailbox div.w3-container");
+  var panel = $(x);
 
   $(document).ajaxStart(function(){
     panel.html("\
-      <div class='w3-text-grey'>\
-        <i class='fa fa-spin fa-refresh'></i> 正在读取信息\
+      <div class='w3-text-grey w3-container w3-padding'>\
+        <i class='fa fa-spin fa-refresh'></i> <%= I18N.ref("now_loading") %>\
       </div>");
   });
 
@@ -185,26 +185,26 @@ function openMailBox() {
       url: "/user/unread",
       success: function(result) {
         if(result.ret == true) {
-          console.log(result.msg);
           var data = JSON.parse(result.msg);
           var msg = JSON.parse(data.unread_msg);
           if (msg.length == 0) {
-            panel.html("<h6 class='w3-text-grey'>无未读消息</h6>");
+            panel.html("<h6 class='w3-text-grey w3-padding'><%= I18N.ref("no_unread_msg") %></h6>");
           }
           else {
             var content = "";
             for (var i = msg.length - 1; i >= 0; i--) {
-              content += "<p>" + msg[i].content + "</p>"
+              content += "<a href='/user/messages'>" + shortenMsg(msg[i].content) + "</a>";
             }
             panel.html(content);
           }
         }
         else {
           panel.html("\
-            <h6 class='w3-text-grey'>尚未登录</h6>\
-              <a class='w3-btn w3-padding w3-small w3-blue' \
-              href='/user/signin'><i class='fa fa-sign-in'></i> 登录</a>\
-            ");
+            <div class='w3-container w3-padding'>\
+              <h6 class='w3-text-grey'><%= I18N.ref("not_login") %></h6>\
+              <a class='w3-btn w3-padding w3-blue' \
+                 href='/user/signin'><%= I18N.ref("login") %></a>\
+            </div>");
         }
       }
     });
@@ -219,12 +219,12 @@ function openPersonalbox() {
   closeX("langbox");
   closeX("mailbox");
   var x = document.getElementById("personalbox");
-  var panel = $("#personalbox div.w3-container");
+  var panel = $(x);
 
   $(document).ajaxStart(function(){
     panel.html("\
-      <div class='w3-text-grey'>\
-        <i class='fa fa-spin fa-refresh'></i> 正在读取信息\
+      <div class='w3-text-grey w3-container w3-padding'>\
+        <i class='fa fa-spin fa-refresh'></i> <%= I18N.ref("now_loading") %>\
       </div>");
   });
 
@@ -235,20 +235,26 @@ function openPersonalbox() {
       success: function(result) {
         if(result.ret == true) {
           var data = JSON.parse(result.msg);
-
           var content = "\
-          <p>" + data.display + "</p>\
-          <p>" + data.url + "</p>\
-          ";
-
+          <div class='w3-container'>\
+            <h5 class='w3-left'>" + data.display + "</h5>\
+            <h5 class='w3-right w3-text-grey'>" + data.reputation + "</h5>\
+          </div>\
+          <div>\
+            <a href='" + data.url +"'><i class='fa fa-home'></i> <%= I18N.ref("myhome") %></a>\
+            <a href='/user/watchlist'><i class='fa fa-star-half-o'></i> <%= I18N.ref("watchlist") %></a>\
+            <a href='/drafts'><i class='fa fa-clipboard'></i> <%= I18N.ref("draft") %></a>\
+            <a href='/logout'><i class='fa fa-sign-out'></i> <%= I18N.ref("logout") %></a>\
+          </div>";
           panel.html(content);
         }
         else {
           panel.html("\
-            <h6 class='w3-text-grey'>尚未登录</h6>\
-              <a class='w3-btn w3-padding w3-small w3-blue' \
-              href='/user/signin'><i class='fa fa-sign-in'></i> 登录</a>\
-            ");
+            <div class='w3-container w3-padding'>\
+              <h6 class='w3-text-grey'><%= I18N.ref("not_login") %></h6>\
+              <a class='w3-btn w3-padding w3-blue' \
+              href='/user/signin'><%= I18N.ref("login") %></a>\
+            </div>");
         }
       }
     });
@@ -262,7 +268,7 @@ function openPersonalbox() {
 $("#txtSearch").keydown(function(event){
   if(event.which == 13){
     event.preventDefault();
-    window.location = "/search?q=" + encodeURIComponent($(this).val());
+    btnSearchClick();
   }
 });
 </script>

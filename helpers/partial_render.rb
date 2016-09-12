@@ -1,5 +1,3 @@
-
-
 helpers do
   def render_ad
     erb :partial_ad, layout: false
@@ -20,14 +18,6 @@ helpers do
     #  { name: "提问", active: true }
     # ]
     erb :partial_breadcrumb, layout: false
-  end
-
-  def render_login_modal
-    # interface:
-    # anchor or button with: data-toggle="modal" data-target="#login-modal"
-    # can toggle this modal
-    # using js: function login()
-    erb :partial_login_modal, layout: false
   end
 
   def render_report_modal(type, id)

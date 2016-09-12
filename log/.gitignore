@@ -1,4 +1,4 @@
-# here ignore all files under this folder
-# dave 2016/02/3
+# ignore log files in this folder
+# dave 2016/02/03
 
 *.log

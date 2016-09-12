@@ -117,20 +117,17 @@ class Question < ActiveRecord::Base
     self.status == 4
   end
 
-  def self.ft_search(keys)
+  def self.ft_search(search_str)
     # do full-text search with MySQL NGRAM ft engine
-    search_str = keys.join(" ")
     Question.where("MATCH (title,content) AGAINST (? IN NATURAL LANGUAGE MODE)", search_str)
   end
 
-  def self.ft_search_title(keys, limit = 10)
+  def self.ft_search_title(search_str, limit = 10)
     # used in asking page
-    search_str = keys.join(" ")
     Question.where("MATCH (title) AGAINST (? IN NATURAL LANGUAGE MODE)", search_str).limit(limit)
   end
 
-  def self.ft_search_intag(keys, tag_id)
-    search_str = keys.join(" ")
+  def self.ft_search_intag(search_str, tag_id)
     Question.joins("JOIN question_tag ON question_tag.question_id = questions.id")
             .where("question_tag.tag_id = ? AND MATCH (questions.title, questions.content)
                     AGAINST (? IN NATURAL LANGUAGE MODE)", tag_id, search_str)

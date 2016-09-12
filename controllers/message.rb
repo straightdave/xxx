@@ -35,7 +35,7 @@ end
 # ajax invoke for number of messages
 post '/user/message_amount' do
   user = login_filter required_status: false
-  json ret: "success", msg: user.inbox_messages.length
+  json ret: "success", msg: user.inbox_messages.where(isread: false).length
 end
 
 # mark all as read

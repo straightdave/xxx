@@ -22,7 +22,7 @@ get '/' do
   # TODO: later we could find better way to count how hot tags are
   @hot_tags = Tag.top_used(20)
 
-  @title          = "首页"
+  @title          = I18N.ref("homepage_title")
   @navbar_active  = "qna"
   @hide_header    = true if login?
   erb :home

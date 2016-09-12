@@ -12,6 +12,7 @@ require 'ruby_identicon'
 require_relative 'models/init'
 require_relative 'controllers/init'
 require_relative 'helpers/init'
+require_relative 'i18n/i18n'
 
 configure do
   set :db_conf, {
@@ -73,11 +74,14 @@ ActiveRecord::Base.default_timezone = :local
 
 before do
   $Scheme_host_port = "#{request.scheme}://#{request.host_with_port}"
+
   if login?
     unless @_current_user
       @_current_user = User.find_by(id: session[:user_id])
     end
   end
+
+  I18N.set_lang(cookies[:lang] || params["lang"])
 end
 
 # avoid db connection refused issue

@@ -7,8 +7,8 @@ body {
   margin-bottom: 250px;
 
   /* always show the y-scrollbar, this is a walkaround
-  to stop scrollbar affecting page width */
-  overflow-y: scroll;
+  to stop scrollbar affecting page width
+  overflow-y: scroll; */
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, STHeiti, "Microsoft Yahei", SimSun, sans-serif;
   font-size: 14px;
 }

@@ -1,179 +1,272 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="keywords" content="<%= @page_keywords_list %>,法律,法务,问答,社区,law,expertise exchange,community" />
-    <meta name="description" content="<%= @page_description %>" />
-    <title><%= @title %> - 是非说</title>
-    <link rel="icon" href="/favicon.ico" />
-    <link rel="stylesheet" href="/css/bootstrap-with-theme.min.css" />
-    <link rel="stylesheet" href="/css/my.css" />
-    <link rel="stylesheet" href="/css/font-awesome.min.css">
-    <%= yield_content :extra_css_tags %>
-    <script src="/js/jquery.min.js"></script>
-    <script src="/js/my.js"></script>
-    <!--[if lt IE 9]>
-      <script src="/js/html5shiv.min.js"></script>
-      <script src="/js/respond.min.js"></script>
-    <![endif]-->
-  </head>
-  <body>
-    <div class="wrapper"><!-- wrapper to make footer sticky to bottom -->
+<html>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title><%= @title %> - <%= I18N.ref("title_appendix") %></title>
+<link rel="icon" href="/favicon.ico" />
+<link rel="stylesheet" href="/css/w3.css" />
+<link rel="stylesheet" href="/css/w3-theme-blue-grey.css" />
+<link rel="stylesheet" href="/css/bootstrap-with-theme.min.css" />
+<link rel="stylesheet" href="/css/my.css" />
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+<%= yield_content :extra_css_tags %>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/my.js"></script>
+<body class="w3-theme-l5">
 
-      <nav class="navbar navbar-default">
-        <div class="container">
-          <div class="navbar-header">
-            <button type="button"
-                    class="navbar-toggle collapsed"
-                    data-toggle="collapse"
-                    data-target="#navbar-collapse-1"
-                    aria-expanded="false">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <div class="head-logo-box">
-              <a class="navbar-brand" href="/" title="Go Homepage">
-                <img alt="是非说" src="/little-logo.png" class="logo" />
-                <span class="beta">beta</span>
-              </a>
-            </div>
-          </div>
+<div class="wrapper"><!-- body wrapper starts -->
 
-          <div class="collapse navbar-collapse" id="navbar-collapse-1">
-            <ul class="nav navbar-nav">
-              <li <% if request.path == '/ask' %>class="disabled"<% end %>>
-                <a href="/ask" title="ask" id="tab-ask">
-                  <i class="fa fa-hand-paper-o fa-2x"></i>&nbsp;我要提问
-                </a>
-              </li>
-            </ul>
+  <div class="w3-top">
+  <ul class="w3-navbar w3-large w3-white w3-card-2">
+    <li class="w3-hide-medium w3-hide-large w3-opennav w3-right">
+      <a href="javascript:void(0);" onclick="openX('navbar-sm')">
+        <i class="fa fa-bars"></i>
+      </a>
+    </li>
 
-            <form class="navbar-form navbar-left" role="search" action="/search">
-              <div class="form-group">
-                <input type="text" class="form-control" id="quicksearch"
-                       name="q" placeholder="快速搜索"
-                       onfocus="javascript:widen_input(true);"
-                       onblur="javascript:widen_input(false);" />
-              </div>
-            </form>
+    <li class="w3-hide-small w3-dropdown-click">
+      <a href="javascript:void(0);" onclick="openLangBox()" title="Change Language">
+        <i class="fa fa-language"></i>
+      </a>
+      <div id="langbox" class="w3-dropdown-content w3-white w3-card-2 w3-medium">
+        <a href="javascript:void(0);" onclick="changeLanguage('zh_cn')">中文 (zh-CN)</a>
+        <a href="javascript:void(0);" onclick="changeLanguage('en_us')">English (en-US)</a>
+      </div>
+    </li>
 
-            <ul class="nav navbar-nav navbar-right">
-              <% if !login? && !(request.path.start_with?('/user/signin') || request.path.start_with?('/user/signup')) %>
-              <li>
-                <a href="javascript:void(0);" data-toggle="modal"
-                   data-target="#login-modal" title="Sign In">
-                  <i class="fa fa-sign-in"></i>&nbsp;登录
-                </a>
-              </li>
-              <% elsif login? %>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"
-                   role="button" aria-haspopup="true" aria-expanded="false">
-                  <img class="avatar-xs" src="<%= session[:user_avatar_url] %>">
-                  &nbsp;
-                  <%= session[:login_name] %>
-                  <% if session[:message_amount] > 0 %>
-                  &nbsp;
-                  <span class="badge">
-                    <%= session[:message_amount] %>
-                  </span>
-                  <% end %>
-                  <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu">
-                  <li>
-                    <a href="/user/home" title="Your SNS Homepage">
-                      <i class="fa fa-comments"></i>&nbsp;我的首页
-                    </a>
-                  </li>
-                  <li role="separator" class="divider"></li>
-                  <li>
-                    <a href="/user/messages" title="My Messages">
-                      <i class="fa fa-envelope"></i>&nbsp;我的消息
-                      <% if session[:message_amount] > 0 %>
-                      &nbsp;<span class="badge">
-                        <%= session[:message_amount] %>
-                      </span>
-                      <% end %>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/user/watchlist" title="My Watchlist">
-                      <i class="fa fa-star"></i>&nbsp;我的收藏
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/drafts" title="My Drafts">
-                      <i class="fa fa-clipboard"></i>&nbsp;我的草稿
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/user/profile" title="Update My Profile">
-                      <i class="fa fa-user"></i>&nbsp;更新资料
-                    </a>
-                  </li>
-                  <li role="separator" class="divider"></li>
-                  <li>
-                    <a href="javascript:void(0);" onclick="javascript:logout();"
-                       title="Sign Out">
-                      <i class="fa fa-sign-out"></i>&nbsp;退出登录
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <% end %>
+    <li class="w3-hide-small w3-dropdown-click">
+      <a id="anchor-mailbox" href="javascript:void(0);" onclick="openMailBox()">
+        <i class="fa fa-envelope-o"></i>
+      </a>
+      <div id="mailbox" class="w3-dropdown-content w3-card-2">
+        <div class="w3-container w3-padding">
+        </div>
+      </div>
+    </li>
 
-              <li>
-                <a href="/help" title="Help">帮助</a>
-              </li>
-            </ul>
-          </div><!-- /.navbar-collapse -->
-        </div><!-- /.container -->
-      </nav><!-- end of nav bar -->
+    <li class="w3-hide-small w3-dropdown-click">
+      <a id="anchor-user" href="javascript:void(0);" onclick="openPersonalbox()">
+        <i class="fa fa-user"></i>
+      </a>
+      <div id="personalbox" class="w3-dropdown-content w3-card-2">
+        <div class="w3-container w3-padding">
+        </div>
+      </div>
+    </li>
 
-      <%= render_login_modal %>
-      <%= render_nav_tab %>
-      <%= render_breadcrumb %>
-      <%= yield %>
-    </div><!-- end of wrapper -->
+    <li class="w3-hide-small w3-right">
+      <input id="txtSearch" type="text" class="w3-input w3-border-0"
+             placeholder="<%= I18N.ref("search") %>" />
+    </li>
+    <li class="w3-hide-small w3-right">
+      <a href="javascript:void(0);" onclick="btnSearchClick()">
+        <i class="fa fa-search"></i>
+      </a>
+    </li>
+  </ul>
+  </div>
 
-    <footer>
-      <div class="container">
-        <div class="row">
+  <!-- dropdown navbar for small size screen -->
+  <div id="navbar-sm" class="w3-hide w3-hide-large w3-hide-medium w3-border-bottom">
+    <ul class="w3-navbar w3-white w3-left-align">
+      <li><a href="#">placeholder1</a></li>
+      <li><a href="#">placeholder2</a></li>
+    </ul>
+  </div>
 
-          <div class="col-md-3">
-            <h5>内容许可</h5>
-            <p>
-              除特别说明外，用户内容均采用
-              <a href="http://creativecommons.org/licenses/by-sa/3.0/cn/">
-                知识共享署名-相同方式共享 3.0 中国大陆许可协议
-              </a> 进行许可
-            </p>
-            <p>
-              京ICP备16039816号-1
-            </p>
-          </div>
+  <%= render_nav_tab %>
+  <%= render_breadcrumb %>
+  <%= yield %>
 
-          <div class="col-md-3 col-md-offset-6">
-            <div class="footer-logo-box">
-              <img alt="是非说" src="/little-logo.png"/>
-              <span>beta</span>
-            </div>
-          </div>
+</div><!-- end of wrapper -->
 
-        </div><!-- end of the row -->
-      </div><!-- end of the container -->
-    </footer>
+<footer>
+  <div class="w3-row">
 
-    <div class="fixed-tool">
-      <a href="#" class="back-to-top" title="Back to Top">回到顶部</a>
+    <div class="w3-threequarter">
+      <div class="w3-row">
+        <div class="w3-third">
+          <p>
+            除特别说明外，用户内容均采用
+            <a href="http://creativecommons.org/licenses/by-sa/3.0/cn/">
+              知识共享署名-相同方式共享 3.0 中国大陆许可协议
+            </a>进行许可
+          </p>
+          <p>
+            京ICP备16039816号-1
+          </p>
+        </div>
+      </div>
     </div>
 
-    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <%= yield_content :extra_js_tags %>
-  </body>
+    <div class="w3-quarter w3-hide-medium w3-hide-small">
+      <div class="footer-logo-box">
+        <img alt="是非说" src="/little-logo.png"/>
+        <span>beta</span>
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+
+<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script>
+$(function(){
+  // init avatar on navbar
+  $.ajax({ url: "/user" })
+  .done(function(result){
+    if(result.ret == true){
+      var data = JSON.parse(result.msg);
+      $("#anchor-user").html("<img src='" + data.avatar + "' style='width: 30px; margin-top: -10px;' />");
+    }
+  })
+  .fail(function(){
+    console.log("init navbar ajax call failed");
+  });
+});
+
+function openX(eleId) {
+  var x = document.getElementById(eleId);
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+  }
+  else {
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
+
+function closeX(eleId) {
+  var x = document.getElementById(eleId);
+  if (x.className.indexOf("w3-show") != -1) {
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
+
+function openLangBox() {
+  closeX("mailbox");
+  closeX("personalbox");
+  openX("langbox");
+}
+
+function changeLanguage(lang_name) {
+  if(cookieEnabled()) {
+    setCookie("lang",lang_name,1);
+    location.replace(location.href);
+  }
+  else {
+    var new_url = add_param("lang",encodeURIComponent(lang_name));
+    location.replace(new_url);
+  }
+}
+
+function btnSearchClick() {
+  var q_keys = encodeURIComponent($("#txtSearch").val());
+  if (q_keys.length < 1) { window.location = "/search"; }
+  else { window.location = "/search?q=" + q_keys; }
+}
+
+function openMailBox() {
+  closeX("langbox");
+  closeX("personalbox");
+  var x = document.getElementById("mailbox");
+  var panel = $("#mailbox div.w3-container");
+
+  $(document).ajaxStart(function(){
+    panel.html("\
+      <div class='w3-text-grey'>\
+        <i class='fa fa-spin fa-refresh'></i> 正在读取信息\
+      </div>");
+  });
+
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+    $.ajax({
+      url: "/user/unread",
+      success: function(result) {
+        if(result.ret == true) {
+          console.log(result.msg);
+          var data = JSON.parse(result.msg);
+          var msg = JSON.parse(data.unread_msg);
+          if (msg.length == 0) {
+            panel.html("<h6 class='w3-text-grey'>无未读消息</h6>");
+          }
+          else {
+            var content = "";
+            for (var i = msg.length - 1; i >= 0; i--) {
+              content += "<p>" + msg[i].content + "</p>"
+            }
+            panel.html(content);
+          }
+        }
+        else {
+          panel.html("\
+            <h6 class='w3-text-grey'>尚未登录</h6>\
+              <a class='w3-btn w3-padding w3-small w3-blue' \
+              href='/user/signin'><i class='fa fa-sign-in'></i> 登录</a>\
+            ");
+        }
+      }
+    });
+  }
+  else {
+    x.className = x.className.replace(" w3-show", "");
+  }
+  $(document).unbind('ajaxStart');
+}
+
+function openPersonalbox() {
+  closeX("langbox");
+  closeX("mailbox");
+  var x = document.getElementById("personalbox");
+  var panel = $("#personalbox div.w3-container");
+
+  $(document).ajaxStart(function(){
+    panel.html("\
+      <div class='w3-text-grey'>\
+        <i class='fa fa-spin fa-refresh'></i> 正在读取信息\
+      </div>");
+  });
+
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+    $.ajax({
+      url: "/user",
+      success: function(result) {
+        if(result.ret == true) {
+          var data = JSON.parse(result.msg);
+
+          var content = "\
+          <p>" + data.display + "</p>\
+          <p>" + data.url + "</p>\
+          ";
+
+          panel.html(content);
+        }
+        else {
+          panel.html("\
+            <h6 class='w3-text-grey'>尚未登录</h6>\
+              <a class='w3-btn w3-padding w3-small w3-blue' \
+              href='/user/signin'><i class='fa fa-sign-in'></i> 登录</a>\
+            ");
+        }
+      }
+    });
+  }
+  else {
+    x.className = x.className.replace(" w3-show", "");
+  }
+  $(document).unbind('ajaxStart');
+}
+
+$("#txtSearch").keydown(function(event){
+  if(event.which == 13){
+    event.preventDefault();
+    window.location = "/search?q=" + encodeURIComponent($(this).val());
+  }
+});
+</script>
+<%= yield_content :extra_js_tags %>
+
+</body>
 </html>

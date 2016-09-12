@@ -1,8 +1,8 @@
 <% if @navbar_hide_level != 'all' %>
 <style>
 div.navtab {
-  margin-top: 10px;
-  margin-bottom: 100px;
+  margin-top: 80px;
+  margin-bottom: 150px;
 }
 
 .navtab-left {
@@ -50,15 +50,15 @@ img.logo-navtab {
     </div>
     <% end %>
     <div class="navtab-right">
-      <a class="navtab-tab-button <% if @navbar_active == 'qs' %>activated<% end %>"
+      <a class="w3-btn w3-light-grey w3-hover-blue <% if @navbar_active == 'qs' %>w3-blue<% end %>"
          href="/questions" title="All questions">
         <i class="fa fa-question"></i>&nbsp;问题
       </a>
-      <a class="navtab-tab-button <% if @navbar_active == 'users' %>activated<% end %>"
+      <a class="w3-btn w3-light-grey w3-hover-blue <% if @navbar_active == 'users' %>w3-blue<% end %>"
          href="/users" title="All users">
         <i class="fa fa-users"></i>&nbsp;用户
       </a>
-      <a class="navtab-tab-button <% if @navbar_active == 'tags' %>activated<% end %>"
+      <a class="w3-btn w3-light-grey w3-hover-blue <% if @navbar_active == 'tags' %>w3-blue<% end %>"
          href="/tags" title="All tags">
         <i class="fa fa-tags"></i>&nbsp;标签
       </a>

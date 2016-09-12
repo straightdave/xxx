@@ -196,13 +196,45 @@ post '/user/signin' do
   end
 end
 
-post '/logout' do
+get '/logout' do
   log_out
-  json ret: "success"
+  redirect to("/")
 end
 
 get '/check_login' do
   (login?) ? (json ret: true) : (json ret: false)
+end
+
+# get current user
+get '/user' do
+  if @_current_user
+    user_info    = @_current_user.info
+    data = {
+      "id"           => @_current_user.id,
+      "url"          => @_current_user.url,
+      "name"         => @_current_user.login_name,
+      "display"      => user_info.nickname,
+      "avatar"       => @_current_user.avatar_src,
+      "reputation"   => @_current_user.reputation,
+      "created_at"   => @_current_user.created_at
+    }
+    json ret: true, msg: data.to_json
+  else
+    json ret: false
+  end
+end
+
+get '/user/unread' do
+  number = params["n"] || 5
+  if @_current_user
+    msg_to_show = @_current_user.inbox_messages.where(isread: false).take(number)
+    data = {
+      "unread_msg"   => msg_to_show.to_json
+    }
+    json ret: true, msg: data.to_json
+  else
+    json ret: false
+  end
 end
 
 # === password refinding ===

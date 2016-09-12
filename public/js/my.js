@@ -21,6 +21,16 @@ $().ready(function () {
 });
 
 /* common functions */
+function cookieEnabled() {
+  var cookieEnabled = (navigator.cookieEnabled)? true : false;
+  if (typeof navigator.cookieEnabled=="undefined" && !cookieEnabled) {
+    document.cookie="testcookie";
+    cookieEnabled=(document.cookie.indexOf("testcookie")!=-1)? true : false;
+  }
+  console.log("cookie enabled:" + cookieEnabled);
+  return cookieEnabled;
+}
+
 function setCookie(c_name, value, expiredays) {
   var exdate = new Date();
   exdate.setDate(exdate.getDate() + expiredays);
@@ -115,11 +125,6 @@ function widen_input(flag) {
   else {
     input.animate({ width : '-=200px'});
   }
-}
-
-/* ===== functions used for login/logout ===== */
-function logout() {
-  $.post('/logout', function() { location.replace('/'); });
 }
 
 /* ===== my message page ===== */

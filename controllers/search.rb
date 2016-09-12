@@ -1,10 +1,7 @@
 get '/search' do
-  if (search_str = ERB::Util.h(params['q'])) &&
-     (keys = search_str.split '+') &&
-     keys.size > 0
-
-    @results = Question.ft_search keys
-    @search_str = search_str.gsub('+', ' ')
+  @search_str = ERB::Util.h(params['q']).strip
+  if !@search_str.nil? && !@search_str.empty?
+    @results = Question.ft_search @search_str
     @title = "搜索结果"
     erb :search_result
   else
@@ -14,14 +11,10 @@ get '/search' do
 end
 
 post '/search_title' do
-  if (search_str = ERB::Util.h(params['q'])) &&
-     (keys = search_str.split '+') &&
-     keys.size > 0
-
-    results = Question.ft_search_title keys
+  if search_str = ERB::Util.h(params['q'])
+    results = Question.ft_search_title search_str
     if results && results.size > 0
       ret = []
-
       results.each do |q|
         ret << {
           "id"      => q.id,
@@ -30,7 +23,6 @@ post '/search_title' do
           "has_acc" => !q.accepted_answer.nil?
         }
       end
-
       json num: ret.size, data: ret.to_json
     end
   end

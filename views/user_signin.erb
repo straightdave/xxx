@@ -4,14 +4,16 @@
 
   <div class="w3-third w3-card-2 w3-white">
     <div class="w3-container w3-padding w3-indigo w3-xxxlarge">
-      <div class="charlogo"><span class="legi">legi</span><span class="talk">talk</span></div>
+      <div class="charlogo">
+        <span class="legi">legi</span><span class="talk">talk</span>
+      </div>
     </div>
     <form method="POST">
       <div class="w3-container w3-padding w3-large">
-        <label class="w3-label"><%= I18N.ref "login_name" %></label>
+        <label class="w3-label w3-text-indigo"><%= I18N.ref "login_name" %></label>
         <input class="w3-input" type="text" name="login_name" id="login_name">
 
-        <label class="w3-label"><%= I18N.ref "password" %></label>
+        <label class="w3-label w3-text-indigo"><%= I18N.ref "password" %></label>
         <input class="w3-input" type="password" name="password" id="password">
       </div>
       <div class="w3-container w3-padding w3-large">
@@ -89,17 +91,20 @@
           if(data.msg == "login_fail") {
             show_below_msg(
               "signin",
-              "<div class='w3-container w3-padding-0'><%= I18N.ref "authen_err" %> <a href='/user/iforgot?u=" + name + "'><%= I18N.ref "iforgot" %></a></div>"
+              "<%= I18N.ref "authen_err" %> <a href='/user/iforgot?u=" + name + "'><%= I18N.ref "iforgot" %>"
             );
           }
           else if(data.msg == "waiting") {
-            show_below_msg("signin", "<div class='w3-container'></div>");
+            show_below_msg("signin",
+              "<%= I18N.ref "authen_err_wait" %>");
           }
           else if(data.msg == "fail_5") {
-            show_below_msg("signin", "<div class='w3-container'></div>");
+            show_below_msg("signin",
+              "<%= I18N.ref "authen_err_wait5" %>");
           }
           else if(data.msg == "fail_10") {
-            show_below_msg("signin", "<div class='w3-container'></div>");
+            show_below_msg("signin",
+              "<%= I18N.ref "authen_err_wait10" %>");
           }
           else {
             show_below_msg("signin", data.msg);

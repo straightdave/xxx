@@ -17,8 +17,11 @@ module I18N
       "login_name"     => "用户名",
       "password"       => "密码",
       "login_name_invalid" => "登录名为英文字母（无视大小写）、下划线和数字的组合，不超过50个字符",
-      "password_invalid" => "密码最少6个字符，最多20个字符",
-      "authen_err"     => "登录名或密码错误。忘记密码？",
+      "password_invalid"   => "密码最少6个字符，最多20个字符",
+      "authen_err"         => "登录名或密码错误。忘记密码？",
+      "authen_err_waiting" => "由于错误次数过多，请等待一会儿再试",
+      "authen_err_wait5"   => "由于错误超过5次，请等待15秒再试",
+      "authen_err_wait10"  => "由于错误超过10次，请等待30秒再试",
       "iforgot"        => "找回密码"
     }
   end

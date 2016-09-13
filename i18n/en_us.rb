@@ -17,8 +17,11 @@ module I18N
       "login_name"     => "Login Name",
       "password"       => "Password",
       "login_name_invalid" => "Login name should be English characters (case-insensitive) combined with underscores and digits; 50 max",
-      "password_invalid" => "Password is required and should has at least 6 characters (20 max)",
-      "authen_err"     => "Wrong login name or password. Forget password?",
+      "password_invalid"   => "Password is required and should has at least 6 characters (20 max)",
+      "authen_err"         => "Wrong login name or password. Forget password?",
+      "authen_err_waiting" => "Failed too many times, please wait before next try",
+      "authen_err_wait5"   => "Failed more then 5 times, please wait 15 sec before next try",
+      "authen_err_wait10"  => "Failed more then 10 times, please wait 30 sec before next try",
       "iforgot"        => "Find password back"
     }
   end

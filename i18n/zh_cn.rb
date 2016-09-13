@@ -8,10 +8,18 @@ module I18N
       "no_unread_msg"  => "无未读消息",
       "not_login"      => "尚未登录",
       "login"          => "登录",
-      "logout"         => "登出",
+      "logout"         => "退出",
+      "no_signup?"     => "尚未注册？",
+      "signup"         => "注册",
       "myhome"         => "我的首页",
       "watchlist"      => "我的收藏",
-      "draft"          => "我的草稿"
+      "draft"          => "我的草稿",
+      "login_name"     => "用户名",
+      "password"       => "密码",
+      "login_name_invalid" => "登录名为英文字母（无视大小写）、下划线和数字的组合，不超过50个字符",
+      "password_invalid" => "密码最少6个字符，最多20个字符",
+      "authen_err"     => "登录名或密码错误。忘记密码？",
+      "iforgot"        => "找回密码"
     }
   end
 end

@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="/css/w3-theme-blue-grey.css" />
 <link rel="stylesheet" href="/css/bootstrap-with-theme.min.css" />
 <link rel="stylesheet" href="/css/my.css" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster&effect=brick-sign">
 <link rel="stylesheet" href="/css/font-awesome.min.css">
 <%= yield_content :extra_css_tags %>
 <script src="/js/jquery.min.js"></script>
@@ -29,8 +30,10 @@
         <i class="fa fa-language"></i>
       </a>
       <div id="langbox" class="w3-dropdown-content w3-white w3-card-2 w3-medium">
-        <a href="javascript:void(0)" onclick="changeLanguage('zh_cn')">中文 (zh-CN)</a>
-        <a href="javascript:void(0)" onclick="changeLanguage('en_us')">English (en-US)</a>
+        <a href="javascript:void(0)" onclick="changeLanguage('zh_cn')">中文</a>
+        <a href="javascript:void(0)" onclick="changeLanguage('en_us')">English</a>
+        <a href="javascript:void(0)">日本語</a>
+        <a href="javascript:void(0)">italiano</a>
       </div>
     </li>
 
@@ -146,6 +149,7 @@ function openLangBox() {
 }
 
 function changeLanguage(lang_name) {
+  console.log("chagne Language is called :" + lang_name);
   if(cookieEnabled()) {
     setCookie("lang",lang_name,1);
     location.replace(location.href);

@@ -1,7 +1,7 @@
 module I18N
   class EN_US
     Ref = {
-      "title_appendix" => "TrueFalseTalk",
+      "title_appendix" => "legitalk",
       "homepage_title" => "Home",
       "search"         => "Search",
       "now_loading"    => "Now loading...",
@@ -9,9 +9,17 @@ module I18N
       "not_login"      => "Not logged in yet",
       "login"          => "Login",
       "logout"         => "Logout",
+      "no_signup?"     => "Not signed up yet?",
+      "signup"         => "Sign up",
       "myhome"         => "My homepage",
       "watchlist"      => "My watchlist",
-      "draft"          => "My drafts"
+      "draft"          => "My drafts",
+      "login_name"     => "Login Name",
+      "password"       => "Password",
+      "login_name_invalid" => "Login name should be English characters (case-insensitive) combined with underscores and digits; 50 max",
+      "password_invalid" => "Password is required and should has at least 6 characters (20 max)",
+      "authen_err"     => "Wrong login name or password. Forget password?",
+      "iforgot"        => "Find password back"
     }
   end
 end

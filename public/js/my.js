@@ -32,10 +32,13 @@ function cookieEnabled() {
 }
 
 function setCookie(c_name, value, expiredays) {
+  console.log("setCookie is called!");
   var exdate = new Date();
   exdate.setDate(exdate.getDate() + expiredays);
-  document.cookie = c_name + "=" + escape(value) +
-    ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString());
+  var new_c = c_name + "=" + escape(value) +
+    ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString()) + ";path=/";
+  console.log(new_c);
+  document.cookie = new_c;
 }
 function getCookie(c_name) {
   if (document.cookie.length > 0) {
@@ -64,14 +67,15 @@ function hashCode(str) {
 }
 
 // remove or append div to show error messages
-function clean_below_msg(obj) {
-  $("div").remove("#msg-" + obj.attr("name"));
+function clean_below_msg(eleId) {
+  $("label").remove("#msg-below-" + eleId);
 }
-function show_below_msg(obj, text) {
-  clean_below_msg(obj);
-  obj.after("<div class='text-danger' id='msg-" + obj.attr("name") + "'>" + text + "</div>");
+function show_below_msg(eleId, text) {
+  clean_below_msg(eleId);
+  $("#" + eleId).after("<label class='w3-label w3-text-red w3-medium' id='msg-below-" + eleId + "'>" + text + "</label>");
 }
 
+// js parameters operation
 function getURLParameter(name) {
   return decodeURIComponent(
     (new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)')
@@ -79,7 +83,6 @@ function getURLParameter(name) {
     )[1].replace(/\+/g, '%20')
   ) || null;
 }
-
 // add/update param and value for CURRENT URL
 function add_param(key, value) {
   var result = new RegExp(key + "=([^&]*)", "i").exec(location.search);
@@ -101,7 +104,6 @@ function add_param(key, value) {
 }
 
 function add_only_param(key, value) {
-  // set this param the only one in url.search
   return location.pathname + "?" + key + '=' + value;
 }
 
@@ -114,17 +116,6 @@ function remove_param(key) {
     return location.pathname + new_search;
   }
   return location.pathname + location.search;
-}
-
-/* navbar input */
-function widen_input(flag) {
-  var input = $("input[name='q']");
-  if (true == flag) {
-    input.animate({ width : '+=200px'});
-  }
-  else {
-    input.animate({ width : '-=200px'});
-  }
 }
 
 /* ===== my message page ===== */

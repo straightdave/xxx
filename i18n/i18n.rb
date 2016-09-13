@@ -1,18 +1,14 @@
 module I18N
   def I18N.set_lang(lang_name)
-    case lang_name
-    when "en_us"
-      require_relative "en_us.rb"
-      @lang_dict = I18N.const_get("EN_US")
-    else
-      require_relative "zh_cn.rb"
-      @lang_dict = I18N.const_get("ZH_CN")
-    end
+    lang_name ||= "zh_cn"
+    i18n_file = "#{lang_name}.rb"
+    require_relative i18n_file
+    @lang_dict = I18N.const_get(lang_name.upcase)
   end
 
   def I18N.ref(txt)
     unless @lang_dict
-      I18N.set_lang("default")
+      I18N.set_lang
     end
     @lang_dict::Ref[txt]
   end

@@ -1,6 +1,6 @@
 # ===== user registering =====
 get '/user/signup' do
-  @title = "用户注册"
+  @title = I18N.ref "signup"
   @navbar_hide_level = 'all'
   erb :user_signup
 end
@@ -145,7 +145,7 @@ end
 # ===== login & logout =====
 get '/user/signin' do
   log_out
-  @title = "用户登录"
+  @title = I18N.ref "login"
   @navbar_hide_level = 'all'
   erb :user_signin
 end
@@ -178,13 +178,13 @@ post '/user/signin' do
     session[:try_count] = try_count + 1
   end
 
-  login_name = ERB::Util.h params['login_name']
-  password   = ERB::Util.h params['password']
+  login_name = params['login_name']
+  password   = params['password']
 
   login_name.downcase! if login_name
 
-  user = User.find_by(login_name: login_name)
-  if user && user.authenticate(password)
+  user = User.find_by(login_name: login_name.strip)
+  if user && user.authenticate(password.strip)
     log_out if login?
     log_in user
     session[:try_count]      = nil

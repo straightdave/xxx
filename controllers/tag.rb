@@ -57,7 +57,6 @@ get '/t/:tid' do |tid|
               (user.role == User::Role::MODERATOR)
 
   @title = "标签：#{ @tag.name }"
-  @navbar_active = "tags"
   @breadcrumb = [
     { name: "首页", url: '/' },
     { name: "标签", url: '/tags' },
@@ -181,7 +180,6 @@ get '/tags' do
   @total_page = total_size / @slice + (total_size % @slice != 0 ? 1 : 0)
 
   @title = "标签大全"
-  @navbar_active = "tags"
   @breadcrumb = [
     { name: "首页", url: '/' },
     { name: "标签", active: true }

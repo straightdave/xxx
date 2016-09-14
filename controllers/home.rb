@@ -23,7 +23,6 @@ get '/' do
   @hot_tags = Tag.top_used(20)
 
   @title          = I18N.ref("homepage_title")
-  @navbar_active  = "qna"
   @hide_header    = true if login?
   erb :home
 end

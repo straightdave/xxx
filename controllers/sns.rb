@@ -42,7 +42,6 @@ get '/u/:name' do |name|
   @followed  = @user.followers.exists?(session[:user_id]) if login?
   @events    = @user.get_events  # top 20 by default
   @show_reported = (@user.has_reports >= 12)
-  @navbar_hide_level = 'logo'
   erb :user_profile
 end
 
@@ -52,7 +51,6 @@ get '/user/home' do
   @title = "用户首页"
   @user_info = @user.info
   @events = Event.event_of_users(@user.followee_ids)
-  @navbar_hide_level = 'logo'
   erb :user_home
 end
 

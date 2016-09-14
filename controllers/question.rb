@@ -1,8 +1,7 @@
 get '/ask' do
   login_filter
 
-  @title = "提问"
-  @navbar_active = "qna"
+  @title = I18N.ref "ask"
   erb :ask
 end
 
@@ -77,7 +76,6 @@ get '/questions' do
   end
 
   @title         = "所有问题"
-  @navbar_active = "qs"
   erb :question_all
 end
 

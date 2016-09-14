@@ -73,10 +73,41 @@
     </ul>
   </div>
 
-  <%= render_nav_tab %>
+  <!-- action tags -->
+  <div class="w3-row">
+    <div class="w3-col w3-container w3-hide-small" style="width:10%"></div>
+
+    <div class="w3-col w3-display-container" style="width:80%;height:60px;margin-bottom:40px;">
+
+      <div class="w3-display-bottomleft w3-hide-small" >
+        <div class="charlogo w3-tag w3-round w3-indigo w3-xxlarge" title="homepage">
+          <span class="legi">legi</span><span class="talk">talk</span>
+        </div>
+        &trade;
+        <span class="w3-large">是非说</span>
+      </div>
+
+      <div class="w3-display-bottomright">
+        <a class="w3-btn w3-grey w3-text-white w3-hover-blue w3-hover-text-white" href="/questions" id="navtab-questions">
+          <i class="fa fa-question"></i>&nbsp;<%= I18N.ref "questions" %>
+        </a>
+        <a class="w3-btn w3-grey w3-text-white w3-hover-blue w3-hover-text-white" href="/users" id="navtab-users">
+          <i class="fa fa-users"></i>&nbsp;<%= I18N.ref "users" %>
+        </a>
+        <a class="w3-btn w3-grey w3-text-white w3-hover-blue w3-hover-text-white" href="/tags" id="navtab-tags">
+          <i class="fa fa-tags"></i>&nbsp;<%= I18N.ref "tags" %>
+        </a>
+        <a class="w3-btn w3-text-white w3-grey w3-hover-blue w3-hover-text-white" href="/ask" id="navtab-ask">
+          <b><i class="fa fa-hand-paper-o"></i>&nbsp;<%= I18N.ref "ask" %></b>
+        </a>
+      </div>
+    </div>
+
+    <div class="w3-col w3-container w3-hide-small" style="width:10%"></div>
+  </div>
+
   <%= render_breadcrumb %>
   <%= yield %>
-
 </div><!-- end of wrapper -->
 
 <footer>
@@ -122,6 +153,31 @@ $(function(){
   })
   .fail(function(){
     console.log("init navbar ajax call failed");
+  });
+
+  // init navtab
+  var pname = window.location.pathname;
+  if (pname.lastIndexOf("/ask", 0) === 0) {
+    $("#navtab-ask").removeClass("w3-grey");
+    $("#navtab-ask").addClass("w3-blue");
+  }
+  else if (pname.lastIndexOf("/q/", 0) === 0 || pname.lastIndexOf("/questions", 0) === 0) {
+    $("#navtab-questions").removeClass("w3-grey");
+    $("#navtab-questions").addClass("w3-blue");
+  }
+  else if (pname.lastIndexOf("/t/", 0) === 0 || pname.lastIndexOf("/tags", 0) === 0) {
+    $("#navtab-tags").removeClass("w3-grey");
+    $("#navtab-tags").addClass("w3-blue");
+  }
+  else if (pname.lastIndexOf("/u/", 0) === 0 || pname.lastIndexOf("/user", 0) === 0) {
+    $("#navtab-users").removeClass("w3-grey");
+    $("#navtab-users").addClass("w3-blue");
+  }
+
+  // bind on click to logo
+  $("div.charlogo").click(function(event) {
+    event.stopPropagation();
+    location.replace("/");
   });
 });
 

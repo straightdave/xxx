@@ -22,7 +22,11 @@ module I18N
       "authen_err_waiting" => "Failed too many times, please wait before next try",
       "authen_err_wait5"   => "Failed more then 5 times, please wait 15 sec before next try",
       "authen_err_wait10"  => "Failed more then 10 times, please wait 30 sec before next try",
-      "iforgot"        => "Find password back"
+      "iforgot"        => "Find password back",
+      "questions"      => "Questions",
+      "users"          => "Users",
+      "tags"           => "Tags",
+      "ask"            => "Ask a question"
     }
   end
 end

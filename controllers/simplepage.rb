@@ -1,11 +1,9 @@
 get '/help' do
-  @navbar_hide_level = 'all'
   @title = "帮助"
   erb :help
 end
 
 get '/terms' do
-  @navbar_hide_level = 'all'
   @title = "条款"
   erb :terms
 end
@@ -62,7 +60,6 @@ get '/notice' do
     @content = "您可以浏览“是非说”网站的精彩内容，或者参与其中： <a href='/user/signin'>登录</a>"
   end
 
-  @navbar_hide_level = 'logo'
   erb :page_info
 end
 

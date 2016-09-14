@@ -26,9 +26,8 @@ a:focus {
 }
 
 div.charlogo {
-  margin:0;
-  padding:0;
   font-family: "Lobster", Sans-serif;
+  cursor: pointer;
 }
 div.charlogo > span.legi {
   color:white;

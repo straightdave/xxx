@@ -55,13 +55,6 @@ helpers do
     erb :partial_foldable_header, layout: false
   end
 
-  def render_nav_tab
-    # API:
-    # @navbar_active
-    # @navbar_hide_level: logo, all
-    erb :partial_nav_tab, layout: false
-  end
-
   def render_top_user
     erb :partial_top_user, layout: false
   end

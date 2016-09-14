@@ -45,7 +45,6 @@ get '/user/profile' do
   # set `validated` as `Not equal to NEWBIE` for now
   # TODO: other situation may also need to validate
   @is_validated = (@user.status != User::Status::NEWBIE)
-  @navbar_hide_level = 'logo'
   erb :user_update
 end
 

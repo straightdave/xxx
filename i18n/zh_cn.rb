@@ -22,7 +22,11 @@ module I18N
       "authen_err_waiting" => "由于错误次数过多，请等待一会儿再试",
       "authen_err_wait5"   => "由于错误超过5次，请等待15秒再试",
       "authen_err_wait10"  => "由于错误超过10次，请等待30秒再试",
-      "iforgot"        => "找回密码"
+      "iforgot"        => "找回密码",
+      "questions"      => "问题",
+      "users"          => "用户",
+      "tags"           => "标签",
+      "ask"            => "我要提问"
     }
   end
 end

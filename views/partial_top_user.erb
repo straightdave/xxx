@@ -1,95 +1,24 @@
-<style>
-div#top-user-title > h5 {
-  display: block;
-  margin: 0;
-  padding: 0;
-  float: left;
-}
-
-div#top-user-title > div {
-  float: right;
-}
-
-ul.simple-horiz-ul > li {
-  list-style: none;
-  display: block;
-  float: left;
-  margin-right: 5px;
-}
-
-ul.simple-horiz-ul a {
-  text-decoration: none;
-}
-
-ul.simple-horiz-ul a.disabled {
-  color: black;
-  cursor: default;
-}
-
-div#bodycontent {
-  margin: 5px;
-}
-
-ul.top-user-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-ul.top-user-list > li {
-  display: block;
-  margin: 10px 0;
-  padding: 0;
-  overflow: hidden;
-}
-
-ul.top-user-list > li > a {
-  text-decoration: none;
-}
-
-ul.top-user-list > li > span {
-  display: block;
-  float: right;
-}
-
-img.top-user-avatar {
-  width: 30px;
-  margin-right: 10px;
-}
-
-</style>
-<div class="w3-card-2 w3-padding w3-white">
-  <div id="top-user-title">
-    <h5>排行榜</h5>
-    <div>
-      <ul class="simple-horiz-ul">
-        <li>
-          <a href="javascript:void(0);" class="top-user-by" name="today">本日</a>
-        </li>
-        <li>&middot;</li>
-        <li>
-          <a href="javascript:void(0);" class="top-user-by" name="week">本周</a>
-        </li>
-        <li>&middot;</li>
-        <li>
-          <a href="/users">更多</a>
-        </li>
+<div class="w3-card-2 w3-white">
+  <div class="w3-container w3-padding-0  w3-border-bottom">
+    <div class="w3-left w3-padding"><%= I18N.ref "top_users" %></div>
+    <div class="w3-right">
+      <ul class="w3-navbar">
+        <li><a href="javascript:void(0)" id="day"><%= I18N.ref "day" %></a></li>
+        <li><a href="javascript:void(0)" id="week"><%= I18N.ref "week" %></a></li>
+        <li><a href="/users"><%= I18N.ref "more" %></a></li>
       </ul>
     </div>
   </div>
-  <div class="clear"></div>
-  <hr>
-  <div id="bodycontent">
-    <ul class="top-user-list">
+  <div>
+    <ul id="top-user-list">
     </ul>
   </div>
 </div>
 <script>
 (function(window, $) {
-  var root_ul = $("ul.top-user-list");
+  var root_ul = $("ul#top-user-list");
 
   var render_list = function (data) {
-    //console.log(data);
     root_ul.empty();
 
     if (data.length < 1) {

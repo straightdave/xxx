@@ -1,79 +1,65 @@
-<div class="container">
+<div class="w3-row-padding">
+  <div class="w3-col m9">
+    <div class="w3-card-2 w3-white">
 
-  <div class="row">
-    <div class="col-md-9">
-      <ul class="nav nav-tabs">
-        <li role="presentation" class="<%= 'active' if @sort_by == 'default' %>">
-          <a href="/" title="Latest">最新</a>
-        </li>
-        <li role="presentation" class="<%= 'active' if @sort_by == 'hot' %>">
-          <a href="/?tab=hot" title="Hottest">最热</a>
-        </li>
-        <li role="presentation" class="<%= 'active' if @sort_by == 'noanswer' %>">
-          <a href="/?tab=noanswer" title="Unanswered">未回答</a>
-        </li>
-      </ul>
+    <ul class="w3-navbar w3-border-bottom">
+      <li><a href="/"><%= I18N.ref "latest" %></a></li>
+      <li><a href="/?tab=hot"><%= I18N.ref "hot" %></a></li>
+      <li><a href="/?tab=unanswered"><%= I18N.ref "unanswered" %></a></li>
+    </ul>
 
-      <% @qs.each do |q| %>
-        <div class="listed-question">
-          <div class="rank">
-            <div class="votes">
-              <%= get_format_number(q.scores) %><small>得分</small>
-            </div>
-            <div <% if q.accepted_answer_id != 0 %>
-                      class="answered"
-                 <% elsif q.answers.length > 0 %>
-                      class="answers"
-                 <% end %>>
-              <%= get_format_number(q.answers.length) %><small>回答</small>
-            </div>
-            <div class="views">
-              <%= get_format_number(q.views) %><small>浏览</small>
-            </div>
-          </div>
-
-          <div class="question">
-            <div class="user">
-              <% unless q.get_last_question_event.nil? %>
-                <a href="<%= q.get_last_question_event.invoker.url %>">
-                  <%= q.get_last_question_event.invoker.info.nickname %>
-                </a>
-                <span class="numbers-sm">
-                  <%= q.get_last_question_event.invoker.get_repu_readible %>
-                </span>&nbsp;
-                在<%= time_ago_in_words_zh(q.get_last_question_event.created_at) %>
-                <%= q.get_last_question_event.event_type_zh %>
-              <% end %>
-            </div>
-            <div class="title">
-              <a href="<%= q.url %>"><%= q.title %></a>
-              <% q.tags.each do |t| %>
-                <span class="q_tag"><%= t.name %></span>
-              <% end %>
-            </div>
-          </div>
+    <% @qs.each do |q| %>
+    <div class="listed-question">
+      <div class="rank">
+        <div class="votes">
+          <%= get_format_number(q.scores) %><small>得分</small>
         </div>
-      <% end %>
+        <div <% if q.accepted_answer_id != 0 %>
+                  class="answered"
+             <% elsif q.answers.length > 0 %>
+                  class="answers"
+             <% end %>>
+          <%= get_format_number(q.answers.length) %><small>回答</small>
+        </div>
+        <div class="views">
+          <%= get_format_number(q.views) %><small>浏览</small>
+        </div>
+      </div>
 
-      <p class="margin-top-60">
-        查看&nbsp;<a class="btn btn-default btn-sm" href="/questions">所有问题</a>
-      </p>
-      <p class="margin-top-20">
-        您可以通过 <a class="btn btn-default btn-sm" href="/tags">标签</a>&nbsp;
-        或者 <a class="btn btn-default btn-sm" href="/search">搜索</a>&nbsp;
-        功能更加精确地查找问题
-      </p>
+      <div class="question">
+        <div class="user">
+          <% unless q.get_last_question_event.nil? %>
+            <a href="<%= q.get_last_question_event.invoker.url %>">
+              <%= q.get_last_question_event.invoker.info.nickname %>
+            </a>
+            <span class="numbers-sm">
+              <%= q.get_last_question_event.invoker.get_repu_readible %>
+            </span>&nbsp;
+            在<%= time_ago_in_words_zh(q.get_last_question_event.created_at) %>
+            <%= q.get_last_question_event.event_type_zh %>
+          <% end %>
+        </div>
+        <div class="title">
+          <a href="<%= q.url %>"><%= q.title %></a>
+          <% q.tags.each do |t| %>
+            <span class="q_tag"><%= t.name %></span>
+          <% end %>
+        </div>
+      </div>
     </div>
-
-    <div class="col-md-3">
-      <div class="right-panel-box">
-        <%= render_tag_box by: :hot, sum: 20 %>
-      </div>
-
-      <div class="right-panel-box">
-        <%= render_top_user %>
-      </div>
+    <% end %>
 
     </div>
   </div>
+
+  <div class="w3-col m3">
+    <%= render_top_user %>
+  </div>
 </div>
+<script>
+(function(window,$){
+  $(function(){
+
+  });
+})(window,jQuery);
+</script>

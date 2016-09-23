@@ -26,7 +26,15 @@ module I18N
       "questions"      => "Questions",
       "users"          => "Users",
       "tags"           => "Tags",
-      "ask"            => "Ask a question"
+      "ask"            => "Ask a question",
+      "top_users"      => "Top",
+      "day"            => "Day",
+      "week"           => "Week",
+      "more"           => "More",
+      "latest"         => "Latest",
+      "hot"            => "Hot",
+      "unanswered"     => "Unanswered",
+      "related"        => "Related"
     }
   end
 end

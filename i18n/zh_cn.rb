@@ -26,7 +26,15 @@ module I18N
       "questions"      => "问题",
       "users"          => "用户",
       "tags"           => "标签",
-      "ask"            => "我要提问"
+      "ask"            => "我要提问",
+      "top_users"      => "排行榜",
+      "day"            => "本日",
+      "week"           => "本周",
+      "more"           => "更多",
+      "latest"         => "最新",
+      "hot"            => "最热",
+      "unanswered"     => "未回答",
+      "related"        => "相关问题"
     }
   end
 end

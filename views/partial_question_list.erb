@@ -1,40 +1,28 @@
-<h5>
-  <%= (case question_type
-       when :linked then "关联问题"
-       when :related then "相似问题"
-       end) %>
-</h5>
-<div class="right-panel-box-body">
-  <ul id="_<%= question_type.to_s %>"></ul>
-</div>
+<ul id="_<%= question_type.to_s %>" class="w3-ul w3-card-2 w3-white">
+  <li><h5><%= I18N.ref question_type.to_s %></h5></li>
+</ul>
+
 <script>
 (function (window, $) {
   $(function () {
     var type = "<%= question_type.to_s %>";
     var root_ul = $("ul#_" + type);
-    var base_url = location.pathname;   // like '/q/123'
-    var url = base_url + "/" + type;   // go '/q/123/related'
+    var url = location.pathname + "/" + type;   // go '/q/123/related'
     $.get(url, function (data, status) {
       if (data.length > 0) {
-        console.log("get data " + data.length + " items: " + url);
-        root_ul.empty();
         for(var i = 0; i < data.length; i++) {
           var item = data[i];
           var span_class;
-          if (item.has_acc) { span_class = "list-vote-box-acc"; }
-          else { span_class = "list-vote-box-nor"; }
+          if (item.has_acc) { span_class = "w3-green w3-text-white"; }
+          else { span_class = "w3-light-grey"; }
           var tmp = "\
           <li>\
-            <span class='" + span_class + "'>" + item.votes + "</span>\
-            <a class='list-title' href='/q/" + item.id + "'>" +
-              item.title +
-            "</a>\
-            <div class='clear'></div>\
+            <span class='w3-tag " + span_class + "' style='width:40px'>" + item.votes + "</span>\
+            <a href='/q/" + item.id + "' class='w3-margin-left'>" + item.title + "</a>\
           </li>";
           root_ul.append(tmp);
         }
       }
-      else { console.log("get 0 items " + type); }
     });
   });
 })(window, jQuery);

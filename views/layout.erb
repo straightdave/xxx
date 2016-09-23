@@ -2,7 +2,7 @@
 <html>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title><%= @title %> - <%= I18N.ref("title_appendix") %></title>
+<title><%= @title %> - <%= I18N.ref "title_appendix" %></title>
 <link rel="icon" href="/favicon.ico" />
 <link rel="stylesheet" href="/css/w3.css" />
 <link rel="stylesheet" href="/css/w3-theme-blue-grey.css" />
@@ -13,102 +13,78 @@
 <%= yield_content :extra_css_tags %>
 <script src="/js/jquery.min.js"></script>
 <script src="/js/my.js"></script>
-<body class="w3-theme-l5">
+<body class="w3-theme-l3">
 
-<div class="wrapper"><!-- body wrapper starts -->
 
-  <div class="w3-top" style="z-index:99">
+<div class="w3-top" style="z-index:99">
+  <!-- navbar on top -->
   <ul class="w3-navbar w3-large w3-white w3-card-2">
-    <li class="w3-hide-medium w3-hide-large w3-opennav w3-right">
-      <a href="javascript:void(0)" onclick="openX('navbar-sm')">
-        <i class="fa fa-bars"></i>
-      </a>
-    </li>
 
-    <li class="w3-hide-small w3-dropdown-click">
-      <a href="javascript:void(0)" onclick="openLangBox()" title="Change Language">
+    <li class="w3-dropdown-click">
+      <a href="javascript:void(0)" onclick="openLangBox()">
         <i class="fa fa-language"></i>
       </a>
-      <div id="langbox" class="w3-dropdown-content w3-white w3-card-2 w3-medium">
+      <div id="langbox" class="w3-dropdown-content w3-card-2 w3-medium">
         <a href="javascript:void(0)" onclick="changeLanguage('zh_cn')">中文</a>
         <a href="javascript:void(0)" onclick="changeLanguage('en_us')">English</a>
-        <a href="javascript:void(0)">日本語</a>
-        <a href="javascript:void(0)">italiano</a>
+        <a href="javascript:void(0)" onclick="changeLanguage('ja_jp')">日本語</a>
+        <a href="javascript:void(0)" onclick="changeLanguage('it_it')">italiano</a>
       </div>
     </li>
 
-    <li class="w3-hide-small w3-dropdown-click">
+    <li class="w3-dropdown-click">
       <a id="anchor-mailbox" href="javascript:void(0)" onclick="openMailBox()">
         <i class="fa fa-envelope-o"></i>
       </a>
-      <div id="mailbox" class="w3-dropdown-content w3-card-2 w3-medium">
-      </div>
+      <div id="mailbox" class="w3-dropdown-content w3-card-2 w3-medium"></div>
     </li>
 
-    <li class="w3-hide-small w3-dropdown-click">
+    <li class="w3-dropdown-click">
       <a id="anchor-user" href="javascript:void(0)" onclick="openPersonalbox()">
         <i class="fa fa-user"></i>
       </a>
-      <div id="personalbox" class="w3-dropdown-content w3-card-2 w3-medium">
-      </div>
+      <div id="personalbox" class="w3-dropdown-content w3-card-2 w3-medium"></div>
     </li>
 
-    <li class="w3-hide-small w3-right">
+    <li class="w3-right">
       <input id="txtSearch" type="text" class="w3-input w3-border-0"
-             placeholder="<%= I18N.ref("search") %>" />
+             placeholder="<%= I18N.ref "search" %>" />
     </li>
-    <li class="w3-hide-small w3-right">
+    <li class="w3-right">
       <a href="javascript:void(0);" onclick="btnSearchClick()">
         <i class="fa fa-search"></i>
       </a>
     </li>
   </ul>
-  </div>
+</div><!-- end of top navbar -->
 
-  <!-- dropdown navbar for small size screen -->
-  <div id="navbar-sm" class="w3-hide w3-hide-large w3-hide-medium w3-border-bottom">
-    <ul class="w3-navbar w3-white w3-left-align">
-      <li><a href="#">placeholder1</a></li>
-      <li><a href="#">placeholder2</a></li>
-    </ul>
-  </div>
 
-  <!-- action tags -->
-  <div class="w3-row">
-    <div class="w3-col w3-container w3-hide-small" style="width:10%"></div>
-
-    <div class="w3-col w3-display-container" style="width:80%;height:60px;margin-bottom:40px;">
-
-      <div class="w3-display-bottomleft w3-hide-small" >
-        <div class="charlogo w3-tag w3-round w3-indigo w3-xxlarge" title="homepage">
-          <span class="legi">legi</span><span class="talk">talk</span>
-        </div>
-        &trade;
-        <span class="w3-large">是非说</span>
+<div class="w3-content" style="max-width:1440px;margin-top:20px">
+  <div class="w3-container">
+    <div class="w3-left" >
+      <div class="charlogo w3-tag w3-indigo w3-xlarge">
+        <span class="legi">legi</span><span class="talk">talk</span>
       </div>
-
-      <div class="w3-display-bottomright">
-        <a class="w3-btn w3-grey w3-text-white w3-hover-blue w3-hover-text-white" href="/questions" id="navtab-questions">
-          <i class="fa fa-question"></i>&nbsp;<%= I18N.ref "questions" %>
-        </a>
-        <a class="w3-btn w3-grey w3-text-white w3-hover-blue w3-hover-text-white" href="/users" id="navtab-users">
-          <i class="fa fa-users"></i>&nbsp;<%= I18N.ref "users" %>
-        </a>
-        <a class="w3-btn w3-grey w3-text-white w3-hover-blue w3-hover-text-white" href="/tags" id="navtab-tags">
-          <i class="fa fa-tags"></i>&nbsp;<%= I18N.ref "tags" %>
-        </a>
-        <a class="w3-btn w3-text-white w3-grey w3-hover-blue w3-hover-text-white" href="/ask" id="navtab-ask">
-          <b><i class="fa fa-hand-paper-o"></i>&nbsp;<%= I18N.ref "ask" %></b>
-        </a>
-      </div>
+      &trade; 是非说
     </div>
-
-    <div class="w3-col w3-container w3-hide-small" style="width:10%"></div>
+    <div class="w3-right">
+      <a class="w3-btn w3-white w3-hover-blue" href="/questions" id="navtab-questions">
+        <i class="fa fa-question"></i>&nbsp;<%= I18N.ref "questions" %>
+      </a>
+      <a class="w3-btn w3-white w3-hover-blue" href="/users" id="navtab-users">
+        <i class="fa fa-users"></i>&nbsp;<%= I18N.ref "users" %>
+      </a>
+      <a class="w3-btn w3-white w3-hover-blue" href="/tags" id="navtab-tags">
+        <i class="fa fa-tags"></i>&nbsp;<%= I18N.ref "tags" %>
+      </a>
+      <a class="w3-btn w3-indigo w3-hover-blue" href="/ask" id="navtab-ask">
+        <i class="fa fa-hand-paper-o"></i>&nbsp;<%= I18N.ref "ask" %>
+      </a>
+    </div>
   </div>
-
-  <%= render_breadcrumb %>
+  <br>
   <%= yield %>
-</div><!-- end of wrapper -->
+</div>
 
 <footer>
   <div class="w3-row">
@@ -129,11 +105,11 @@
       </div>
     </div>
 
-    <div class="w3-quarter w3-hide-medium w3-hide-small">
-      <div class="footer-logo-box">
-        <img alt="是非说" src="/little-logo.png"/>
-        <span>beta</span>
+    <div class="w3-quarter">
+      <div class="charlogo w3-tag w3-indigo w3-xxxlarge">
+        <span class="legi">legi</span><span class="talk">talk</span>
       </div>
+      &trade;
     </div>
 
   </div>

@@ -1,6 +1,5 @@
 get '/ask' do
   login_filter
-
   @title = I18N.ref "ask"
   erb :ask
 end
@@ -22,7 +21,6 @@ post '/ask' do
       if tag.valid?
         tag.save
       else
-        # TODO: needs transaction
         return json ret: "error", msg: "保存标签(#{t})失败"
       end
       new_q.tags << tag

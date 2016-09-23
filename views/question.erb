@@ -1,31 +1,29 @@
-<% if @q.is_hidden || @q.is_deleted %>
-<div class="container">
-  <h3>问题已经被隐藏或删除</h3>
-</div>
-<% else %>
-
 <% content_for :extra_css_tags do %>
 <link href="/vendors/wangEditor/css/wangEditor.min.css" rel="stylesheet">
 <% end %>
 
-<div class="container">
-  <div class="row">
-    <div class="col-md-9">
-      <h3 class="question-title"><%= @q.title %></h3>
+<div class="w3-row">
+  <div class="w3-col m9">
 
-      <div class="row">
-        <div class="col-md-1">
+    <div class="w3-container w3-padding">
+      <span class="w3-tag w3-xlarge w3-grey w3-text-white">Q</span>
+      <span class="w3-margin-left w3-xlarge"><%= @q.title %></span>
+    </div>
+
+    <div class="w3-container">
+      <div class="w3-row">
+          <div class="w3-col" style="">
 
           <div class="votingbox">
-            <a href="javascript:void(0);" title="好问题，赞！"
-               onclick="javascript:vote('vote','q',<%= @q.id %>);">
+            <a href="javascript:void(0)" title="好问题，赞！"
+               onclick="javascript:vote('vote','q',<%= @q.id %>)">
               <i class="fa fa-caret-up fa-2x"></i>
             </a>
             <br>
             <span id="q-scores-<%= @q.id %>"><%= @q.scores %></span>
             <br>
-            <a href="javascript:void(0);" title="这问题太逊了，埋了它！"
-               onclick="javascript:vote('downvote','q',<%= @q.id %>);">
+            <a href="javascript:void(0)" title="这问题太逊了，埋了它！"
+               onclick="javascript:vote('downvote','q',<%= @q.id %>)">
               <i class="fa fa-caret-down fa-2x"></i>
             </a>
             <br>
@@ -143,167 +141,168 @@
 
         </div>
       </div>
-      <hr>
+    </div>
+    <hr>
 
-      <!-- answers listed here : all col-9 width -->
-      <div class="answers">
-        <% if @answers.empty? %>尚无作答<% else %>
-          <%= @answers.size %>个回答
-          <% @answers.each do |a| %>
-            <div class="single-answer" id="a<%= a.id %>">
-              <div class="row" <% if @q.accepted_answer == a %>id="answer"<% end %>>
+    <!-- answers listed here : all col-9 width -->
+    <div class="answers">
+      <% if @answers.empty? %>尚无作答<% else %>
+        <%= @answers.size %>个回答
+        <% @answers.each do |a| %>
+          <div class="single-answer" id="a<%= a.id %>">
+            <div class="row" <% if @q.accepted_answer == a %>id="answer"<% end %>>
 
-                <div class="col-md-1">
-                  <div class="votingbox">
-                    <a href="javascript:void(0);" title="这条回答很有帮助，赞！"
-                       onclick="javascript:vote('vote','a',<%= a.id %>);">
-                      <i class="fa fa-caret-up"></i>
-                    </a>
-                    <br>
-                    <span id = "a-scores-<%= a.id %>"><%= get_format_number(a.scores) %></span>
-                    <br>
-                    <a href="javascript:void(0);"
-                       title="这答案不正确或者误导人，差评！"
-                       onclick="javscript:vote('downvote','a',<%= a.id %>);">
-                      <i class="fa fa-caret-down"></i>
-                    </a>
-                    <br>
-                    <!-- possible marked-as-answer sign -->
-                    <% if @q.accepted_answer == a %>
-                    <i class="fa fa-check i-am-answer"></i>
-                    <% end %>
-                  </div>
-                </div>
-
-                <div class="col-md-11" id="answer-details">
-                  <div class="answer-text"><%= a.content %></div>
-
-                  <div class="row">
-
-                    <div class="col-md-4 <% if @hidden_mark %>hidden<% end %>">
-                      <% if @q.author.id != session[:user_id] %>
-                      <a href="javascript:void(0);" role="button"
-                         class="btn btn-primary btn-sm" onclick="javascript:
-                           mark_as_accepted(<%= @q.id %>, <%= a.id %>);">
-                        <i class="fa fa-check"></i>&nbsp;标记为答案
-                      </a>
-                      <% end %>
-                    </div>
-
-                    <div class="col-md-4 col-md-offset-<% unless @hidden_mark %>4<% else %>8<% end %>">
-                      <div class="authorbox">
-                        <div>
-                          回答于 <%= time_ago_in_words_zh(a.created_at) %>
-                        </div>
-                        <div id="author-info">
-                          <div class="float-left">
-                            <img class="avatar" src="<%= a.author.avatar_src %>">
-                          </div>
-                          <div class="float-left margin-left-10">
-                            <a href="<%= a.author.url %>">
-                              <%= a.author.info.nickname %>
-                            </a>
-                            <div>
-                              <span class="numbers-sm">
-                              <%= get_format_number(a.author.reputation) %>
-                              </span>
-                            </div>
-                          </div>
-                          <div class="clear"></div>
-                        </div>
-                      </div>
-                    </div>
-
-                  </div>
-
-                  <!-- comments for answer -->
-                  <div class="comments">
-                    <% if !a.comments.empty? %>
-                      <% a.comments.each do |c| %>
-                        <div class="single-comment">
-
-                          <div class="comment-vote" title="为这条评论投票"
-                               onclick="javascript:vote('vote','c',<%= c.id %>)">
-                            <i class="fa fa-caret-up"></i>
-                            <span id="c-scores-<%= c.id %>">
-                              <%= get_format_number(c.scores) %>
-                            </span>
-                            <!-- no downvoting for comments -->
-                          </div>
-
-                          <div class="comment-text">
-                            <%= c.content %>
-                          </div>
-
-                          <div class="comment-author">
-                            <a href="<%= c.author.url %>">
-                              <%= c.author.info.nickname %>
-                              <span class="numbers-sm">
-                              <%= get_format_number(c.author.reputation) %>
-                              </span>
-                            </a>
-                            <%= time_ago_in_words_zh(c.created_at) %>
-                          </div>
-
-                          <div class="clear"></div>
-                        </div>
-                      <% end %>
-                    <% end %>
-                  </div>
-
-                  <% if login? && @q.can_comment %>
-                  <a href="javascript:void(0);" class="comment-btn"
-                     onclick="javascript:show_comment_answer(<%= a.id %>);">
-                    <i class="fa fa-commenting-o"></i>&nbsp;发表评论
+              <div class="col-md-1">
+                <div class="votingbox">
+                  <a href="javascript:void(0);" title="这条回答很有帮助，赞！"
+                     onclick="javascript:vote('vote','a',<%= a.id %>);">
+                    <i class="fa fa-caret-up"></i>
                   </a>
-
-                  <!-- hidden comment input div here -->
-                  <div class="form-group commenting-answer-<%= a.id %>"
-                       style="display: none;">
-                    <textarea id="comment_area_answer_<%= a.id %>"
-                      class="commentbox" rows="4" style="width: 100%"></textarea>
-                    <br>
-                    <a class="btn btn-primary btn-xs" href="javascript:void(0);"
-                       onclick="javascript:do_comment_answer(<%= a.id %>);">
-                      确认
-                    </a>
-                    <a class="btn btn-default btn-xs" href="javascript:void(0);"
-                       onclick="javascript:cancel_comment_answer(<%= a.id %>);">
-                      取消
-                    </a>
-                  </div>
+                  <br>
+                  <span id = "a-scores-<%= a.id %>"><%= get_format_number(a.scores) %></span>
+                  <br>
+                  <a href="javascript:void(0);"
+                     title="这答案不正确或者误导人，差评！"
+                     onclick="javscript:vote('downvote','a',<%= a.id %>);">
+                    <i class="fa fa-caret-down"></i>
+                  </a>
+                  <br>
+                  <!-- possible marked-as-answer sign -->
+                  <% if @q.accepted_answer == a %>
+                  <i class="fa fa-check i-am-answer"></i>
                   <% end %>
                 </div>
-              </div> <!-- end of div.row -->
-            </div> <!-- end of div.single-answer -->
+              </div>
 
-          <% end %>
+              <div class="col-md-11" id="answer-details">
+                <div class="answer-text"><%= a.content %></div>
+
+                <div class="row">
+
+                  <div class="col-md-4 <% if @hidden_mark %>hidden<% end %>">
+                    <% if @q.author.id != session[:user_id] %>
+                    <a href="javascript:void(0);" role="button"
+                       class="btn btn-primary btn-sm" onclick="javascript:
+                         mark_as_accepted(<%= @q.id %>, <%= a.id %>);">
+                      <i class="fa fa-check"></i>&nbsp;标记为答案
+                    </a>
+                    <% end %>
+                  </div>
+
+                  <div class="col-md-4 col-md-offset-<% unless @hidden_mark %>4<% else %>8<% end %>">
+                    <div class="authorbox">
+                      <div>
+                        回答于 <%= time_ago_in_words_zh(a.created_at) %>
+                      </div>
+                      <div id="author-info">
+                        <div class="float-left">
+                          <img class="avatar" src="<%= a.author.avatar_src %>">
+                        </div>
+                        <div class="float-left margin-left-10">
+                          <a href="<%= a.author.url %>">
+                            <%= a.author.info.nickname %>
+                          </a>
+                          <div>
+                            <span class="numbers-sm">
+                            <%= get_format_number(a.author.reputation) %>
+                            </span>
+                          </div>
+                        </div>
+                        <div class="clear"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- comments for answer -->
+                <div class="comments">
+                  <% if !a.comments.empty? %>
+                    <% a.comments.each do |c| %>
+                      <div class="single-comment">
+
+                        <div class="comment-vote" title="为这条评论投票"
+                             onclick="javascript:vote('vote','c',<%= c.id %>)">
+                          <i class="fa fa-caret-up"></i>
+                          <span id="c-scores-<%= c.id %>">
+                            <%= get_format_number(c.scores) %>
+                          </span>
+                          <!-- no downvoting for comments -->
+                        </div>
+
+                        <div class="comment-text">
+                          <%= c.content %>
+                        </div>
+
+                        <div class="comment-author">
+                          <a href="<%= c.author.url %>">
+                            <%= c.author.info.nickname %>
+                            <span class="numbers-sm">
+                            <%= get_format_number(c.author.reputation) %>
+                            </span>
+                          </a>
+                          <%= time_ago_in_words_zh(c.created_at) %>
+                        </div>
+
+                        <div class="clear"></div>
+                      </div>
+                    <% end %>
+                  <% end %>
+                </div>
+
+                <% if login? && @q.can_comment %>
+                <a href="javascript:void(0);" class="comment-btn"
+                   onclick="javascript:show_comment_answer(<%= a.id %>);">
+                  <i class="fa fa-commenting-o"></i>&nbsp;发表评论
+                </a>
+
+                <!-- hidden comment input div here -->
+                <div class="form-group commenting-answer-<%= a.id %>"
+                     style="display: none;">
+                  <textarea id="comment_area_answer_<%= a.id %>"
+                    class="commentbox" rows="4" style="width: 100%"></textarea>
+                  <br>
+                  <a class="btn btn-primary btn-xs" href="javascript:void(0);"
+                     onclick="javascript:do_comment_answer(<%= a.id %>);">
+                    确认
+                  </a>
+                  <a class="btn btn-default btn-xs" href="javascript:void(0);"
+                     onclick="javascript:cancel_comment_answer(<%= a.id %>);">
+                    取消
+                  </a>
+                </div>
+                <% end %>
+              </div>
+            </div> <!-- end of div.row -->
+          </div> <!-- end of div.single-answer -->
+
         <% end %>
-      </div> <!-- end of listed answers -->
-
-      <hr>
-
-      <!-- answering zone -->
-      <% if @q.is_frozen %>
-      问题被冻结，无法回答
-      <% elsif !login?%>
-      请先 <a class="btn btn-default btn-sm"
-         href="/user/signin?returnurl=<%= CGI.escape(request.path) %>">登录</a> 后回答
-      <% else %>
-      <div class="form-group" id="answer-editor-box"></div>
-      <button class="btn btn-primary" name="btn_submit" data-qid="<%= @q.id %>">提交回答</button>
-      <% content_for :extra_js_tags do %>
-      <script type="text/javascript" src="/vendors/wangEditor/js/wangEditor.min.js"></script>
-      <script type="text/javascript" src="/js/my-answer.js"></script>
       <% end %>
-      <% end %>
-      <!-- end of answering zone -->
-    </div>
+    </div> <!-- end of listed answers -->
 
-    <div class="col-md-3">
-      <%= render_question_list :related %>
-    </div>
+    <hr>
 
+    <!-- answering zone -->
+    <% if @q.is_frozen %>
+    问题被冻结，无法回答
+    <% elsif !login?%>
+    请先 <a class="btn btn-default btn-sm"
+       href="/user/signin?returnurl=<%= CGI.escape(request.path) %>">登录</a> 后回答
+    <% else %>
+    <div class="form-group" id="answer-editor-box"></div>
+    <button class="btn btn-primary" name="btn_submit" data-qid="<%= @q.id %>">提交回答</button>
+
+    <% end %>
+    <!-- end of answering zone -->
   </div>
+
+  <div class="w3-col m3">
+    <%= render_question_list :related %>
+  </div>
+
 </div>
+
+<% content_for :extra_js_tags do %>
+  <script type="text/javascript" src="/vendors/wangEditor/js/wangEditor.min.js"></script>
+  <script type="text/javascript" src="/js/my-answer.js"></script>
 <% end %>
